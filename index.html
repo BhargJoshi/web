@@ -3,147 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RESTRO | Premium Dining</title>
+    <title>RESTRO | Animated Scroll</title>
     <style>
-        /* Reset and Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
         }
 
-        body, html {
-            height: 100%;
+        body {
             background-color: #000;
-            color: #fff;
+            /* Extra height to allow scrolling for the animation */
+            height: 300vh; 
+            overflow-x: hidden;
         }
 
-        /* Hero Section Container */
-        .hero {
-            position: relative;
-            height: 100vh;
+        /* The Sticky Container - keeps everything in view during animation */
+        .scroll-container {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
-                              url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2070');
-            background-size: cover;
-            background-position: center;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
-            align-items: flex-start;
-            padding: 0 8%;
+            align-items: center;
+            overflow: hidden;
         }
 
-        /* Navigation Bar */
-        nav {
+        /* Background Layers */
+        .bg-image {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+
+        .bg-brown {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #3d2b1f; /* Elegant brown */
+            z-index: 2;
+            opacity: 0; /* Starts invisible */
+        }
+
+        /* Navigation */
+        nav {
+            position: absolute;
+            top: 0;
+            width: 100%;
             display: flex;
             justify-content: flex-end;
-            align-items: center;
             padding: 30px 8%;
-            z-index: 10;
+            z-index: 100;
         }
 
         .nav-links {
             list-style: none;
             display: flex;
             gap: 40px;
-            align-items: center;
         }
 
         .nav-links a {
             text-decoration: none;
             color: #fff;
             font-weight: 500;
-            font-size: 1.1rem;
-            transition: opacity 0.3s;
         }
 
-        .nav-links a:hover {
-            opacity: 0.7;
+        /* Hero Elements */
+        .hero-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
         }
 
-        .active {
-            border-bottom: 2px solid #fff;
-            padding-bottom: 5px;
-        }
-
-        .menu-icon {
-            font-size: 1.5rem;
-            cursor: pointer;
-            margin-left: 40px;
-        }
-
-        /* Hero Content */
-        .hero-content h1 {
+        #main-title {
+            position: absolute;
+            top: 50%;
+            left: 8%;
+            transform: translateY(-50%);
             font-size: 12rem;
             font-weight: 800;
             letter-spacing: 15px;
-            margin-bottom: 20px;
-            line-height: 1;
+            transition: all 0.1s ease-out;
+            white-space: nowrap;
         }
 
-        .hero-subtext {
-            max-width: 400px;
+        #sub-text {
+            position: absolute;
+            bottom: 15%;
+            left: 8%;
             font-size: 1.4rem;
             font-weight: 600;
+            max-width: 400px;
             line-height: 1.4;
-            margin-top: 50px;
+            transition: all 0.1s ease-out;
+            transform-origin: center;
         }
 
-        /* Simple Button Interaction */
-        .nav-links a:active {
-            transform: scale(0.95);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero-content h1 {
-                font-size: 5rem;
-                letter-spacing: 5px;
-            }
-            .nav-links {
-                display: none; /* Hide links on mobile for hamburger menu */
-            }
-            .hero-subtext {
-                font-size: 1.1rem;
-            }
+        /* Helping guide for the user */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 0.8rem;
+            opacity: 0.5;
+            z-index: 100;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#" onclick="alert('Navigating Home')">Home</a></li>
-                <li><a href="#" class="active" onclick="alert('Opening Services')">Services</a></li>
-                <li><a href="#" onclick="alert('About Us')">About</a></li>
-            </ul>
-            <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
-        </nav>
-    </header>
+    <div class="scroll-indicator">Scroll Down to Animate</div>
 
-    <main class="hero">
+    <nav>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#" style="border-bottom: 2px solid white;">Services</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+    </nav>
+
+    <div class="scroll-container">
+        <div class="bg-image" id="bgImage"></div>
+        <div class="bg-brown" id="bgBrown"></div>
+        
         <div class="hero-content">
-            <h1>RESTRO</h1>
-            <p class="hero-subtext">
-                Peak Hours Should Be Your<br>
-                Most Profitable Not Most Chaotic
-            </p>
+            <h1 id="main-title">RESTRO</h1>
+            <p id="sub-text">Peak Hours Should Be Your<br>Most Profitable Not Most Chaotic</p>
         </div>
-    </main>
+    </div>
 
     <script>
-        // Simple function for the hamburger menu
-        function toggleMenu() {
-            alert("Mobile menu clicked! We can implement a side drawer next.");
-        }
-    </script>
+        window.addEventListener('scroll', () => {
+            const scrollPercent = window.scrollY / (document.body.offsetHeight - window.innerHeight);
+            
+            const title = document.getElementById('main-title');
+            const subText = document.getElementById('sub-text');
+            const bgBrown = document.getElementById('bgBrown');
 
+            // 1. Animate RESTRO to top-left (Logo position)
+            // Shrinks from 12rem to 2rem, moves to top: 30px
+            const titleScale = 1 - (scrollPercent * 0.85); 
+            const titleTop = 50 - (scrollPercent * 45); // Moves from 50% to 5%
+            const titleLeft = 8; // Stay at 8% or adjust if needed
+            
+            title.style.fontSize = `${12 * titleScale}rem`;
+            title.style.top = `${titleTop}%`;
+            title.style.letterSpacing = `${15 * (1 - scrollPercent)}px`;
+
+            // 2. Animate Sub-text to Center and Expand
+            // Moves from bottom-left to center
+            const subTextScale = 1 + (scrollPercent * 1.5); // Grows 2.5x larger
+            const subTextLeft = 8 + (scrollPercent * 32); // Moves toward middle (~40%)
+            const subTextBottom = 15 + (scrollPercent * 35); // Moves toward middle (~50%)
+
+            subText.style.transform = `scale(${subTextScale})`;
+            subText.style.left = `${subTextLeft}%`;
+            subText.style.bottom = `${subTextBottom}%`;
+            subText.style.textAlign = scrollPercent > 0.5 ? 'center' : 'left';
+
+            // 3. Background Color Transition
+            // Slowly overlaps the image with brown
+            bgBrown.style.opacity = scrollPercent * 1.2; // Multiplier ensures it turns full brown before end of scroll
+        });
+    </script>
 </body>
 </html>

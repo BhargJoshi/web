@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESTRO | Premium Dining</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* Hero Section Container */
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                              url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0 8%;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 30px 8%;
+            z-index: 10;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.7;
+        }
+
+        .active {
+            border-bottom: 2px solid #fff;
+            padding-bottom: 5px;
+        }
+
+        .menu-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-left: 40px;
+        }
+
+        /* Hero Content */
+        .hero-content h1 {
+            font-size: 12rem;
+            font-weight: 800;
+            letter-spacing: 15px;
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        .hero-subtext {
+            max-width: 400px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-top: 50px;
+        }
+
+        /* Simple Button Interaction */
+        .nav-links a:active {
+            transform: scale(0.95);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 5rem;
+                letter-spacing: 5px;
+            }
+            .nav-links {
+                display: none; /* Hide links on mobile for hamburger menu */
+            }
+            .hero-subtext {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#" onclick="alert('Navigating Home')">Home</a></li>
+                <li><a href="#" class="active" onclick="alert('Opening Services')">Services</a></li>
+                <li><a href="#" onclick="alert('About Us')">About</a></li>
+            </ul>
+            <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+        </nav>
+    </header>
+
+    <main class="hero">
+        <div class="hero-content">
+            <h1>RESTRO</h1>
+            <p class="hero-subtext">
+                Peak Hours Should Be Your<br>
+                Most Profitable Not Most Chaotic
+            </p>
+        </div>
+    </main>
+
+    <script>
+        // Simple function for the hamburger menu
+        function toggleMenu() {
+            alert("Mobile menu clicked! We can implement a side drawer next.");
+        }
+    </script>
+
+</body>
+</html>

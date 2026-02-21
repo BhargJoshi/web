@@ -14,8 +14,7 @@
 
         body {
             background-color: #000;
-            /* Increased height to accommodate the second page animation */
-            height: 600vh; 
+            height: 600vh;
             overflow-x: hidden;
             font-family: 'Segoe UI', sans-serif;
         }
@@ -58,7 +57,7 @@
             opacity: 0;
         }
 
-        /* --- NEW: WHITE PAGE SECTION --- */
+        /* --- WHITE PAGE SECTION --- */
         .bg-white-page {
             position: absolute;
             top: 0;
@@ -75,12 +74,12 @@
         }
 
         #why-text {
-            color: #3d2b1f; /* Brown font */
-            font-family: 'Impact', 'Arial Black', sans-serif; /* Fallback for Yapari Bold style */
+            color: #3d2b1f;
+            font-family: 'Impact', 'Arial Black', sans-serif;
             font-weight: 900;
             text-transform: uppercase;
             white-space: nowrap;
-            transform: scale(5); /* Starts huge, exceeding screen */
+            transform: scale(5);
             opacity: 0;
         }
 
@@ -108,13 +107,21 @@
             font-weight: 500;
             font-size: 1.1rem;
             display: inline-block;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s, color 0.3s;
         }
 
-        /* Logic to flip nav colors when white page appears */
-        .nav-black a, .nav-black .menu-toggle div {
+        /* FIX: Flip colors for links and hamburger lines */
+        .nav-black a {
             color: #000 !important;
+        }
+
+        .nav-black .menu-toggle div {
             background-color: #000 !important;
+        }
+        
+        /* FIX: Ensure the RESTRO title also flips color */
+        #main-title.nav-black {
+            color: #000 !important;
         }
 
         .nav-links a:hover {
@@ -191,8 +198,9 @@
             font-size: 12rem;
             font-weight: 800;
             letter-spacing: 15px;
-            transition: all 0.1s ease-out;
+            transition: all 0.1s ease-out, color 0.3s ease;
             white-space: nowrap;
+            z-index: 20; /* Ensure it stays above white page */
         }
 
         #sub-text {
@@ -205,7 +213,7 @@
             line-height: 1.4;
             transition: all 0.1s ease-out;
             transform-origin: left bottom;
-            font-family: "Century Gothic Paneurop", "Century Gothic", "AppleGothic", sans-serif;
+            font-family: "Century Gothic", sans-serif;
             text-transform: uppercase;
         }
 
@@ -219,6 +227,7 @@
             z-index: 100;
             text-transform: uppercase;
             letter-spacing: 2px;
+            transition: color 0.3s;
         }
     </style>
 </head>
@@ -240,11 +249,11 @@
     </nav>
 
     <div class="side-menu" id="sideMenu">
-        <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a>
-        <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a>
-        <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a>
-        <a href="#" style="transition-delay: 0.4s;" onclick="toggleMenu()">Reservations</a>
-        <a href="#" style="transition-delay: 0.5s;" onclick="toggleMenu()">Contact</a>
+        <a href="#" onclick="toggleMenu()">Home</a>
+        <a href="#" onclick="toggleMenu()">Services</a>
+        <a href="#" onclick="toggleMenu()">About</a>
+        <a href="#" onclick="toggleMenu()">Reservations</a>
+        <a href="#" onclick="toggleMenu()">Contact</a>
     </div>
 
     <div class="scroll-container">
@@ -282,23 +291,22 @@
             const navbar = document.getElementById('navbar');
             const scrollTag = document.getElementById('scrollTag');
 
-            // --- PAGE 1 ANIMATIONS (0% to 50% scroll) ---
-            // Adjusting original logic to finish faster so page 2 can begin
+            // --- PAGE 1 ANIMATIONS ---
             const p1Percent = Math.min(scrollPercent * 2, 1); 
 
             const titleScale = 1 - (p1Percent * 0.85); 
-            const titleTop = 50 - (p1Percent * 45); 
+            const titleTop = 50 - (p1Percent * 45);
             title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
 
             const subTextScale = 1 + (p1Percent * 1.5); 
-            const subTextLeft = 8 + (p1Percent * 32); 
+            const subTextLeft = 8 + (p1Percent * 32);
             const subTextBottom = 15 + (p1Percent * 35);
             subText.style.transform = `scale(${subTextScale})`;
             subText.style.left = `${subTextLeft}%`;
             subText.style.bottom = `${subTextBottom}%`;
-            
+
             if (p1Percent > 0.4) {
                 subText.style.textAlign = 'center';
                 subText.style.transformOrigin = 'center';
@@ -311,31 +319,31 @@
 
             // --- PAGE 2 ANIMATIONS (50% to 100% scroll) ---
             if (scrollPercent > 0.45) {
-                const p2Percent = (scrollPercent - 0.45) / 0.55; // Normalize 0 to 1 for second half
+                const p2Percent = (scrollPercent - 0.45) / 0.55;
                 
-                // Fade in white background
                 bgWhite.style.opacity = p2Percent * 2;
                 bgWhite.style.pointerEvents = p2Percent > 0.8 ? 'auto' : 'none';
                 
-                // Scale down "WHY WE EXIST?"
-                // Starts at scale 5 (exceeding screen) and goes to 1 (normal)
                 const textScale = 5 - (p2Percent * 4);
                 whyText.style.opacity = p2Percent * 2;
                 whyText.style.transform = `scale(${Math.max(textScale, 1)})`;
-                whyText.style.fontSize = "8rem"; // Base size for the impact look
+                whyText.style.fontSize = "8rem";
 
-                // Change Nav/UI color for visibility on white
+                // Change Nav and RESTRO title color for visibility on white
                 if (p2Percent > 0.5) {
                     navbar.classList.add('nav-black');
+                    title.classList.add('nav-black'); // Issue 2 fix
                     scrollTag.style.color = "#000";
                 } else {
                     navbar.classList.remove('nav-black');
+                    title.classList.remove('nav-black'); // Issue 2 fix
                     scrollTag.style.color = "#fff";
                 }
             } else {
                 bgWhite.style.opacity = 0;
                 whyText.style.opacity = 0;
                 navbar.classList.remove('nav-black');
+                title.classList.remove('nav-black'); // Issue 2 fix
             }
         });
     </script>

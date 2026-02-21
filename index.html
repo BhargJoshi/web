@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RESTRO | Premium Animated Landing</title>
+    <title>RESTRO | Premium Experience</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #ffffff;
         }
 
@@ -17,6 +16,8 @@
             background-color: #000;
             height: 300vh; 
             overflow-x: hidden;
+            /* Applying standard Sans-serif as base */
+            font-family: 'Segoe UI', sans-serif;
         }
 
         /* --- STICKY CONTAINER --- */
@@ -89,20 +90,33 @@
             opacity: 0.8;
         }
 
-        /* --- HAMBURGER MENU --- */
-        .hamburger {
+        /* --- HAMBURGER & CROSS BUTTON --- */
+        .menu-toggle {
             cursor: pointer;
             display: flex;
             flex-direction: column;
             gap: 6px;
-            z-index: 102;
+            z-index: 1000; /* Ensure it stays above everything */
+            transition: 0.3s;
         }
 
-        .hamburger div {
+        .menu-toggle div {
             width: 30px;
             height: 3px;
             background-color: white;
-            transition: 0.3s;
+            transition: all 0.4s ease;
+        }
+
+        /* Transformation to Cross */
+        .menu-toggle.open #line1 {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        .menu-toggle.open #line2 {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        .menu-toggle.open #line3 {
+            transform: rotate(-45deg) translate(7px, -7px);
         }
 
         /* Full Screen Overlay Menu */
@@ -110,16 +124,16 @@
             position: fixed;
             top: 0;
             right: -100%;
-            width: 300px;
+            width: 350px;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 101;
+            background: rgba(20, 20, 20, 0.98);
+            backdrop-filter: blur(15px);
+            z-index: 999;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 50px;
-            transition: 0.5s ease-in-out;
+            padding: 60px;
+            transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
         .side-menu.active {
@@ -128,15 +142,22 @@
 
         .side-menu a {
             text-decoration: none;
-            font-size: 2rem;
-            margin: 15px 0;
+            font-size: 2.2rem;
+            margin: 20px 0;
             font-weight: 700;
-            transition: 0.3s;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: 0.4s;
+        }
+
+        .side-menu.active a {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .side-menu a:hover {
-            padding-left: 15px;
             color: #d2a679;
+            letter-spacing: 2px;
         }
 
         /* --- HERO ELEMENTS --- */
@@ -165,10 +186,13 @@
             left: 8%;
             font-size: 1.4rem;
             font-weight: 600;
-            max-width: 400px;
+            max-width: 450px;
             line-height: 1.4;
             transition: all 0.1s ease-out;
             transform-origin: left bottom;
+            /* Targeted Font Change */
+            font-family: "Century Gothic Paneurop", "Century Gothic", "AppleGothic", sans-serif;
+            text-transform: uppercase;
         }
 
         .scroll-indicator {
@@ -179,12 +203,14 @@
             font-size: 0.8rem;
             opacity: 0.5;
             z-index: 100;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
     </style>
 </head>
 <body>
 
-    <div class="scroll-indicator">Scroll Down to Transform</div>
+    <div class="scroll-indicator">Scroll Down</div>
 
     <nav>
         <ul class="nav-links">
@@ -192,7 +218,7 @@
             <li><a href="#">Services</a></li>
             <li><a href="#">About</a></li>
         </ul>
-        <div class="hamburger" onclick="toggleMenu()">
+        <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
             <div id="line1"></div>
             <div id="line2"></div>
             <div id="line3"></div>
@@ -200,11 +226,11 @@
     </nav>
 
     <div class="side-menu" id="sideMenu">
-        <a href="#" onclick="toggleMenu()">Home</a>
-        <a href="#" onclick="toggleMenu()">Services</a>
-        <a href="#" onclick="toggleMenu()">About</a>
-        <a href="#" onclick="toggleMenu()">Reservations</a>
-        <a href="#" onclick="toggleMenu()">Contact</a>
+        <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a>
+        <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a>
+        <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a>
+        <a href="#" style="transition-delay: 0.4s;" onclick="toggleMenu()">Reservations</a>
+        <a href="#" style="transition-delay: 0.5s;" onclick="toggleMenu()">Contact</a>
     </div>
 
     <div class="scroll-container">
@@ -218,15 +244,13 @@
     </div>
 
     <script>
-        // Toggle Hamburger Menu
+        // Toggle Logic for Menu and Cross Icon
         function toggleMenu() {
-            const menu = document.getElementById('sideMenu');
-            menu.classList.toggle('active');
+            const sideMenu = document.getElementById('sideMenu');
+            const toggleBtn = document.getElementById('menuToggle');
             
-            // Animation for hamburger lines
-            document.getElementById('line1').style.transform = menu.classList.contains('active') ? 'rotate(45deg) translate(6px, 6px)' : 'none';
-            document.getElementById('line2').style.opacity = menu.classList.contains('active') ? '0' : '1';
-            document.getElementById('line3').style.transform = menu.classList.contains('active') ? 'rotate(-45deg) translate(6px, -7px)' : 'none';
+            sideMenu.classList.toggle('active');
+            toggleBtn.classList.toggle('open');
         }
 
         // Scroll Transformation Logic
@@ -237,7 +261,7 @@
             const subText = document.getElementById('sub-text');
             const bgBrown = document.getElementById('bgBrown');
 
-            // 1. Animate RESTRO to top-left
+            // 1. Animate RESTRO Title
             const titleScale = 1 - (scrollPercent * 0.85); 
             const titleTop = 50 - (scrollPercent * 45); 
             
@@ -245,7 +269,7 @@
             title.style.top = `${titleTop}%`;
             title.style.letterSpacing = `${15 * (1 - scrollPercent)}px`;
 
-            // 2. Animate Sub-text to Center and Expand
+            // 2. Animate Sub-text (Century Gothic Paneurop)
             const subTextScale = 1 + (scrollPercent * 1.5); 
             const subTextLeft = 8 + (scrollPercent * 32); 
             const subTextBottom = 15 + (scrollPercent * 35); 

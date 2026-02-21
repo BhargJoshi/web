@@ -14,9 +14,9 @@
 
         body {
             background-color: #000;
-            height: 300vh; 
+            /* Increased height to accommodate the second page animation */
+            height: 600vh; 
             overflow-x: hidden;
-            /* Applying standard Sans-serif as base */
             font-family: 'Segoe UI', sans-serif;
         }
 
@@ -55,7 +55,33 @@
             height: 100%;
             background-color: #3d2b1f; 
             z-index: 2;
-            opacity: 0; 
+            opacity: 0;
+        }
+
+        /* --- NEW: WHITE PAGE SECTION --- */
+        .bg-white-page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            z-index: 15;
+            opacity: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        #why-text {
+            color: #3d2b1f; /* Brown font */
+            font-family: 'Impact', 'Arial Black', sans-serif; /* Fallback for Yapari Bold style */
+            font-weight: 900;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transform: scale(5); /* Starts huge, exceeding screen */
+            opacity: 0;
         }
 
         /* --- NAVIGATION --- */
@@ -85,6 +111,12 @@
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
         }
 
+        /* Logic to flip nav colors when white page appears */
+        .nav-black a, .nav-black .menu-toggle div {
+            color: #000 !important;
+            background-color: #000 !important;
+        }
+
         .nav-links a:hover {
             transform: translateY(-5px) scale(1.15);
             opacity: 0.8;
@@ -96,7 +128,7 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
-            z-index: 1000; /* Ensure it stays above everything */
+            z-index: 1000; 
             transition: 0.3s;
         }
 
@@ -107,17 +139,9 @@
             transition: all 0.4s ease;
         }
 
-        /* Transformation to Cross */
-        .menu-toggle.open #line1 {
-            transform: rotate(45deg) translate(6px, 6px);
-        }
-        .menu-toggle.open #line2 {
-            opacity: 0;
-            transform: translateX(-20px);
-        }
-        .menu-toggle.open #line3 {
-            transform: rotate(-45deg) translate(7px, -7px);
-        }
+        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); }
+        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); }
+        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); }
 
         /* Full Screen Overlay Menu */
         .side-menu {
@@ -136,9 +160,7 @@
             transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
-        .side-menu.active {
-            right: 0;
-        }
+        .side-menu.active { right: 0; }
 
         .side-menu a {
             text-decoration: none;
@@ -150,15 +172,8 @@
             transition: 0.4s;
         }
 
-        .side-menu.active a {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .side-menu a:hover {
-            color: #d2a679;
-            letter-spacing: 2px;
-        }
+        .side-menu.active a { opacity: 1; transform: translateX(0); }
+        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
 
         /* --- HERO ELEMENTS --- */
         .hero-content {
@@ -190,7 +205,6 @@
             line-height: 1.4;
             transition: all 0.1s ease-out;
             transform-origin: left bottom;
-            /* Targeted Font Change */
             font-family: "Century Gothic Paneurop", "Century Gothic", "AppleGothic", sans-serif;
             text-transform: uppercase;
         }
@@ -210,9 +224,9 @@
 </head>
 <body>
 
-    <div class="scroll-indicator">Scroll Down</div>
+    <div class="scroll-indicator" id="scrollTag">Scroll Down</div>
 
-    <nav>
+    <nav id="navbar">
         <ul class="nav-links">
             <li><a href="#">Home</a></li>
             <li><a href="#">Services</a></li>
@@ -237,48 +251,55 @@
         <div class="bg-image" id="bgImage"></div>
         <div class="bg-brown" id="bgBrown"></div>
         
-        <div class="hero-content">
+        <div class="bg-white-page" id="bgWhite">
+            <h2 id="why-text">WHY WE EXIST ?</h2>
+        </div>
+        
+        <div class="hero-content" id="heroContent">
             <h1 id="main-title">RESTRO</h1>
             <p id="sub-text">Peak Hours Should Be Your<br>Most Profitable Not Most Chaotic</p>
         </div>
     </div>
 
     <script>
-        // Toggle Logic for Menu and Cross Icon
         function toggleMenu() {
             const sideMenu = document.getElementById('sideMenu');
             const toggleBtn = document.getElementById('menuToggle');
-            
             sideMenu.classList.toggle('active');
             toggleBtn.classList.toggle('open');
         }
 
-        // Scroll Transformation Logic
         window.addEventListener('scroll', () => {
-            const scrollPercent = window.scrollY / (document.body.offsetHeight - window.innerHeight);
+            const scrollY = window.scrollY;
+            const maxScroll = document.body.offsetHeight - window.innerHeight;
+            const scrollPercent = scrollY / maxScroll;
             
             const title = document.getElementById('main-title');
             const subText = document.getElementById('sub-text');
             const bgBrown = document.getElementById('bgBrown');
+            const bgWhite = document.getElementById('bgWhite');
+            const whyText = document.getElementById('why-text');
+            const navbar = document.getElementById('navbar');
+            const scrollTag = document.getElementById('scrollTag');
 
-            // 1. Animate RESTRO Title
-            const titleScale = 1 - (scrollPercent * 0.85); 
-            const titleTop = 50 - (scrollPercent * 45); 
-            
+            // --- PAGE 1 ANIMATIONS (0% to 50% scroll) ---
+            // Adjusting original logic to finish faster so page 2 can begin
+            const p1Percent = Math.min(scrollPercent * 2, 1); 
+
+            const titleScale = 1 - (p1Percent * 0.85); 
+            const titleTop = 50 - (p1Percent * 45); 
             title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
-            title.style.letterSpacing = `${15 * (1 - scrollPercent)}px`;
+            title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
 
-            // 2. Animate Sub-text (Century Gothic Paneurop)
-            const subTextScale = 1 + (scrollPercent * 1.5); 
-            const subTextLeft = 8 + (scrollPercent * 32); 
-            const subTextBottom = 15 + (scrollPercent * 35); 
-
+            const subTextScale = 1 + (p1Percent * 1.5); 
+            const subTextLeft = 8 + (p1Percent * 32); 
+            const subTextBottom = 15 + (p1Percent * 35);
             subText.style.transform = `scale(${subTextScale})`;
             subText.style.left = `${subTextLeft}%`;
             subText.style.bottom = `${subTextBottom}%`;
             
-            if (scrollPercent > 0.4) {
+            if (p1Percent > 0.4) {
                 subText.style.textAlign = 'center';
                 subText.style.transformOrigin = 'center';
             } else {
@@ -286,8 +307,36 @@
                 subText.style.transformOrigin = 'left bottom';
             }
 
-            // 3. Background Transition
-            bgBrown.style.opacity = scrollPercent * 1.3; 
+            bgBrown.style.opacity = p1Percent * 1.3;
+
+            // --- PAGE 2 ANIMATIONS (50% to 100% scroll) ---
+            if (scrollPercent > 0.45) {
+                const p2Percent = (scrollPercent - 0.45) / 0.55; // Normalize 0 to 1 for second half
+                
+                // Fade in white background
+                bgWhite.style.opacity = p2Percent * 2;
+                bgWhite.style.pointerEvents = p2Percent > 0.8 ? 'auto' : 'none';
+                
+                // Scale down "WHY WE EXIST?"
+                // Starts at scale 5 (exceeding screen) and goes to 1 (normal)
+                const textScale = 5 - (p2Percent * 4);
+                whyText.style.opacity = p2Percent * 2;
+                whyText.style.transform = `scale(${Math.max(textScale, 1)})`;
+                whyText.style.fontSize = "8rem"; // Base size for the impact look
+
+                // Change Nav/UI color for visibility on white
+                if (p2Percent > 0.5) {
+                    navbar.classList.add('nav-black');
+                    scrollTag.style.color = "#000";
+                } else {
+                    navbar.classList.remove('nav-black');
+                    scrollTag.style.color = "#fff";
+                }
+            } else {
+                bgWhite.style.opacity = 0;
+                whyText.style.opacity = 0;
+                navbar.classList.remove('nav-black');
+            }
         });
     </script>
 </body>

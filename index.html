@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RESTRO | Premium Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -16,7 +17,6 @@
             background-color: #000;
             height: 300vh; 
             overflow-x: hidden;
-            /* Applying standard Sans-serif as base */
             font-family: 'Segoe UI', sans-serif;
         }
 
@@ -96,7 +96,7 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
-            z-index: 1000; /* Ensure it stays above everything */
+            z-index: 1000;
             transition: 0.3s;
         }
 
@@ -107,7 +107,6 @@
             transition: all 0.4s ease;
         }
 
-        /* Transformation to Cross */
         .menu-toggle.open #line1 {
             transform: rotate(45deg) translate(6px, 6px);
         }
@@ -184,15 +183,16 @@
             position: absolute;
             bottom: 15%;
             left: 8%;
-            font-size: 1.4rem;
+            font-size: 1.6rem; /* Slightly larger for the serif font */
             font-weight: 600;
-            max-width: 450px;
-            line-height: 1.4;
+            max-width: 500px;
+            line-height: 1.3;
             transition: all 0.1s ease-out;
             transform-origin: left bottom;
-            /* Targeted Font Change */
-            font-family: "Century Gothic Paneurop", "Century Gothic", "AppleGothic", sans-serif;
-            text-transform: uppercase;
+            
+            /* UPDATED FONT: Catchy Mager with Editorial fallbacks */
+            font-family: "Catchy Mager", "Playfair Display", serif;
+            letter-spacing: 0.5px;
         }
 
         .scroll-indicator {
@@ -244,19 +244,15 @@
     </div>
 
     <script>
-        // Toggle Logic for Menu and Cross Icon
         function toggleMenu() {
             const sideMenu = document.getElementById('sideMenu');
             const toggleBtn = document.getElementById('menuToggle');
-            
             sideMenu.classList.toggle('active');
             toggleBtn.classList.toggle('open');
         }
 
-        // Scroll Transformation Logic
         window.addEventListener('scroll', () => {
             const scrollPercent = window.scrollY / (document.body.offsetHeight - window.innerHeight);
-            
             const title = document.getElementById('main-title');
             const subText = document.getElementById('sub-text');
             const bgBrown = document.getElementById('bgBrown');
@@ -264,12 +260,11 @@
             // 1. Animate RESTRO Title
             const titleScale = 1 - (scrollPercent * 0.85); 
             const titleTop = 50 - (scrollPercent * 45); 
-            
             title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
             title.style.letterSpacing = `${15 * (1 - scrollPercent)}px`;
 
-            // 2. Animate Sub-text (Century Gothic Paneurop)
+            // 2. Animate Sub-text (Catchy Mager)
             const subTextScale = 1 + (scrollPercent * 1.5); 
             const subTextLeft = 8 + (scrollPercent * 32); 
             const subTextBottom = 15 + (scrollPercent * 35); 

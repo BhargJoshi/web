@@ -10,7 +10,7 @@
             padding: 0;
             box-sizing: border-box;
             color: #ffffff;
-            transition: color 0.3s ease; /* Smooth color transition */
+            transition: color 0.4s ease, background-color 0.4s ease;
         }
 
         body {
@@ -53,7 +53,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #ffffff; /* Changed to white to match your description */
+            background-color: #ffffff; /* Changed to white for your requirement */
             z-index: 2;
             opacity: 0;
         }
@@ -82,12 +82,24 @@
             font-weight: 500;
             font-size: 1.1rem;
             display: inline-block;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s, color 0.3s;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s, color 0.4s;
         }
 
         .nav-links a:hover {
             transform: translateY(-5px) scale(1.15);
             opacity: 0.8;
+        }
+
+        /* Dark Mode overrides for Navbar and Title */
+        .dark-mode a, 
+        .dark-mode #main-title,
+        .dark-mode .menu-toggle div {
+            color: #000 !important;
+            background-color: #000; /* For hamburger lines */
+        }
+        
+        .dark-mode .menu-toggle div {
+            background-color: #000 !important;
         }
 
         /* --- HAMBURGER --- */
@@ -103,13 +115,8 @@
         .menu-toggle div {
             width: 30px;
             height: 3px;
-            background-color: white; /* Initial color */
+            background-color: white;
             transition: all 0.4s ease;
-        }
-
-        /* Helper class for JS to toggle black lines */
-        .menu-toggle.black-mode div {
-            background-color: #000 !important;
         }
 
         .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); }
@@ -142,10 +149,9 @@
             opacity: 0;
             transform: translateX(50px);
             transition: 0.4s;
-            color: #fff !important; /* Keep side menu text white */
         }
-
         .side-menu.active a { opacity: 1; transform: translateX(0); }
+        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
 
         /* --- HERO ELEMENTS --- */
         .hero-content {
@@ -163,7 +169,7 @@
             font-size: 12rem;
             font-weight: 800;
             letter-spacing: 15px;
-            transition: color 0.3s ease;
+            transition: all 0.1s ease-out, color 0.4s ease;
             white-space: nowrap;
         }
 
@@ -175,7 +181,7 @@
             font-weight: 600;
             max-width: 450px;
             line-height: 1.4;
-            transition: all 0.1s ease-out, color 0.3s ease;
+            transition: all 0.1s ease-out;
             transform-origin: left bottom;
             font-family: "Century Gothic", sans-serif;
             text-transform: uppercase;
@@ -198,8 +204,8 @@
 
     <div class="scroll-indicator" id="scrollIndicator">Scroll Down</div>
 
-    <nav>
-        <ul class="nav-links" id="navLinks">
+    <nav id="navbar">
+        <ul class="nav-links">
             <li><a href="#">Home</a></li>
             <li><a href="#">Services</a></li>
             <li><a href="#">About</a></li>
@@ -243,18 +249,28 @@
             const title = document.getElementById('main-title');
             const subText = document.getElementById('sub-text');
             const bgBrown = document.getElementById('bgBrown');
-            const menuToggle = document.getElementById('menuToggle');
-            const navLinks = document.querySelectorAll('.nav-links a');
-            const scrollIndicator = document.getElementById('scrollIndicator');
+            const navbar = document.getElementById('navbar');
+            const scrollInd = document.getElementById('scrollIndicator');
 
-            // 1. Animate RESTRO Title
+            // Toggle Dark Mode class when background turns white (threshold ~0.5)
+            if (scrollPercent > 0.5) {
+                navbar.classList.add('dark-mode');
+                title.classList.add('dark-mode');
+                scrollInd.style.color = "#000";
+            } else {
+                navbar.classList.remove('dark-mode');
+                title.classList.remove('dark-mode');
+                scrollInd.style.color = "#fff";
+            }
+
+            // Title Animation
             const titleScale = 1 - (scrollPercent * 0.85); 
             const titleTop = 50 - (scrollPercent * 45); 
             title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
             title.style.letterSpacing = `${15 * (1 - scrollPercent)}px`;
 
-            // 2. Animate Sub-text
+            // Sub-text Animation
             const subTextScale = 1 + (scrollPercent * 1.5); 
             const subTextLeft = 8 + (scrollPercent * 32); 
             const subTextBottom = 15 + (scrollPercent * 35);
@@ -262,6 +278,9 @@
             subText.style.left = `${subTextLeft}%`;
             subText.style.bottom = `${subTextBottom}%`;
             
+            // Sub-text color shift (optional, makes it readable against white)
+            subText.style.color = scrollPercent > 0.6 ? "#000" : "#fff";
+
             if (scrollPercent > 0.4) {
                 subText.style.textAlign = 'center';
                 subText.style.transformOrigin = 'center';
@@ -270,24 +289,8 @@
                 subText.style.transformOrigin = 'left bottom';
             }
 
-            // 3. Background Transition
+            // Background Transition
             bgBrown.style.opacity = scrollPercent * 1.3;
-
-            // 4. COLOR SWAP LOGIC
-            // When the background gets light (above 50% scroll), switch colors to black
-            if (scrollPercent > 0.5) {
-                title.style.color = "#000000";
-                subText.style.color = "#000000";
-                scrollIndicator.style.color = "#000000";
-                menuToggle.classList.add('black-mode');
-                navLinks.forEach(link => link.style.color = "#000000");
-            } else {
-                title.style.color = "#ffffff";
-                subText.style.color = "#ffffff";
-                scrollIndicator.style.color = "#ffffff";
-                menuToggle.classList.remove('black-mode');
-                navLinks.forEach(link => link.style.color = "#ffffff");
-            }
         });
     </script>
 </body>

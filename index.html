@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RESTRO | Premium Experience [cite: 1, 2]</title>
+    <title>RESTRO | Premium Experience</title>
     <style>
         * {
             margin: 0;
-            padding: 0; [cite: 3]
+            padding: 0;
             box-sizing: border-box;
             color: #ffffff;
         }
@@ -17,48 +17,48 @@
             /* Increased height to accommodate the second page animation */
             height: 600vh; 
             overflow-x: hidden;
-            font-family: 'Segoe UI', sans-serif; [cite: 4, 5]
+            font-family: 'Segoe UI', sans-serif;
         }
 
         /* --- STICKY CONTAINER --- */
         .scroll-container {
             position: fixed;
-            top: 0; [cite: 6]
+            top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; [cite: 7]
+            overflow: hidden;
         }
 
         /* --- BACKGROUND LAYERS --- */
         .bg-image {
             position: absolute;
-            top: 0; [cite: 8]
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
                         url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2070');
-            background-size: cover; [cite: 9]
+            background-size: cover;
             background-position: center;
             z-index: 1;
         }
 
         .bg-brown {
             position: absolute;
-            top: 0; [cite: 10]
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-color: #3d2b1f; 
             z-index: 2;
-            opacity: 0; [cite: 11]
+            opacity: 0;
         }
 
-        /* --- WHITE PAGE SECTION --- */
+        /* --- NEW: WHITE PAGE SECTION --- */
         .bg-white-page {
             position: absolute;
             top: 0;
@@ -75,51 +75,57 @@
         }
 
         #why-text {
-            color: #3d2b1f; 
-            font-family: 'Impact', 'Arial Black', sans-serif; 
+            color: #3d2b1f; /* Brown font */
+            font-family: 'Impact', 'Arial Black', sans-serif; /* Fallback for Yapari Bold style */
             font-weight: 900;
             text-transform: uppercase;
             white-space: nowrap;
-            transform: scale(8); /* Starts significantly larger than the screen */
+            transform: scale(5); /* Starts huge, exceeding screen */
             opacity: 0;
         }
 
         /* --- NAVIGATION --- */
         nav {
             position: fixed;
-            top: 0; [cite: 12]
+            top: 0;
             width: 100%;
             display: flex;
             justify-content: flex-end;
             align-items: center;
             padding: 30px 5%;
-            z-index: 100; [cite: 13]
+            z-index: 100;
         }
 
         .nav-links {
             list-style: none;
-            display: flex; [cite: 14]
+            display: flex;
             gap: 40px;
             margin-right: 40px;
         }
 
         .nav-links a {
             text-decoration: none;
-            font-weight: 500; [cite: 15]
+            font-weight: 500;
             font-size: 1.1rem;
             display: inline-block;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s, color 0.4s; 
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+        }
+
+        /* Logic to flip nav colors when white page appears */
+        .nav-black a, .nav-black .menu-toggle div {
+            color: #000 !important;
+            background-color: #000 !important;
         }
 
         .nav-links a:hover {
-            transform: translateY(-5px) scale(1.15); [cite: 17]
+            transform: translateY(-5px) scale(1.15);
             opacity: 0.8;
         }
 
         /* --- HAMBURGER & CROSS BUTTON --- */
         .menu-toggle {
             cursor: pointer;
-            display: flex; [cite: 18]
+            display: flex;
             flex-direction: column;
             gap: 6px;
             z-index: 1000; 
@@ -128,102 +134,91 @@
 
         .menu-toggle div {
             width: 30px;
-            height: 3px; [cite: 20]
+            height: 3px;
             background-color: white;
-            transition: all 0.4s ease, background-color 0.4s;
+            transition: all 0.4s ease;
         }
 
-        /* --- DYNAMIC NAV COLORS (No background boxes) --- */
-        .nav-black a {
-            color: #3d2b1f !important;
-        }
-
-        .nav-black .menu-toggle div {
-            background-color: #3d2b1f !important;
-        }
-
-        /* Transformation to Cross */
-        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); } [cite: 21]
-        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); } [cite: 22]
-        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); } [cite: 23]
+        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); }
+        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); }
+        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); }
 
         /* Full Screen Overlay Menu */
         .side-menu {
             position: fixed;
-            top: 0; [cite: 24]
+            top: 0;
             right: -100%;
             width: 350px;
             height: 100vh;
             background: rgba(20, 20, 20, 0.98);
             backdrop-filter: blur(15px);
             z-index: 999;
-            display: flex; [cite: 25]
+            display: flex;
             flex-direction: column;
             justify-content: center;
             padding: 60px;
             transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
-        .side-menu.active { right: 0; } [cite: 27]
+        .side-menu.active { right: 0; }
 
         .side-menu a {
             text-decoration: none;
-            font-size: 2.2rem; [cite: 28]
+            font-size: 2.2rem;
             margin: 20px 0;
             font-weight: 700;
             opacity: 0;
             transform: translateX(50px);
-            transition: 0.4s; [cite: 29]
+            transition: 0.4s;
         }
 
-        .side-menu.active a { opacity: 1; transform: translateX(0); } [cite: 30]
-        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; } [cite: 31]
+        .side-menu.active a { opacity: 1; transform: translateX(0); }
+        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
 
         /* --- HERO ELEMENTS --- */
         .hero-content {
             position: relative;
-            width: 100%; [cite: 32]
+            width: 100%;
             height: 100%;
             z-index: 10;
         }
 
         #main-title {
             position: absolute;
-            top: 50%; [cite: 33]
+            top: 50%;
             left: 8%;
             transform: translateY(-50%);
             font-size: 12rem;
             font-weight: 800;
             letter-spacing: 15px;
             transition: all 0.1s ease-out;
-            white-space: nowrap; [cite: 34]
+            white-space: nowrap;
         }
 
         #sub-text {
             position: absolute;
-            bottom: 15%; [cite: 35]
+            bottom: 15%;
             left: 8%;
             font-size: 1.4rem;
             font-weight: 600;
             max-width: 450px;
             line-height: 1.4;
             transition: all 0.1s ease-out;
-            transform-origin: left bottom; [cite: 36]
+            transform-origin: left bottom;
             font-family: "Century Gothic Paneurop", "Century Gothic", "AppleGothic", sans-serif;
-            text-transform: uppercase; [cite: 37]
+            text-transform: uppercase;
         }
 
         .scroll-indicator {
             position: fixed;
-            bottom: 20px; [cite: 38]
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             font-size: 0.8rem;
             opacity: 0.5;
             z-index: 100;
             text-transform: uppercase;
-            letter-spacing: 2px; [cite: 39]
-            transition: color 0.4s;
+            letter-spacing: 2px;
         }
     </style>
 </head>
@@ -245,11 +240,11 @@
     </nav>
 
     <div class="side-menu" id="sideMenu">
-        <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a> [cite: 41]
-        <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a> [cite: 42]
-        <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a> [cite: 43]
-        <a href="#" style="transition-delay: 0.4s;" onclick="toggleMenu()">Reservations</a> [cite: 44]
-        <a href="#" style="transition-delay: 0.5s;" onclick="toggleMenu()">Contact</a> [cite: 45]
+        <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a>
+        <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a>
+        <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a>
+        <a href="#" style="transition-delay: 0.4s;" onclick="toggleMenu()">Reservations</a>
+        <a href="#" style="transition-delay: 0.5s;" onclick="toggleMenu()">Contact</a>
     </div>
 
     <div class="scroll-container">
@@ -260,7 +255,7 @@
             <h2 id="why-text">WHY WE EXIST ?</h2>
         </div>
         
-        <div class="hero-content">
+        <div class="hero-content" id="heroContent">
             <h1 id="main-title">RESTRO</h1>
             <p id="sub-text">Peak Hours Should Be Your<br>Most Profitable Not Most Chaotic</p>
         </div>
@@ -268,7 +263,7 @@
 
     <script>
         function toggleMenu() {
-            const sideMenu = document.getElementById('sideMenu'); [cite: 47]
+            const sideMenu = document.getElementById('sideMenu');
             const toggleBtn = document.getElementById('menuToggle');
             sideMenu.classList.toggle('active');
             toggleBtn.classList.toggle('open');
@@ -281,63 +276,66 @@
             
             const title = document.getElementById('main-title');
             const subText = document.getElementById('sub-text');
-            const bgBrown = document.getElementById('bgBrown'); [cite: 48]
+            const bgBrown = document.getElementById('bgBrown');
             const bgWhite = document.getElementById('bgWhite');
             const whyText = document.getElementById('why-text');
             const navbar = document.getElementById('navbar');
             const scrollTag = document.getElementById('scrollTag');
 
-            // --- PAGE 1 TRANSITIONS ---
-            const p1Percent = Math.min(scrollPercent * 2.2, 1); 
+            // --- PAGE 1 ANIMATIONS (0% to 50% scroll) ---
+            // Adjusting original logic to finish faster so page 2 can begin
+            const p1Percent = Math.min(scrollPercent * 2, 1); 
 
             const titleScale = 1 - (p1Percent * 0.85); 
             const titleTop = 50 - (p1Percent * 45); 
-            title.style.fontSize = `${12 * titleScale}rem`; [cite: 49]
+            title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
 
             const subTextScale = 1 + (p1Percent * 1.5); 
             const subTextLeft = 8 + (p1Percent * 32); 
             const subTextBottom = 15 + (p1Percent * 35);
-            subText.style.transform = `scale(${subTextScale})`; [cite: 50]
+            subText.style.transform = `scale(${subTextScale})`;
             subText.style.left = `${subTextLeft}%`;
             subText.style.bottom = `${subTextBottom}%`;
             
             if (p1Percent > 0.4) {
-                subText.style.textAlign = 'center'; [cite: 51]
+                subText.style.textAlign = 'center';
                 subText.style.transformOrigin = 'center';
             } else {
-                subText.style.textAlign = 'left'; [cite: 52]
+                subText.style.textAlign = 'left';
                 subText.style.transformOrigin = 'left bottom';
             }
 
             bgBrown.style.opacity = p1Percent * 1.3;
 
-            // --- PAGE 2 TRANSITIONS (White Screen & Scaling Text) ---
-            if (scrollPercent > 0.4) {
-                const p2Percent = Math.min((scrollPercent - 0.4) / 0.5, 1);
+            // --- PAGE 2 ANIMATIONS (50% to 100% scroll) ---
+            if (scrollPercent > 0.45) {
+                const p2Percent = (scrollPercent - 0.45) / 0.55; // Normalize 0 to 1 for second half
                 
-                bgWhite.style.opacity = p2Percent;
+                // Fade in white background
+                bgWhite.style.opacity = p2Percent * 2;
+                bgWhite.style.pointerEvents = p2Percent > 0.8 ? 'auto' : 'none';
                 
-                // Text starts huge and shrinks to center
-                const textScale = 8 - (p2Percent * 7); 
-                whyText.style.opacity = p2Percent;
-                whyText.style.transform = `scale(${textScale})`;
-                whyText.style.fontSize = "6rem";
+                // Scale down "WHY WE EXIST?"
+                // Starts at scale 5 (exceeding screen) and goes to 1 (normal)
+                const textScale = 5 - (p2Percent * 4);
+                whyText.style.opacity = p2Percent * 2;
+                whyText.style.transform = `scale(${Math.max(textScale, 1)})`;
+                whyText.style.fontSize = "8rem"; // Base size for the impact look
 
-                // Update UI Colors without adding background blocks
-                if (p2Percent > 0.6) {
+                // Change Nav/UI color for visibility on white
+                if (p2Percent > 0.5) {
                     navbar.classList.add('nav-black');
-                    scrollTag.style.color = "#3d2b1f";
+                    scrollTag.style.color = "#000";
                 } else {
                     navbar.classList.remove('nav-black');
-                    scrollTag.style.color = "#ffffff";
+                    scrollTag.style.color = "#fff";
                 }
             } else {
                 bgWhite.style.opacity = 0;
                 whyText.style.opacity = 0;
                 navbar.classList.remove('nav-black');
-                scrollTag.style.color = "#ffffff";
             }
         });
     </script>

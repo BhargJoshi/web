@@ -3,213 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RESTRO | Premium Experience</title> [cite: 1, 2]
+    <title>RESTRO | Premium Experience</title>
     <style>
         * {
-            margin: 0; [cite: 3]
-            padding: 0; [cite: 3]
-            box-sizing: border-box; [cite: 3]
-            color: #ffffff; [cite: 3]
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: #ffffff;
         }
 
         body {
-            background-color: #000; 
-            height: 400vh; /* Increased for three distinct phases */ 
-            overflow-x: hidden; 
-            font-family: 'Segoe UI', sans-serif; 
+            background-color: #000;
+            /* Increased height to accommodate the second page animation */
+            height: 600vh; 
+            overflow-x: hidden;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         /* --- STICKY CONTAINER --- */
         .scroll-container {
-            position: fixed; [cite: 5]
-            top: 0; [cite: 6]
-            left: 0; [cite: 6]
-            width: 100%; [cite: 6]
-            height: 100vh; [cite: 6]
-            display: flex; [cite: 6]
-            justify-content: center; [cite: 6]
-            align-items: center; [cite: 6]
-            overflow: hidden; [cite: 6]
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
         /* --- BACKGROUND LAYERS --- */
         .bg-image {
-            position: absolute; [cite: 7]
-            top: 0; [cite: 8]
-            left: 0; [cite: 8]
-            width: 100%; [cite: 8]
-            height: 100%; [cite: 8]
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
-                        url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2070'); [cite: 8]
-            background-size: cover; [cite: 9]
-            background-position: center; [cite: 9]
-            z-index: 1; [cite: 9]
-        }
-
-        .bg-brown {
-            position: absolute; [cite: 10]
-            top: 0; [cite: 10]
-            left: 0; [cite: 10]
-            width: 100%; [cite: 10]
-            height: 100%; [cite: 10]
-            background-color: #3d2b1f; [cite: 10]
-            z-index: 2; [cite: 10]
-            opacity: 0; [cite: 10]
-        }
-
-        /* --- NEW WHITE SECTION LAYER --- */
-        .bg-white {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #ffffff; /* White page appearance */
-            z-index: 3; /* Sits above brown */
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+
+        .bg-brown {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #3d2b1f; 
+            z-index: 2;
+            opacity: 0;
+        }
+
+        /* --- NEW: WHITE PAGE SECTION --- */
+        .bg-white-page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            z-index: 15;
             opacity: 0;
             display: flex;
             justify-content: center;
             align-items: center;
+            pointer-events: none;
         }
 
-        #why-title {
-            color: #3d2b1f; /* Brown text font color */
-            font-family: 'Segoe UI', sans-serif; /* Requested font style */
-            font-size: 6rem;
-            font-weight: 800;
+        #why-text {
+            color: #3d2b1f; /* Brown font */
+            font-family: 'Impact', 'Arial Black', sans-serif; /* Fallback for Yapari Bold style */
+            font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 10px;
-            text-align: center;
+            white-space: nowrap;
+            transform: scale(5); /* Starts huge, exceeding screen */
+            opacity: 0;
         }
 
         /* --- NAVIGATION --- */
         nav {
-            position: fixed; [cite: 11]
-            top: 0; [cite: 12]
-            width: 100%; [cite: 12]
-            display: flex; [cite: 12]
-            justify-content: flex-end; [cite: 12]
-            align-items: center; [cite: 12]
-            padding: 30px 5%; [cite: 12]
-            z-index: 100; [cite: 12]
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 30px 5%;
+            z-index: 100;
         }
 
         .nav-links {
-            list-style: none; [cite: 13]
-            display: flex; [cite: 14]
-            gap: 40px; [cite: 14]
-            margin-right: 40px; [cite: 14]
+            list-style: none;
+            display: flex;
+            gap: 40px;
+            margin-right: 40px;
         }
 
         .nav-links a {
-            text-decoration: none; [cite: 14]
-            font-weight: 500; [cite: 15]
-            font-size: 1.1rem; [cite: 15]
-            display: inline-block; [cite: 15]
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s; [cite: 15]
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            display: inline-block;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+        }
+
+        /* Logic to flip nav colors when white page appears */
+        .nav-black a, .nav-black .menu-toggle div {
+            color: #000 !important;
+            background-color: #000 !important;
         }
 
         .nav-links a:hover {
-            transform: translateY(-5px) scale(1.15); [cite: 16]
-            opacity: 0.8; [cite: 17]
+            transform: translateY(-5px) scale(1.15);
+            opacity: 0.8;
         }
 
-        /* --- MENU TOGGLE --- */
+        /* --- HAMBURGER & CROSS BUTTON --- */
         .menu-toggle {
-            cursor: pointer; [cite: 17]
-            display: flex; [cite: 18]
-            flex-direction: column; [cite: 18]
-            gap: 6px; [cite: 18]
-            z-index: 1000; [cite: 18]
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 1000; 
+            transition: 0.3s;
         }
 
         .menu-toggle div {
-            width: 30px; [cite: 19]
-            height: 3px; [cite: 20]
-            background-color: white; [cite: 20]
-            transition: all 0.4s ease; [cite: 20]
+            width: 30px;
+            height: 3px;
+            background-color: white;
+            transition: all 0.4s ease;
         }
 
-        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); } [cite: 21]
-        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); } [cite: 22]
-        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); } [cite: 23]
+        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); }
+        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); }
+        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); }
 
+        /* Full Screen Overlay Menu */
         .side-menu {
-            position: fixed; [cite: 23]
-            top: 0; [cite: 24]
-            right: -100%; [cite: 24]
-            width: 350px; [cite: 24]
-            height: 100vh; [cite: 24]
-            background: rgba(20, 20, 20, 0.98); [cite: 24]
-            backdrop-filter: blur(15px); [cite: 24]
-            z-index: 999; [cite: 24]
-            display: flex; [cite: 24]
-            flex-direction: column; [cite: 25]
-            justify-content: center; [cite: 25]
-            padding: 60px; [cite: 25]
-            transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1); [cite: 25]
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 350px;
+            height: 100vh;
+            background: rgba(20, 20, 20, 0.98);
+            backdrop-filter: blur(15px);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
+            transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
-        .side-menu.active { right: 0; } [cite: 26]
+        .side-menu.active { right: 0; }
 
         .side-menu a {
-            text-decoration: none; [cite: 27]
-            font-size: 2.2rem; [cite: 28]
-            margin: 20px 0; [cite: 28]
-            font-weight: 700; [cite: 28]
-            opacity: 0; [cite: 28]
-            transform: translateX(50px); [cite: 28]
-            transition: 0.4s; [cite: 28]
+            text-decoration: none;
+            font-size: 2.2rem;
+            margin: 20px 0;
+            font-weight: 700;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: 0.4s;
         }
 
-        .side-menu.active a { opacity: 1; transform: translateX(0); } [cite: 29, 30]
+        .side-menu.active a { opacity: 1; transform: translateX(0); }
+        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
 
         /* --- HERO ELEMENTS --- */
         .hero-content {
-            position: relative; [cite: 31]
-            width: 100%; [cite: 32]
-            height: 100%; [cite: 32]
-            z-index: 10; [cite: 32]
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
         }
 
         #main-title {
-            position: absolute; [cite: 32]
-            top: 50%; [cite: 33]
-            left: 8%; [cite: 33]
-            transform: translateY(-50%); [cite: 33]
-            font-size: 12rem; [cite: 33]
-            font-weight: 800; [cite: 33]
-            letter-spacing: 15px; [cite: 33]
-            white-space: nowrap; [cite: 33]
+            position: absolute;
+            top: 50%;
+            left: 8%;
+            transform: translateY(-50%);
+            font-size: 12rem;
+            font-weight: 800;
+            letter-spacing: 15px;
+            transition: all 0.1s ease-out;
+            white-space: nowrap;
         }
 
         #sub-text {
-            position: absolute; [cite: 34]
-            bottom: 15%; [cite: 35]
-            left: 8%; [cite: 35]
-            font-size: 1.4rem; [cite: 35]
-            font-weight: 600; [cite: 35]
-            max-width: 450px; [cite: 35]
-            font-family: "Century Gothic Paneurop", sans-serif; [cite: 36]
-            text-transform: uppercase; [cite: 37]
+            position: absolute;
+            bottom: 15%;
+            left: 8%;
+            font-size: 1.4rem;
+            font-weight: 600;
+            max-width: 450px;
+            line-height: 1.4;
+            transition: all 0.1s ease-out;
+            transform-origin: left bottom;
+            font-family: "Century Gothic Paneurop", "Century Gothic", "AppleGothic", sans-serif;
+            text-transform: uppercase;
         }
 
         .scroll-indicator {
-            position: fixed; [cite: 37]
-            bottom: 20px; [cite: 38]
-            left: 50%; [cite: 38]
-            transform: translateX(-50%); [cite: 38]
-            font-size: 0.8rem; [cite: 38]
-            opacity: 0.5; [cite: 38]
-            z-index: 100; [cite: 38]
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            opacity: 0.5;
+            z-index: 100;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
     </style>
 </head>
 <body>
 
-    <div class="scroll-indicator">Scroll Down</div>
+    <div class="scroll-indicator" id="scrollTag">Scroll Down</div>
 
-    <nav>
+    <nav id="navbar">
         <ul class="nav-links">
             <li><a href="#">Home</a></li>
             <li><a href="#">Services</a></li>
@@ -223,18 +240,19 @@
     </nav>
 
     <div class="side-menu" id="sideMenu">
-        <a href="#" onclick="toggleMenu()">Home</a> [cite: 41]
-        <a href="#" onclick="toggleMenu()">Services</a> [cite: 42]
-        <a href="#" onclick="toggleMenu()">About</a> [cite: 43]
-        <a href="#" onclick="toggleMenu()">Reservations</a> [cite: 44]
-        <a href="#" onclick="toggleMenu()">Contact</a> [cite: 45]
+        <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a>
+        <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a>
+        <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a>
+        <a href="#" style="transition-delay: 0.4s;" onclick="toggleMenu()">Reservations</a>
+        <a href="#" style="transition-delay: 0.5s;" onclick="toggleMenu()">Contact</a>
     </div>
 
     <div class="scroll-container">
         <div class="bg-image" id="bgImage"></div>
         <div class="bg-brown" id="bgBrown"></div>
-        <div class="bg-white" id="bgWhite">
-            <h2 id="why-title">WHY WE EXIST ?</h2>
+        
+        <div class="bg-white-page" id="bgWhite">
+            <h2 id="why-text">WHY WE EXIST ?</h2>
         </div>
         
         <div class="hero-content" id="heroContent">
@@ -245,54 +263,79 @@
 
     <script>
         function toggleMenu() {
-            const sideMenu = document.getElementById('sideMenu'); [cite: 46]
-            const toggleBtn = document.getElementById('menuToggle'); [cite: 47]
-            sideMenu.classList.toggle('active'); [cite: 47]
-            toggleBtn.classList.toggle('open'); [cite: 47]
+            const sideMenu = document.getElementById('sideMenu');
+            const toggleBtn = document.getElementById('menuToggle');
+            sideMenu.classList.toggle('active');
+            toggleBtn.classList.toggle('open');
         }
 
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY;
             const maxScroll = document.body.offsetHeight - window.innerHeight;
-            const scrollPercent = scrollY / maxScroll; [cite: 47]
+            const scrollPercent = scrollY / maxScroll;
             
-            const title = document.getElementById('main-title'); [cite: 47]
-            const subText = document.getElementById('sub-text'); [cite: 47]
-            const heroContent = document.getElementById('heroContent');
-            const bgBrown = document.getElementById('bgBrown'); [cite: 48]
+            const title = document.getElementById('main-title');
+            const subText = document.getElementById('sub-text');
+            const bgBrown = document.getElementById('bgBrown');
             const bgWhite = document.getElementById('bgWhite');
-            const whyTitle = document.getElementById('why-title');
+            const whyText = document.getElementById('why-text');
+            const navbar = document.getElementById('navbar');
+            const scrollTag = document.getElementById('scrollTag');
 
-            // 1. HERO ANIMATIONS (Title & Subtext)
-            // Shrink and move up
-            const titleScale = 1 - (scrollPercent * 2.5); 
-            title.style.fontSize = `${Math.max(0, 12 * titleScale)}rem`; [cite: 48]
-            title.style.top = `${50 - (scrollPercent * 100)}%`; [cite: 49]
+            // --- PAGE 1 ANIMATIONS (0% to 50% scroll) ---
+            // Adjusting original logic to finish faster so page 2 can begin
+            const p1Percent = Math.min(scrollPercent * 2, 1); 
+
+            const titleScale = 1 - (p1Percent * 0.85); 
+            const titleTop = 50 - (p1Percent * 45); 
+            title.style.fontSize = `${12 * titleScale}rem`;
+            title.style.top = `${titleTop}%`;
+            title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
+
+            const subTextScale = 1 + (p1Percent * 1.5); 
+            const subTextLeft = 8 + (p1Percent * 32); 
+            const subTextBottom = 15 + (p1Percent * 35);
+            subText.style.transform = `scale(${subTextScale})`;
+            subText.style.left = `${subTextLeft}%`;
+            subText.style.bottom = `${subTextBottom}%`;
             
-            // Subtext moves and scales
-            const subTextScale = 1 + (scrollPercent * 2); [cite: 50]
-            subText.style.transform = `scale(${subTextScale})`; [cite: 50]
-            subText.style.left = `${8 + (scrollPercent * 50)}%`; [cite: 50]
+            if (p1Percent > 0.4) {
+                subText.style.textAlign = 'center';
+                subText.style.transformOrigin = 'center';
+            } else {
+                subText.style.textAlign = 'left';
+                subText.style.transformOrigin = 'left bottom';
+            }
 
-            // Fade out hero content as we transition to Brown/White
-            heroContent.style.opacity = 1 - (scrollPercent * 3);
+            bgBrown.style.opacity = p1Percent * 1.3;
 
-            // 2. BACKGROUND TRANSITION LOGIC
-            // Phase A: Image to Brown (0% to 50% scroll)
-            if (scrollPercent <= 0.5) {
-                bgBrown.style.opacity = scrollPercent * 2; [cite: 52]
-                bgWhite.style.opacity = 0;
-                whyTitle.style.opacity = 0;
-            } 
-            // Phase B: Brown to White (50% to 100% scroll)
-            else {
-                bgBrown.style.opacity = 1; [cite: 52]
-                const whiteFade = (scrollPercent - 0.5) * 2;
-                bgWhite.style.opacity = whiteFade;
+            // --- PAGE 2 ANIMATIONS (50% to 100% scroll) ---
+            if (scrollPercent > 0.45) {
+                const p2Percent = (scrollPercent - 0.45) / 0.55; // Normalize 0 to 1 for second half
                 
-                // Show "WHY WE EXIST ?"
-                whyTitle.style.opacity = whiteFade;
-                whyTitle.style.transform = `translateY(${(1 - whiteFade) * 50}px)`;
+                // Fade in white background
+                bgWhite.style.opacity = p2Percent * 2;
+                bgWhite.style.pointerEvents = p2Percent > 0.8 ? 'auto' : 'none';
+                
+                // Scale down "WHY WE EXIST?"
+                // Starts at scale 5 (exceeding screen) and goes to 1 (normal)
+                const textScale = 5 - (p2Percent * 4);
+                whyText.style.opacity = p2Percent * 2;
+                whyText.style.transform = `scale(${Math.max(textScale, 1)})`;
+                whyText.style.fontSize = "8rem"; // Base size for the impact look
+
+                // Change Nav/UI color for visibility on white
+                if (p2Percent > 0.5) {
+                    navbar.classList.add('nav-black');
+                    scrollTag.style.color = "#000";
+                } else {
+                    navbar.classList.remove('nav-black');
+                    scrollTag.style.color = "#fff";
+                }
+            } else {
+                bgWhite.style.opacity = 0;
+                whyText.style.opacity = 0;
+                navbar.classList.remove('nav-black');
             }
         });
     </script>

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RESTRO | Premium Experience</title> <style>
+    <title>RESTRO | Premium Experience</title> [cite: 1, 2]
+    <style>
         * {
             margin: 0; [cite: 3]
             padding: 0; [cite: 3]
@@ -12,10 +13,10 @@
         }
 
         body {
-            background-color: #000; [cite: 4]
-            height: 400vh; /* Increased height to accommodate the third "Why" section */ [cite: 4]
-            overflow-x: hidden; [cite: 4]
-            font-family: 'Segoe UI', sans-serif; [cite: 4]
+            background-color: #000; 
+            height: 400vh; /* Increased for three distinct phases */ 
+            overflow-x: hidden; 
+            font-family: 'Segoe UI', sans-serif; 
         }
 
         /* --- STICKY CONTAINER --- */
@@ -46,7 +47,7 @@
         }
 
         .bg-brown {
-            position: absolute; [cite: 9]
+            position: absolute; [cite: 10]
             top: 0; [cite: 10]
             left: 0; [cite: 10]
             width: 100%; [cite: 10]
@@ -56,15 +57,15 @@
             opacity: 0; [cite: 10]
         }
 
-        /* --- NEW WHITE SECTION --- */
+        /* --- NEW WHITE SECTION LAYER --- */
         .bg-white {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #ffffff; 
-            z-index: 3; /* Above brown layer */
+            background-color: #ffffff; /* White page appearance */
+            z-index: 3; /* Sits above brown */
             opacity: 0;
             display: flex;
             justify-content: center;
@@ -72,15 +73,13 @@
         }
 
         #why-title {
-            color: #3d2b1f; /* Brown text */
-            font-family: 'Segoe UI', sans-serif;
-            font-size: clamp(3rem, 8vw, 6rem);
+            color: #3d2b1f; /* Brown text font color */
+            font-family: 'Segoe UI', sans-serif; /* Requested font style */
+            font-size: 6rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 10px;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
+            text-align: center;
         }
 
         /* --- NAVIGATION --- */
@@ -115,14 +114,13 @@
             opacity: 0.8; [cite: 17]
         }
 
-        /* --- HAMBURGER & CROSS BUTTON --- */
+        /* --- MENU TOGGLE --- */
         .menu-toggle {
             cursor: pointer; [cite: 17]
             display: flex; [cite: 18]
             flex-direction: column; [cite: 18]
             gap: 6px; [cite: 18]
             z-index: 1000; [cite: 18]
-            transition: 0.3s; [cite: 18]
         }
 
         .menu-toggle div {
@@ -132,17 +130,9 @@
             transition: all 0.4s ease; [cite: 20]
         }
 
-        /* Transformation to Cross */
-        .menu-toggle.open #line1 {
-            transform: rotate(45deg) translate(6px, 6px); [cite: 20]
-        }
-        .menu-toggle.open #line2 {
-            opacity: 0; [cite: 21]
-            transform: translateX(-20px); [cite: 22]
-        }
-        .menu-toggle.open #line3 {
-            transform: rotate(-45deg) translate(7px, -7px); [cite: 22]
-        }
+        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); } [cite: 21]
+        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); } [cite: 22]
+        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); } [cite: 23]
 
         .side-menu {
             position: fixed; [cite: 23]
@@ -160,9 +150,7 @@
             transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1); [cite: 25]
         }
 
-        .side-menu.active {
-            right: 0; [cite: 26]
-        }
+        .side-menu.active { right: 0; } [cite: 26]
 
         .side-menu a {
             text-decoration: none; [cite: 27]
@@ -174,15 +162,7 @@
             transition: 0.4s; [cite: 28]
         }
 
-        .side-menu.active a {
-            opacity: 1; [cite: 29]
-            transform: translateX(0); [cite: 30]
-        }
-
-        .side-menu a:hover {
-            color: #d2a679; [cite: 30]
-            letter-spacing: 2px; [cite: 31]
-        }
+        .side-menu.active a { opacity: 1; transform: translateX(0); } [cite: 29, 30]
 
         /* --- HERO ELEMENTS --- */
         .hero-content {
@@ -200,7 +180,6 @@
             font-size: 12rem; [cite: 33]
             font-weight: 800; [cite: 33]
             letter-spacing: 15px; [cite: 33]
-            transition: all 0.1s ease-out; [cite: 33]
             white-space: nowrap; [cite: 33]
         }
 
@@ -211,10 +190,7 @@
             font-size: 1.4rem; [cite: 35]
             font-weight: 600; [cite: 35]
             max-width: 450px; [cite: 35]
-            line-height: 1.4; [cite: 35]
-            transition: all 0.1s ease-out; [cite: 35]
-            transform-origin: left bottom; [cite: 35]
-            font-family: "Century Gothic Paneurop", "Century Gothic", "AppleGothic", sans-serif; [cite: 36]
+            font-family: "Century Gothic Paneurop", sans-serif; [cite: 36]
             text-transform: uppercase; [cite: 37]
         }
 
@@ -226,8 +202,6 @@
             font-size: 0.8rem; [cite: 38]
             opacity: 0.5; [cite: 38]
             z-index: 100; [cite: 38]
-            text-transform: uppercase; [cite: 38]
-            letter-spacing: 2px; [cite: 38]
         }
     </style>
 </head>
@@ -243,101 +217,84 @@
         </ul>
         <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
             <div id="line1"></div>
-            <div id="line2"></div> [cite: 40]
+            <div id="line2"></div>
             <div id="line3"></div>
         </div>
     </nav>
 
     <div class="side-menu" id="sideMenu">
-        <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a> [cite: 41]
-        <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a> [cite: 42]
-        <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a> [cite: 43]
-        <a href="#" style="transition-delay: 0.4s;" onclick="toggleMenu()">Reservations</a> [cite: 44]
-        <a href="#" style="transition-delay: 0.5s;" onclick="toggleMenu()">Contact</a> [cite: 45]
+        <a href="#" onclick="toggleMenu()">Home</a> [cite: 41]
+        <a href="#" onclick="toggleMenu()">Services</a> [cite: 42]
+        <a href="#" onclick="toggleMenu()">About</a> [cite: 43]
+        <a href="#" onclick="toggleMenu()">Reservations</a> [cite: 44]
+        <a href="#" onclick="toggleMenu()">Contact</a> [cite: 45]
     </div>
 
     <div class="scroll-container">
         <div class="bg-image" id="bgImage"></div>
         <div class="bg-brown" id="bgBrown"></div>
-        
         <div class="bg-white" id="bgWhite">
             <h2 id="why-title">WHY WE EXIST ?</h2>
         </div>
         
-        <div class="hero-content">
+        <div class="hero-content" id="heroContent">
             <h1 id="main-title">RESTRO</h1>
             <p id="sub-text">Peak Hours Should Be Your<br>Most Profitable Not Most Chaotic</p>
         </div>
     </div>
 
     <script>
-        function toggleMenu() { [cite: 46]
+        function toggleMenu() {
             const sideMenu = document.getElementById('sideMenu'); [cite: 46]
             const toggleBtn = document.getElementById('menuToggle'); [cite: 47]
-            
             sideMenu.classList.toggle('active'); [cite: 47]
             toggleBtn.classList.toggle('open'); [cite: 47]
         }
 
         window.addEventListener('scroll', () => {
-            const scrollPercent = window.scrollY / (document.body.offsetHeight - window.innerHeight);
+            const scrollY = window.scrollY;
+            const maxScroll = document.body.offsetHeight - window.innerHeight;
+            const scrollPercent = scrollY / maxScroll; [cite: 47]
             
-            const title = document.getElementById('main-title');
-            const subText = document.getElementById('sub-text');
-            const bgBrown = document.getElementById('bgBrown');
+            const title = document.getElementById('main-title'); [cite: 47]
+            const subText = document.getElementById('sub-text'); [cite: 47]
+            const heroContent = document.getElementById('heroContent');
+            const bgBrown = document.getElementById('bgBrown'); [cite: 48]
             const bgWhite = document.getElementById('bgWhite');
             const whyTitle = document.getElementById('why-title');
 
-            // 1. Animate RESTRO Title [cite: 48]
-            // We adjust the speed so title disappears as we hit the brown/white transitions
-            const titleScale = Math.max(0, 1 - (scrollPercent * 1.5)); 
-            const titleTop = 50 - (scrollPercent * 80); 
+            // 1. HERO ANIMATIONS (Title & Subtext)
+            // Shrink and move up
+            const titleScale = 1 - (scrollPercent * 2.5); 
+            title.style.fontSize = `${Math.max(0, 12 * titleScale)}rem`; [cite: 48]
+            title.style.top = `${50 - (scrollPercent * 100)}%`; [cite: 49]
             
-            title.style.fontSize = `${12 * titleScale}rem`;
-            title.style.top = `${titleTop}%`; [cite: 49]
-            title.style.letterSpacing = `${15 * (1 - scrollPercent)}px`;
-
-            // 2. Animate Sub-text [cite: 49]
-            const subTextScale = 1 + (scrollPercent * 1.5); 
-            const subTextLeft = 8 + (scrollPercent * 32); 
-            const subTextBottom = 15 + (scrollPercent * 35);
+            // Subtext moves and scales
+            const subTextScale = 1 + (scrollPercent * 2); [cite: 50]
             subText.style.transform = `scale(${subTextScale})`; [cite: 50]
-            subText.style.left = `${subTextLeft}%`; [cite: 50]
-            subText.style.bottom = `${subTextBottom}%`; [cite: 50]
-            
-            // Fade out hero content as white page approaches
-            const contentOpacity = 1 - (scrollPercent * 2.5);
-            title.style.opacity = contentOpacity;
-            subText.style.opacity = contentOpacity;
+            subText.style.left = `${8 + (scrollPercent * 50)}%`; [cite: 50]
 
-            if (scrollPercent > 0.3) {
-                subText.style.textAlign = 'center'; [cite: 50]
-                subText.style.transformOrigin = 'center'; [cite: 51]
-            } else {
-                subText.style.textAlign = 'left'; [cite: 51]
-                subText.style.transformOrigin = 'left bottom'; [cite: 52]
-            }
+            // Fade out hero content as we transition to Brown/White
+            heroContent.style.opacity = 1 - (scrollPercent * 3);
 
-            // 3. Multi-Layer Background Transition
+            // 2. BACKGROUND TRANSITION LOGIC
+            // Phase A: Image to Brown (0% to 50% scroll)
             if (scrollPercent <= 0.5) {
-                // Phase 1: Brown fades in over Image
                 bgBrown.style.opacity = scrollPercent * 2; [cite: 52]
                 bgWhite.style.opacity = 0;
-            } else {
-                // Phase 2: White fades in over Brown
-                bgBrown.style.opacity = 1;
-                const whiteProgress = (scrollPercent - 0.5) * 2;
-                bgWhite.style.opacity = whiteProgress;
-
-                // Animate "WHY WE EXIST ?" text
-                if (whiteProgress > 0.1) {
-                    whyTitle.style.opacity = whiteProgress;
-                    whyTitle.style.transform = `translateY(${30 - (whiteProgress * 30)}px)`;
-                } else {
-                    whyTitle.style.opacity = 0;
-                }
+                whyTitle.style.opacity = 0;
+            } 
+            // Phase B: Brown to White (50% to 100% scroll)
+            else {
+                bgBrown.style.opacity = 1; [cite: 52]
+                const whiteFade = (scrollPercent - 0.5) * 2;
+                bgWhite.style.opacity = whiteFade;
+                
+                // Show "WHY WE EXIST ?"
+                whyTitle.style.opacity = whiteFade;
+                whyTitle.style.transform = `translateY(${(1 - whiteFade) * 50}px)`;
             }
-        }); [cite: 53]
+        });
     </script>
 </body>
 </html>

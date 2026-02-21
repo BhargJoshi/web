@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RESTRO</title>
+    <title>RESTRO | Premium Animated Landing</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-            color: #ffffff; /* Global White Text */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
         }
 
         body {
@@ -19,7 +19,7 @@
             overflow-x: hidden;
         }
 
-        /* The Sticky Container */
+        /* --- STICKY CONTAINER --- */
         .scroll-container {
             position: fixed;
             top: 0;
@@ -32,7 +32,7 @@
             overflow: hidden;
         }
 
-        /* Background Layers */
+        /* --- BACKGROUND LAYERS --- */
         .bg-image {
             position: absolute;
             top: 0;
@@ -57,14 +57,15 @@
             opacity: 0; 
         }
 
-        /* Navigation with Hover Animations */
+        /* --- NAVIGATION --- */
         nav {
-            position: fixed; /* Fixed so it stays while scrolling */
+            position: fixed;
             top: 0;
             width: 100%;
             display: flex;
             justify-content: flex-end;
-            padding: 30px 8%;
+            align-items: center;
+            padding: 30px 5%;
             z-index: 100;
         }
 
@@ -72,10 +73,7 @@
             list-style: none;
             display: flex;
             gap: 40px;
-        }
-
-        .nav-links li {
-            display: inline-block;
+            margin-right: 40px;
         }
 
         .nav-links a {
@@ -86,19 +84,62 @@
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
         }
 
-        /* Hover Effect: Lift Up and Expand */
         .nav-links a:hover {
             transform: translateY(-5px) scale(1.15);
             opacity: 0.8;
         }
 
-        /* Active State Style */
-        .active-link {
-            border-bottom: 2px solid #fff;
-            padding-bottom: 4px;
+        /* --- HAMBURGER MENU --- */
+        .hamburger {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 102;
         }
 
-        /* Hero Elements */
+        .hamburger div {
+            width: 30px;
+            height: 3px;
+            background-color: white;
+            transition: 0.3s;
+        }
+
+        /* Full Screen Overlay Menu */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 101;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 50px;
+            transition: 0.5s ease-in-out;
+        }
+
+        .side-menu.active {
+            right: 0;
+        }
+
+        .side-menu a {
+            text-decoration: none;
+            font-size: 2rem;
+            margin: 15px 0;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .side-menu a:hover {
+            padding-left: 15px;
+            color: #d2a679;
+        }
+
+        /* --- HERO ELEMENTS --- */
         .hero-content {
             position: relative;
             width: 100%;
@@ -148,10 +189,23 @@
     <nav>
         <ul class="nav-links">
             <li><a href="#">Home</a></li>
-            <li><a href="#" class="active-link">Services</a></li>
+            <li><a href="#">Services</a></li>
             <li><a href="#">About</a></li>
         </ul>
+        <div class="hamburger" onclick="toggleMenu()">
+            <div id="line1"></div>
+            <div id="line2"></div>
+            <div id="line3"></div>
+        </div>
     </nav>
+
+    <div class="side-menu" id="sideMenu">
+        <a href="#" onclick="toggleMenu()">Home</a>
+        <a href="#" onclick="toggleMenu()">Services</a>
+        <a href="#" onclick="toggleMenu()">About</a>
+        <a href="#" onclick="toggleMenu()">Reservations</a>
+        <a href="#" onclick="toggleMenu()">Contact</a>
+    </div>
 
     <div class="scroll-container">
         <div class="bg-image" id="bgImage"></div>
@@ -164,6 +218,18 @@
     </div>
 
     <script>
+        // Toggle Hamburger Menu
+        function toggleMenu() {
+            const menu = document.getElementById('sideMenu');
+            menu.classList.toggle('active');
+            
+            // Animation for hamburger lines
+            document.getElementById('line1').style.transform = menu.classList.contains('active') ? 'rotate(45deg) translate(6px, 6px)' : 'none';
+            document.getElementById('line2').style.opacity = menu.classList.contains('active') ? '0' : '1';
+            document.getElementById('line3').style.transform = menu.classList.contains('active') ? 'rotate(-45deg) translate(6px, -7px)' : 'none';
+        }
+
+        // Scroll Transformation Logic
         window.addEventListener('scroll', () => {
             const scrollPercent = window.scrollY / (document.body.offsetHeight - window.innerHeight);
             
@@ -188,7 +254,6 @@
             subText.style.left = `${subTextLeft}%`;
             subText.style.bottom = `${subTextBottom}%`;
             
-            // Adjusting text alignment as it moves to center
             if (scrollPercent > 0.4) {
                 subText.style.textAlign = 'center';
                 subText.style.transformOrigin = 'center';

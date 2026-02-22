@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RESTRO | Premium Experience</title> [cite: 1, 2]
+    <title>RESTRO | Premium Experience</title>
     <style>
         * {
             margin: 0;
-            padding: 0; [cite: 3]
+            padding: 0;
             box-sizing: border-box;
             color: #ffffff;
         }
 
         body {
             background-color: #000;
-            height: 600vh; [cite: 4]
+            height: 600vh;
             overflow-x: hidden;
             font-family: 'Segoe UI', sans-serif;
         }
 
         .scroll-container {
             position: fixed;
-            top: 0; [cite: 5]
+            top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
@@ -29,35 +29,35 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-        } [cite: 6]
+        }
 
         .bg-image {
             position: absolute;
-            top: 0; [cite: 7]
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
                         url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2070');
-            background-size: cover; [cite: 8]
+            background-size: cover;
             background-position: center;
             z-index: 1;
         }
 
         .bg-brown {
             position: absolute;
-            top: 0; [cite: 9]
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-color: #3d2b1f; 
             z-index: 2;
             opacity: 0;
-        } [cite: 10]
+        }
 
         .bg-white-page {
             position: absolute;
-            top: 0; [cite: 11]
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
@@ -67,79 +67,79 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            pointer-events: none; [cite: 12]
+            pointer-events: none;
         }
 
         #why-text {
             color: #3d2b1f;
-            font-family: 'Impact', 'Arial Black', sans-serif; [cite: 13]
+            font-family: 'Impact', 'Arial Black', sans-serif;
             font-weight: 900;
             text-transform: uppercase;
             white-space: nowrap;
             transform: scale(5);
             opacity: 0;
-        } [cite: 14]
+        }
 
         nav {
             position: fixed;
-            top: 0; [cite: 15]
+            top: 0;
             width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 30px 5%; [cite: 16]
+            padding: 30px 5%;
             z-index: 100;
         }
 
         .brand-logo {
-            height: 35px; [cite: 17]
+            height: 35px;
             width: auto;
-            opacity: 0; [cite: 18]
+            opacity: 0; 
             transition: filter 0.3s ease;
-        } [cite: 19]
+        }
 
         .nav-links {
             list-style: none;
-            display: flex; [cite: 20]
+            display: flex;
             gap: 40px;
             margin-right: 40px;
         }
 
         .nav-links a {
             text-decoration: none;
-            font-weight: 500; [cite: 21]
+            font-weight: 500;
             font-size: 1.1rem;
             display: inline-block;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
-        } [cite: 22]
+        }
 
-        .nav-black a { color: #000 !important; } [cite: 23]
-        .nav-black .menu-toggle div { background-color: #000 !important; } [cite: 24]
-        .nav-black .brand-logo { filter: invert(1); } [cite: 25]
+        .nav-black a { color: #000 !important; }
+        .nav-black .menu-toggle div { background-color: #000 !important; }
+        .nav-black .brand-logo { filter: invert(1); }
 
         .menu-toggle {
             cursor: pointer;
-            display: flex; [cite: 26]
+            display: flex;
             flex-direction: column;
             gap: 6px;
             z-index: 1000; 
             transition: 0.3s;
-        } [cite: 27]
+        }
 
         .menu-toggle div {
             width: 30px;
-            height: 3px; [cite: 28]
+            height: 3px;
             background-color: white;
             transition: all 0.4s ease;
         }
 
-        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); } [cite: 29]
-        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); } [cite: 30]
-        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); } [cite: 31]
+        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); }
+        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); }
+        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); }
 
         .side-menu {
             position: fixed;
-            top: 0; [cite: 32]
+            top: 0;
             right: -100%;
             width: 350px;
             height: 100vh;
@@ -147,45 +147,45 @@
             backdrop-filter: blur(15px);
             z-index: 999;
             display: flex;
-            flex-direction: column; [cite: 33]
+            flex-direction: column;
             justify-content: center;
             padding: 60px;
             transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
-        } [cite: 34]
+        }
 
-        .side-menu.active { right: 0; } [cite: 35]
+        .side-menu.active { right: 0; }
 
         .side-menu a {
             text-decoration: none;
-            font-size: 2.2rem; [cite: 36]
+            font-size: 2.2rem;
             margin: 15px 0;
             font-weight: 700;
             opacity: 0;
             transform: translateX(50px);
             transition: 0.4s;
-        } [cite: 37]
+        }
 
         .side-menu .close-link {
-            font-size: 1rem; [cite: 38]
+            font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: #d2a679;
             margin-bottom: 40px;
         }
 
-        .side-menu.active a { opacity: 1; transform: translateX(0); } [cite: 39]
-        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; } [cite: 40]
+        .side-menu.active a { opacity: 1; transform: translateX(0); }
+        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
 
         .hero-content {
             position: relative;
-            width: 100%; [cite: 41]
+            width: 100%;
             height: 100%;
             z-index: 20;
         }
 
         #main-title {
             position: absolute;
-            top: 50%; [cite: 42]
+            top: 50%;
             left: 8%;
             transform: translateY(-50%);
             font-size: 12rem;
@@ -193,11 +193,11 @@
             letter-spacing: 15px;
             white-space: nowrap;
             transition: color 0.3s ease;
-        } [cite: 43]
+        }
 
         #sub-text {
             position: absolute;
-            bottom: 15%; [cite: 44]
+            bottom: 15%;
             left: 8%;
             font-size: 1.4rem;
             font-weight: 600;
@@ -206,12 +206,24 @@
             transform-origin: center;
             font-family: "Segoe UI", sans-serif;
             text-transform: uppercase;
-            transition: color 0.3s ease; [cite: 45]
+            transition: color 0.3s ease;
+        }
+
+        /* Typing Cursor Effect */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         .scroll-indicator {
             position: fixed;
-            bottom: 20px; [cite: 46]
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             font-size: 0.8rem;
@@ -219,7 +231,7 @@
             z-index: 100;
             text-transform: uppercase;
             letter-spacing: 2px;
-        } [cite: 47]
+        }
     </style>
 </head>
 <body>
@@ -228,81 +240,92 @@
 
     <nav id="navbar">
         <img src="ex.jpg" alt="Logo" class="brand-logo" id="navLogo">
+        
         <div style="display: flex; align-items: center;">
             <ul class="nav-links">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Services</a></li>
-                <li><a href="#">About</a></li> [cite: 48]
+                <li><a href="#">About</a></li>
             </ul>
             <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
                 <div id="line1"></div>
                 <div id="line2"></div>
                 <div id="line3"></div>
-            </div> [cite: 49]
+            </div>
         </div>
     </nav>
 
     <div class="side-menu" id="sideMenu">
         <a href="#" class="close-link" onclick="toggleMenu()">✕ Close Menu</a>
-        <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a> [cite: 50]
-        <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a> [cite: 51]
-        <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a> [cite: 52]
-        <a href="#" style="transition-delay: 0.4s;" onclick="toggleMenu()">Reservations</a> [cite: 53]
-        <a href="#" style="transition-delay: 0.5s;" onclick="toggleMenu()">Contact</a> [cite: 54]
+        <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a>
+        <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a>
+        <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a>
+        <a href="#" style="transition-delay: 0.4s;" onclick="toggleMenu()">Reservations</a>
+        <a href="#" style="transition-delay: 0.5s;" onclick="toggleMenu()">Contact</a>
     </div>
 
     <div class="scroll-container">
         <div class="bg-image" id="bgImage"></div>
         <div class="bg-brown" id="bgBrown"></div>
+        
         <div class="bg-white-page" id="bgWhite">
             <h2 id="why-text">WHY WE EXIST ?</h2>
         </div>
+        
         <div class="hero-content" id="heroContent">
-            <h1 id="main-title"></h1> 
+            <h1 id="main-title" class="typing-cursor"></h1>
             <p id="sub-text"></p>
         </div>
     </div>
 
     <script>
-        // --- Typing Effect Logic ---
-        const titleContent = "RESTRO";
-        const subtextContent = "Peak Hours Should Be Your\nMost Profitable Not Most Chaotic";
-        
+        // Configuration for typing effect
+        const titleText = "RESTRO";
+        const taglineText = "Peak Hours Should Be Your Most Profitable Not Most Chaotic";
+        const typingSpeed = 100; // milliseconds per character
+
         function typeEffect(element, text, speed, callback) {
             let i = 0;
-            function typing() {
+            function type() {
                 if (i < text.length) {
-                    // Check for newline characters to insert <br>
-                    if (text.charAt(i) === '\n') {
-                        element.innerHTML += '<br>';
+                    // Check if we need to handle the <br> in tagline
+                    if (text.substring(i, i+4) === "<br>") {
+                        element.innerHTML += "<br>";
+                        i += 4;
                     } else {
                         element.innerHTML += text.charAt(i);
+                        i++;
                     }
-                    i++;
-                    setTimeout(typing, speed);
+                    setTimeout(type, speed);
                 } else if (callback) {
                     callback();
                 }
             }
-            typing();
+            type();
         }
 
-        // Initialize typing on load
+        // Start typing on load
         window.addEventListener('DOMContentLoaded', () => {
             const titleEl = document.getElementById('main-title');
             const subEl = document.getElementById('sub-text');
             
-            // Start typing Title, then Subtext
-            typeEffect(titleEl, titleContent, 100, () => {
-                setTimeout(() => {
-                    typeEffect(subEl, subtextContent, 50);
-                }, 300);
+            // Start with Title
+            typeEffect(titleEl, titleText, typingSpeed, () => {
+                // Remove cursor from title and add to tagline
+                titleEl.classList.remove('typing-cursor');
+                subEl.classList.add('typing-cursor');
+                
+                // Start Tagline after title is done
+                typeEffect(subEl, taglineText, 60, () => {
+                   // Optional: remove cursor when all done
+                   // subEl.classList.remove('typing-cursor');
+                });
             });
         });
 
         function toggleMenu() {
             const sideMenu = document.getElementById('sideMenu');
-            const toggleBtn = document.getElementById('menuToggle'); [cite: 56]
+            const toggleBtn = document.getElementById('menuToggle');
             sideMenu.classList.toggle('active');
             toggleBtn.classList.toggle('open');
         }
@@ -313,7 +336,7 @@
             const scrollPercent = scrollY / maxScroll;
             
             const title = document.getElementById('main-title');
-            const subText = document.getElementById('sub-text'); [cite: 57]
+            const subText = document.getElementById('sub-text');
             const bgBrown = document.getElementById('bgBrown');
             const bgWhite = document.getElementById('bgWhite');
             const whyText = document.getElementById('why-text');
@@ -321,60 +344,63 @@
             const scrollTag = document.getElementById('scrollTag');
             const navLogo = document.getElementById('navLogo');
 
-            const p1Percent = Math.min(scrollPercent * 2, 1); [cite: 58]
+            // --- PAGE 1 ANIMATIONS ---
+            const p1Percent = Math.min(scrollPercent * 2, 1); 
+
             const titleScale = 1 - (p1Percent * 0.85); 
             const titleTop = 50 - (p1Percent * 45); 
-            const titleLeft = 8 + (p1Percent * 4); [cite: 59]
+            const titleLeft = 8 + (p1Percent * 4);
 
-            title.style.fontSize = `${12 * titleScale}rem`; [cite: 60]
+            title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
             title.style.left = `${titleLeft}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
 
-            navLogo.style.opacity = p1Percent; [cite: 61]
+            navLogo.style.opacity = p1Percent;
 
-            const subTextScale = 1 + (p1Percent * 1.5); [cite: 62]
-            const subTextLeft = 8 + (p1Percent * 32); [cite: 63]
+            const subTextScale = 1 + (p1Percent * 1.5);
+            const subTextLeft = 8 + (p1Percent * 32);
             const subTextBottom = 15 + (p1Percent * 35);
             
             subText.style.left = `${subTextLeft}%`;
-            subText.style.bottom = `${subTextBottom}%`; [cite: 64]
+            subText.style.bottom = `${subTextBottom}%`;
             subText.style.textAlign = p1Percent > 0.4 ? 'center' : 'left';
 
             bgBrown.style.opacity = p1Percent * 1.3;
 
-            if (scrollPercent > 0.45) { [cite: 65]
-                const p2Percent = (scrollPercent - 0.45) / 0.55; [cite: 66]
+            // --- PAGE 2 ANIMATIONS ---
+            if (scrollPercent > 0.45) {
+                const p2Percent = (scrollPercent - 0.45) / 0.55;
                 bgWhite.style.opacity = p2Percent * 2;
-                bgWhite.style.pointerEvents = p2Percent > 0.8 ? 'auto' : 'none'; [cite: 67]
+                bgWhite.style.pointerEvents = p2Percent > 0.8 ? 'auto' : 'none';
                 subText.style.opacity = 1 - (p2Percent * 2.5);
                 subText.style.transform = `scale(${subTextScale})`;
                 
                 const textScale = 5 - (p2Percent * 4);
-                whyText.style.opacity = p2Percent * 2; [cite: 68]
+                whyText.style.opacity = p2Percent * 2;
                 whyText.style.transform = `scale(${Math.max(textScale, 1)})`;
                 whyText.style.fontSize = "8rem";
 
-                if (p2Percent > 0.5) { [cite: 69]
+                if (p2Percent > 0.5) {
                     title.style.color = "#000";
-                    subText.style.color = "#000"; [cite: 70]
+                    subText.style.color = "#000";
                     navbar.classList.add('nav-black');
                     scrollTag.style.color = "#000";
                 } else {
                     title.style.color = "#fff";
-                    subText.style.color = "#fff"; [cite: 71]
+                    subText.style.color = "#fff";
                     navbar.classList.remove('nav-black');
                     scrollTag.style.color = "#fff";
                 }
             } else {
                 bgWhite.style.opacity = 0;
-                whyText.style.opacity = 0; [cite: 72]
+                whyText.style.opacity = 0;
                 subText.style.opacity = 1; 
                 subText.style.color = "#fff";
                 subText.style.transform = `scale(${subTextScale})`;
                 title.style.color = "#fff";
                 navbar.classList.remove('nav-black');
-                scrollTag.style.color = "#fff"; [cite: 73]
+                scrollTag.style.color = "#fff";
             }
         });
     </script>

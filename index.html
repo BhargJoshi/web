@@ -91,13 +91,26 @@
             z-index: 100;
         }
 
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
         .brand-logo {
             height: 35px;
             width: auto;
             opacity: 0; 
             transition: filter 0.3s ease; 
-            margin-right: 15px;
-        } 
+        }
+
+        #nav-title-small {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: color 0.3s ease;
+        }
 
         .nav-links {
             list-style: none;
@@ -117,6 +130,7 @@
         .nav-black a { color: #000 !important; }
         .nav-black .menu-toggle div { background-color: #000 !important; }
         .nav-black .brand-logo { filter: invert(1); }
+        .nav-black #nav-title-small { color: #000; }
 
         .menu-toggle {
             cursor: pointer;
@@ -228,7 +242,10 @@
     <div class="scroll-indicator" id="scrollTag">Scroll Down</div> 
 
     <nav id="navbar">
-        <img src="ex.jpg" alt="Logo" class="brand-logo" id="navLogo"> 
+        <div class="brand-container">
+            <img src="ex.jpg" alt="Logo" class="brand-logo" id="navLogo"> 
+            <span id="nav-title-small">RESTRO</span>
+        </div>
         
         <div style="display: flex; align-items: center;">
             <ul class="nav-links">
@@ -303,7 +320,7 @@
             });
         });
 
-        function toggleMenu() { 
+        function toggleMenu() {
             const sideMenu = document.getElementById('sideMenu');
             const toggleBtn = document.getElementById('menuToggle');
             sideMenu.classList.toggle('active'); 
@@ -323,6 +340,7 @@
             const navbar = document.getElementById('navbar');
             const scrollTag = document.getElementById('scrollTag');
             const navLogo = document.getElementById('navLogo');
+            const navTitleSmall = document.getElementById('nav-title-small');
 
             const p1Percent = Math.min(scrollPercent * 4, 1);
 
@@ -334,23 +352,27 @@
             title.style.top = `${titleTop}%`;
             title.style.left = `${titleLeft}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
+            title.style.opacity = 1 - p1Percent;
 
             navLogo.style.opacity = p1Percent;
+            navTitleSmall.style.opacity = p1Percent;
 
-            const subTextLeft = 8 + (p1Percent * 32);
-            const subTextBottom = 15 + (p1Percent * 35);
+            const subTextLeft = 8 + (p1Percent * 42); 
+            const subTextBottom = 15 + (p1Percent * 35); 
+            
             subText.style.left = `${subTextLeft}%`;
             subText.style.bottom = `${subTextBottom}%`;
+            subText.style.transform = `translate(-${p1Percent * 50}%, ${p1Percent * 50}%)`;
             subText.style.textAlign = p1Percent > 0.4 ? 'center' : 'left';
 
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
-
+            
             let subTextScale = 1 + (p1Percent * 1.5);
             if (scrollPercent > 0.25 && scrollPercent <= 0.75) {
                 const shrinkFactor = (scrollPercent - 0.25) / 0.5;
                 subTextScale = 2.5 - (shrinkFactor * 0.7);
             }
-            subText.style.transform = `scale(${subTextScale})`;
+            subText.style.transform += ` scale(${subTextScale})`;
 
             if (scrollPercent > 0.75) { 
                 const p3Percent = (scrollPercent - 0.75) / 0.25;
@@ -364,13 +386,9 @@
                 whyText.style.fontSize = "8rem";
 
                 if (p3Percent > 0.5) { 
-                    title.style.color = "#000";
-                    subText.style.color = "#000";
                     navbar.classList.add('nav-black');
                     scrollTag.style.color = "#000";
                 } else { 
-                    title.style.color = "#fff";
-                    subText.style.color = "#fff";
                     navbar.classList.remove('nav-black');
                     scrollTag.style.color = "#fff";
                 }
@@ -379,7 +397,6 @@
                 whyText.style.opacity = 0;
                 subText.style.opacity = 1;
                 subText.style.color = "#fff";
-                title.style.color = "#fff";
                 navbar.classList.remove('nav-black');
                 scrollTag.style.color = "#fff";
             } 

@@ -85,10 +85,18 @@
             top: 0;
             width: 100%;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between; /* Changed to accommodate logo on left */
             align-items: center;
             padding: 30px 5%;
             z-index: 100;
+        }
+
+        /* Logo Styling */
+        .brand-logo {
+            height: 50px; /* Adjust size to match the scaled text height */
+            width: auto;
+            opacity: 0; /* Hidden initially */
+            transition: filter 0.3s ease;
         }
 
         .nav-links {
@@ -108,6 +116,7 @@
 
         .nav-black a { color: #000 !important; }
         .nav-black .menu-toggle div { background-color: #000 !important; }
+        .nav-black .brand-logo { filter: invert(1); } /* Flips white logo to black */
 
         .menu-toggle {
             cursor: pointer;
@@ -195,7 +204,7 @@
             font-weight: 600;
             max-width: 450px;
             line-height: 1.4;
-            transform-origin: center; /* Set to center for uniform scaling */
+            transform-origin: center;
             font-family: "Segoe UI", sans-serif;
             text-transform: uppercase;
             transition: color 0.3s ease;
@@ -219,15 +228,19 @@
     <div class="scroll-indicator" id="scrollTag">Scroll Down</div>
 
     <nav id="navbar">
-        <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">About</a></li>
-        </ul>
-        <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
-            <div id="line1"></div>
-            <div id="line2"></div>
-            <div id="line3"></div>
+        <img src="ex.jpg" alt="Logo" class="brand-logo" id="navLogo">
+        
+        <div style="display: flex; align-items: center;">
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
+                <div id="line1"></div>
+                <div id="line2"></div>
+                <div id="line3"></div>
+            </div>
         </div>
     </nav>
 
@@ -274,15 +287,25 @@
             const whyText = document.getElementById('why-text');
             const navbar = document.getElementById('navbar');
             const scrollTag = document.getElementById('scrollTag');
+            const navLogo = document.getElementById('navLogo');
 
             // --- PAGE 1 ANIMATIONS ---
             const p1Percent = Math.min(scrollPercent * 2, 1); 
 
             const titleScale = 1 - (p1Percent * 0.85); 
-            const titleTop = 50 - (p1Percent * 45);
+            const titleTop = 50 - (p1Percent * 45); // Moves toward the top
+            
+            // Calculating the left position to align with the navbar logo
+            // Starting at 8% and moving toward ~12% to sit beside the logo
+            const titleLeft = 8 + (p1Percent * 4); 
+
             title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
+            title.style.left = `${titleLeft}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
+
+            // Logo Fade In
+            navLogo.style.opacity = p1Percent;
 
             // Improved SubText Movement
             const subTextScale = 1 + (p1Percent * 1.5);
@@ -301,7 +324,6 @@
                 bgWhite.style.opacity = p2Percent * 2;
                 bgWhite.style.pointerEvents = p2Percent > 0.8 ? 'auto' : 'none';
                 
-                // Uniformly handle opacity and scale without conflicting translateY
                 subText.style.opacity = 1 - (p2Percent * 2.5);
                 subText.style.transform = `scale(${subTextScale})`;
                 
@@ -322,7 +344,6 @@
                     scrollTag.style.color = "#fff";
                 }
             } else {
-                // Reset states for Page 1
                 bgWhite.style.opacity = 0;
                 whyText.style.opacity = 0;
                 subText.style.opacity = 1; 

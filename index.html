@@ -25,9 +25,7 @@
             left: 0; 
             width: 100%; 
             height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
+            z-index: 1;
             overflow: hidden;
         }
 
@@ -86,29 +84,38 @@
             width: 100%; 
             display: flex; 
             justify-content: space-between; 
-            /* Align-items baseline ensures logo and text sit on the same line */
-            align-items: baseline; 
+            align-items: center; 
             padding: 30px 4%; 
             z-index: 100;
         }
 
-        /* Container for Logo + Title to keep them together */
         .brand-container {
             display: flex;
-            align-items: baseline;
-            text-decoration: none;
+            align-items: baseline; /* Forces logo and text onto same baseline */
+            position: relative;
         }
 
         .brand-logo {
             height: 35px;
             width: auto;
             opacity: 0; 
-            transition: filter 0.3s ease; 
-            margin-right: 12px;
-            /* Small adjustment to nudge logo to the baseline of text */
-            position: relative;
-            top: 2px; 
+            margin-right: 15px;
+            transform: translateY(4px); /* Fine-tuning baseline alignment */
         } 
+
+        #main-title {
+            font-size: 12rem; 
+            font-weight: 800; 
+            letter-spacing: 15px; 
+            white-space: nowrap;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transform-origin: center center;
+            z-index: 101;
+            pointer-events: none;
+        }
 
         .nav-links {
             list-style: none;
@@ -121,8 +128,7 @@
             text-decoration: none;
             font-weight: 500;
             font-size: 1.1rem; 
-            display: inline-block; 
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+            transition: color 0.3s;
         }
 
         .nav-black a { color: #000 !important; }
@@ -134,20 +140,31 @@
             display: flex;
             flex-direction: column; 
             gap: 6px; 
-            z-index: 1000; 
-            transition: 0.3s;
         }
 
         .menu-toggle div {
             width: 30px;
             height: 3px;
             background-color: white; 
-            transition: all 0.4s ease; 
+            transition: 0.4s; 
         }
 
-        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); }
-        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); }
-        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); }
+        #sub-text {
+            position: fixed;
+            top: 85%;
+            left: 50%; 
+            transform: translate(-50%, -50%);
+            font-size: 1.4rem; 
+            font-weight: 600; 
+            width: 100%;
+            max-width: 900px;
+            line-height: 1.4; 
+            text-align: center;
+            font-family: "Segoe UI", sans-serif; 
+            text-transform: uppercase;
+            z-index: 20;
+            pointer-events: none;
+        }
 
         .side-menu {
             position: fixed;
@@ -156,7 +173,6 @@
             width: 350px; 
             height: 100vh; 
             background: rgba(20, 20, 20, 0.98); 
-            backdrop-filter: blur(15px); 
             z-index: 999; 
             display: flex;
             flex-direction: column;
@@ -166,86 +182,15 @@
         }
 
         .side-menu.active { right: 0; }
-
-        .side-menu a {
-            text-decoration: none;
-            font-size: 2.2rem;
-            margin: 15px 0; 
-            font-weight: 700; 
-            opacity: 0; 
-            transform: translateX(50px); 
-            transition: 0.4s;
-        }
-
-        .side-menu .close-link {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px; 
-            color: #d2a679; 
-            margin-bottom: 40px; 
-        }
-
-        .side-menu.active a { opacity: 1; transform: translateX(0); }
-        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
-
-        .hero-content {
-            position: relative;
-            width: 100%;
-            height: 100%; 
-            z-index: 20; 
-        }
-
-        #main-title {
-            position: absolute;
-            /* Initial centering */
-            top: 50%;
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-            font-size: 12rem; 
-            font-weight: 800; 
-            letter-spacing: 15px; 
-            white-space: nowrap; 
-            transition: color 0.3s ease;
-        }
-
-        #sub-text {
-            position: absolute;
-            top: 85%;
-            left: 50%; 
-            transform: translate(-50%, -50%);
-            font-size: 1.4rem; 
-            font-weight: 600; 
-            width: 100%;
-            max-width: 800px; /* Increased to allow centering without awkward wraps */
-            line-height: 1.4; 
-            text-align: center;
-            font-family: "Segoe UI", sans-serif; 
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-        }
-
-        .scroll-indicator {
-            position: fixed;
-            bottom: 20px;
-            left: 50%; 
-            transform: translateX(-50%); 
-            font-size: 0.8rem; 
-            opacity: 0.5; 
-            z-index: 100; 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
-        }
+        .side-menu a { text-decoration: none; font-size: 2.2rem; margin: 15px 0; font-weight: 700; display: block; }
     </style>
 </head>
 <body>
 
-    <div class="scroll-indicator" id="scrollTag">Scroll Down</div> 
-
     <nav id="navbar">
         <div class="brand-container">
             <img src="ex.jpg" alt="Logo" class="brand-logo" id="navLogo"> 
-            <h1 id="main-title"></h1>
-        </div>
+            </div>
         
         <div style="display: flex; align-items: center;">
             <ul class="nav-links">
@@ -254,39 +199,31 @@
                 <li><a href="#">About</a></li>
             </ul>
             <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()"> 
-                <div id="line1"></div> 
-                <div id="line2"></div> 
-                <div id="line3"></div>
+                <div></div><div></div><div></div>
             </div> 
         </div>
     </nav>
 
+    <h1 id="main-title"></h1>
+    <p id="sub-text"></p>
+
     <div class="side-menu" id="sideMenu"> 
-        <a href="#" class="close-link" onclick="toggleMenu()">✕ Close Menu</a> 
-        <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a>
-        <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a>
-        <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a>
-        <a href="#" style="transition-delay: 0.4s;" onclick="toggleMenu()">Reservations</a>
-        <a href="#" style="transition-delay: 0.5s;" onclick="toggleMenu()">Contact</a>
+        <a href="#" onclick="toggleMenu()">Home</a>
+        <a href="#" onclick="toggleMenu()">Services</a>
+        <a href="#" onclick="toggleMenu()">About</a>
+        <a href="#" onclick="toggleMenu()">Contact</a>
     </div>
 
     <div class="scroll-container"> 
-        <div class="bg-image" id="bgImage"></div> 
+        <div class="bg-image"></div> 
         <div class="bg-brown" id="bgBrown"></div> 
-        
         <div class="bg-white-page" id="bgWhite"> 
             <h2 id="why-text">WHY WE EXIST ?</h2> 
-        </div>
-        
-        <div class="hero-content" id="heroContent"> 
-            <p id="sub-text"></p> 
         </div>
     </div>
 
     <script>
-        window.onbeforeunload = function () {
-            window.scrollTo(0, 0);
-        };
+        window.onbeforeunload = function () { window.scrollTo(0, 0); };
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable Not Most Chaotic";
@@ -294,37 +231,24 @@
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
-            
             function type() {
                 if (i < text.length) {
-                    if (text.substring(i, i + 4) === "<br>") {
-                        element.innerHTML += "<br>";
-                        i += 4;
-                    } else {
-                        element.innerHTML += text.charAt(i);
-                        i++;
-                    }
+                    if (text.substring(i, i + 4) === "<br>") { element.innerHTML += "<br>"; i += 4; }
+                    else { element.innerHTML += text.charAt(i); i++; }
                     setTimeout(type, speed);
-                } else if (callback) {
-                    callback();
-                }
+                } else if (callback) callback();
             }
             type();
         }
 
         window.addEventListener('load', () => {
             window.scrollTo(0, 0);
-            typeWriter("main-title", titleText, 150, () => {
-                typeWriter("sub-text", taglineText, 50);
+            typeWriter("main-title", titleText, 100, () => {
+                typeWriter("sub-text", taglineText, 40);
             });
         });
 
-        function toggleMenu() { 
-            const sideMenu = document.getElementById('sideMenu');
-            const toggleBtn = document.getElementById('menuToggle');
-            sideMenu.classList.toggle('active'); 
-            toggleBtn.classList.toggle('open'); 
-        }
+        function toggleMenu() { document.getElementById('sideMenu').classList.toggle('active'); }
 
         window.addEventListener('scroll', () => { 
             const scrollY = window.scrollY;
@@ -336,74 +260,68 @@
             const bgBrown = document.getElementById('bgBrown');
             const bgWhite = document.getElementById('bgWhite');
             const whyText = document.getElementById('why-text');
-            const navbar = document.getElementById('navbar');
-            const scrollTag = document.getElementById('scrollTag');
             const navLogo = document.getElementById('navLogo');
+            const navbar = document.getElementById('navbar');
 
-            // --- PAGE 1: TITLE MOVEMENT ---
-            const p1Percent = Math.min(scrollPercent * 4, 1);
+            // --- PHASE 1: Move "RESTRO" to Top Left ---
+            const p1Limit = 0.2; // Finish movement within first 20% scroll
+            const p1Percent = Math.min(scrollPercent / p1Limit, 1);
 
-            const titleScale = 1 - (p1Percent * 0.88); // Adjusted scale to fit nav height
-            const titleTop = 50 - (p1Percent * 50); 
-            const titleLeft = 50 - (p1Percent * 50);
+            // Target coordinates (Top Left)
+            const targetTop = 48; // px from top
+            const targetLeft = 145; // px from left (accommodating logo width)
+            const startTop = window.innerHeight / 2;
+            const startLeft = window.innerWidth / 2;
 
-            // Using transform for centering then moving to top-left (0,0)
-            title.style.transform = `translate(${titleLeft}%, ${titleTop}%)`;
-            title.style.fontSize = `${12 * titleScale}rem`;
-            title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
-            title.style.position = p1Percent === 1 ? 'relative' : 'absolute';
-            title.style.top = p1Percent === 1 ? 'auto' : '50%';
-            title.style.left = p1Percent === 1 ? 'auto' : '50%';
-            if(p1Percent === 1) title.style.transform = 'none';
+            const currentTop = startTop + (targetTop - startTop) * p1Percent;
+            const currentLeft = startLeft + (targetLeft - startLeft) * p1Percent;
+            const currentScale = 1 - (p1Percent * 0.88);
+            const currentLetterSpacing = 15 * (1 - p1Percent);
 
+            title.style.top = `${currentTop}px`;
+            title.style.left = `${currentLeft}px`;
+            title.style.fontSize = `${12 * currentScale}rem`;
+            title.style.letterSpacing = `${currentLetterSpacing}px`;
+            
             navLogo.style.opacity = p1Percent;
 
-            // --- PAGE 2: BROWN SCREEN & TAGLINE ---
-            bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
+            // --- PHASE 2: Brown Screen & Tagline Scaling ---
+            bgBrown.style.opacity = Math.min(scrollPercent * 5, 1);
 
-            // Centering the subtext as it moves up
-            const subTextTop = 85 - (p1Percent * 35);
-            subText.style.top = `${subTextTop}%`;
+            // Centering logic for tagline
+            const tagMovePercent = Math.min(scrollPercent * 2, 1);
+            const tagTop = 85 - (tagMovePercent * 35);
+            subText.style.top = `${tagTop}%`;
 
-            let subTextScale = 1 + (p1Percent * 1.5);
-            if (scrollPercent > 0.25 && scrollPercent <= 0.75) {
-                const shrinkFactor = (scrollPercent - 0.25) / 0.5;
-                subTextScale = 2.5 - (shrinkFactor * 0.7);
+            let subTextScale = 1 + (tagMovePercent * 1.5);
+            // Shrink effect between 25% and 75% total scroll
+            if (scrollPercent > 0.25 && scrollPercent < 0.75) {
+                const shrinkRange = (scrollPercent - 0.25) / 0.5;
+                subTextScale = 2.5 - (shrinkRange * 0.7);
+            } else if (scrollPercent >= 0.75) {
+                subTextScale = 1.8;
             }
             subText.style.transform = `translate(-50%, -50%) scale(${subTextScale})`;
 
-            // --- PAGE 3: WHITE SCREEN ---
-            if (scrollPercent > 0.75) { 
-                const p3Percent = (scrollPercent - 0.75) / 0.25;
-                bgWhite.style.opacity = p3Percent * 2;
-                bgWhite.style.pointerEvents = p3Percent > 0.8 ? 'auto' : 'none';
-                subText.style.opacity = 1 - (p3Percent * 2.5);
+            // --- PHASE 3: White Screen Transition ---
+            if (scrollPercent > 0.8) {
+                const p3Percent = (scrollPercent - 0.8) / 0.2;
+                bgWhite.style.opacity = p3Percent;
+                subText.style.opacity = 1 - (p3Percent * 2);
+                whyText.style.opacity = p3Percent;
+                whyText.style.transform = `scale(${5 - (p3Percent * 4)})`;
                 
-                const textScale = 5 - (p3Percent * 4);
-                whyText.style.opacity = p3Percent * 2;
-                whyText.style.transform = `scale(${Math.max(textScale, 1)})`;
-                whyText.style.fontSize = "8rem";
-
-                if (p3Percent > 0.5) { 
-                    title.style.color = "#000";
-                    subText.style.color = "#000";
+                if (p3Percent > 0.5) {
                     navbar.classList.add('nav-black');
-                    scrollTag.style.color = "#000";
-                } else { 
-                    title.style.color = "#fff";
-                    subText.style.color = "#fff";
-                    navbar.classList.remove('nav-black');
-                    scrollTag.style.color = "#fff";
+                    title.style.color = "#000";
                 }
-            } else { 
+            } else {
                 bgWhite.style.opacity = 0;
-                whyText.style.opacity = 0;
                 subText.style.opacity = 1;
-                subText.style.color = "#fff";
-                title.style.color = "#fff";
+                whyText.style.opacity = 0;
                 navbar.classList.remove('nav-black');
-                scrollTag.style.color = "#fff";
-            } 
+                title.style.color = "#fff";
+            }
         });
     </script>
 </body>

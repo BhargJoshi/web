@@ -292,13 +292,14 @@
             type();
         }
 
+        // Start typing sequences on page load
         window.addEventListener('load', () => {
             typeWriter("main-title", titleText, 150, () => {
                 typeWriter("sub-text", taglineText, 50);
             });
         });
 
-        // --- SCROLL AND MENU LOGIC ---
+        // --- ORIGINAL SCROLL AND MENU LOGIC ---
         function toggleMenu() { 
             const sideMenu = document.getElementById('sideMenu'); 
             const toggleBtn = document.getElementById('menuToggle'); 
@@ -325,9 +326,7 @@
 
             const titleScale = 1 - (p1Percent * 0.85); 
             const titleTop = 50 - (p1Percent * 45); 
-            
-            // Adjusted: Moving to 13% to sit exactly to the right of the logo (5% padding + logo width)
-            const titleLeft = 8 + (p1Percent * 5); 
+            const titleLeft = 8 + (p1Percent * 4); 
 
             title.style.fontSize = `${12 * titleScale}rem`; 
             title.style.top = `${titleTop}%`; 

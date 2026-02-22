@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RESTRO | [cite_start]Premium Experience</title> [cite: 1, 2]
+    <title>RESTRO | Premium Experience</title>
     <style>
         * {
             margin: 0;
-            [cite_start]padding: 0; [cite: 3]
+            padding: 0;
             box-sizing: border-box;
             color: #ffffff;
         }
 
         body {
             background-color: #000;
-            [cite_start]height: 600vh; [cite: 4]
+            height: 600vh;
             overflow-x: hidden;
             font-family: 'Segoe UI', sans-serif;
         }
 
         .scroll-container {
             position: fixed;
-            [cite_start]top: 0; [cite: 5]
+            top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
@@ -29,35 +29,35 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-        [cite_start]} [cite: 6]
+        }
 
         .bg-image {
             position: absolute;
-            [cite_start]top: 0; [cite: 7]
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
                         url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2070');
-            [cite_start]background-size: cover; [cite: 8]
+            background-size: cover;
             background-position: center;
             z-index: 1;
         }
 
         .bg-brown {
             position: absolute;
-            [cite_start]top: 0; [cite: 9]
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-color: #3d2b1f; 
             z-index: 2;
             opacity: 0;
-        [cite_start]} [cite: 10]
+        }
 
         .bg-white-page {
             position: absolute;
-            [cite_start]top: 0; [cite: 11]
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
@@ -67,71 +67,71 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            [cite_start]pointer-events: none; [cite: 12]
+            pointer-events: none;
         }
 
         #why-text {
             color: #3d2b1f;
-            [cite_start]font-family: 'Impact', 'Arial Black', sans-serif; [cite: 13]
+            font-family: 'Impact', 'Arial Black', sans-serif;
             font-weight: 900;
             text-transform: uppercase;
             white-space: nowrap;
             transform: scale(5);
             opacity: 0;
-        [cite_start]} [cite: 14]
+        }
 
         nav {
             position: fixed;
-            [cite_start]top: 0; [cite: 15]
+            top: 0;
             width: 100%;
             display: flex;
             justify-content: flex-end;
             align-items: center;
             padding: 30px 5%;
             z-index: 100;
-        [cite_start]} [cite: 16]
+        }
 
         .nav-links {
             list-style: none;
-            [cite_start]display: flex; [cite: 17]
+            display: flex;
             gap: 40px;
             margin-right: 40px;
         }
 
         .nav-links a {
             text-decoration: none;
-            [cite_start]font-weight: 500; [cite: 18]
+            font-weight: 500;
             font-size: 1.1rem;
             display: inline-block;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
-        [cite_start]} [cite: 19]
+        }
 
-        .nav-black a { color: #000 !important; [cite_start]} [cite: 20]
-        .nav-black .menu-toggle div { background-color: #000 !important; [cite_start]} [cite: 21]
+        .nav-black a { color: #000 !important; }
+        .nav-black .menu-toggle div { background-color: #000 !important; }
 
         .menu-toggle {
             cursor: pointer;
-            [cite_start]display: flex; [cite: 22]
+            display: flex;
             flex-direction: column;
             gap: 6px;
             z-index: 1000; 
             transition: 0.3s;
-        [cite_start]} [cite: 23]
+        }
 
         .menu-toggle div {
             width: 30px;
-            [cite_start]height: 3px; [cite: 24]
+            height: 3px;
             background-color: white;
             transition: all 0.4s ease;
         }
 
-        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); [cite_start]} [cite: 25]
-        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); [cite_start]} [cite: 26]
-        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); [cite_start]} [cite: 27]
+        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); }
+        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); }
+        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); }
 
         .side-menu {
             position: fixed;
-            [cite_start]top: 0; [cite: 28]
+            top: 0;
             right: -100%;
             width: 350px;
             height: 100vh;
@@ -139,57 +139,45 @@
             backdrop-filter: blur(15px);
             z-index: 999;
             display: flex;
-            [cite_start]flex-direction: column; [cite: 29, 30]
+            flex-direction: column;
             justify-content: center;
             padding: 60px;
             transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
-        .side-menu.active { right: 0; [cite_start]} [cite: 31]
+        .side-menu.active { right: 0; }
 
         .side-menu a {
             text-decoration: none;
-            [cite_start]font-size: 2.2rem; [cite: 32]
+            font-size: 2.2rem;
             margin: 15px 0;
             font-weight: 700;
             opacity: 0;
             transform: translateX(50px);
             transition: 0.4s;
-        [cite_start]} [cite: 33]
+        }
 
         .side-menu .close-link {
             font-size: 1rem;
-            [cite_start]text-transform: uppercase; [cite: 34]
+            text-transform: uppercase;
             letter-spacing: 2px;
             color: #d2a679;
             margin-bottom: 40px;
         }
 
-        .side-menu.active a { opacity: 1; transform: translateX(0); [cite_start]} [cite: 35]
-        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; [cite_start]} [cite: 36]
+        .side-menu.active a { opacity: 1; transform: translateX(0); }
+        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
 
         .hero-content {
             position: relative;
-            [cite_start]width: 100%; [cite: 37]
+            width: 100%;
             height: 100%;
             z-index: 20;
         }
 
-        /* Added Logo Style */
-        #main-logo {
-            position: absolute;
-            top: 50%;
-            left: 2%; /* Positioned slightly left of RESTRO */
-            transform: translateY(-50%);
-            height: 10rem; /* Initial large size */
-            width: auto;
-            opacity: 0; /* Hidden initially, fades in during scroll */
-            transition: filter 0.3s ease;
-        }
-
         #main-title {
             position: absolute;
-            [cite_start]top: 50%; [cite: 38]
+            top: 50%;
             left: 8%;
             transform: translateY(-50%);
             font-size: 12rem;
@@ -197,25 +185,25 @@
             letter-spacing: 15px;
             white-space: nowrap;
             transition: color 0.3s ease;
-        [cite_start]} [cite: 39]
+        }
 
         #sub-text {
             position: absolute;
-            [cite_start]bottom: 15%; [cite: 40]
+            bottom: 15%;
             left: 8%;
             font-size: 1.4rem;
             font-weight: 600;
             max-width: 450px;
             line-height: 1.4;
-            [cite_start]transform-origin: center; [cite: 41]
+            transform-origin: center; /* Set to center for uniform scaling */
             font-family: "Segoe UI", sans-serif;
-            [cite_start]text-transform: uppercase; [cite: 42]
+            text-transform: uppercase;
             transition: color 0.3s ease;
         }
 
         .scroll-indicator {
             position: fixed;
-            [cite_start]bottom: 20px; [cite: 43]
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             font-size: 0.8rem;
@@ -223,7 +211,7 @@
             z-index: 100;
             text-transform: uppercase;
             letter-spacing: 2px;
-        [cite_start]} [cite: 44]
+        }
     </style>
 </head>
 <body>
@@ -238,18 +226,18 @@
         </ul>
         <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
             <div id="line1"></div>
-            [cite_start]<div id="line2"></div> [cite: 45]
+            <div id="line2"></div>
             <div id="line3"></div>
         </div>
     </nav>
 
     <div class="side-menu" id="sideMenu">
         <a href="#" class="close-link" onclick="toggleMenu()">✕ Close Menu</a>
-        [cite_start]<a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a> [cite: 46]
-        [cite_start]<a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a> [cite: 47]
-        [cite_start]<a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a> [cite: 48]
-        [cite_start]<a href="#" style="transition-delay: 0.4s;" onclick="toggleMenu()">Reservations</a> [cite: 49]
-        [cite_start]<a href="#" style="transition-delay: 0.5s;" onclick="toggleMenu()">Contact</a> [cite: 50]
+        <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a>
+        <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a>
+        <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a>
+        <a href="#" style="transition-delay: 0.4s;" onclick="toggleMenu()">Reservations</a>
+        <a href="#" style="transition-delay: 0.5s;" onclick="toggleMenu()">Contact</a>
     </div>
 
     <div class="scroll-container">
@@ -261,8 +249,7 @@
         </div>
         
         <div class="hero-content" id="heroContent">
-            <img src="ex.jpg" id="main-logo" alt="Logo">
-            [cite_start]<h1 id="main-title">RESTRO</h1> [cite: 51]
+            <h1 id="main-title">RESTRO</h1>
             <p id="sub-text">Peak Hours Should Be Your<br>Most Profitable Not Most Chaotic</p>
         </div>
     </div>
@@ -270,7 +257,7 @@
     <script>
         function toggleMenu() {
             const sideMenu = document.getElementById('sideMenu');
-            [cite_start]const toggleBtn = document.getElementById('menuToggle'); [cite: 52]
+            const toggleBtn = document.getElementById('menuToggle');
             sideMenu.classList.toggle('active');
             toggleBtn.classList.toggle('open');
         }
@@ -281,81 +268,69 @@
             const scrollPercent = scrollY / maxScroll;
             
             const title = document.getElementById('main-title');
-            const logo = document.getElementById('main-logo');
-            [cite_start]const subText = document.getElementById('sub-text'); [cite: 53]
+            const subText = document.getElementById('sub-text');
             const bgBrown = document.getElementById('bgBrown');
             const bgWhite = document.getElementById('bgWhite');
             const whyText = document.getElementById('why-text');
             const navbar = document.getElementById('navbar');
             const scrollTag = document.getElementById('scrollTag');
 
-            [cite_start]// --- PAGE 1 ANIMATIONS --- [cite: 54]
+            // --- PAGE 1 ANIMATIONS ---
             const p1Percent = Math.min(scrollPercent * 2, 1); 
 
-            // Title and Logo Movement
             const titleScale = 1 - (p1Percent * 0.85); 
             const titleTop = 50 - (p1Percent * 45);
-            const titleLeft = 8 - (p1Percent * 3); // Slightly shifts left to make room for logo
-
             title.style.fontSize = `${12 * titleScale}rem`;
-            [cite_start]title.style.top = `${titleTop}%`; [cite: 55]
-            title.style.left = `${titleLeft}%`;
+            title.style.top = `${titleTop}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
 
-            // Logo Coordination
-            logo.style.opacity = p1Percent; // Fades in as we scroll
-            logo.style.height = `${10 * titleScale}rem`;
-            logo.style.top = `${titleTop}%`;
-            logo.style.left = `${titleLeft - (5 * titleScale)}%`; // Keeps it to the left of the text
-
             // Improved SubText Movement
-            [cite_start]const subTextScale = 1 + (p1Percent * 1.5); [cite: 56]
+            const subTextScale = 1 + (p1Percent * 1.5);
             const subTextLeft = 8 + (p1Percent * 32);
             const subTextBottom = 15 + (p1Percent * 35);
             
-            [cite_start]subText.style.left = `${subTextLeft}%`; [cite: 57]
+            subText.style.left = `${subTextLeft}%`;
             subText.style.bottom = `${subTextBottom}%`;
             subText.style.textAlign = p1Percent > 0.4 ? 'center' : 'left';
 
-            [cite_start]bgBrown.style.opacity = p1Percent * 1.3; [cite: 58]
+            bgBrown.style.opacity = p1Percent * 1.3;
 
             // --- PAGE 2 ANIMATIONS ---
             if (scrollPercent > 0.45) {
-                [cite_start]const p2Percent = (scrollPercent - 0.45) / 0.55; [cite: 59]
+                const p2Percent = (scrollPercent - 0.45) / 0.55;
                 bgWhite.style.opacity = p2Percent * 2;
-                bgWhite.style.pointerEvents = p2Percent > 0.8 ? [cite_start]'auto' : 'none'; [cite: 60]
+                bgWhite.style.pointerEvents = p2Percent > 0.8 ? 'auto' : 'none';
                 
-                [cite_start]subText.style.opacity = 1 - (p2Percent * 2.5); [cite: 61]
+                // Uniformly handle opacity and scale without conflicting translateY
+                subText.style.opacity = 1 - (p2Percent * 2.5);
                 subText.style.transform = `scale(${subTextScale})`;
                 
                 const textScale = 5 - (p2Percent * 4);
                 whyText.style.opacity = p2Percent * 2;
-                [cite_start]whyText.style.transform = `scale(${Math.max(textScale, 1)})`; [cite: 62]
+                whyText.style.transform = `scale(${Math.max(textScale, 1)})`;
                 whyText.style.fontSize = "8rem";
 
                 if (p2Percent > 0.5) {
-                    [cite_start]title.style.color = "#000"; [cite: 63]
-                    logo.style.filter = "invert(1)"; // Makes logo black on white page
+                    title.style.color = "#000";
                     subText.style.color = "#000";
                     navbar.classList.add('nav-black');
                     scrollTag.style.color = "#000";
                 } else {
-                    [cite_start]title.style.color = "#fff"; [cite: 64]
-                    logo.style.filter = "invert(0)";
+                    title.style.color = "#fff";
                     subText.style.color = "#fff";
                     navbar.classList.remove('nav-black');
                     scrollTag.style.color = "#fff";
                 }
             } else {
-                [cite_start]bgWhite.style.opacity = 0; [cite: 65]
+                // Reset states for Page 1
+                bgWhite.style.opacity = 0;
                 whyText.style.opacity = 0;
                 subText.style.opacity = 1; 
                 subText.style.color = "#fff";
                 subText.style.transform = `scale(${subTextScale})`;
                 title.style.color = "#fff";
-                logo.style.filter = "invert(0)";
                 navbar.classList.remove('nav-black');
-                [cite_start]scrollTag.style.color = "#fff"; [cite: 66]
+                scrollTag.style.color = "#fff";
             }
         });
     </script>

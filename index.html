@@ -157,7 +157,6 @@
             transition: 0.4s;
         }
 
-        /* Styling for the new close button link */
         .side-menu .close-link {
             font-size: 1rem;
             text-transform: uppercase;
@@ -196,10 +195,10 @@
             font-weight: 600;
             max-width: 450px;
             line-height: 1.4;
-            transform-origin: left bottom;
+            transform-origin: center; /* Set to center for uniform scaling */
             font-family: "Segoe UI", sans-serif;
             text-transform: uppercase;
-            transition: opacity 0.2s ease, transform 0.2s ease;
+            transition: color 0.3s ease;
         }
 
         .scroll-indicator {
@@ -234,7 +233,6 @@
 
     <div class="side-menu" id="sideMenu">
         <a href="#" class="close-link" onclick="toggleMenu()">✕ Close Menu</a>
-        
         <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a>
         <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a>
         <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a>
@@ -286,34 +284,26 @@
             title.style.top = `${titleTop}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
 
-            // Base position/scale for subText
-            const subTextScale = 1 + (p1Percent * 1.5); 
+            // Improved SubText Movement
+            const subTextScale = 1 + (p1Percent * 1.5);
             const subTextLeft = 8 + (p1Percent * 32);
             const subTextBottom = 15 + (p1Percent * 35);
             
             subText.style.left = `${subTextLeft}%`;
             subText.style.bottom = `${subTextBottom}%`;
-
-            if (p1Percent > 0.4) {
-                subText.style.textAlign = 'center';
-                subText.style.transformOrigin = 'center';
-            } else {
-                subText.style.textAlign = 'left';
-                subText.style.transformOrigin = 'left bottom';
-            }
+            subText.style.textAlign = p1Percent > 0.4 ? 'center' : 'left';
 
             bgBrown.style.opacity = p1Percent * 1.3;
 
             // --- PAGE 2 ANIMATIONS ---
             if (scrollPercent > 0.45) {
                 const p2Percent = (scrollPercent - 0.45) / 0.55;
-                
                 bgWhite.style.opacity = p2Percent * 2;
                 bgWhite.style.pointerEvents = p2Percent > 0.8 ? 'auto' : 'none';
                 
-                // Fade out subText AND move it down slightly so it doesn't linger
+                // Uniformly handle opacity and scale without conflicting translateY
                 subText.style.opacity = 1 - (p2Percent * 2.5);
-                subText.style.transform = `scale(${subTextScale}) translateY(${p2Percent * 50}px)`;
+                subText.style.transform = `scale(${subTextScale})`;
                 
                 const textScale = 5 - (p2Percent * 4);
                 whyText.style.opacity = p2Percent * 2;
@@ -322,20 +312,25 @@
 
                 if (p2Percent > 0.5) {
                     title.style.color = "#000";
+                    subText.style.color = "#000";
                     navbar.classList.add('nav-black');
                     scrollTag.style.color = "#000";
                 } else {
                     title.style.color = "#fff";
+                    subText.style.color = "#fff";
                     navbar.classList.remove('nav-black');
                     scrollTag.style.color = "#fff";
                 }
             } else {
+                // Reset states for Page 1
                 bgWhite.style.opacity = 0;
                 whyText.style.opacity = 0;
                 subText.style.opacity = 1; 
-                subText.style.transform = `scale(${subTextScale}) translateY(0px)`;
+                subText.style.color = "#fff";
+                subText.style.transform = `scale(${subTextScale})`;
                 title.style.color = "#fff";
                 navbar.classList.remove('nav-black');
+                scrollTag.style.color = "#fff";
             }
         });
     </script>

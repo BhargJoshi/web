@@ -86,9 +86,17 @@
             width: 100%; 
             display: flex; 
             justify-content: space-between; 
-            align-items: center; 
+            /* Align-items baseline ensures logo and text sit on the same line */
+            align-items: baseline; 
             padding: 30px 4%; 
             z-index: 100;
+        }
+
+        /* Container for Logo + Title to keep them together */
+        .brand-container {
+            display: flex;
+            align-items: baseline;
+            text-decoration: none;
         }
 
         .brand-logo {
@@ -96,7 +104,10 @@
             width: auto;
             opacity: 0; 
             transition: filter 0.3s ease; 
-            margin-right: 15px;
+            margin-right: 12px;
+            /* Small adjustment to nudge logo to the baseline of text */
+            position: relative;
+            top: 2px; 
         } 
 
         .nav-links {
@@ -186,9 +197,10 @@
 
         #main-title {
             position: absolute;
+            /* Initial centering */
             top: 50%;
-            left: 8%; 
-            transform: translateY(-50%); 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
             font-size: 12rem; 
             font-weight: 800; 
             letter-spacing: 15px; 
@@ -198,13 +210,15 @@
 
         #sub-text {
             position: absolute;
-            bottom: 15%;
-            left: 8%; 
+            top: 85%;
+            left: 50%; 
+            transform: translate(-50%, -50%);
             font-size: 1.4rem; 
             font-weight: 600; 
-            max-width: 450px; 
+            width: 100%;
+            max-width: 800px; /* Increased to allow centering without awkward wraps */
             line-height: 1.4; 
-            transform-origin: center; 
+            text-align: center;
             font-family: "Segoe UI", sans-serif; 
             text-transform: uppercase;
             transition: color 0.3s ease;
@@ -228,7 +242,10 @@
     <div class="scroll-indicator" id="scrollTag">Scroll Down</div> 
 
     <nav id="navbar">
-        <img src="ex.jpg" alt="Logo" class="brand-logo" id="navLogo"> 
+        <div class="brand-container">
+            <img src="ex.jpg" alt="Logo" class="brand-logo" id="navLogo"> 
+            <h1 id="main-title"></h1>
+        </div>
         
         <div style="display: flex; align-items: center;">
             <ul class="nav-links">
@@ -262,7 +279,6 @@
         </div>
         
         <div class="hero-content" id="heroContent"> 
-            <h1 id="main-title"></h1>
             <p id="sub-text"></p> 
         </div>
     </div>
@@ -324,34 +340,39 @@
             const scrollTag = document.getElementById('scrollTag');
             const navLogo = document.getElementById('navLogo');
 
+            // --- PAGE 1: TITLE MOVEMENT ---
             const p1Percent = Math.min(scrollPercent * 4, 1);
 
-            const titleScale = 1 - (p1Percent * 0.85);
-            const titleTop = 50 - (p1Percent * 46.5);
-            const titleLeft = 8; 
+            const titleScale = 1 - (p1Percent * 0.88); // Adjusted scale to fit nav height
+            const titleTop = 50 - (p1Percent * 50); 
+            const titleLeft = 50 - (p1Percent * 50);
 
+            // Using transform for centering then moving to top-left (0,0)
+            title.style.transform = `translate(${titleLeft}%, ${titleTop}%)`;
             title.style.fontSize = `${12 * titleScale}rem`;
-            title.style.top = `${titleTop}%`;
-            title.style.left = `${titleLeft}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
+            title.style.position = p1Percent === 1 ? 'relative' : 'absolute';
+            title.style.top = p1Percent === 1 ? 'auto' : '50%';
+            title.style.left = p1Percent === 1 ? 'auto' : '50%';
+            if(p1Percent === 1) title.style.transform = 'none';
 
             navLogo.style.opacity = p1Percent;
 
-            const subTextLeft = 8 + (p1Percent * 32);
-            const subTextBottom = 15 + (p1Percent * 35);
-            subText.style.left = `${subTextLeft}%`;
-            subText.style.bottom = `${subTextBottom}%`;
-            subText.style.textAlign = p1Percent > 0.4 ? 'center' : 'left';
-
+            // --- PAGE 2: BROWN SCREEN & TAGLINE ---
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
+
+            // Centering the subtext as it moves up
+            const subTextTop = 85 - (p1Percent * 35);
+            subText.style.top = `${subTextTop}%`;
 
             let subTextScale = 1 + (p1Percent * 1.5);
             if (scrollPercent > 0.25 && scrollPercent <= 0.75) {
                 const shrinkFactor = (scrollPercent - 0.25) / 0.5;
                 subTextScale = 2.5 - (shrinkFactor * 0.7);
             }
-            subText.style.transform = `scale(${subTextScale})`;
+            subText.style.transform = `translate(-50%, -50%) scale(${subTextScale})`;
 
+            // --- PAGE 3: WHITE SCREEN ---
             if (scrollPercent > 0.75) { 
                 const p3Percent = (scrollPercent - 0.75) / 0.25;
                 bgWhite.style.opacity = p3Percent * 2;

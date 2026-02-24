@@ -342,7 +342,8 @@
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
 
-            const p1Percent = Math.min(scrollPercent * 4, 1);
+            // Accelerated p1Percent to finish the first phase faster
+            const p1Percent = Math.min(scrollPercent * 6, 1);
 
             const titleScale = 1 - (p1Percent * 0.85);
             const titleTop = 50 - (p1Percent * 46.5);
@@ -365,19 +366,16 @@
             subText.style.transform = `translate(-${p1Percent * 50}%, ${p1Percent * 50}%)`;
             subText.style.textAlign = p1Percent > 0.4 ? 'center' : 'left';
             
-            // Background brown reaches full opacity twice as fast
-            bgBrown.style.opacity = Math.min(p1Percent * 3, 1);
+            // Adjusted brown background opacity to trigger much earlier 
+            bgBrown.style.opacity = Math.min(p1Percent * 4, 1);
             
             let subTextScale = 1 + (p1Percent * 1.5);
-            if (scrollPercent > 0.25 && scrollPercent <= 0.75) {
-                const shrinkFactor = (scrollPercent - 0.25) / 0.5;
-                subTextScale = 2.5 - (shrinkFactor * 0.7);
-            }
-            subText.style.transform += ` scale(${subTextScale})`;
-
-            if (scrollPercent > 0.75) { 
-                const p3Percent = (scrollPercent - 0.75) / 0.25;
-                bgWhite.style.opacity = p3Percent * 2;
+            
+            // Re-mapped the white screen threshold (p3) to start at 35% scroll instead of 75%
+            // This ensures the brown background is "short-lived"
+            if (scrollPercent > 0.35) { 
+                const p3Percent = (scrollPercent - 0.35) / 0.15; // Tightened window
+                bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
                 bgWhite.style.pointerEvents = p3Percent > 0.8 ? 'auto' : 'none';
                 subText.style.opacity = 1 - (p3Percent * 2.5);
                 
@@ -401,6 +399,9 @@
                 navbar.classList.remove('nav-black');
                 scrollTag.style.color = "#fff";
             } 
+            
+            // Apply scale to subtext
+            subText.style.transform += ` scale(${subTextScale})`;
         });
     </script>
 </body>

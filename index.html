@@ -356,7 +356,7 @@
 
             navLogo.style.opacity = p1Percent;
             navTitleSmall.style.opacity = p1Percent;
-
+            
             const subTextLeft = 8 + (p1Percent * 42); 
             const subTextBottom = 15 + (p1Percent * 35); 
             
@@ -364,8 +364,9 @@
             subText.style.bottom = `${subTextBottom}%`;
             subText.style.transform = `translate(-${p1Percent * 50}%, ${p1Percent * 50}%)`;
             subText.style.textAlign = p1Percent > 0.4 ? 'center' : 'left';
-
-            bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
+            
+            // Background brown reaches full opacity twice as fast
+            bgBrown.style.opacity = Math.min(p1Percent * 3, 1);
             
             let subTextScale = 1 + (p1Percent * 1.5);
             if (scrollPercent > 0.25 && scrollPercent <= 0.75) {

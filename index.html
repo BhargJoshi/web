@@ -249,20 +249,20 @@
         
         <div style="display: flex; align-items: center;">
             <ul class="nav-links">
-                <li><a href="#">Home</a></li>
+                <li><a href="#">Home</a></li> 
                 <li><a href="#">Services</a></li> 
                 <li><a href="#">About</a></li>
             </ul>
             <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()"> 
                 <div id="line1"></div> 
-                <div id="line2"></div>
+                <div id="line2"></div> 
                 <div id="line3"></div>
             </div> 
         </div>
     </nav>
 
     <div class="side-menu" id="sideMenu"> 
-        <a href="#" class="close-link" onclick="toggleMenu()">✕ Close Menu</a> 
+        <a href="#" class="close-link" onclick="toggleMenu()">âœ• Close Menu</a> 
         <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a>
         <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a>
         <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a>
@@ -342,12 +342,11 @@
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
 
-            // Accelerated p1Percent for faster initial transition
-            const p1Percent = Math.min(scrollPercent * 6, 1);
+            const p1Percent = Math.min(scrollPercent * 4, 1);
 
             const titleScale = 1 - (p1Percent * 0.85);
             const titleTop = 50 - (p1Percent * 46.5);
-            const titleLeft = 8;
+            const titleLeft = 8; 
 
             title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
@@ -366,21 +365,18 @@
             subText.style.transform = `translate(-${p1Percent * 50}%, ${p1Percent * 50}%)`;
             subText.style.textAlign = p1Percent > 0.4 ? 'center' : 'left';
 
-            // Lowered scroll threshold for brown background
-            bgBrown.style.opacity = Math.min(p1Percent * 4, 1);
+            bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
             
-            // Continuous minimization animation for subtext
             let subTextScale = 1 + (p1Percent * 1.5);
-            if (scrollPercent > 0.1 && scrollPercent <= 0.35) {
-                const shrinkFactor = (scrollPercent - 0.1) / 0.25;
+            if (scrollPercent > 0.25 && scrollPercent <= 0.75) {
+                const shrinkFactor = (scrollPercent - 0.25) / 0.5;
                 subTextScale = 2.5 - (shrinkFactor * 0.7);
             }
             subText.style.transform += ` scale(${subTextScale})`;
 
-            // Transition to white background early
-            if (scrollPercent > 0.35) {
-                const p3Percent = (scrollPercent - 0.35) / 0.15;
-                bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
+            if (scrollPercent > 0.75) { 
+                const p3Percent = (scrollPercent - 0.75) / 0.25;
+                bgWhite.style.opacity = p3Percent * 2;
                 bgWhite.style.pointerEvents = p3Percent > 0.8 ? 'auto' : 'none';
                 subText.style.opacity = 1 - (p3Percent * 2.5);
                 
@@ -403,7 +399,7 @@
                 subText.style.color = "#fff";
                 navbar.classList.remove('nav-black');
                 scrollTag.style.color = "#fff";
-            }
+            } 
         });
     </script>
 </body>

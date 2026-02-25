@@ -14,7 +14,8 @@
 
         body {
             background-color: #000;
-            height: 1000vh;
+            /* Change 2: Reduced height to make the brown background page pass faster */
+            height: 600vh;
             overflow-x: hidden; 
             font-family: 'Segoe UI', sans-serif; 
         }
@@ -262,7 +263,7 @@
     </nav>
 
     <div class="side-menu" id="sideMenu"> 
-        <a href="#" class="close-link" onclick="toggleMenu()">âœ• Close Menu</a> 
+        <a href="#" class="close-link" onclick="toggleMenu()">✕ Close Menu</a> 
         <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a>
         <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a>
         <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a>
@@ -354,8 +355,15 @@
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
             title.style.opacity = 1 - p1Percent;
 
-            navLogo.style.opacity = p1Percent;
-            navTitleSmall.style.opacity = p1Percent;
+            /* Change 1: Nav elements only appear after sub-text moves towards center */
+            if (scrollPercent > 0.25) {
+                const navFade = Math.min((scrollPercent - 0.25) * 5, 1);
+                navLogo.style.opacity = navFade;
+                navTitleSmall.style.opacity = navFade;
+            } else {
+                navLogo.style.opacity = 0;
+                navTitleSmall.style.opacity = 0;
+            }
 
             const subTextLeft = 8 + (p1Percent * 42); 
             const subTextBottom = 15 + (p1Percent * 35); 
@@ -364,7 +372,6 @@
             subText.style.bottom = `${subTextBottom}%`;
             subText.style.transform = `translate(-${p1Percent * 50}%, ${p1Percent * 50}%)`;
             subText.style.textAlign = p1Percent > 0.4 ? 'center' : 'left';
-
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
             
             let subTextScale = 1 + (p1Percent * 1.5);

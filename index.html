@@ -15,7 +15,7 @@
         body {
             background-color: #000;
             /* Change 2: Reduced height to 350vh to make the brown section pass twice as fast */
-            height: 370vh;
+            height: 350vh;
             overflow-x: hidden; 
             font-family: 'Segoe UI', sans-serif; 
         }
@@ -32,17 +32,40 @@
             overflow: hidden;
         }
 
-        .bg-image {
+        /* Video Background Container */
+        .bg-video-container {
             position: absolute;
             top: 0;
             left: 0; 
             width: 100%; 
             height: 100%; 
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
-                        url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2070');
-            background-size: cover;
-            background-position: center; 
             z-index: 1; 
+            overflow: hidden;
+        }
+
+        .bg-video-container video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            /* Change 2: Lowered brightness for better text visibility */
+            filter: brightness(0.5);
+        }
+
+        /* Overlay to ensure smooth transition to brown */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.2);
+            z-index: 2;
         }
 
         .bg-brown {
@@ -52,7 +75,7 @@
             width: 100%; 
             height: 100%; 
             background-color: #3d2b1f; 
-            z-index: 2; 
+            z-index: 3; 
             opacity: 0;
         }
 
@@ -120,12 +143,36 @@
             margin-right: 40px; 
         }
 
+        .nav-links li {
+            position: relative;
+        }
+
+        /* Change 3: Navbar Hover Effects */
         .nav-links a {
             text-decoration: none;
             font-weight: 500;
             font-size: 1.1rem; 
             display: inline-block; 
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            transform: translateY(-5px);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         .nav-black a { color: #000 !important; }
@@ -272,7 +319,14 @@
     </div>
 
     <div class="scroll-container"> 
-        <div class="bg-image" id="bgImage"></div> 
+        <div class="bg-video-container">
+            <video autoplay muted loop playsinline id="bgVideo">
+                <source src="Food Reel - Darío Idoate.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay"></div>
+        </div>
+        
         <div class="bg-brown" id="bgBrown"></div> 
         
         <div class="bg-white-page" id="bgWhite"> 
@@ -355,7 +409,6 @@
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
             title.style.opacity = 1 - p1Percent;
 
-            /* Change 1: Nav elements only appear after sub-text moves towards center */
             if (scrollPercent > 0.25) {
                 const navFade = Math.min((scrollPercent - 0.25) * 5, 1);
                 navLogo.style.opacity = navFade;
@@ -365,7 +418,7 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            const subTextLeft = 8 + (p1Percent * 42); 
+            const subTextLeft = 8 + (p1Percent * 42);
             const subTextBottom = 15 + (p1Percent * 35); 
             
             subText.style.left = `${subTextLeft}%`;

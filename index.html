@@ -111,18 +111,17 @@
             justify-content: center;
             align-items: center;
             z-index: 18;
-            top: 10%; /* Shifted down to avoid title overlap */
+            top: 5%; 
         }
 
         .scroll-image {
             position: absolute;
-            width: 350px; /* Adjusted to balance with other elements */
+            width: 350px; 
             height: 450px;
             object-fit: cover;
             border-radius: 10px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.2);
             opacity: 0;
-            /* Initial state: minimized on the right */
             transform: scale(0.1) translateX(600px);
             transition: transform 0.1s ease-out, opacity 0.2s;
         }
@@ -240,6 +239,7 @@
             font-weight: 800; 
             letter-spacing: 15px; 
             white-space: nowrap; 
+            transition: color 0.3s ease;
         }
 
         #sub-text {
@@ -274,7 +274,7 @@
 
     <nav id="navbar">
         <div class="brand-container">
-            <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=100" alt="Logo" class="brand-logo" id="navLogo"> 
+            <img src="ex.jpg" alt="Logo" class="brand-logo" id="navLogo"> 
             <span id="nav-title-small">RESTRO</span>
         </div>
         
@@ -383,12 +383,21 @@
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
 
-            // --- Section 1: Hero Fade Out ---
+            // --- Section 1: Hero to Brown & Title Movement ---
             const p1Percent = Math.min(scrollPercent * 3, 1);
+            
+            // Movement logic restored for main title
+            const titleScale = 1 - (p1Percent * 0.85);
+            const titleTop = 50 - (p1Percent * 46.5);
+            title.style.fontSize = `${12 * titleScale}rem`;
+            title.style.top = `${titleTop}%`;
+            title.style.left = `8%`;
+            title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
             title.style.opacity = 1 - p1Percent;
+
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
 
-            // Change 1: Nav Title appears ONLY when Section 2 (Brown) is active
+            // Change 1: Sticky Nav Title fade in
             if (scrollPercent > 0.15) {
                 const navFade = Math.min((scrollPercent - 0.15) * 5, 1);
                 navLogo.style.opacity = navFade;
@@ -398,7 +407,7 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // Tagline sizing logic
+            // Tagline positioning
             const subTextLeft = 8 + (p1Percent * 42);
             const subTextBottom = 15 + (p1Percent * 35); 
             subText.style.left = `${subTextLeft}%`;
@@ -413,22 +422,41 @@
             }
             subText.style.transform = `translate(-${p1Percent * 50}%, ${p1Percent * 50}%) scale(${subTextScale})`;
 
-            // --- Section 2: White Page & Image Sequence ---
+            // --- Section 2: White Page & Timing Logic ---
             if (scrollPercent > 0.5) { 
-                const p3Percent = (scrollPercent - 0.5) / 0.5;
-                bgWhite.style.opacity = p3Percent * 2;
+                const p3Percent = (scrollPercent - 0.5) / 0.5; // Progress from 50% to 100% scroll
+                bgWhite.style.opacity = p3Percent * 4;
                 bgWhite.style.pointerEvents = p3Percent > 0.8 ? 'auto' : 'none';
                 subText.style.opacity = 1 - (p3Percent * 4);
                 
-                const textScale = Math.max(5 - (p3Percent * 10), 0.6);
-                const textTop = Math.max(50 - (p3Percent * 80), 12);
-                
-                whyText.style.opacity = p3Percent * 2;
-                whyText.style.transform = `scale(${textScale})`;
-                whyText.style.top = `${textTop}%`;
+                // Sustaining "WHY WE EXIST?" in center for approx 250vh (mapped to p3Percent)
+                // 0.0 to 0.4 of p3Percent is the sustain phase
+                let whyOpacity = 0;
+                let whyScale = 5;
+                let whyTop = 50;
+                let imgProgress = 0;
+
+                if (p3Percent <= 0.4) {
+                    // Sustain in center
+                    whyOpacity = Math.min(p3Percent * 5, 1);
+                    whyScale = 5;
+                    whyTop = 50;
+                    imgProgress = 0; // Images hidden
+                } else {
+                    // Move to top and start images
+                    const transitionPhase = (p3Percent - 0.4) / 0.6;
+                    whyOpacity = 1;
+                    whyScale = Math.max(5 - (transitionPhase * 10), 0.6);
+                    whyTop = Math.max(50 - (transitionPhase * 80), 12);
+                    imgProgress = transitionPhase; // This triggers images
+                }
+
+                whyText.style.opacity = whyOpacity;
+                whyText.style.transform = `scale(${whyScale})`;
+                whyText.style.top = `${whyTop}%`;
                 whyText.style.fontSize = "8rem";
 
-                // Change 3: Image Sequence Logic
+                // Image sequence logic tied to imgProgress (only starts after text moves)
                 const images = [
                     document.getElementById('img1'),
                     document.getElementById('img2'),
@@ -440,41 +468,32 @@
                     const start = index * step;
                     const end = (index + 1) * step;
                     
-                    if (p3Percent < start) {
-                        // Minimized on the right
+                    if (imgProgress < start) {
                         img.style.opacity = 0.3;
                         img.style.transform = `scale(0.1) translateX(600px)`;
-                    } else if (p3Percent >= start && p3Percent <= end) {
-                        const localProgress = (p3Percent - start) / step;
-                        
+                    } else if (imgProgress >= start && imgProgress <= end) {
+                        const localProgress = (imgProgress - start) / step;
                         if (localProgress < 0.4) { 
-                            // Expanding from right to center
                             const pop = localProgress / 0.4;
                             img.style.opacity = 1;
                             img.style.transform = `scale(${0.1 + (0.9 * pop)}) translateX(${(1 - pop) * 600}px)`;
                         } else if (localProgress > 0.7) { 
-                            // Shrinking and moving to left
                             const exit = (localProgress - 0.7) / 0.3;
                             img.style.opacity = 0.5;
                             img.style.transform = `scale(${1 - (0.9 * exit)}) translateX(-${exit * 600}px)`;
                         } else { 
-                            // Full size in center
                             img.style.opacity = 1;
                             img.style.transform = `scale(1) translateX(0)`;
                         }
                     } else {
-                        // Stayed minimized on the left
                         img.style.opacity = 0.3;
                         img.style.transform = `scale(0.1) translateX(-600px)`;
                     }
                 });
 
-                if (p3Percent > 0.1) { 
+                if (p3Percent > 0.05) { 
                     navbar.classList.add('nav-black');
                     scrollTag.style.color = "#000";
-                } else { 
-                    navbar.classList.remove('nav-black');
-                    scrollTag.style.color = "#fff";
                 }
             } else { 
                 bgWhite.style.opacity = 0;

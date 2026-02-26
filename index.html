@@ -14,8 +14,8 @@
 
         body {
             background-color: #000;
-            /* Increased height to accommodate the 5-image scroll sequence */
-            height: 800vh;
+            /* Height increased to 600vh to accommodate the new image sequence scroll room */
+            height: 600vh;
             overflow-x: hidden; 
             font-family: 'Segoe UI', sans-serif; 
         }
@@ -32,7 +32,6 @@
             overflow: hidden;
         }
 
-        /* Video Background Container */
         .bg-video-container {
             position: absolute;
             top: 0;
@@ -56,7 +55,6 @@
             filter: brightness(0.5);
         }
 
-        /* Overlay to ensure smooth transition to brown */
         .video-overlay {
             position: absolute;
             top: 0;
@@ -106,26 +104,26 @@
             z-index: 20;
         }
 
-        /* Image Gallery Styles */
+        /* Image sequence styles */
         .image-sequence-container {
-            position: relative;
+            position: absolute;
             width: 100%;
-            height: 60vh;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 100px;
+            z-index: 18;
         }
 
         .scroll-image {
             position: absolute;
-            width: 500px;
-            height: 350px;
+            width: 400px;
+            height: 500px;
             object-fit: cover;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
             opacity: 0;
-            transform: scale(0.2);
+            transform: scale(0.5) translateX(100px);
             transition: transform 0.1s ease-out;
         }
 
@@ -290,10 +288,10 @@
             font-weight: 600; 
             max-width: 450px; 
             line-height: 1.4; 
-            transform-origin: center; 
             font-family: "Segoe UI", sans-serif; 
             text-transform: uppercase;
             transition: color 0.3s ease;
+            text-align: left; /* Fixed to left as per Change 1 */
         }
 
         .scroll-indicator {
@@ -354,13 +352,13 @@
         <div class="bg-brown" id="bgBrown"></div> 
         
         <div class="bg-white-page" id="bgWhite"> 
-            <h2 id="why-text">WHY WE EXIST ?</h2>
+            <h2 id="why-text">WHY WE EXIST ?</h2> 
             <div class="image-sequence-container">
-                <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800" class="scroll-image" alt="Image 1">
-                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800" class="scroll-image" alt="Image 2">
-                <img src="https://images.unsplash.com/photo-1550966842-28c467e4125b?w=800" class="scroll-image" alt="Image 3">
-                <img src="https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?w=800" class="scroll-image" alt="Image 4">
-                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800" class="scroll-image" alt="Image 5">
+                <img src="img1.jpg" class="scroll-image" id="img1">
+                <img src="img2.jpg" class="scroll-image" id="img2">
+                <img src="img3.jpg" class="scroll-image" id="img3">
+                <img src="img4.jpg" class="scroll-image" id="img4">
+                <img src="img5.jpg" class="scroll-image" id="img5">
             </div>
         </div>
         
@@ -427,21 +425,22 @@
             const scrollTag = document.getElementById('scrollTag');
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
-            const images = document.querySelectorAll('.scroll-image');
 
-            // Phase 1: Title and initial intro animations (0% to 30% of total scroll)
-            const p1Percent = Math.min(scrollPercent * 3.33, 1);
+            // --- Section 1: Video to Brown Transition ---
+            const p1Percent = Math.min(scrollPercent * 3, 1); // Accelerated first phase
+
             const titleScale = 1 - (p1Percent * 0.85);
             const titleTop = 50 - (p1Percent * 46.5);
+            const titleLeft = 8; 
+
             title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
-            title.style.left = `8%`;
+            title.style.left = `${titleLeft}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
             title.style.opacity = 1 - p1Percent;
 
-            // Navbar Fade In
-            if (scrollPercent > 0.1) {
-                const navFade = Math.min((scrollPercent - 0.1) * 10, 1);
+            if (scrollPercent > 0.15) {
+                const navFade = Math.min((scrollPercent - 0.15) * 5, 1);
                 navLogo.style.opacity = navFade;
                 navTitleSmall.style.opacity = navFade;
             } else {
@@ -449,87 +448,82 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // Subtext Positioning
+            // --- Change 1: Tagline Movement (No textAlign center) ---
             const subTextLeft = 8 + (p1Percent * 42);
             const subTextBottom = 15 + (p1Percent * 35); 
+            
             subText.style.left = `${subTextLeft}%`;
             subText.style.bottom = `${subTextBottom}%`;
+            // Uses transform for centering mass without changing text alignment
             subText.style.transform = `translate(-${p1Percent * 50}%, ${p1Percent * 50}%)`;
-            subText.style.textAlign = p1Percent > 0.4 ? 'center' : 'left';
+            
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
             
             let subTextScale = 1 + (p1Percent * 1.5);
-            if (scrollPercent > 0.1 && scrollPercent <= 0.3) {
-                const shrinkFactor = (scrollPercent - 0.1) / 0.2;
+            if (scrollPercent > 0.25 && scrollPercent <= 0.5) {
+                const shrinkFactor = (scrollPercent - 0.25) / 0.25;
                 subTextScale = 2.5 - (shrinkFactor * 0.7);
+            } else if (scrollPercent > 0.5) {
+                subTextScale = 1.8;
             }
             subText.style.transform += ` scale(${subTextScale})`;
 
-            // Phase 2: White Page and "WHY WE EXIST?" (Starts at 30%)
-            if (scrollPercent > 0.3) { 
-                const p2Start = 0.3;
-                const p2End = 0.45;
-                const p2Percent = Math.min(Math.max((scrollPercent - p2Start) / (p2End - p2Start), 0), 1);
+            // --- Section 2: Brown to White & Image Sequence ---
+            if (scrollPercent > 0.5) { 
+                const p3Percent = (scrollPercent - 0.5) / 0.5;
+                bgWhite.style.opacity = p3Percent * 2;
+                bgWhite.style.pointerEvents = p3Percent > 0.8 ? 'auto' : 'none';
+                subText.style.opacity = 1 - (p3Percent * 4);
                 
-                bgWhite.style.opacity = p2Percent * 2;
-                bgWhite.style.pointerEvents = p2Percent > 0.8 ? 'auto' : 'none';
-                subText.style.opacity = 1 - (p2Percent * 2.5);
+                // Change 2: WHY WE EXIST moves to center-top
+                const textScale = Math.max(5 - (p3Percent * 10), 0.6);
+                const textTop = Math.max(50 - (p3Percent * 80), 12); // Move to 12% from top
                 
-                // Why Text Scaling and Moving to Top
-                const initialScale = 5;
-                const targetScale = 1.5;
-                const currentScale = initialScale - (p2Percent * (initialScale - targetScale));
-                
-                // Move text from center to top center
-                const topPosition = 50 - (p2Percent * 42); // Moves from 50% to 8% top
-                
-                whyText.style.opacity = p2Percent * 2;
-                whyText.style.transform = `scale(${currentScale})`;
-                whyText.style.top = `${topPosition}%`;
-                whyText.style.fontSize = "4rem"; // Base font size adjusted for scaling
+                whyText.style.opacity = p3Percent * 2;
+                whyText.style.transform = `scale(${textScale})`;
+                whyText.style.top = `${textTop}%`;
+                whyText.style.fontSize = "8rem";
 
-                // Navbar Black Mode Toggle
-                if (p2Percent > 0.5) { 
+                // Image sequence logic
+                const images = [
+                    document.getElementById('img1'),
+                    document.getElementById('img2'),
+                    document.getElementById('img3'),
+                    document.getElementById('img4'),
+                    document.getElementById('img5')
+                ];
+
+                const step = 1 / images.length;
+                images.forEach((img, index) => {
+                    const start = index * step;
+                    const end = (index + 1) * step;
+                    
+                    if (p3Percent >= start && p3Percent <= end) {
+                        const localProgress = (p3Percent - start) / step;
+                        
+                        if (localProgress < 0.4) { // Pop up
+                            const pop = localProgress / 0.4;
+                            img.style.opacity = pop;
+                            img.style.transform = `scale(${0.5 + (0.5 * pop)}) translateX(${100 - (100 * pop)}px)`;
+                        } else if (localProgress > 0.7) { // Move left and minimize
+                            const exit = (localProgress - 0.7) / 0.3;
+                            img.style.opacity = 1 - exit;
+                            img.style.transform = `scale(${1 - (0.3 * exit)}) translateX(-${exit * 200}px)`;
+                        } else { // Stay in center
+                            img.style.opacity = 1;
+                            img.style.transform = `scale(1) translateX(0)`;
+                        }
+                    } else {
+                        img.style.opacity = 0;
+                    }
+                });
+
+                if (p3Percent > 0.1) { 
                     navbar.classList.add('nav-black');
                     scrollTag.style.color = "#000";
                 } else { 
                     navbar.classList.remove('nav-black');
                     scrollTag.style.color = "#fff";
-                }
-
-                // Phase 3: Image Sequence (Starts at 45%)
-                if (scrollPercent > 0.45) {
-                    const imgSectionStart = 0.45;
-                    const imgSectionEnd = 1.0;
-                    const imgScrollTotal = imgSectionEnd - imgSectionStart;
-                    const step = imgScrollTotal / images.length;
-
-                    images.forEach((img, index) => {
-                        const start = imgSectionStart + (index * step);
-                        const end = start + step;
-                        
-                        if (scrollPercent >= start && scrollPercent <= end) {
-                            // Progress within this specific image's scroll zone (0 to 1)
-                            const progress = (scrollPercent - start) / step;
-                            
-                            // Bell curve for opacity (0 -> 1 -> 0)
-                            let opacity = 0;
-                            if (progress < 0.2) opacity = progress * 5;
-                            else if (progress > 0.8) opacity = (1 - progress) * 5;
-                            else opacity = 1;
-
-                            // Scale from 0.2 to 1 and back down
-                            let scale = 0.2 + (Math.sin(progress * Math.PI) * 0.8);
-                            
-                            img.style.opacity = opacity;
-                            img.style.transform = `scale(${scale})`;
-                            img.style.zIndex = 30;
-                        } else {
-                            img.style.opacity = 0;
-                            img.style.transform = `scale(0.2)`;
-                            img.style.zIndex = 25;
-                        }
-                    });
                 }
             } else { 
                 bgWhite.style.opacity = 0;
@@ -538,7 +532,6 @@
                 subText.style.color = "#fff";
                 navbar.classList.remove('nav-black');
                 scrollTag.style.color = "#fff";
-                images.forEach(img => img.style.opacity = 0);
             } 
         });
     </script>

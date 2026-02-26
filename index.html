@@ -97,11 +97,12 @@
             font-weight: 900; 
             text-transform: uppercase; 
             white-space: nowrap; 
-            transform: scale(5) translate(-50%, -50%);
             position: absolute;
             left: 50%;
             z-index: 20;
             font-size: 8rem;
+            /* Using translate to keep it centered horizontally */
+            transform: translate(-50%, -50%) scale(5);
         }
 
         .image-sequence-container {
@@ -398,7 +399,7 @@
             title.style.opacity = 1 - p1Percent;
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
 
-            // Nav Logo timing
+            // Nav Elements timing
             if (p1Percent >= 1) {
                 const navFade = Math.min((scrollPercent - 0.33) * 5, 1);
                 navLogo.style.opacity = navFade;
@@ -423,9 +424,9 @@
             }
             subText.style.transform = `translate(-${p1Percent * 50}%, ${p1Percent * 50}%) scale(${subTextScale})`;
 
-            // --- Section 2: White Page & WHY WE EXIST Sequence ---
+            // --- Section 2: White Page & WHY WE EXIST Sequential Logic ---
             if (scrollPercent > 0.5) { 
-                const p3Percent = (scrollPercent - 0.5) / 0.5; // Progress 0 to 1 for the second half of scroll
+                const p3Percent = (scrollPercent - 0.5) / 0.5; 
                 bgWhite.style.opacity = Math.min(p3Percent * 4, 1);
                 bgWhite.style.pointerEvents = p3Percent > 0.8 ? 'auto' : 'none';
                 subText.style.opacity = 1 - (p3Percent * 4);
@@ -435,26 +436,27 @@
                 let whyTop = 50;
                 let imgProgress = 0;
 
-                // 1. Sustain phase: Appear and hold in center (mapped to 0% to 30% of p3Percent)
-                if (p3Percent <= 0.3) {
+                // 1. Sustain Center (p3: 0.0 - 0.35)
+                if (p3Percent <= 0.35) {
                     whyOpacity = Math.min(p3Percent * 10, 1);
                     whyScale = 5;
                     whyTop = 50;
+                    imgProgress = 0; 
                 } 
-                // 2. Move phase: Move to top center (mapped to 30% to 60% of p3Percent)
-                else if (p3Percent > 0.3 && p3Percent <= 0.6) {
-                    const moveFactor = (p3Percent - 0.3) / 0.3;
+                // 2. Move to Top (p3: 0.35 - 0.65)
+                else if (p3Percent > 0.35 && p3Percent <= 0.65) {
+                    const movePhase = (p3Percent - 0.35) / 0.30;
                     whyOpacity = 1;
-                    whyScale = 5 - (moveFactor * 4.4); // Scales down from 5 to 0.6
-                    whyTop = 50 - (moveFactor * 38);   // Moves from 50% to 12%
+                    whyScale = 5 - (movePhase * 4.2); // Ends at 0.8 scale
+                    whyTop = 50 - (movePhase * 35);   // Ends at 15% top (safe distance from nav)
+                    imgProgress = 0; 
                 } 
-                // 3. Fixed phase: Text stays at top, images sequence starts (mapped to 60% to 100% of p3Percent)
+                // 3. Locked at Top + Images Triggered (p3: 0.65 - 1.0)
                 else {
                     whyOpacity = 1;
-                    whyScale = 0.6;
-                    whyTop = 12;
-                    // Trigger image progress only now
-                    imgProgress = (p3Percent - 0.6) / 0.4;
+                    whyScale = 0.8;
+                    whyTop = 15;
+                    imgProgress = (p3Percent - 0.65) / 0.35;
                 }
 
                 whyText.style.opacity = whyOpacity;

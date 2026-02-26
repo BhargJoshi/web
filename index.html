@@ -14,7 +14,6 @@
 
         body {
             background-color: #000;
-            /* Height increased to 600vh to accommodate the new image sequence scroll room */
             height: 600vh;
             overflow-x: hidden; 
             font-family: 'Segoe UI', sans-serif; 
@@ -87,7 +86,7 @@
             opacity: 0; 
             display: flex; 
             flex-direction: column;
-            justify-content: center; 
+            justify-content: center;
             align-items: center;
             pointer-events: none;
         }
@@ -104,7 +103,6 @@
             z-index: 20;
         }
 
-        /* Image sequence styles */
         .image-sequence-container {
             position: absolute;
             width: 100%;
@@ -113,18 +111,20 @@
             justify-content: center;
             align-items: center;
             z-index: 18;
+            top: 10%; /* Shifted down to avoid title overlap */
         }
 
         .scroll-image {
             position: absolute;
-            width: 400px;
-            height: 500px;
+            width: 350px; /* Adjusted to balance with other elements */
+            height: 450px;
             object-fit: cover;
             border-radius: 10px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.2);
             opacity: 0;
-            transform: scale(0.5) translateX(100px);
-            transition: transform 0.1s ease-out;
+            /* Initial state: minimized on the right */
+            transform: scale(0.1) translateX(600px);
+            transition: transform 0.1s ease-out, opacity 0.2s;
         }
 
         nav {
@@ -166,35 +166,12 @@
             margin-right: 40px; 
         }
 
-        .nav-links li {
-            position: relative;
-        }
-
         .nav-links a {
             text-decoration: none;
             font-weight: 500;
             font-size: 1.1rem; 
             display: inline-block; 
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: currentColor;
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            transform: translateY(-5px);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
         }
 
         .nav-black a { color: #000 !important; }
@@ -208,7 +185,6 @@
             flex-direction: column; 
             gap: 6px; 
             z-index: 1000; 
-            transition: 0.3s;
         }
 
         .menu-toggle div {
@@ -217,10 +193,6 @@
             background-color: white; 
             transition: all 0.4s ease; 
         }
-
-        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); }
-        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); }
-        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); }
 
         .side-menu {
             position: fixed;
@@ -250,16 +222,7 @@
             transition: 0.4s;
         }
 
-        .side-menu .close-link {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px; 
-            color: #d2a679; 
-            margin-bottom: 40px; 
-        }
-
         .side-menu.active a { opacity: 1; transform: translateX(0); }
-        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
 
         .hero-content {
             position: relative;
@@ -277,7 +240,6 @@
             font-weight: 800; 
             letter-spacing: 15px; 
             white-space: nowrap; 
-            transition: color 0.3s ease;
         }
 
         #sub-text {
@@ -288,10 +250,9 @@
             font-weight: 600; 
             max-width: 450px; 
             line-height: 1.4; 
-            font-family: "Segoe UI", sans-serif; 
             text-transform: uppercase;
             transition: color 0.3s ease;
-            text-align: left; /* Fixed to left as per Change 1 */
+            text-align: left;
         }
 
         .scroll-indicator {
@@ -313,7 +274,7 @@
 
     <nav id="navbar">
         <div class="brand-container">
-            <img src="ex.jpg" alt="Logo" class="brand-logo" id="navLogo"> 
+            <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=100" alt="Logo" class="brand-logo" id="navLogo"> 
             <span id="nav-title-small">RESTRO</span>
         </div>
         
@@ -333,18 +294,17 @@
 
     <div class="side-menu" id="sideMenu"> 
         <a href="#" class="close-link" onclick="toggleMenu()">✕ Close Menu</a> 
-        <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a>
-        <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a>
-        <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a>
-        <a href="#" style="transition-delay: 0.4s;" onclick="toggleMenu()">Reservations</a>
-        <a href="#" style="transition-delay: 0.5s;" onclick="toggleMenu()">Contact</a>
+        <a href="#" onclick="toggleMenu()">Home</a>
+        <a href="#" onclick="toggleMenu()">Services</a>
+        <a href="#" onclick="toggleMenu()">About</a>
+        <a href="#" onclick="toggleMenu()">Reservations</a>
+        <a href="#" onclick="toggleMenu()">Contact</a>
     </div>
 
     <div class="scroll-container"> 
         <div class="bg-video-container">
             <video autoplay muted loop playsinline id="bgVideo">
                 <source src="Food Reel - Darío Idoate.mp4" type="video/mp4">
-                Your browser does not support the video tag.
             </video>
             <div class="video-overlay"></div>
         </div>
@@ -354,11 +314,9 @@
         <div class="bg-white-page" id="bgWhite"> 
             <h2 id="why-text">WHY WE EXIST ?</h2> 
             <div class="image-sequence-container">
-                <img src="img1.jpg" class="scroll-image" id="img1">
-                <img src="img2.jpg" class="scroll-image" id="img2">
-                <img src="img3.jpg" class="scroll-image" id="img3">
-                <img src="img4.jpg" class="scroll-image" id="img4">
-                <img src="img5.jpg" class="scroll-image" id="img5">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800" class="scroll-image" id="img1">
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800" class="scroll-image" id="img2">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800" class="scroll-image" id="img3">
             </div>
         </div>
         
@@ -374,12 +332,11 @@
         };
 
         const titleText = "RESTRO";
-        const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
-        
+        const taglineText = "Peak Hours Should Be Your<br>Most Profitable, Not Most Chaotic";
+
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
-            
             function type() {
                 if (i < text.length) {
                     if (text.substring(i, i + 4) === "<br>") {
@@ -426,19 +383,12 @@
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
 
-            // --- Section 1: Video to Brown Transition ---
-            const p1Percent = Math.min(scrollPercent * 3, 1); // Accelerated first phase
-
-            const titleScale = 1 - (p1Percent * 0.85);
-            const titleTop = 50 - (p1Percent * 46.5);
-            const titleLeft = 8; 
-
-            title.style.fontSize = `${12 * titleScale}rem`;
-            title.style.top = `${titleTop}%`;
-            title.style.left = `${titleLeft}%`;
-            title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
+            // --- Section 1: Hero Fade Out ---
+            const p1Percent = Math.min(scrollPercent * 3, 1);
             title.style.opacity = 1 - p1Percent;
+            bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
 
+            // Change 1: Nav Title appears ONLY when Section 2 (Brown) is active
             if (scrollPercent > 0.15) {
                 const navFade = Math.min((scrollPercent - 0.15) * 5, 1);
                 navLogo.style.opacity = navFade;
@@ -448,16 +398,11 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // --- Change 1: Tagline Movement (No textAlign center) ---
+            // Tagline sizing logic
             const subTextLeft = 8 + (p1Percent * 42);
             const subTextBottom = 15 + (p1Percent * 35); 
-            
             subText.style.left = `${subTextLeft}%`;
             subText.style.bottom = `${subTextBottom}%`;
-            // Uses transform for centering mass without changing text alignment
-            subText.style.transform = `translate(-${p1Percent * 50}%, ${p1Percent * 50}%)`;
-            
-            bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
             
             let subTextScale = 1 + (p1Percent * 1.5);
             if (scrollPercent > 0.25 && scrollPercent <= 0.5) {
@@ -466,31 +411,28 @@
             } else if (scrollPercent > 0.5) {
                 subTextScale = 1.8;
             }
-            subText.style.transform += ` scale(${subTextScale})`;
+            subText.style.transform = `translate(-${p1Percent * 50}%, ${p1Percent * 50}%) scale(${subTextScale})`;
 
-            // --- Section 2: Brown to White & Image Sequence ---
+            // --- Section 2: White Page & Image Sequence ---
             if (scrollPercent > 0.5) { 
                 const p3Percent = (scrollPercent - 0.5) / 0.5;
                 bgWhite.style.opacity = p3Percent * 2;
                 bgWhite.style.pointerEvents = p3Percent > 0.8 ? 'auto' : 'none';
                 subText.style.opacity = 1 - (p3Percent * 4);
                 
-                // Change 2: WHY WE EXIST moves to center-top
                 const textScale = Math.max(5 - (p3Percent * 10), 0.6);
-                const textTop = Math.max(50 - (p3Percent * 80), 12); // Move to 12% from top
+                const textTop = Math.max(50 - (p3Percent * 80), 12);
                 
                 whyText.style.opacity = p3Percent * 2;
                 whyText.style.transform = `scale(${textScale})`;
                 whyText.style.top = `${textTop}%`;
                 whyText.style.fontSize = "8rem";
 
-                // Image sequence logic
+                // Change 3: Image Sequence Logic
                 const images = [
                     document.getElementById('img1'),
                     document.getElementById('img2'),
-                    document.getElementById('img3'),
-                    document.getElementById('img4'),
-                    document.getElementById('img5')
+                    document.getElementById('img3')
                 ];
 
                 const step = 1 / images.length;
@@ -498,23 +440,32 @@
                     const start = index * step;
                     const end = (index + 1) * step;
                     
-                    if (p3Percent >= start && p3Percent <= end) {
+                    if (p3Percent < start) {
+                        // Minimized on the right
+                        img.style.opacity = 0.3;
+                        img.style.transform = `scale(0.1) translateX(600px)`;
+                    } else if (p3Percent >= start && p3Percent <= end) {
                         const localProgress = (p3Percent - start) / step;
                         
-                        if (localProgress < 0.4) { // Pop up
+                        if (localProgress < 0.4) { 
+                            // Expanding from right to center
                             const pop = localProgress / 0.4;
-                            img.style.opacity = pop;
-                            img.style.transform = `scale(${0.5 + (0.5 * pop)}) translateX(${100 - (100 * pop)}px)`;
-                        } else if (localProgress > 0.7) { // Move left and minimize
+                            img.style.opacity = 1;
+                            img.style.transform = `scale(${0.1 + (0.9 * pop)}) translateX(${(1 - pop) * 600}px)`;
+                        } else if (localProgress > 0.7) { 
+                            // Shrinking and moving to left
                             const exit = (localProgress - 0.7) / 0.3;
-                            img.style.opacity = 1 - exit;
-                            img.style.transform = `scale(${1 - (0.3 * exit)}) translateX(-${exit * 200}px)`;
-                        } else { // Stay in center
+                            img.style.opacity = 0.5;
+                            img.style.transform = `scale(${1 - (0.9 * exit)}) translateX(-${exit * 600}px)`;
+                        } else { 
+                            // Full size in center
                             img.style.opacity = 1;
                             img.style.transform = `scale(1) translateX(0)`;
                         }
                     } else {
-                        img.style.opacity = 0;
+                        // Stayed minimized on the left
+                        img.style.opacity = 0.3;
+                        img.style.transform = `scale(0.1) translateX(-600px)`;
                     }
                 });
 
@@ -529,7 +480,6 @@
                 bgWhite.style.opacity = 0;
                 whyText.style.opacity = 0;
                 subText.style.opacity = 1;
-                subText.style.color = "#fff";
                 navbar.classList.remove('nav-black');
                 scrollTag.style.color = "#fff";
             } 

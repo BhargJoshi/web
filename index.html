@@ -97,9 +97,9 @@
             font-weight: 900; 
             text-transform: uppercase; 
             white-space: nowrap; 
-            transform: scale(5); 
-            opacity: 0;
+            transform: scale(5) translate(-50%, -50%);
             position: absolute;
+            left: 50%;
             z-index: 20;
         }
 
@@ -111,7 +111,7 @@
             justify-content: center;
             align-items: center;
             z-index: 18;
-            top: 5%; 
+            top: 5%;
         }
 
         .scroll-image {
@@ -333,7 +333,7 @@
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable, Not Most Chaotic";
-
+        
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
@@ -383,23 +383,24 @@
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
 
-            // --- Section 1: Hero to Brown & Title Movement ---
+            // --- Section 1: Hero to Top-Left Movement ---
             const p1Percent = Math.min(scrollPercent * 3, 1);
             
-            // Movement logic restored for main title
+            // Move title to top left
             const titleScale = 1 - (p1Percent * 0.85);
             const titleTop = 50 - (p1Percent * 46.5);
+            const titleLeft = 8; // Keep left alignment consistent
+            
             title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
-            title.style.left = `8%`;
+            title.style.left = `${titleLeft}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
             title.style.opacity = 1 - p1Percent;
-
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
 
-            // Change 1: Sticky Nav Title fade in
-            if (scrollPercent > 0.15) {
-                const navFade = Math.min((scrollPercent - 0.15) * 5, 1);
+            // Logic: Nav Logo/Title only appears after main RESTRO is gone (p1Percent reaches 1)
+            if (p1Percent >= 1) {
+                const navFade = Math.min((scrollPercent - 0.33) * 5, 1);
                 navLogo.style.opacity = navFade;
                 navTitleSmall.style.opacity = navFade;
             } else {
@@ -412,8 +413,8 @@
             const subTextBottom = 15 + (p1Percent * 35); 
             subText.style.left = `${subTextLeft}%`;
             subText.style.bottom = `${subTextBottom}%`;
-            
             let subTextScale = 1 + (p1Percent * 1.5);
+            
             if (scrollPercent > 0.25 && scrollPercent <= 0.5) {
                 const shrinkFactor = (scrollPercent - 0.25) / 0.25;
                 subTextScale = 2.5 - (shrinkFactor * 0.7);
@@ -424,39 +425,40 @@
 
             // --- Section 2: White Page & Timing Logic ---
             if (scrollPercent > 0.5) { 
-                const p3Percent = (scrollPercent - 0.5) / 0.5; // Progress from 50% to 100% scroll
-                bgWhite.style.opacity = p3Percent * 4;
+                const p3Percent = (scrollPercent - 0.5) / 0.5;
+                bgWhite.style.opacity = Math.min(p3Percent * 4, 1);
                 bgWhite.style.pointerEvents = p3Percent > 0.8 ? 'auto' : 'none';
                 subText.style.opacity = 1 - (p3Percent * 4);
-                
-                // Sustaining "WHY WE EXIST?" in center for approx 250vh (mapped to p3Percent)
-                // 0.0 to 0.4 of p3Percent is the sustain phase
+
                 let whyOpacity = 0;
                 let whyScale = 5;
                 let whyTop = 50;
                 let imgProgress = 0;
 
-                if (p3Percent <= 0.4) {
-                    // Sustain in center
-                    whyOpacity = Math.min(p3Percent * 5, 1);
+                // Sustain center phase (approx 250vh context)
+                if (p3Percent <= 0.45) {
+                    whyOpacity = Math.min(p3Percent * 10, 1);
                     whyScale = 5;
                     whyTop = 50;
-                    imgProgress = 0; // Images hidden
+                    imgProgress = 0; 
                 } else {
-                    // Move to top and start images
-                    const transitionPhase = (p3Percent - 0.4) / 0.6;
+                    // Move to top center
+                    const transitionPhase = (p3Percent - 0.45) / 0.55;
                     whyOpacity = 1;
                     whyScale = Math.max(5 - (transitionPhase * 10), 0.6);
                     whyTop = Math.max(50 - (transitionPhase * 80), 12);
-                    imgProgress = transitionPhase; // This triggers images
+                    
+                    // Only start images after text is at top position
+                    if (transitionPhase > 0.8) {
+                        imgProgress = (transitionPhase - 0.8) / 0.2;
+                    }
                 }
 
                 whyText.style.opacity = whyOpacity;
-                whyText.style.transform = `scale(${whyScale})`;
+                whyText.style.transform = `scale(${whyScale}) translate(-50%, -50%)`;
                 whyText.style.top = `${whyTop}%`;
                 whyText.style.fontSize = "8rem";
 
-                // Image sequence logic tied to imgProgress (only starts after text moves)
                 const images = [
                     document.getElementById('img1'),
                     document.getElementById('img2'),
@@ -469,7 +471,7 @@
                     const end = (index + 1) * step;
                     
                     if (imgProgress < start) {
-                        img.style.opacity = 0.3;
+                        img.style.opacity = 0;
                         img.style.transform = `scale(0.1) translateX(600px)`;
                     } else if (imgProgress >= start && imgProgress <= end) {
                         const localProgress = (imgProgress - start) / step;

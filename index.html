@@ -101,6 +101,7 @@
             position: absolute;
             left: 50%;
             z-index: 20;
+            font-size: 8rem;
         }
 
         .image-sequence-container {
@@ -386,10 +387,9 @@
             // --- Section 1: Hero to Top-Left Movement ---
             const p1Percent = Math.min(scrollPercent * 3, 1);
             
-            // Move title to top left
             const titleScale = 1 - (p1Percent * 0.85);
             const titleTop = 50 - (p1Percent * 46.5);
-            const titleLeft = 8; // Keep left alignment consistent
+            const titleLeft = 8; 
             
             title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
@@ -398,7 +398,7 @@
             title.style.opacity = 1 - p1Percent;
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
 
-            // Logic: Nav Logo/Title only appears after main RESTRO is gone (p1Percent reaches 1)
+            // Nav Logo timing
             if (p1Percent >= 1) {
                 const navFade = Math.min((scrollPercent - 0.33) * 5, 1);
                 navLogo.style.opacity = navFade;
@@ -423,9 +423,9 @@
             }
             subText.style.transform = `translate(-${p1Percent * 50}%, ${p1Percent * 50}%) scale(${subTextScale})`;
 
-            // --- Section 2: White Page & Timing Logic ---
+            // --- Section 2: White Page & WHY WE EXIST Sequence ---
             if (scrollPercent > 0.5) { 
-                const p3Percent = (scrollPercent - 0.5) / 0.5;
+                const p3Percent = (scrollPercent - 0.5) / 0.5; // Progress 0 to 1 for the second half of scroll
                 bgWhite.style.opacity = Math.min(p3Percent * 4, 1);
                 bgWhite.style.pointerEvents = p3Percent > 0.8 ? 'auto' : 'none';
                 subText.style.opacity = 1 - (p3Percent * 4);
@@ -435,30 +435,33 @@
                 let whyTop = 50;
                 let imgProgress = 0;
 
-                // Sustain center phase (approx 250vh context)
-                if (p3Percent <= 0.45) {
+                // 1. Sustain phase: Appear and hold in center (mapped to 0% to 30% of p3Percent)
+                if (p3Percent <= 0.3) {
                     whyOpacity = Math.min(p3Percent * 10, 1);
                     whyScale = 5;
                     whyTop = 50;
-                    imgProgress = 0; 
-                } else {
-                    // Move to top center
-                    const transitionPhase = (p3Percent - 0.45) / 0.55;
+                } 
+                // 2. Move phase: Move to top center (mapped to 30% to 60% of p3Percent)
+                else if (p3Percent > 0.3 && p3Percent <= 0.6) {
+                    const moveFactor = (p3Percent - 0.3) / 0.3;
                     whyOpacity = 1;
-                    whyScale = Math.max(5 - (transitionPhase * 10), 0.6);
-                    whyTop = Math.max(50 - (transitionPhase * 80), 12);
-                    
-                    // Only start images after text is at top position
-                    if (transitionPhase > 0.8) {
-                        imgProgress = (transitionPhase - 0.8) / 0.2;
-                    }
+                    whyScale = 5 - (moveFactor * 4.4); // Scales down from 5 to 0.6
+                    whyTop = 50 - (moveFactor * 38);   // Moves from 50% to 12%
+                } 
+                // 3. Fixed phase: Text stays at top, images sequence starts (mapped to 60% to 100% of p3Percent)
+                else {
+                    whyOpacity = 1;
+                    whyScale = 0.6;
+                    whyTop = 12;
+                    // Trigger image progress only now
+                    imgProgress = (p3Percent - 0.6) / 0.4;
                 }
 
                 whyText.style.opacity = whyOpacity;
-                whyText.style.transform = `scale(${whyScale}) translate(-50%, -50%)`;
+                whyText.style.transform = `translate(-50%, -50%) scale(${whyScale})`;
                 whyText.style.top = `${whyTop}%`;
-                whyText.style.fontSize = "8rem";
 
+                // Image sequence logic
                 const images = [
                     document.getElementById('img1'),
                     document.getElementById('img2'),

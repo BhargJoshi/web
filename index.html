@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +15,8 @@
 
         body {
             background-color: #000;
-            height: 800vh;
+            /* Change 2: Reduced height to 350vh to make the brown section pass twice as fast */
+            height: 350vh;
             overflow-x: hidden; 
             font-family: 'Segoe UI', sans-serif; 
         }
@@ -31,6 +33,7 @@
             overflow: hidden;
         }
 
+        /* Video Background Container */
         .bg-video-container {
             position: absolute;
             top: 0;
@@ -51,9 +54,11 @@
             left: 50%;
             transform: translate(-50%, -50%);
             object-fit: cover;
+            /* Change 2: Lowered brightness for better text visibility */
             filter: brightness(0.5);
         }
 
+        /* Overlay to ensure smooth transition to brown */
         .video-overlay {
             position: absolute;
             top: 0;
@@ -85,8 +90,7 @@
             z-index: 15; 
             opacity: 0; 
             display: flex; 
-            flex-direction: column;
-            justify-content: center;
+            justify-content: center; 
             align-items: center;
             pointer-events: none;
         }
@@ -99,31 +103,6 @@
             white-space: nowrap; 
             transform: scale(5); 
             opacity: 0;
-            position: absolute;
-            z-index: 20;
-            transition: top 0.1s ease-out, transform 0.1s ease-out;
-        }
-
-        .image-sequence-container {
-            position: relative;
-            width: 100%;
-            height: 60vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 100px;
-        }
-
-        .scroll-image {
-            position: absolute;
-            width: 500px;
-            height: 350px;
-            object-fit: cover;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            opacity: 0;
-            transform: scale(0.2);
-            transition: transform 0.1s ease-out;
         }
 
         nav {
@@ -165,12 +144,36 @@
             margin-right: 40px; 
         }
 
+        .nav-links li {
+            position: relative;
+        }
+
+        /* Change 3: Navbar Hover Effects */
         .nav-links a {
             text-decoration: none;
             font-weight: 500;
             font-size: 1.1rem; 
             display: inline-block; 
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            transform: translateY(-5px);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         .nav-black a { color: #000 !important; }
@@ -194,6 +197,10 @@
             transition: all 0.4s ease; 
         }
 
+        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); }
+        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); }
+        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); }
+
         .side-menu {
             position: fixed;
             top: 0;
@@ -211,6 +218,27 @@
         }
 
         .side-menu.active { right: 0; }
+
+        .side-menu a {
+            text-decoration: none;
+            font-size: 2.2rem;
+            margin: 15px 0; 
+            font-weight: 700; 
+            opacity: 0; 
+            transform: translateX(50px); 
+            transition: 0.4s;
+        }
+
+        .side-menu .close-link {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px; 
+            color: #d2a679; 
+            margin-bottom: 40px; 
+        }
+
+        .side-menu.active a { opacity: 1; transform: translateX(0); }
+        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
 
         .hero-content {
             position: relative;
@@ -242,8 +270,7 @@
             transform-origin: center; 
             font-family: "Segoe UI", sans-serif; 
             text-transform: uppercase;
-            /* Added transition for smooth text alignment change */
-            transition: color 0.3s ease, text-align 0.5s ease;
+            transition: color 0.3s ease;
         }
 
         .scroll-indicator {
@@ -284,18 +311,19 @@
     </nav>
 
     <div class="side-menu" id="sideMenu"> 
-        <a href="#" class="close-link" onclick="toggleMenu()">✕ Close Menu</a> 
-        <a href="#" onclick="toggleMenu()">Home</a>
-        <a href="#" onclick="toggleMenu()">Services</a>
-        <a href="#" onclick="toggleMenu()">About</a>
-        <a href="#" onclick="toggleMenu()">Reservations</a>
-        <a href="#" onclick="toggleMenu()">Contact</a>
+        <a href="#" class="close-link" onclick="toggleMenu()">âœ• Close Menu</a> 
+        <a href="#" style="transition-delay: 0.1s;" onclick="toggleMenu()">Home</a>
+        <a href="#" style="transition-delay: 0.2s;" onclick="toggleMenu()">Services</a>
+        <a href="#" style="transition-delay: 0.3s;" onclick="toggleMenu()">About</a>
+        <a href="#" style="transition-delay: 0.4s;" onclick="toggleMenu()">Reservations</a>
+        <a href="#" style="transition-delay: 0.5s;" onclick="toggleMenu()">Contact</a>
     </div>
 
     <div class="scroll-container"> 
         <div class="bg-video-container">
             <video autoplay muted loop playsinline id="bgVideo">
-                <source src="Food Reel - Darío Idoate.mp4" type="video/mp4">
+                <source src="Food Reel - DarÃ­o Idoate.mp4" type="video/mp4">
+                Your browser does not support the video tag.
             </video>
             <div class="video-overlay"></div>
         </div>
@@ -303,14 +331,7 @@
         <div class="bg-brown" id="bgBrown"></div> 
         
         <div class="bg-white-page" id="bgWhite"> 
-            <h2 id="why-text">WHY WE EXIST ?</h2>
-            <div class="image-sequence-container">
-                <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800" class="scroll-image" alt="Image 1">
-                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800" class="scroll-image" alt="Image 2">
-                <img src="https://images.unsplash.com/photo-1550966842-28c467e4125b?w=800" class="scroll-image" alt="Image 3">
-                <img src="https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?w=800" class="scroll-image" alt="Image 4">
-                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800" class="scroll-image" alt="Image 5">
-            </div>
+            <h2 id="why-text">WHY WE EXIST ?</h2> 
         </div>
         
         <div class="hero-content" id="heroContent"> 
@@ -376,20 +397,21 @@
             const scrollTag = document.getElementById('scrollTag');
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
-            const images = document.querySelectorAll('.scroll-image');
 
-            // Phase 1
-            const p1Percent = Math.min(scrollPercent * 3.33, 1);
+            const p1Percent = Math.min(scrollPercent * 4, 1);
+
             const titleScale = 1 - (p1Percent * 0.85);
             const titleTop = 50 - (p1Percent * 46.5);
+            const titleLeft = 8; 
+
             title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
-            title.style.left = `8%`;
+            title.style.left = `${titleLeft}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
             title.style.opacity = 1 - p1Percent;
 
-            if (scrollPercent > 0.1) {
-                const navFade = Math.min((scrollPercent - 0.1) * 10, 1);
+            if (scrollPercent > 0.25) {
+                const navFade = Math.min((scrollPercent - 0.25) * 5, 1);
                 navLogo.style.opacity = navFade;
                 navTitleSmall.style.opacity = navFade;
             } else {
@@ -399,73 +421,37 @@
 
             const subTextLeft = 8 + (p1Percent * 42);
             const subTextBottom = 15 + (p1Percent * 35); 
+            
             subText.style.left = `${subTextLeft}%`;
             subText.style.bottom = `${subTextBottom}%`;
             subText.style.transform = `translate(-${p1Percent * 50}%, ${p1Percent * 50}%)`;
-            
-            // Text alignment logic with transition defined in CSS
             subText.style.textAlign = p1Percent > 0.4 ? 'center' : 'left';
-            
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
             
             let subTextScale = 1 + (p1Percent * 1.5);
-            if (scrollPercent > 0.1 && scrollPercent <= 0.3) {
-                const shrinkFactor = (scrollPercent - 0.1) / 0.2;
+            if (scrollPercent > 0.25 && scrollPercent <= 0.75) {
+                const shrinkFactor = (scrollPercent - 0.25) / 0.5;
                 subTextScale = 2.5 - (shrinkFactor * 0.7);
             }
             subText.style.transform += ` scale(${subTextScale})`;
 
-            // Phase 2
-            if (scrollPercent > 0.3) { 
-                const p2Start = 0.3;
-                const p2End = 0.45;
-                const p2Percent = Math.min(Math.max((scrollPercent - p2Start) / (p2End - p2Start), 0), 1);
-                bgWhite.style.opacity = p2Percent * 2;
-                bgWhite.style.pointerEvents = p2Percent > 0.8 ? 'auto' : 'none';
-                subText.style.opacity = 1 - (p2Percent * 2.5);
+            if (scrollPercent > 0.75) { 
+                const p3Percent = (scrollPercent - 0.75) / 0.25;
+                bgWhite.style.opacity = p3Percent * 2;
+                bgWhite.style.pointerEvents = p3Percent > 0.8 ? 'auto' : 'none';
+                subText.style.opacity = 1 - (p3Percent * 2.5);
                 
-                const initialScale = 5;
-                const targetScale = 1.5;
-                const currentScale = initialScale - (p2Percent * (initialScale - targetScale));
-                
-                // Adjusted topPosition from 8% to 15% to clear the navbar/hero area
-                const topPosition = 50 - (p2Percent * 35); 
-                
-                whyText.style.opacity = p2Percent * 2;
-                whyText.style.transform = `scale(${currentScale})`;
-                whyText.style.top = `${topPosition}%`;
-                whyText.style.fontSize = "4rem";
+                const textScale = 5 - (p3Percent * 4);
+                whyText.style.opacity = p3Percent * 2;
+                whyText.style.transform = `scale(${Math.max(textScale, 1)})`;
+                whyText.style.fontSize = "8rem";
 
-                if (p2Percent > 0.5) { 
+                if (p3Percent > 0.5) { 
                     navbar.classList.add('nav-black');
                     scrollTag.style.color = "#000";
                 } else { 
                     navbar.classList.remove('nav-black');
                     scrollTag.style.color = "#fff";
-                }
-
-                // Phase 3
-                if (scrollPercent > 0.45) {
-                    const imgSectionStart = 0.45;
-                    const imgSectionEnd = 1.0;
-                    const imgScrollTotal = imgSectionEnd - imgSectionStart;
-                    const step = imgScrollTotal / images.length;
-                    images.forEach((img, index) => {
-                        const start = imgSectionStart + (index * step);
-                        const end = start + step;
-                        if (scrollPercent >= start && scrollPercent <= end) {
-                            const progress = (scrollPercent - start) / step;
-                            let opacity = progress < 0.2 ? progress * 5 : (progress > 0.8 ? (1 - progress) * 5 : 1);
-                            let scale = 0.2 + (Math.sin(progress * Math.PI) * 0.8);
-                            img.style.opacity = opacity;
-                            img.style.transform = `scale(${scale})`;
-                            img.style.zIndex = 30;
-                        } else {
-                            img.style.opacity = 0;
-                            img.style.transform = `scale(0.2)`;
-                            img.style.zIndex = 25;
-                        }
-                    });
                 }
             } else { 
                 bgWhite.style.opacity = 0;
@@ -474,7 +460,6 @@
                 subText.style.color = "#fff";
                 navbar.classList.remove('nav-black');
                 scrollTag.style.color = "#fff";
-                images.forEach(img => img.style.opacity = 0);
             } 
         });
     </script>

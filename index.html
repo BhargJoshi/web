@@ -111,7 +111,6 @@
             align-items: center; 
             padding: 20px 4%; 
             z-index: 100;
-            /* Previous Change: Blurred Background */
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
@@ -328,7 +327,7 @@
 
     <div class="scroll-container"> 
         <div class="bg-video-container">
-            <video autoplay muted loop playsinline preload="auto" id="bgVideo">
+            <video autoplay muted loop playsinline id="bgVideo">
                 <source src="Food Reel - Darío Idoate.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -379,13 +378,22 @@
         window.addEventListener('load', () => {
             window.scrollTo(0, 0);
             
-            // New Change: Robust video loading
+            // Reinforced Video Fix: Muted Autoplay Force
             const video = document.getElementById('bgVideo');
             if (video) {
-                video.muted = true; // Double-ensure muted for autoplay
-                video.play().catch(error => {
-                    console.log("Autoplay prevented. Interaction may be required.", error);
-                });
+                video.muted = true;
+                video.defaultMuted = true;
+                
+                // Repeatedly try to play until successful (handles mobile battery saver/strict policies)
+                const playVideo = () => {
+                    video.play().then(() => {
+                        console.log("Video playing successfully");
+                    }).catch(() => {
+                        // Retry on next frame
+                        requestAnimationFrame(playVideo);
+                    });
+                };
+                playVideo();
             }
 
             typeWriter("main-title", titleText, 150, () => {
@@ -422,7 +430,6 @@
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
             title.style.opacity = 1 - p1Percent;
 
-            // Previous Change: Logo appears only after title rises above navbar
             if (scrollPercent > 0.33) {
                 const navFade = Math.min((scrollPercent - 0.33) * 5, 1);
                 navLogo.style.opacity = navFade;

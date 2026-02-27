@@ -112,7 +112,7 @@
             padding: 20px 4%; 
             z-index: 100;
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px); 
             -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             transition: background 0.3s, border-bottom 0.3s;
@@ -128,7 +128,7 @@
             height: 35px;
             width: auto;
             opacity: 0; 
-            transition: filter 0.3s ease, opacity 0.3s ease; 
+            transition: filter 0.3s ease, opacity 0.3s ease;
         }
 
         #nav-title-small {
@@ -255,8 +255,8 @@
 
         #main-title {
             position: absolute;
-            top: 50%;
-            left: 8%; 
+            top: 25%; /* Change 1: Moved up from 50% */
+            left: 4%; /* Change 1: Moved left from 8% */
             transform: translateY(-50%); 
             font-size: 12rem; 
             font-weight: 800; 
@@ -268,7 +268,7 @@
         #sub-text {
             position: absolute;
             bottom: 15%;
-            left: 8%; 
+            left: 20%; /* Change 2: Shifted right from 8% */
             font-size: 1.4rem; 
             font-weight: 600; 
             max-width: 450px; 
@@ -339,7 +339,7 @@
         <div class="bg-white-page" id="bgWhite"> 
             <h2 id="why-text">WHY WE EXIST ?</h2> 
         </div>
-       
+
         <div class="hero-content" id="heroContent"> 
             <h1 id="main-title"></h1>
             <p id="sub-text"></p> 
@@ -353,7 +353,7 @@
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
-        
+
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
@@ -378,18 +378,15 @@
         window.addEventListener('load', () => {
             window.scrollTo(0, 0);
             
-            // Reinforced Video Fix: Muted Autoplay Force
             const video = document.getElementById('bgVideo');
             if (video) {
                 video.muted = true;
                 video.defaultMuted = true;
                 
-                // Repeatedly try to play until successful (handles mobile battery saver/strict policies)
                 const playVideo = () => {
                     video.play().then(() => {
                         console.log("Video playing successfully");
                     }).catch(() => {
-                        // Retry on next frame
                         requestAnimationFrame(playVideo);
                     });
                 };
@@ -403,7 +400,7 @@
 
         function toggleMenu() {
             document.getElementById('sideMenu').classList.toggle('active');
-            document.getElementById('menuToggle').classList.toggle('open'); 
+            document.getElementById('menuToggle').classList.toggle('open');
         }
 
         window.addEventListener('scroll', () => { 
@@ -423,8 +420,9 @@
 
             const p1Percent = Math.min(scrollPercent * 3, 1);
             const titleScale = 1 - (p1Percent * 0.85);
-            const titleTop = 50 - (p1Percent * 46.5);
             
+            // Adjusting titleTop to start from the new 25% position and end near top
+            const titleTop = 25 - (p1Percent * 21.5);
             title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
@@ -439,7 +437,8 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            const subTextLeft = 8 + (p1Percent * 42);
+            // Adjust subText horizontal logic to start from new base 20%
+            const subTextLeft = 20 + (p1Percent * 30);
             const subTextBottom = 15 + (p1Percent * 35); 
             subText.style.left = `${subTextLeft}%`;
             subText.style.bottom = `${subTextBottom}%`;
@@ -455,7 +454,6 @@
 
             if (scrollPercent > 0.6) { 
                 const p3Percent = (scrollPercent - 0.6) / 0.4;
-                
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
                 bgWhite.style.pointerEvents = p3Percent > 0.8 ? 'auto' : 'none';
                 subText.style.opacity = 1 - (p3Percent * 5);

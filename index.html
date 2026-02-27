@@ -253,10 +253,11 @@
             z-index: 20; 
         }
 
+        /* CHANGE 1: Positioning moved to top-left */
         #main-title {
             position: absolute;
-            top: 25%; /* Change 1: Moved up from 50% */
-            left: 4%; /* Change 1: Moved left from 8% */
+            top: 25%; /* Reduced from 50% */
+            left: 4%; /* Reduced from 8% */
             transform: translateY(-50%); 
             font-size: 12rem; 
             font-weight: 800; 
@@ -265,10 +266,11 @@
             transition: color 0.3s ease;
         }
 
+        /* CHANGE 2: Positioning shifted to the absolute right */
         #sub-text {
             position: absolute;
             bottom: 15%;
-            left: 20%; /* Change 2: Shifted right from 8% */
+            right: 8%; /* Changed from left: 8% to right: 8% */
             font-size: 1.4rem; 
             font-weight: 600; 
             max-width: 450px; 
@@ -277,6 +279,7 @@
             font-family: "Segoe UI", sans-serif; 
             text-transform: uppercase;
             transition: color 0.3s ease;
+            text-align: right; /* Adjusted text alignment for visual balance */
         }
 
         .scroll-indicator {
@@ -339,7 +342,7 @@
         <div class="bg-white-page" id="bgWhite"> 
             <h2 id="why-text">WHY WE EXIST ?</h2> 
         </div>
-
+       
         <div class="hero-content" id="heroContent"> 
             <h1 id="main-title"></h1>
             <p id="sub-text"></p> 
@@ -353,7 +356,7 @@
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
-
+        
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
@@ -421,8 +424,11 @@
             const p1Percent = Math.min(scrollPercent * 3, 1);
             const titleScale = 1 - (p1Percent * 0.85);
             
-            // Adjusting titleTop to start from the new 25% position and end near top
-            const titleTop = 25 - (p1Percent * 21.5);
+            // Logic for Main Title Scroll
+            const titleTopBase = 25; // Matching the new CSS top value
+            const titleTopTarget = 3.5; // Final position in navbar
+            const titleTop = titleTopBase - (p1Percent * (titleTopBase - titleTopTarget));
+            
             title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
@@ -437,12 +443,13 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // Adjust subText horizontal logic to start from new base 20%
-            const subTextLeft = 20 + (p1Percent * 30);
+            // Sub-text Scroll Animation
+            // Calculating shift for Right-aligned element
+            const subTextRight = 8 + (p1Percent * 42); 
             const subTextBottom = 15 + (p1Percent * 35); 
-            subText.style.left = `${subTextLeft}%`;
+            subText.style.right = `${subTextRight}%`;
             subText.style.bottom = `${subTextBottom}%`;
-            subText.style.textAlign = p1Percent > 0.4 ? 'center' : 'left';
+            subText.style.textAlign = p1Percent > 0.4 ? 'center' : 'right';
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
             
             let subTextScale = 1 + (p1Percent * 1.5);
@@ -450,7 +457,8 @@
                 const shrinkFactor = (scrollPercent - 0.2) / 0.4;
                 subTextScale = 2.5 - (shrinkFactor * 0.7);
             }
-            subText.style.transform = `translate(-${p1Percent * 50}%, ${p1Percent * 50}%) scale(${subTextScale})`;
+            // Adjusted translate for right-side origin
+            subText.style.transform = `translate(${p1Percent * 50}%, ${p1Percent * 50}%) scale(${subTextScale})`;
 
             if (scrollPercent > 0.6) { 
                 const p3Percent = (scrollPercent - 0.6) / 0.4;

@@ -111,12 +111,12 @@
             align-items: center; 
             padding: 20px 4%; 
             z-index: 100;
-            /* Change 1: Blurred Background */
+            /* Change 1: Added Blur Background */
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background 0.3s ease;
+            transition: background 0.3s, border-bottom 0.3s;
         }
 
         .brand-container {
@@ -153,9 +153,8 @@
 
         .nav-links a {
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
             font-size: 1.1rem; 
-            color: #ffffff;
             display: inline-block; 
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s;
         }
@@ -179,9 +178,12 @@
             width: 100%;
         }
 
+        /* Change 1: Updated Black Nav State */
         .nav-black {
-            background: rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
+
         .nav-black a { color: #000 !important; }
         .nav-black .menu-toggle div { background-color: #000 !important; }
         .nav-black .brand-logo { filter: invert(1); }
@@ -353,7 +355,7 @@
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
-
+        
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
@@ -414,10 +416,9 @@
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
             title.style.opacity = 1 - p1Percent;
 
-            // Change 2: Logo reveal logic
-            // Logo starts appearing only when main title is significantly high (p1Percent > 0.95)
-            if (p1Percent > 0.95) {
-                const navFade = Math.min((p1Percent - 0.95) * 20, 1);
+            // Change 2: Small RESTRO logo appears only AFTER main RESTRO text rises above navbar (roughly 33% of scroll)
+            if (scrollPercent > 0.33) {
+                const navFade = Math.min((scrollPercent - 0.33) * 5, 1);
                 navLogo.style.opacity = navFade;
                 navTitleSmall.style.opacity = navFade;
             } else {

@@ -98,7 +98,6 @@
             white-space: nowrap; 
             opacity: 0;
             position: absolute;
-            /* Using transform-origin to ensure scaling happens from the center */
             transform-origin: center center;
             will-change: transform, opacity;
         }
@@ -110,8 +109,11 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            padding: 30px 4%; 
+            padding: 20px 4%; 
             z-index: 100;
+            /* Updated to Blue Background */
+            background-color: #0047AB; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         .brand-container {
@@ -124,7 +126,7 @@
             height: 35px;
             width: auto;
             opacity: 0; 
-            transition: filter 0.3s ease; 
+            transition: filter 0.3s ease, opacity 0.3s ease; 
         }
 
         #nav-title-small {
@@ -132,7 +134,7 @@
             font-weight: 800;
             letter-spacing: 2px;
             opacity: 0;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, opacity 0.3s ease;
         }
 
         .nav-links {
@@ -148,8 +150,9 @@
 
         .nav-links a {
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 1.1rem; 
+            color: #ffffff;
             display: inline-block; 
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s;
         }
@@ -161,18 +164,24 @@
             height: 2px;
             bottom: -5px;
             left: 0;
-            background-color: currentColor;
+            background-color: #ffffff;
             transition: width 0.3s ease;
         }
 
         .nav-links a:hover {
             transform: translateY(-5px);
+            color: #ffcc00; /* Added a highlight color for visibility */
         }
 
         .nav-links a:hover::after {
             width: 100%;
+            background-color: #ffcc00;
         }
 
+        /* Black theme overrides for white background phase */
+        .nav-black {
+            background-color: #f0f0f0; /* Light background for the white page section */
+        }
         .nav-black a { color: #000 !important; }
         .nav-black .menu-toggle div { background-color: #000 !important; }
         .nav-black .brand-logo { filter: invert(1); }
@@ -330,7 +339,7 @@
         <div class="bg-white-page" id="bgWhite"> 
             <h2 id="why-text">WHY WE EXIST ?</h2> 
         </div>
-        
+       
         <div class="hero-content" id="heroContent"> 
             <h1 id="main-title"></h1>
             <p id="sub-text"></p> 
@@ -376,7 +385,7 @@
         });
 
         function toggleMenu() {
-            document.getElementById('sideMenu').classList.toggle('active'); 
+            document.getElementById('sideMenu').classList.toggle('active');
             document.getElementById('menuToggle').classList.toggle('open'); 
         }
 
@@ -405,8 +414,10 @@
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
             title.style.opacity = 1 - p1Percent;
 
-            if (scrollPercent > 0.15) {
-                const navFade = Math.min((scrollPercent - 0.15) * 5, 1);
+            // Updated Logo Logic: Only show when main title rises above navbar (p1Percent near 1)
+            // titleTop is 50 at start and ~3.5 when fully scrolled. Navbar is at 0.
+            if (p1Percent > 0.9) {
+                const navFade = Math.min((p1Percent - 0.9) * 10, 1);
                 navLogo.style.opacity = navFade;
                 navTitleSmall.style.opacity = navFade;
             } else {
@@ -430,40 +441,30 @@
 
             // --- Unified "WHY WE EXIST ?" Logic ---
             if (scrollPercent > 0.6) { 
-                const p3Percent = (scrollPercent - 0.6) / 0.4; // Local 0 to 1 for this section
+                const p3Percent = (scrollPercent - 0.6) / 0.4;
                 
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
                 bgWhite.style.pointerEvents = p3Percent > 0.8 ? 'auto' : 'none';
                 subText.style.opacity = 1 - (p3Percent * 5);
-                
                 whyText.style.opacity = Math.min(p3Percent * 3, 1);
                 whyText.style.fontSize = "8rem";
 
-                // Animation Mapping:
-                // 0.0 -> 0.3 : Scale down to center
-                // 0.3 -> 0.7 : Sustain at center (2 scrolls equivalent)
-                // 0.7 -> 1.0 : Slide to top
-                
-                let currentY = 0; // Default center offset
+                let currentY = 0;
                 let currentScale = 1;
 
                 if (p3Percent < 0.3) {
-                    // Scaling phase
                     const localScaleFactor = p3Percent / 0.3;
                     currentScale = 5 - (localScaleFactor * 4); 
                     currentY = 0;
                 } else if (p3Percent >= 0.3 && p3Percent < 0.7) {
-                    // Sustain phase
                     currentScale = 1;
                     currentY = 0;
                 } else {
-                    // Slide up phase
                     const slideFactor = (p3Percent - 0.7) / 0.3;
                     currentScale = 1;
-                    currentY = slideFactor * -35; // Moves it up to 15% from top
+                    currentY = slideFactor * -35; 
                 }
 
-                // Apply both animations as a single transform on the same object
                 whyText.style.transform = `translate(-50%, calc(-50% + ${currentY}vh)) scale(${currentScale})`;
                 whyText.style.left = "50%";
                 whyText.style.top = "50%";

@@ -19,6 +19,14 @@
             font-family: 'Segoe UI', sans-serif; 
         }
 
+        /* If you have the font file, define it here:
+        @font-face {
+            font-family: 'Kollektif';
+            src: url('Kollektif-Bold.ttf') format('truetype');
+            font-weight: bold;
+        } 
+        */
+
         .scroll-container {
             position: fixed;
             top: 0;
@@ -253,33 +261,32 @@
             z-index: 20; 
         }
 
-        /* CHANGE 1: Positioning moved to top-left */
         #main-title {
             position: absolute;
-            top: 25%; /* Reduced from 50% */
-            left: 4%; /* Reduced from 8% */
+            top: 25%;
+            left: 4%;
             transform: translateY(-50%); 
-            font-size: 12rem; 
+            font-size: 12rem;
             font-weight: 800; 
             letter-spacing: 15px; 
             white-space: nowrap; 
             transition: color 0.3s ease;
         }
 
-        /* CHANGE 2: Positioning shifted to the absolute right */
         #sub-text {
             position: absolute;
             bottom: 15%;
-            right: 8%; /* Changed from left: 8% to right: 8% */
-            font-size: 1.4rem; 
-            font-weight: 600; 
+            right: 8%;
+            font-size: 1.4rem;
+            /* UPDATED FONT: Kollektif Bold */
+            font-family: 'Kollektif', 'Segoe UI', sans-serif;
+            font-weight: 700; 
             max-width: 450px; 
             line-height: 1.4; 
             transform-origin: center; 
-            font-family: "Segoe UI", sans-serif; 
             text-transform: uppercase;
             transition: color 0.3s ease;
-            text-align: right; /* Adjusted text alignment for visual balance */
+            text-align: right;
         }
 
         .scroll-indicator {
@@ -342,7 +349,7 @@
         <div class="bg-white-page" id="bgWhite"> 
             <h2 id="why-text">WHY WE EXIST ?</h2> 
         </div>
-       
+        
         <div class="hero-content" id="heroContent"> 
             <h1 id="main-title"></h1>
             <p id="sub-text"></p> 
@@ -356,7 +363,7 @@
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
-        
+
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
@@ -424,11 +431,10 @@
             const p1Percent = Math.min(scrollPercent * 3, 1);
             const titleScale = 1 - (p1Percent * 0.85);
             
-            // Logic for Main Title Scroll
-            const titleTopBase = 25; // Matching the new CSS top value
-            const titleTopTarget = 3.5; // Final position in navbar
+            const titleTopBase = 25;
+            const titleTopTarget = 3.5;
             const titleTop = titleTopBase - (p1Percent * (titleTopBase - titleTopTarget));
-            
+
             title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
@@ -443,9 +449,7 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // Sub-text Scroll Animation
-            // Calculating shift for Right-aligned element
-            const subTextRight = 8 + (p1Percent * 42); 
+            const subTextRight = 8 + (p1Percent * 42);
             const subTextBottom = 15 + (p1Percent * 35); 
             subText.style.right = `${subTextRight}%`;
             subText.style.bottom = `${subTextBottom}%`;
@@ -457,7 +461,6 @@
                 const shrinkFactor = (scrollPercent - 0.2) / 0.4;
                 subTextScale = 2.5 - (shrinkFactor * 0.7);
             }
-            // Adjusted translate for right-side origin
             subText.style.transform = `translate(${p1Percent * 50}%, ${p1Percent * 50}%) scale(${subTextScale})`;
 
             if (scrollPercent > 0.6) { 

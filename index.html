@@ -111,9 +111,12 @@
             align-items: center; 
             padding: 20px 4%; 
             z-index: 100;
-            /* Updated to Blue Background */
-            background-color: #0047AB; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            /* Change 1: Blurred Background */
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s ease;
         }
 
         .brand-container {
@@ -164,23 +167,20 @@
             height: 2px;
             bottom: -5px;
             left: 0;
-            background-color: #ffffff;
+            background-color: currentColor;
             transition: width 0.3s ease;
         }
 
         .nav-links a:hover {
             transform: translateY(-5px);
-            color: #ffcc00; /* Added a highlight color for visibility */
         }
 
         .nav-links a:hover::after {
             width: 100%;
-            background-color: #ffcc00;
         }
 
-        /* Black theme overrides for white background phase */
         .nav-black {
-            background-color: #f0f0f0; /* Light background for the white page section */
+            background: rgba(0, 0, 0, 0.15);
         }
         .nav-black a { color: #000 !important; }
         .nav-black .menu-toggle div { background-color: #000 !important; }
@@ -414,10 +414,10 @@
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
             title.style.opacity = 1 - p1Percent;
 
-            // Updated Logo Logic: Only show when main title rises above navbar (p1Percent near 1)
-            // titleTop is 50 at start and ~3.5 when fully scrolled. Navbar is at 0.
-            if (p1Percent > 0.9) {
-                const navFade = Math.min((p1Percent - 0.9) * 10, 1);
+            // Change 2: Logo reveal logic
+            // Logo starts appearing only when main title is significantly high (p1Percent > 0.95)
+            if (p1Percent > 0.95) {
+                const navFade = Math.min((p1Percent - 0.95) * 20, 1);
                 navLogo.style.opacity = navFade;
                 navTitleSmall.style.opacity = navFade;
             } else {

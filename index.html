@@ -7,21 +7,21 @@
     <style>
         * {
             margin: 0;
-            padding: 0; [cite: 2]
+            padding: 0;
             box-sizing: border-box; 
             color: #ffffff; 
         }
 
         body {
             background-color: #000;
-            height: 1000vh; [cite: 3]
+            height: 1000vh;
             overflow-x: hidden; 
             font-family: 'Segoe UI', sans-serif; 
         }
 
         .scroll-container {
             position: fixed;
-            top: 0; [cite: 4]
+            top: 0;
             left: 0; 
             width: 100%; 
             height: 100vh; 
@@ -29,21 +29,21 @@
             justify-content: center; 
             align-items: center; 
             overflow: hidden;
-        } [cite: 5]
+        }
 
         .bg-video-container {
             position: absolute;
-            top: 0; [cite: 6]
+            top: 0;
             left: 0; 
             width: 100%; 
             height: 100%; 
             z-index: 1; 
             overflow: hidden;
-        } [cite: 7]
+        }
 
         .bg-video-container video {
             min-width: 100%;
-            min-height: 100%; [cite: 8]
+            min-height: 100%;
             width: auto;
             height: auto;
             position: absolute;
@@ -52,32 +52,32 @@
             transform: translate(-50%, -50%);
             object-fit: cover;
             filter: brightness(0.5);
-        } [cite: 9]
+        }
 
         .video-overlay {
             position: absolute;
-            top: 0; [cite: 10]
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.2);
             z-index: 2;
-        } [cite: 11]
+        }
 
         .bg-brown {
             position: absolute;
-            top: 0; [cite: 12]
+            top: 0;
             left: 0; 
             width: 100%; 
             height: 100%; 
             background-color: #3d2b1f; 
             z-index: 3; 
             opacity: 0;
-        } [cite: 13]
+        }
 
         .bg-white-page {
             position: absolute;
-            top: 0; [cite: 14]
+            top: 0;
             left: 0; 
             width: 100%; 
             height: 100%; 
@@ -87,28 +87,28 @@
             display: flex; 
             justify-content: center; 
             align-items: center;
-            pointer-events: none; [cite: 15]
+            pointer-events: none;
             transition: background-color 0.4s ease;
         }
 
         #why-text {
             color: #3d2b1f;
-            font-family: 'Impact', 'Arial Black', sans-serif; [cite: 16]
+            font-family: 'Impact', 'Arial Black', sans-serif;
             font-weight: 900; 
             text-transform: uppercase; 
             white-space: nowrap; 
             opacity: 0;
             position: absolute;
             transform-origin: center center;
-            will-change: transform, opacity, color; [cite: 17]
+            will-change: transform, opacity, color;
             transition: color 0.4s ease;
             z-index: 20;
-            font-size: 8rem; /* Desktop default */
-        } [cite: 18]
+            font-size: 8rem;
+        }
 
         .slideshow-container {
             position: absolute;
-            width: 100%; [cite: 19]
+            width: 100%;
             height: 100%;
             top: 0;
             left: 0;
@@ -117,22 +117,22 @@
             display: flex;
             justify-content: center;
             align-items: center;
-        } [cite: 20]
+        }
 
         .slide-img {
             position: absolute;
-            width: 600px; [cite: 21]
+            width: 600px;
             height: 400px;
             object-fit: cover;
             border-radius: 10px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             opacity: 0;
             transform: translateX(100%) scale(0.2);
-        } [cite: 22]
+        }
 
         nav {
             position: fixed;
-            top: 0; [cite: 23]
+            top: 0;
             width: 100%; 
             display: flex; 
             justify-content: space-between; 
@@ -140,104 +140,81 @@
             padding: 20px 4%; 
             z-index: 100;
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px); [cite: 24]
+            backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             transition: background 0.3s, border-bottom 0.3s;
-        } [cite: 25]
+        }
 
         .brand-container {
             display: flex;
-            align-items: center; [cite: 26]
+            align-items: center;
             gap: 15px;
         }
 
         .brand-logo {
-            height: 35px; [cite: 27]
+            height: 35px;
             width: auto;
             opacity: 0; 
             transition: filter 0.3s ease, opacity 0.3s ease;
-        } [cite: 28]
+        }
 
         #nav-title-small {
-            font-size: 1.5rem; [cite: 29]
+            font-size: 1.5rem;
             font-weight: 800;
             letter-spacing: 2px;
             opacity: 0;
             transition: color 0.3s ease, opacity 0.3s ease;
-        } [cite: 30]
+        }
 
         .nav-links {
             list-style: none;
-            display: flex; [cite: 31]
+            display: flex;
             gap: 40px; 
             margin-right: 40px; 
         }
 
-        .nav-links li {
-            position: relative;
-        } [cite: 32]
-
         .nav-links a {
             text-decoration: none;
-            font-weight: 500; [cite: 33]
+            font-weight: 500;
             font-size: 1.1rem; 
             display: inline-block; 
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s;
-        } [cite: 34]
-
-        .nav-links a::after {
-            content: '';
-            position: absolute; [cite: 35]
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: currentColor;
-            transition: width 0.3s ease;
-        } [cite: 36]
-
-        .nav-links a:hover {
-            transform: translateY(-5px);
-        } [cite: 37]
-
-        .nav-links a:hover::after {
-            width: 100%;
-        } [cite: 38]
+        }
 
         .nav-black {
             background: rgba(255, 255, 255, 0.8);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1); [cite: 39]
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
 
-        .nav-black a { color: #000 !important; } [cite: 40]
-        .nav-black .menu-toggle div { background-color: #000 !important; } [cite: 41]
-        .nav-black .brand-logo { filter: invert(1); } [cite: 42]
-        .nav-black #nav-title-small { color: #000; } [cite: 43]
+        .nav-black a { color: #000 !important; }
+        .nav-black .menu-toggle div { background-color: #000 !important; }
+        .nav-black .brand-logo { filter: invert(1); }
+        .nav-black #nav-title-small { color: #000; }
 
         .menu-toggle {
             cursor: pointer;
-            display: flex; [cite: 44]
+            display: flex;
             flex-direction: column; 
             gap: 6px; 
             z-index: 1000; 
             transition: 0.3s;
-        } [cite: 45]
+        }
 
         .menu-toggle div {
-            width: 30px; [cite: 46]
+            width: 30px;
             height: 3px;
             background-color: white; 
             transition: all 0.4s ease; 
         }
 
-        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); } [cite: 47]
-        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); } [cite: 48]
-        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); } [cite: 49]
+        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); }
+        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); }
+        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); }
 
         .side-menu {
             position: fixed;
-            top: 0; [cite: 50]
+            top: 0;
             right: -100%; 
             width: 350px; 
             height: 100vh; 
@@ -245,37 +222,36 @@
             backdrop-filter: blur(15px); 
             z-index: 999; 
             display: flex;
-            flex-direction: column; [cite: 51]
+            flex-direction: column;
             justify-content: center; 
             padding: 60px; 
             transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
-        } [cite: 52]
+        }
 
-        .side-menu.active { right: 0; } [cite: 53]
+        .side-menu.active { right: 0; }
 
         .side-menu a {
             text-decoration: none;
-            font-size: 2.2rem; [cite: 54]
+            font-size: 2.2rem;
             margin: 15px 0; 
             font-weight: 700; 
             opacity: 0; 
             transform: translateX(50px); 
             transition: 0.4s;
-        } [cite: 55]
+        }
 
-        .side-menu.active a { opacity: 1; transform: translateX(0); } [cite: 56]
-        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; } [cite: 57]
+        .side-menu.active a { opacity: 1; transform: translateX(0); }
 
         .hero-content {
             position: relative;
-            width: 100%; [cite: 58]
+            width: 100%;
             height: 100%; 
             z-index: 20; 
         }
 
         #main-title {
             position: absolute;
-            top: 25%; [cite: 59]
+            top: 25%;
             left: 4%;
             transform: translateY(-50%); 
             font-size: 12rem;
@@ -283,26 +259,25 @@
             letter-spacing: 15px; 
             white-space: nowrap; 
             transition: color 0.3s ease;
-        } [cite: 60]
+        }
 
         #sub-text {
             position: absolute;
-            bottom: 15%; [cite: 61]
+            bottom: 15%;
             right: 8%;
             font-size: 1.4rem;
             font-family: 'Kollektif', 'Segoe UI', sans-serif;
             font-weight: 700; 
             max-width: 450px; 
             line-height: 1.4; 
-            transform-origin: center;
-            text-transform: uppercase; [cite: 62]
+            text-transform: uppercase;
             transition: color 0.3s ease;
             text-align: right;
         }
 
         .scroll-indicator {
             position: fixed;
-            bottom: 20px; [cite: 63]
+            bottom: 20px;
             left: 50%; 
             transform: translateX(-50%); 
             font-size: 0.8rem; 
@@ -310,37 +285,39 @@
             z-index: 100; 
             text-transform: uppercase; 
             letter-spacing: 2px;
-        } [cite: 64]
+        }
 
-        /* MOBILE OVERRIDES (ONLY FOR PHONES) */
         @media screen and (max-width: 768px) {
             #main-title {
                 font-size: 18vw;
                 letter-spacing: 5px;
                 top: 40%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
             }
             #sub-text {
                 font-size: 1rem;
-                right: 5%;
+                right: 50%;
+                transform: translateX(50%);
                 bottom: 10%;
-                max-width: 280px;
+                max-width: 90%;
+                text-align: center;
             }
             #why-text {
-                font-size: 15vw;
+                font-size: 12vw;
             }
             .slide-img {
-                width: 85vw;
-                height: 300px;
+                width: 90vw;
+                height: auto;
+                aspect-ratio: 4/3;
             }
             .nav-links {
-                display: none; /* Hide top links on phone for clean look */
+                display: none;
             }
             .side-menu {
                 width: 100%;
                 padding: 40px;
-            }
-            .side-menu a {
-                font-size: 1.8rem;
             }
         }
     </style>
@@ -357,23 +334,23 @@
         
         <div style="display: flex; align-items: center;">
             <ul class="nav-links">
-                <li><a href="#">Home</a></li>  [cite: 65]
+                <li><a href="#">Home</a></li> 
                 <li><a href="#">Services</a></li> 
                 <li><a href="#">About</a></li>
             </ul>
             <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()"> 
                 <div id="line1"></div> 
-                <div id="line2"></div> [cite: 66]
+                <div id="line2"></div>
                 <div id="line3"></div>
             </div> 
         </div>
     </nav>
 
     <div class="side-menu" id="sideMenu"> 
-        <a href="#" class="close-link" onclick="toggleMenu()">✕ Close Menu</a> 
+        <a href="#" onclick="toggleMenu()">✕ Close Menu</a> 
         <a href="#" onclick="toggleMenu()">Home</a>
         <a href="#" onclick="toggleMenu()">Services</a>
-        <a href="#" onclick="toggleMenu()">About</a> [cite: 67]
+        <a href="#" onclick="toggleMenu()">About</a>
         <a href="#" onclick="toggleMenu()">Reservations</a>
         <a href="#" onclick="toggleMenu()">Contact</a>
     </div>
@@ -382,7 +359,6 @@
         <div class="bg-video-container">
             <video autoplay muted loop playsinline id="bgVideo">
                 <source src="Food Reel - Darío Idoate.mp4" type="video/mp4">
-                Your browser does not support the video tag. [cite: 68]
             </video>
             <div class="video-overlay"></div>
         </div>
@@ -391,8 +367,7 @@
         
         <div class="bg-white-page" id="bgWhite"> 
             <h2 id="why-text">WHY WE EXIST ?</h2> 
-            
-            <div class="slideshow-container"> [cite: 69]
+            <div class="slideshow-container">
                 <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800" class="slide-img" id="img1">
                 <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800" class="slide-img" id="img2">
                 <img src="https://images.unsplash.com/photo-1550966841-3ee7adac1af8?q=80&w=800" class="slide-img" id="img3">
@@ -400,66 +375,54 @@
         </div>
 
         <div class="hero-content" id="heroContent"> 
-            <h1 id="main-title"></h1> [cite: 70]
+            <h1 id="main-title"></h1>
             <p id="sub-text"></p> 
         </div>
     </div>
 
     <script>
         window.onbeforeunload = function () {
-            window.scrollTo(0, 0); [cite: 71]
+            window.scrollTo(0, 0);
         };
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
 
-        function typeWriter(elementId, text, speed, callback) { [cite: 72]
-            let i = 0; [cite: 73]
+        function typeWriter(elementId, text, speed, callback) {
+            let i = 0;
             const element = document.getElementById(elementId);
-            
             function type() {
                 if (i < text.length) {
                     if (text.substring(i, i + 4) === "<br>") {
-                        element.innerHTML += "<br>"; [cite: 74]
+                        element.innerHTML += "<br>";
                         i += 4;
                     } else {
-                        element.innerHTML += text.charAt(i); [cite: 75]
+                        element.innerHTML += text.charAt(i);
                         i++;
                     }
-                    setTimeout(type, speed); [cite: 76]
+                    setTimeout(type, speed);
                 } else if (callback) {
-                    callback(); [cite: 77]
+                    callback();
                 }
             }
-            type(); [cite: 78]
+            type();
         }
 
         window.addEventListener('load', () => {
             window.scrollTo(0, 0);
             const video = document.getElementById('bgVideo');
             if (video) {
-                video.muted = true;
-                video.defaultMuted = true;
-                
-                const playVideo = () => { [cite: 79]
-                    video.play().then(() => {
-                        console.log("Video playing successfully");
-                    }).catch(() => {
-                        requestAnimationFrame(playVideo); [cite: 80]
-                    });
-                };
-                playVideo();
+                video.play().catch(() => {});
             }
-
             typeWriter("main-title", titleText, 150, () => {
-                typeWriter("sub-text", taglineText, 50); [cite: 81]
+                typeWriter("sub-text", taglineText, 50);
             });
         });
 
-        function toggleMenu() { [cite: 82]
+        function toggleMenu() {
             document.getElementById('sideMenu').classList.toggle('active');
             document.getElementById('menuToggle').classList.toggle('open');
-        } [cite: 83]
+        }
 
         window.addEventListener('scroll', () => { 
             const scrollY = window.scrollY;
@@ -468,128 +431,121 @@
             const isMobile = window.innerWidth <= 768;
             
             const title = document.getElementById('main-title');
-            const subText = document.getElementById('sub-text'); [cite: 84]
+            const subText = document.getElementById('sub-text');
             const bgBrown = document.getElementById('bgBrown');
             const bgWhite = document.getElementById('bgWhite');
             const whyText = document.getElementById('why-text');
             const navbar = document.getElementById('navbar');
             const scrollTag = document.getElementById('scrollTag');
             const navLogo = document.getElementById('navLogo');
-            const navTitleSmall = document.getElementById('nav-title-small'); [cite: 85]
+            const navTitleSmall = document.getElementById('nav-title-small');
 
             const p1Percent = Math.min(scrollPercent * 3.33, 1);
             const titleScale = 1 - (p1Percent * 0.85);
             const titleTopBase = isMobile ? 40 : 25;
             const titleTopTarget = 3.5;
-            const titleTop = titleTopBase - (p1Percent * (titleTopBase - titleTopTarget)); [cite: 86]
+            const titleTop = titleTopBase - (p1Percent * (titleTopBase - titleTopTarget));
 
-            const baseFontSize = isMobile ? 18 : 12;
-            title.style.fontSize = `${baseFontSize * titleScale}rem`; [cite: 87]
+            const baseFontSize = isMobile ? (18 * (window.innerWidth / 100)) : 12;
+            if(!isMobile) {
+                title.style.fontSize = `${12 * titleScale}rem`;
+            } else {
+                title.style.fontSize = `${18 * titleScale}vw`;
+            }
+            
             title.style.top = `${titleTop}%`;
             const baseLetterSpacing = isMobile ? 5 : 15;
             title.style.letterSpacing = `${baseLetterSpacing * (1 - p1Percent)}px`;
-            title.style.opacity = 1 - p1Percent; [cite: 88]
+            title.style.opacity = 1 - p1Percent;
 
             if (scrollPercent > 0.2) {
-                const navFade = Math.min((scrollPercent - 0.2) * 5, 1); [cite: 89]
+                const navFade = Math.min((scrollPercent - 0.2) * 5, 1);
                 navLogo.style.opacity = navFade;
                 navTitleSmall.style.opacity = navFade;
             } else {
-                navLogo.style.opacity = 0; [cite: 90]
+                navLogo.style.opacity = 0;
                 navTitleSmall.style.opacity = 0;
             }
 
-            const subTextRight = (isMobile ? 5 : 8) + (p1Percent * (isMobile ? 45 : 42));
-            const subTextBottom = (isMobile ? 10 : 15) + (p1Percent * 35); [cite: 91]
-            subText.style.right = `${subTextRight}%`;
-            subText.style.bottom = `${subTextBottom}%`;
-            subText.style.textAlign = p1Percent > 0.4 ? 'center' : (isMobile ? 'center' : 'right'); [cite: 92]
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
             
             let subTextScale = 1 + (p1Percent * 1.5);
-            if (scrollPercent > 0.1 && scrollPercent <= 0.4) { [cite: 93]
-                const shrinkFactor = (scrollPercent - 0.1) / 0.3; [cite: 94]
+            if (scrollPercent > 0.1 && scrollPercent <= 0.4) {
+                const shrinkFactor = (scrollPercent - 0.1) / 0.3;
                 subTextScale = 2.5 - (shrinkFactor * 0.7);
             }
-            subText.style.transform = `translate(${p1Percent * 50}%, ${p1Percent * 50}%) scale(${subTextScale})`;
+            subText.style.transform = isMobile ? `translate(50%, 0) scale(${subTextScale})` : `translate(${p1Percent * 50}%, ${p1Percent * 50}%) scale(${subTextScale})`;
 
-            if (scrollPercent > 0.3) { [cite: 95]
+            if (scrollPercent > 0.3) {
                 const p3Percent = Math.min((scrollPercent - 0.3) / 0.3, 1);
-                bgWhite.style.opacity = Math.min(p3Percent * 2, 1); [cite: 96]
+                bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
                 subText.style.opacity = 1 - (p3Percent * 5);
                 whyText.style.opacity = Math.min(p3Percent * 3, 1);
-                let currentX = 50; [cite: 97]
+                
+                let currentX = 50;
                 let currentY = 50; 
                 let currentScale = 1;
 
-                if (p3Percent < 0.3) { [cite: 98]
+                if (p3Percent < 0.3) {
                     const localScaleFactor = p3Percent / 0.3;
-                    currentScale = 5 - (localScaleFactor * 4); [cite: 99]
+                    currentScale = 5 - (localScaleFactor * 4);
                 } else if (p3Percent >= 0.3 && p3Percent < 0.6) {
                     currentScale = 1;
-                } else { [cite: 100]
+                } else {
                     const slideFactor = (p3Percent - 0.6) / 0.4;
-                    currentX = 50 - (slideFactor * (isMobile ? 46 : 46)); [cite: 101]
+                    currentX = 50 - (slideFactor * 46);
                     currentY = 50 - (slideFactor * (isMobile ? 35 : 30));
-                    currentScale = 1 - (slideFactor * 0.7); [cite: 102]
+                    currentScale = 1 - (slideFactor * 0.7);
                 }
 
-                whyText.style.left = `${currentX}%`; [cite: 103]
-                whyText.style.top = `${currentY}%`; [cite: 104]
+                whyText.style.left = `${currentX}%`;
+                whyText.style.top = `${currentY}%`;
                 whyText.style.transform = `translate(-${currentX}%, -${currentY}%) scale(${currentScale})`;
-                whyText.style.transformOrigin = "top left";
 
-                if (p3Percent >= 0.98) { [cite: 105]
+                if (p3Percent >= 0.98) {
                     bgWhite.style.backgroundColor = "#3d2b1f";
-                    whyText.style.color = "#ffffff"; [cite: 106]
+                    whyText.style.color = "#ffffff";
                     navbar.classList.remove('nav-black');
                     scrollTag.style.color = "#fff";
                 } else {
                     bgWhite.style.backgroundColor = "#ffffff";
-                    whyText.style.color = "#3d2b1f"; [cite: 107]
+                    whyText.style.color = "#3d2b1f";
                     navbar.classList.add('nav-black');
                     scrollTag.style.color = "#000";
                 }
 
                 if (scrollPercent > 0.6) {
-                    const slideSectionPercent = (scrollPercent - 0.6) / 0.4; [cite: 108]
+                    const slideSectionPercent = (scrollPercent - 0.6) / 0.4;
                     const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
                     
                     imgs.forEach((img, index) => {
                         const start = index * 0.33;
                         const end = (index + 1) * 0.33;
-                        
-                        if (slideSectionPercent >= start && slideSectionPercent < end) { [cite: 109]
+                        if (slideSectionPercent >= start && slideSectionPercent < end) {
                             const localProgress = (slideSectionPercent - start) / 0.33;
-                            
                             let xPos, scale, opacity;
-                            
-                            if (localProgress < 0.4) { [cite: 110]
-                                const enterFactor = localProgress / 0.4; [cite: 111]
+                            if (localProgress < 0.4) {
+                                const enterFactor = localProgress / 0.4;
                                 xPos = 100 - (enterFactor * 100);
                                 scale = 0.2 + (enterFactor * 0.8);
-                                opacity = enterFactor; [cite: 112]
+                                opacity = enterFactor;
                             } else if (localProgress >= 0.4 && localProgress < 0.7) { 
-                                xPos = 0; [cite: 113]
-                                scale = 1;
-                                opacity = 1;
-                            } else { [cite: 114]
-                                const exitFactor = (localProgress - 0.7) / 0.3; [cite: 115]
+                                xPos = 0; scale = 1; opacity = 1;
+                            } else {
+                                const exitFactor = (localProgress - 0.7) / 0.3;
                                 xPos = -(exitFactor * 100);
                                 scale = 1 - (exitFactor * 0.8);
-                                opacity = 1 - exitFactor; [cite: 116]
+                                opacity = 1 - exitFactor;
                             }
-                            
                             img.style.opacity = opacity;
-                            img.style.transform = `translateX(${xPos}%) scale(${scale})`; [cite: 117]
+                            img.style.transform = `translateX(${xPos}%) scale(${scale})`;
                         } else {
                             img.style.opacity = 0;
-                        } [cite: 118]
+                        }
                     });
-                } [cite: 119]
-
+                }
             } else { 
-                bgWhite.style.opacity = 0; [cite: 120]
+                bgWhite.style.opacity = 0;
                 whyText.style.opacity = 0;
                 subText.style.opacity = 1;
                 navbar.classList.remove('nav-black');

@@ -14,7 +14,7 @@
 
         body {
             background-color: #000;
-            height: 600vh;
+            height: 1000vh;
             overflow-x: hidden; 
             font-family: 'Segoe UI', sans-serif; 
         }
@@ -102,6 +102,32 @@
             transform-origin: center center;
             will-change: transform, opacity, color;
             transition: color 0.4s ease;
+            z-index: 20;
+        }
+
+        /* Slideshow Styles */
+        .slideshow-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 18;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide-img {
+            position: absolute;
+            width: 600px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateX(100%) scale(0.2);
         }
 
         nav {
@@ -268,7 +294,7 @@
             font-weight: 700; 
             max-width: 450px; 
             line-height: 1.4; 
-            transform-origin: center; 
+            transform-origin: center;
             text-transform: uppercase;
             transition: color 0.3s ease;
             text-align: right;
@@ -333,8 +359,14 @@
         
         <div class="bg-white-page" id="bgWhite"> 
             <h2 id="why-text">WHY WE EXIST ?</h2> 
+            
+            <div class="slideshow-container">
+                <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800" class="slide-img" id="img1">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800" class="slide-img" id="img2">
+                <img src="https://images.unsplash.com/photo-1550966841-3ee7adac1af8?q=80&w=800" class="slide-img" id="img3">
+            </div>
         </div>
-       
+
         <div class="hero-content" id="heroContent"> 
             <h1 id="main-title"></h1>
             <p id="sub-text"></p> 
@@ -348,7 +380,7 @@
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
-
+        
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
@@ -411,9 +443,9 @@
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
 
-            const p1Percent = Math.min(scrollPercent * 3, 1);
+            // PHASE 1: Main Title and Tagline (0% to 30%)
+            const p1Percent = Math.min(scrollPercent * 3.33, 1);
             const titleScale = 1 - (p1Percent * 0.85);
-            
             const titleTopBase = 25;
             const titleTopTarget = 3.5;
             const titleTop = titleTopBase - (p1Percent * (titleTopBase - titleTopTarget));
@@ -423,8 +455,8 @@
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
             title.style.opacity = 1 - p1Percent;
 
-            if (scrollPercent > 0.33) {
-                const navFade = Math.min((scrollPercent - 0.33) * 5, 1);
+            if (scrollPercent > 0.2) {
+                const navFade = Math.min((scrollPercent - 0.2) * 5, 1);
                 navLogo.style.opacity = navFade;
                 navTitleSmall.style.opacity = navFade;
             } else {
@@ -440,20 +472,20 @@
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
             
             let subTextScale = 1 + (p1Percent * 1.5);
-            if (scrollPercent > 0.2 && scrollPercent <= 0.6) {
-                const shrinkFactor = (scrollPercent - 0.2) / 0.4;
+            if (scrollPercent > 0.1 && scrollPercent <= 0.4) {
+                const shrinkFactor = (scrollPercent - 0.1) / 0.3;
                 subTextScale = 2.5 - (shrinkFactor * 0.7);
             }
             subText.style.transform = `translate(${p1Percent * 50}%, ${p1Percent * 50}%) scale(${subTextScale})`;
 
-            if (scrollPercent > 0.6) { 
-                const p3Percent = (scrollPercent - 0.6) / 0.4;
+            // PHASE 2: Why We Exist Text (Starts at 30%)
+            if (scrollPercent > 0.3) { 
+                const p3Percent = Math.min((scrollPercent - 0.3) / 0.3, 1);
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
-                bgWhite.style.pointerEvents = p3Percent > 0.8 ? 'auto' : 'none';
                 subText.style.opacity = 1 - (p3Percent * 5);
                 whyText.style.opacity = Math.min(p3Percent * 3, 1);
                 
-                let currentX = 50; 
+                let currentX = 50;
                 let currentY = 50; 
                 let currentScale = 1;
 
@@ -464,8 +496,8 @@
                     currentScale = 1;
                 } else {
                     const slideFactor = (p3Percent - 0.6) / 0.4;
-                    currentX = 50 - (slideFactor * 46); 
-                    currentY = 50 - (slideFactor * 38);
+                    currentX = 50 - (slideFactor * 46); // Ends at 4%
+                    currentY = 50 - (slideFactor * 38); // Ends at 12% (Below navbar)
                     currentScale = 1 - (slideFactor * 0.7); 
                 }
 
@@ -475,7 +507,6 @@
                 whyText.style.transform = `translate(-${currentX}%, -${currentY}%) scale(${currentScale})`;
                 whyText.style.transformOrigin = "top left";
 
-                // UPDATED COLOR LOGIC: Only change color AFTER text is fully in position (p3Percent approx 1.0)
                 if (p3Percent >= 0.98) {
                     bgWhite.style.backgroundColor = "#3d2b1f";
                     whyText.style.color = "#ffffff";
@@ -488,11 +519,47 @@
                     scrollTag.style.color = "#000";
                 }
 
+                // PHASE 3: Image Slideshow (Starts at 60% of total scroll)
+                if (scrollPercent > 0.6) {
+                    const slideSectionPercent = (scrollPercent - 0.6) / 0.4; // 0 to 1
+                    const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
+                    
+                    imgs.forEach((img, index) => {
+                        const start = index * 0.33;
+                        const end = (index + 1) * 0.33;
+                        
+                        if (slideSectionPercent >= start && slideSectionPercent < end) {
+                            const localProgress = (slideSectionPercent - start) / 0.33;
+                            
+                            let xPos, scale, opacity;
+                            
+                            if (localProgress < 0.4) { // Entering and Expanding
+                                const enterFactor = localProgress / 0.4;
+                                xPos = 100 - (enterFactor * 100);
+                                scale = 0.2 + (enterFactor * 0.8);
+                                opacity = enterFactor;
+                            } else if (localProgress >= 0.4 && localProgress < 0.7) { // Staying Large
+                                xPos = 0;
+                                scale = 1;
+                                opacity = 1;
+                            } else { // Shrinking and Exiting Left
+                                const exitFactor = (localProgress - 0.7) / 0.3;
+                                xPos = -(exitFactor * 100);
+                                scale = 1 - (exitFactor * 0.8);
+                                opacity = 1 - exitFactor;
+                            }
+                            
+                            img.style.opacity = opacity;
+                            img.style.transform = `translateX(${xPos}%) scale(${scale})`;
+                        } else {
+                            img.style.opacity = 0;
+                        }
+                    });
+                }
+
             } else { 
                 bgWhite.style.opacity = 0;
-                bgWhite.style.backgroundColor = "#ffffff";
                 whyText.style.opacity = 0;
-                whyText.style.color = "#3d2b1f";
                 subText.style.opacity = 1;
                 navbar.classList.remove('nav-black');
                 scrollTag.style.color = "#fff";

@@ -105,7 +105,6 @@
             z-index: 20;
         }
 
-        /* Slideshow Styles */
         .slideshow-container {
             position: absolute;
             width: 100%;
@@ -443,7 +442,6 @@
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
 
-            // PHASE 1: Main Title and Tagline (0% to 30%)
             const p1Percent = Math.min(scrollPercent * 3.33, 1);
             const titleScale = 1 - (p1Percent * 0.85);
             const titleTopBase = 25;
@@ -478,7 +476,6 @@
             }
             subText.style.transform = `translate(${p1Percent * 50}%, ${p1Percent * 50}%) scale(${subTextScale})`;
 
-            // PHASE 2: Why We Exist Text (Starts at 30%)
             if (scrollPercent > 0.3) { 
                 const p3Percent = Math.min((scrollPercent - 0.3) / 0.3, 1);
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
@@ -496,8 +493,8 @@
                     currentScale = 1;
                 } else {
                     const slideFactor = (p3Percent - 0.6) / 0.4;
-                    currentX = 50 - (slideFactor * 46); // Ends at 4%
-                    currentY = 50 - (slideFactor * 38); // Ends at 12% (Below navbar)
+                    currentX = 50 - (slideFactor * 46); // Ends at Left 4%
+                    currentY = 50 - (slideFactor * 35); // Ends at Top 15% (Adjusted to avoid navbar)
                     currentScale = 1 - (slideFactor * 0.7); 
                 }
 
@@ -519,9 +516,8 @@
                     scrollTag.style.color = "#000";
                 }
 
-                // PHASE 3: Image Slideshow (Starts at 60% of total scroll)
                 if (scrollPercent > 0.6) {
-                    const slideSectionPercent = (scrollPercent - 0.6) / 0.4; // 0 to 1
+                    const slideSectionPercent = (scrollPercent - 0.6) / 0.4; 
                     const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
                     
                     imgs.forEach((img, index) => {
@@ -533,16 +529,16 @@
                             
                             let xPos, scale, opacity;
                             
-                            if (localProgress < 0.4) { // Entering and Expanding
+                            if (localProgress < 0.4) { 
                                 const enterFactor = localProgress / 0.4;
                                 xPos = 100 - (enterFactor * 100);
                                 scale = 0.2 + (enterFactor * 0.8);
                                 opacity = enterFactor;
-                            } else if (localProgress >= 0.4 && localProgress < 0.7) { // Staying Large
+                            } else if (localProgress >= 0.4 && localProgress < 0.7) { 
                                 xPos = 0;
                                 scale = 1;
                                 opacity = 1;
-                            } else { // Shrinking and Exiting Left
+                            } else { 
                                 const exitFactor = (localProgress - 0.7) / 0.3;
                                 xPos = -(exitFactor * 100);
                                 scale = 1 - (exitFactor * 0.8);

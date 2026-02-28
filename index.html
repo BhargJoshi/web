@@ -19,14 +19,6 @@
             font-family: 'Segoe UI', sans-serif; 
         }
 
-        /* If you have the font file, define it here:
-        @font-face {
-            font-family: 'Kollektif';
-            src: url('Kollektif-Bold.ttf') format('truetype');
-            font-weight: bold;
-        } 
-        */
-
         .scroll-container {
             position: fixed;
             top: 0;
@@ -96,6 +88,7 @@
             justify-content: center; 
             align-items: center;
             pointer-events: none;
+            transition: background-color 0.5s ease;
         }
 
         #why-text {
@@ -107,7 +100,7 @@
             opacity: 0;
             position: absolute;
             transform-origin: center center;
-            will-change: transform, opacity;
+            will-change: transform, opacity, color;
         }
 
         nav {
@@ -243,14 +236,6 @@
             transition: 0.4s;
         }
 
-        .side-menu .close-link {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px; 
-            color: #d2a679; 
-            margin-bottom: 40px; 
-        }
-
         .side-menu.active a { opacity: 1; transform: translateX(0); }
         .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
 
@@ -278,7 +263,6 @@
             bottom: 15%;
             right: 8%;
             font-size: 1.4rem;
-            /* UPDATED FONT: Kollektif Bold */
             font-family: 'Kollektif', 'Segoe UI', sans-serif;
             font-weight: 700; 
             max-width: 450px; 
@@ -349,7 +333,7 @@
         <div class="bg-white-page" id="bgWhite"> 
             <h2 id="why-text">WHY WE EXIST ?</h2> 
         </div>
-        
+       
         <div class="hero-content" id="heroContent"> 
             <h1 id="main-title"></h1>
             <p id="sub-text"></p> 
@@ -387,12 +371,10 @@
 
         window.addEventListener('load', () => {
             window.scrollTo(0, 0);
-            
             const video = document.getElementById('bgVideo');
             if (video) {
                 video.muted = true;
                 video.defaultMuted = true;
-                
                 const playVideo = () => {
                     video.play().then(() => {
                         console.log("Video playing successfully");
@@ -469,38 +451,55 @@
                 bgWhite.style.pointerEvents = p3Percent > 0.8 ? 'auto' : 'none';
                 subText.style.opacity = 1 - (p3Percent * 5);
                 whyText.style.opacity = Math.min(p3Percent * 3, 1);
-                whyText.style.fontSize = "8rem";
+                
+                // SECTION 3 CHANGE: Background color and Text color transitions
+                if (p3Percent > 0.4) {
+                    bgWhite.style.backgroundColor = "#3d2b1f";
+                    whyText.style.color = "#ffffff";
+                    navbar.classList.remove('nav-black'); // Return nav to light mode for dark bg
+                    scrollTag.style.color = "#fff";
+                } else {
+                    bgWhite.style.backgroundColor = "#ffffff";
+                    whyText.style.color = "#3d2b1f";
+                    navbar.classList.add('nav-black'); // Stay dark for white bg
+                    scrollTag.style.color = "#000";
+                }
 
-                let currentY = 0;
+                let currentX = 50; // Center X
+                let currentY = 50; // Center Y
                 let currentScale = 1;
+                let currentFontSize = 8; // Default large size
 
                 if (p3Percent < 0.3) {
+                    // Zooming in/out phase
                     const localScaleFactor = p3Percent / 0.3;
                     currentScale = 5 - (localScaleFactor * 4); 
-                    currentY = 0;
-                } else if (p3Percent >= 0.3 && p3Percent < 0.7) {
+                } else if (p3Percent >= 0.3 && p3Percent < 0.6) {
+                    // Holding phase
                     currentScale = 1;
-                    currentY = 0;
                 } else {
-                    const slideFactor = (p3Percent - 0.7) / 0.3;
-                    currentScale = 1;
-                    currentY = slideFactor * -35; 
+                    // SECTION 3 CHANGE: Move to top-left and scale down
+                    const slideFactor = (p3Percent - 0.6) / 0.4;
+                    
+                    // Final position: 4% from left, ~12% from top (below navbar)
+                    currentX = 50 - (slideFactor * 46); 
+                    currentY = 50 - (slideFactor * 38);
+                    
+                    // Final scale: reduce size to match a standard sub-header
+                    currentScale = 1 - (slideFactor * 0.7); 
                 }
 
-                whyText.style.transform = `translate(-50%, calc(-50% + ${currentY}vh)) scale(${currentScale})`;
-                whyText.style.left = "50%";
-                whyText.style.top = "50%";
+                whyText.style.left = `${currentX}%`;
+                whyText.style.top = `${currentY}%`;
+                whyText.style.fontSize = `${currentFontSize}rem`;
+                whyText.style.transform = `translate(-${currentX}%, -${currentY}%) scale(${currentScale})`;
+                whyText.style.transformOrigin = "top left";
 
-                if (p3Percent > 0.2) { 
-                    navbar.classList.add('nav-black');
-                    scrollTag.style.color = "#000";
-                } else { 
-                    navbar.classList.remove('nav-black');
-                    scrollTag.style.color = "#fff";
-                }
             } else { 
                 bgWhite.style.opacity = 0;
+                bgWhite.style.backgroundColor = "#ffffff";
                 whyText.style.opacity = 0;
+                whyText.style.color = "#3d2b1f";
                 subText.style.opacity = 1;
                 navbar.classList.remove('nav-black');
                 scrollTag.style.color = "#fff";

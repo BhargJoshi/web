@@ -88,7 +88,7 @@
             justify-content: center; 
             align-items: center;
             pointer-events: none;
-            transition: background-color 0.5s ease;
+            transition: background-color 0.4s ease;
         }
 
         #why-text {
@@ -101,6 +101,7 @@
             position: absolute;
             transform-origin: center center;
             will-change: transform, opacity, color;
+            transition: color 0.4s ease;
         }
 
         nav {
@@ -452,48 +453,40 @@
                 subText.style.opacity = 1 - (p3Percent * 5);
                 whyText.style.opacity = Math.min(p3Percent * 3, 1);
                 
-                // SECTION 3 CHANGE: Background color and Text color transitions
-                if (p3Percent > 0.4) {
-                    bgWhite.style.backgroundColor = "#3d2b1f";
-                    whyText.style.color = "#ffffff";
-                    navbar.classList.remove('nav-black'); // Return nav to light mode for dark bg
-                    scrollTag.style.color = "#fff";
-                } else {
-                    bgWhite.style.backgroundColor = "#ffffff";
-                    whyText.style.color = "#3d2b1f";
-                    navbar.classList.add('nav-black'); // Stay dark for white bg
-                    scrollTag.style.color = "#000";
-                }
-
-                let currentX = 50; // Center X
-                let currentY = 50; // Center Y
+                let currentX = 50; 
+                let currentY = 50; 
                 let currentScale = 1;
-                let currentFontSize = 8; // Default large size
 
                 if (p3Percent < 0.3) {
-                    // Zooming in/out phase
                     const localScaleFactor = p3Percent / 0.3;
                     currentScale = 5 - (localScaleFactor * 4); 
                 } else if (p3Percent >= 0.3 && p3Percent < 0.6) {
-                    // Holding phase
                     currentScale = 1;
                 } else {
-                    // SECTION 3 CHANGE: Move to top-left and scale down
                     const slideFactor = (p3Percent - 0.6) / 0.4;
-                    
-                    // Final position: 4% from left, ~12% from top (below navbar)
                     currentX = 50 - (slideFactor * 46); 
                     currentY = 50 - (slideFactor * 38);
-                    
-                    // Final scale: reduce size to match a standard sub-header
                     currentScale = 1 - (slideFactor * 0.7); 
                 }
 
                 whyText.style.left = `${currentX}%`;
                 whyText.style.top = `${currentY}%`;
-                whyText.style.fontSize = `${currentFontSize}rem`;
+                whyText.style.fontSize = "8rem";
                 whyText.style.transform = `translate(-${currentX}%, -${currentY}%) scale(${currentScale})`;
                 whyText.style.transformOrigin = "top left";
+
+                // UPDATED COLOR LOGIC: Only change color AFTER text is fully in position (p3Percent approx 1.0)
+                if (p3Percent >= 0.98) {
+                    bgWhite.style.backgroundColor = "#3d2b1f";
+                    whyText.style.color = "#ffffff";
+                    navbar.classList.remove('nav-black');
+                    scrollTag.style.color = "#fff";
+                } else {
+                    bgWhite.style.backgroundColor = "#ffffff";
+                    whyText.style.color = "#3d2b1f";
+                    navbar.classList.add('nav-black');
+                    scrollTag.style.color = "#000";
+                }
 
             } else { 
                 bgWhite.style.opacity = 0;

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,10 +100,7 @@
             white-space: nowrap; 
             opacity: 0;
             position: absolute;
-            /* Changed to center for zoom-out effect */
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
+            transform-origin: center center;
             will-change: transform, opacity, color;
             transition: color 0.4s ease;
             z-index: 20;
@@ -451,6 +449,7 @@
             const titleTopBase = 25;
             const titleTopTarget = 3.5;
             const titleTop = titleTopBase - (p1Percent * (titleTopBase - titleTopTarget));
+            
             title.style.fontSize = `${12 * titleScale}rem`;
             title.style.top = `${titleTop}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
@@ -465,13 +464,13 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // CHANGE 1: Recalculated Tagline Movement to end in Center Viewport
-            const movePercent = p1Percent;
-            // Initially right: 8%, Bottom: 15%. Target: Center (Left: 50%, Top: 50%)
-            // We translate relative to its initial position.
-            const subTextX = -movePercent * 42; // Moves towards horizontal center
-            const subTextY = -movePercent * 35; // Moves towards vertical center
-            
+            // PHASE 2: Smooth Tagline movement (Change 2)
+            // We use a continuous transform to avoid jumping. 
+            // Calculated as percentage of screen to move from Right to Center.
+            const movePercent = p1Percent; 
+            const subTextX = (1 - movePercent) * 0; // Relative to its initial right position
+            const subTextY = (movePercent * -35); // Move up slightly as it centers
+
             subText.style.textAlign = movePercent > 0.5 ? 'center' : 'right';
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
             
@@ -481,7 +480,8 @@
                 subTextScale = 2.5 - (shrinkFactor * 0.7);
             }
             
-            subText.style.transform = `translate(${subTextX}vw, ${subTextY}vh) scale(${subTextScale})`;
+            // Refined smooth transform
+            subText.style.transform = `translate(${-movePercent * 42}vw, ${subTextY}vh) scale(${subTextScale})`;
 
             // PHASE 3: White Screen and "Why We Exist"
             if (scrollPercent > 0.5) { 
@@ -490,20 +490,16 @@
                 subText.style.opacity = 1 - (p3Percent * 5);
                 whyText.style.opacity = Math.min(p3Percent * 3, 1);
 
-                // CHANGE 2: Zoom-out effect (starts large and centers)
-                let currentX = 50; 
+                let currentX = 50;
                 let currentY = 50; 
                 let currentScale = 1;
 
                 if (p3Percent < 0.3) {
-                    // Stage: Zooming out from the "front" (large scale to normal)
                     const localScaleFactor = p3Percent / 0.3;
                     currentScale = 5 - (localScaleFactor * 4); 
                 } else if (p3Percent >= 0.3 && p3Percent < 0.6) {
-                    // Stage: Pause/Sustain at center
                     currentScale = 1;
                 } else {
-                    // Stage: Move to top-left position for image gallery
                     const slideFactor = (p3Percent - 0.6) / 0.4;
                     currentX = 50 - (slideFactor * 46); 
                     currentY = 50 - (slideFactor * 30);
@@ -513,9 +509,8 @@
                 whyText.style.left = `${currentX}%`;
                 whyText.style.top = `${currentY}%`;
                 whyText.style.fontSize = "8rem";
-                // Combined transform: handles both the centering and the scaling
                 whyText.style.transform = `translate(-${currentX}%, -${currentY}%) scale(${currentScale})`;
-                whyText.style.transformOrigin = "center center";
+                whyText.style.transformOrigin = "top left";
 
                 if (p3Percent >= 0.98) {
                     bgWhite.style.backgroundColor = "#3d2b1f";
@@ -529,48 +524,57 @@
                     scrollTag.style.color = "#000";
                 }
 
-                // IMAGE ANIMATIONS
+                // IMAGE ANIMATIONS (Change 1: Sustain Logic)
                 if (scrollPercent > 0.7) {
-                    const slideSectionPercent = (scrollPercent - 0.7) / 0.2;
+                    const slideSectionPercent = (scrollPercent - 0.7) / 0.2; // Total duration 0.7 to 0.9
                     const outroPercent = Math.max(0, (scrollPercent - 0.9) / 0.1);
+                    
                     const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
-                    const targetX = [-380, 0, 380];
+                    const targetX = [-380, 0, 380]; 
                     const outroDirs = [{x: -500, y: -200}, {x: 0, y: -500}, {x: 500, y: 200}];
 
                     imgs.forEach((img, index) => {
+                        // Divide the 0.7-0.9 scroll range into 3 parts for each image
                         const imgStart = index * 0.33;
                         const imgEnd = (index + 1) * 0.33;
+                        
                         let opacity = 0;
                         let x = 0;
                         let y = 0;
                         let scale = 0.2;
 
                         if (slideSectionPercent > imgStart) {
+                            // Progress within this image's specific scroll window
                             const localProgress = Math.min((slideSectionPercent - imgStart) / 0.33, 1);
                             
                             if (localProgress < 0.3) {
+                                // Stage A: Expansion (0% - 30% of image window)
                                 const expandFactor = localProgress / 0.3;
                                 opacity = expandFactor;
-                                scale = 0.2 + (expandFactor * 1.3);
+                                scale = 0.2 + (expandFactor * 1.3); // Scales up to 1.5
                                 x = 0;
                             } else if (localProgress >= 0.3 && localProgress < 0.7) {
+                                // Stage B: SUSTAIN (30% - 70% of image window)
                                 opacity = 1;
                                 scale = 1.5;
                                 x = 0;
                             } else {
+                                // Stage C: Contract and Move to Fixed Position (70% - 100%)
                                 const fixFactor = (localProgress - 0.7) / 0.3;
                                 opacity = 1;
-                                scale = 1.5 - (fixFactor * 0.5);
+                                scale = 1.5 - (fixFactor * 0.5); // Back to 1.0
                                 x = targetX[index] * fixFactor;
                             }
                         }
                         
+                        // Keep images visible once they have finished their animation sequence
                         if (slideSectionPercent > imgEnd) {
                             opacity = 1;
                             scale = 1;
                             x = targetX[index];
                         }
 
+                        // Outro logic for the very end of page scroll
                         if (outroPercent > 0) {
                             x += outroDirs[index].x * outroPercent;
                             y += outroDirs[index].y * outroPercent;

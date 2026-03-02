@@ -468,9 +468,9 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // CHANGE 1: Smooth Tagline movement to Center
+            // CHANGE 1: Center Tagline perfectly in viewport
             const movePercent = p1Percent;
-            // Moves from initial right position towards screen center
+            // Calculations to bring the right-aligned bottom text to center-center
             const translateX = -movePercent * 42; 
             const translateY = -movePercent * 35; 
             
@@ -483,6 +483,7 @@
                 subTextScale = 2.5 - (shrinkFactor * 0.7);
             }
             
+            // Using translate and scale to fix it exactly in middle
             subText.style.transform = `translate(${translateX}vw, ${translateY}vh) scale(${subTextScale})`;
 
             // PHASE 3: White Screen and "Why We Exist"
@@ -492,25 +493,24 @@
                 subText.style.opacity = 1 - (p3Percent * 5);
                 whyText.style.opacity = Math.min(p3Percent * 3, 1);
 
-                // CHANGE 2: "WHY WE EXIST ?" Zoom Out Animation
+                // CHANGE 2: "WHY WE EXIST ?" Zoom Out & Position relative to Navbar
                 let currentScale = 1;
-                let currentX = 0; // Relative to its centered position via CSS
+                let currentX = 0; 
                 let currentY = 0;
 
                 if (p3Percent < 0.6) {
-                    // Zoom out phase: starts large (5) and scales down to 1
+                    // Zoom out from front center
                     const zoomFactor = p3Percent / 0.6;
                     currentScale = 5 - (zoomFactor * 4);
                 } else {
-                    // Slide away phase: moves from center to top-left
+                    // Move to top left but stay below navbar (approx 12vh down)
                     const slideFactor = (p3Percent - 0.6) / 0.4;
                     currentX = -(slideFactor * 42) + "vw"; 
-                    currentY = -(slideFactor * 42) + "vh";
+                    currentY = -(slideFactor * 35) + "vh"; // Adjusted to stop before navbar
                     currentScale = 1 - (slideFactor * 0.7);
                 }
 
                 whyText.style.fontSize = "8rem";
-                // Combined transform: translate handles center offset + the slide motion
                 whyText.style.transform = `translate(calc(-50% + ${currentX}), calc(-50% + ${currentY})) scale(${currentScale})`;
 
                 if (p3Percent >= 0.98) {

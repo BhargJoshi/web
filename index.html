@@ -120,13 +120,13 @@
 
         .slide-img {
             position: absolute;
-            width: 600px;
-            height: 400px;
+            width: 400px;
+            height: 300px;
             object-fit: cover;
             border-radius: 10px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             opacity: 0;
-            transform: translateX(100%) scale(0.2);
+            will-change: transform, opacity;
         }
 
         nav {
@@ -367,7 +367,7 @@
         </div>
 
         <div class="hero-content" id="heroContent"> 
-            <h1 id="main-title"></h1>
+           <h1 id="main-title"></h1>
             <p id="sub-text"></p> 
         </div>
     </div>
@@ -379,7 +379,6 @@
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
-        
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
@@ -493,9 +492,9 @@
                     currentScale = 1;
                 } else {
                     const slideFactor = (p3Percent - 0.6) / 0.4;
-                    currentX = 50 - (slideFactor * 46); // Ends at Left 4%
-                    currentY = 50 - (slideFactor * 30); // Ends at Top 15% (Adjusted to avoid navbar)
-                    currentScale = 1 - (slideFactor * 0.7); 
+                    currentX = 50 - (slideFactor * 46); 
+                    currentY = 50 - (slideFactor * 30);
+                    currentScale = 1 - (slideFactor * 0.7);
                 }
 
                 whyText.style.left = `${currentX}%`;
@@ -516,40 +515,56 @@
                     scrollTag.style.color = "#000";
                 }
 
+                // Updated Slide Animation Logic
                 if (scrollPercent > 0.6) {
-                    const slideSectionPercent = (scrollPercent - 0.6) / 0.4; 
-                    const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
+                    const slideSectionPercent = (scrollPercent - 0.6) / 0.3; // Progress of image section
+                    const outroPercent = Math.max(0, (scrollPercent - 0.9) / 0.1); // Final scroll outro
                     
+                    const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
+                    const targetX = [-450, 0, 450]; // Positions: left, center, right
+                    const outroDirs = [{x: -500, y: -200}, {x: 0, y: -500}, {x: 500, y: 200}]; // Outro scatter directions
+
                     imgs.forEach((img, index) => {
-                        const start = index * 0.33;
-                        const end = (index + 1) * 0.33;
-                        
-                        if (slideSectionPercent >= start && slideSectionPercent < end) {
-                            const localProgress = (slideSectionPercent - start) / 0.33;
+                        const start = index * 0.25;
+                        const end = start + 0.4;
+                        let opacity = 0;
+                        let x = 0;
+                        let y = 0;
+                        let scale = 0.2;
+
+                        if (slideSectionPercent > start) {
+                            const localProgress = Math.min((slideSectionPercent - start) / 0.3, 1);
                             
-                            let xPos, scale, opacity;
-                            
-                            if (localProgress < 0.4) { 
-                                const enterFactor = localProgress / 0.4;
-                                xPos = 100 - (enterFactor * 100);
-                                scale = 0.2 + (enterFactor * 0.8);
-                                opacity = enterFactor;
-                            } else if (localProgress >= 0.4 && localProgress < 0.7) { 
-                                xPos = 0;
-                                scale = 1;
+                            // Expansion phase (center of screen)
+                            if (localProgress < 0.5) {
+                                const expandFactor = localProgress / 0.5;
+                                opacity = expandFactor;
+                                scale = 0.2 + (expandFactor * 1.3); // Expands up to 1.5
+                                x = 0;
+                            } 
+                            // Contraction and Fixing phase
+                            else {
+                                const fixFactor = (localProgress - 0.5) / 0.5;
                                 opacity = 1;
-                            } else { 
-                                const exitFactor = (localProgress - 0.7) / 0.3;
-                                xPos = -(exitFactor * 100);
-                                scale = 1 - (exitFactor * 0.8);
-                                opacity = 1 - exitFactor;
+                                scale = 1.5 - (fixFactor * 0.5); // Contracts back to 1.0
+                                x = targetX[index] * fixFactor; // Moves to assigned slot
                             }
-                            
-                            img.style.opacity = opacity;
-                            img.style.transform = `translateX(${xPos}%) scale(${scale})`;
-                        } else {
-                            img.style.opacity = 0;
                         }
+
+                        // Apply Outro Scatter
+                        if (outroPercent > 0) {
+                            x += outroDirs[index].x * outroPercent;
+                            y += outroDirs[index].y * outroPercent;
+                            opacity = 1 - outroPercent;
+                        }
+
+                        img.style.opacity = opacity;
+                        img.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+                    });
+                } else {
+                    // Reset images if scrolled back up
+                    [1, 2, 3].forEach(i => {
+                        document.getElementById(`img${i}`).style.opacity = 0;
                     });
                 }
 

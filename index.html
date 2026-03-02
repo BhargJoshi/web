@@ -85,6 +85,7 @@
             z-index: 15; 
             opacity: 0; 
             display: flex; 
+            flex-direction: column;
             justify-content: center; 
             align-items: center;
             pointer-events: none;
@@ -116,17 +117,18 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            gap: 20px;
+            padding: 0 5%;
         }
 
         .slide-img {
-            position: absolute;
-            width: 600px;
-            height: 400px;
+            width: 350px;
+            height: 450px;
             object-fit: cover;
             border-radius: 10px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             opacity: 0;
-            transform: translateX(100%) scale(0.2);
+            transition: opacity 0.3s ease;
         }
 
         nav {
@@ -359,7 +361,7 @@
         <div class="bg-white-page" id="bgWhite"> 
             <h2 id="why-text">WHY WE EXIST ?</h2> 
             
-            <div class="slideshow-container">
+            <div class="slideshow-container" id="slideCont">
                 <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800" class="slide-img" id="img1">
                 <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800" class="slide-img" id="img2">
                 <img src="https://images.unsplash.com/photo-1550966841-3ee7adac1af8?q=80&w=800" class="slide-img" id="img3">
@@ -379,7 +381,7 @@
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
-        
+
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
@@ -481,21 +483,15 @@
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
                 subText.style.opacity = 1 - (p3Percent * 5);
                 whyText.style.opacity = Math.min(p3Percent * 3, 1);
-                
-                let currentX = 50;
-                let currentY = 50; 
-                let currentScale = 1;
 
+                let currentX = 50, currentY = 50, currentScale = 1;
                 if (p3Percent < 0.3) {
-                    const localScaleFactor = p3Percent / 0.3;
-                    currentScale = 5 - (localScaleFactor * 4); 
-                } else if (p3Percent >= 0.3 && p3Percent < 0.6) {
-                    currentScale = 1;
-                } else {
+                    currentScale = 5 - ((p3Percent / 0.3) * 4); 
+                } else if (p3Percent >= 0.6) {
                     const slideFactor = (p3Percent - 0.6) / 0.4;
-                    currentX = 50 - (slideFactor * 46); // Ends at Left 4%
-                    currentY = 50 - (slideFactor * 30); // Ends at Top 15% (Adjusted to avoid navbar)
-                    currentScale = 1 - (slideFactor * 0.7); 
+                    currentX = 50 - (slideFactor * 46);
+                    currentY = 50 - (slideFactor * 30);
+                    currentScale = 1 - (slideFactor * 0.7);
                 }
 
                 whyText.style.left = `${currentX}%`;
@@ -508,49 +504,67 @@
                     bgWhite.style.backgroundColor = "#3d2b1f";
                     whyText.style.color = "#ffffff";
                     navbar.classList.remove('nav-black');
-                    scrollTag.style.color = "#fff";
                 } else {
                     bgWhite.style.backgroundColor = "#ffffff";
                     whyText.style.color = "#3d2b1f";
                     navbar.classList.add('nav-black');
-                    scrollTag.style.color = "#000";
                 }
 
+                // IMAGE TILES SECTION
                 if (scrollPercent > 0.6) {
-                    const slideSectionPercent = (scrollPercent - 0.6) / 0.4; 
+                    const imgPhase = (scrollPercent - 0.6) / 0.4; // 0 to 1
                     const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
                     
                     imgs.forEach((img, index) => {
-                        const start = index * 0.33;
-                        const end = (index + 1) * 0.33;
+                        img.style.opacity = 1;
                         
-                        if (slideSectionPercent >= start && slideSectionPercent < end) {
-                            const localProgress = (slideSectionPercent - start) / 0.33;
-                            
-                            let xPos, scale, opacity;
-                            
-                            if (localProgress < 0.4) { 
-                                const enterFactor = localProgress / 0.4;
-                                xPos = 100 - (enterFactor * 100);
-                                scale = 0.2 + (enterFactor * 0.8);
-                                opacity = enterFactor;
-                            } else if (localProgress >= 0.4 && localProgress < 0.7) { 
-                                xPos = 0;
+                        // Phase 1: All 3 visible as tiles (0 to 0.2)
+                        // Phase 2: Img 1 expands (0.2 to 0.4)
+                        // Phase 3: Img 2 expands (0.4 to 0.6)
+                        // Phase 4: Img 3 expands (0.6 to 0.8)
+                        // Phase 5: Exit (0.8 to 1.0)
+
+                        let xPos = 0, yPos = 0, scale = 1, opacity = 1;
+
+                        if (imgPhase <= 0.8) {
+                            const sectionSize = 0.2;
+                            const sectionStart = 0.2 + (index * sectionSize);
+                            const sectionEnd = sectionStart + sectionSize;
+
+                            if (imgPhase >= sectionStart && imgPhase < sectionEnd) {
+                                const sectionProgress = (imgPhase - sectionStart) / sectionSize;
+                                // Expand to center
+                                scale = 1 + (sectionProgress * 0.5);
+                                img.style.zIndex = 50;
+                            } else if (imgPhase >= sectionEnd) {
+                                // Stay expanded or return to normal depending on preference
+                                // Here we keep it at scale 1 after its turn to focus on next
                                 scale = 1;
-                                opacity = 1;
-                            } else { 
-                                const exitFactor = (localProgress - 0.7) / 0.3;
-                                xPos = -(exitFactor * 100);
-                                scale = 1 - (exitFactor * 0.8);
-                                opacity = 1 - exitFactor;
+                                img.style.zIndex = 10;
+                            } else {
+                                scale = 1;
+                                img.style.zIndex = 10;
                             }
-                            
-                            img.style.opacity = opacity;
-                            img.style.transform = `translateX(${xPos}%) scale(${scale})`;
                         } else {
-                            img.style.opacity = 0;
+                            // EXIT ANIMATION (Phase 5: 0.8 to 1.0)
+                            const exitProgress = (imgPhase - 0.8) / 0.2;
+                            if (index === 0) { // Left moves left
+                                xPos = -(exitProgress * 150);
+                                opacity = 1 - exitProgress;
+                            } else if (index === 1) { // Center fades
+                                opacity = 1 - exitProgress;
+                                scale = 1 - (exitProgress * 0.5);
+                            } else { // Right moves right
+                                xPos = exitProgress * 150;
+                                opacity = 1 - exitProgress;
+                            }
                         }
+                        
+                        img.style.opacity = opacity;
+                        img.style.transform = `translate(${xPos}%, ${yPos}%) scale(${scale})`;
                     });
+                } else {
+                    [1,2,3].forEach(i => document.getElementById(`img${i}`).style.opacity = 0);
                 }
 
             } else { 
@@ -558,7 +572,6 @@
                 whyText.style.opacity = 0;
                 subText.style.opacity = 1;
                 navbar.classList.remove('nav-black');
-                scrollTag.style.color = "#fff";
             } 
         });
     </script>

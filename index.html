@@ -120,7 +120,6 @@
 
         .slide-img {
             position: absolute;
-            /* Updated size for Change 1 */
             width: 320px;
             height: 240px;
             object-fit: cover;
@@ -443,6 +442,7 @@
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
 
+            // PHASE 1: Main title shrink and fade
             const p1Percent = Math.min(scrollPercent * 3.33, 1);
             const titleScale = 1 - (p1Percent * 0.85);
             const titleTopBase = 25;
@@ -463,6 +463,7 @@
                 navTitleSmall.style.opacity = 0;
             }
 
+            // PHASE 2: Tagline movement and Brown background sustain
             const subTextRight = 8 + (p1Percent * 42);
             const subTextBottom = 15 + (p1Percent * 35); 
             subText.style.right = `${subTextRight}%`;
@@ -477,8 +478,9 @@
             }
             subText.style.transform = `translate(${p1Percent * 50}%, ${p1Percent * 50}%) scale(${subTextScale})`;
 
-            if (scrollPercent > 0.3) { 
-                const p3Percent = Math.min((scrollPercent - 0.3) / 0.3, 1);
+            // INCREASE SUSTAIN: Shifted start from 0.3 to 0.5 to keep tagline centered longer
+            if (scrollPercent > 0.5) { 
+                const p3Percent = Math.min((scrollPercent - 0.5) / 0.2, 1);
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
                 subText.style.opacity = 1 - (p3Percent * 5);
                 whyText.style.opacity = Math.min(p3Percent * 3, 1);
@@ -517,19 +519,17 @@
                     scrollTag.style.color = "#000";
                 }
 
-                if (scrollPercent > 0.6) {
-                    const slideSectionPercent = (scrollPercent - 0.6) / 0.3;
+                // IMAGE ANIMATIONS
+                if (scrollPercent > 0.7) {
+                    const slideSectionPercent = (scrollPercent - 0.7) / 0.2;
                     const outroPercent = Math.max(0, (scrollPercent - 0.9) / 0.1);
                     
                     const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
-                    
-                    /* Change 2: Reduced targetX values to create more viewport padding */
                     const targetX = [-380, 0, 380]; 
                     const outroDirs = [{x: -500, y: -200}, {x: 0, y: -500}, {x: 500, y: 200}];
 
                     imgs.forEach((img, index) => {
                         const start = index * 0.25;
-                        const end = start + 0.4;
                         let opacity = 0;
                         let x = 0;
                         let y = 0;

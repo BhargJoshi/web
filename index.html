@@ -51,7 +51,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            filter: brightness(0.65); /* Change 3: Increased brightness slightly */
+            filter: brightness(0.5);
         }
 
         .video-overlay {
@@ -60,7 +60,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.25); /* Balanced overlay */
+            background: rgba(0,0,0,0.2);
             z-index: 2;
         }
 
@@ -286,7 +286,6 @@
 
         #sub-text {
             position: absolute;
-            /* Change 2: Better baseline positioning for smooth transition */
             bottom: 15%;
             right: 8%;
             font-size: 1.4rem;
@@ -294,10 +293,10 @@
             font-weight: 700; 
             max-width: 450px; 
             line-height: 1.4; 
+            transform-origin: center;
             text-transform: uppercase;
             transition: color 0.3s ease;
             text-align: right;
-            will-change: transform, opacity;
         }
 
         .scroll-indicator {
@@ -368,7 +367,7 @@
         </div>
 
         <div class="hero-content" id="heroContent"> 
-           <h1 id="main-title"></h1>
+            <h1 id="main-title"></h1>
             <p id="sub-text"></p> 
         </div>
     </div>
@@ -380,7 +379,7 @@
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
-        
+
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
@@ -464,18 +463,26 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // PHASE 2 & Change 2: Tagline movement (Smoothed)
-            // Using transform: translate for smoother motion rather than switching text-align
-            const moveProgress = Math.min(scrollPercent * 2.5, 1);
-            const translateX = moveProgress * -42; // Moves towards center horizontally
-            const translateY = moveProgress * -35; // Moves upwards
-            const subTextScale = 1 + (moveProgress * 0.8);
+            // PHASE 2: Smooth Tagline movement (Change 2)
+            // We use a continuous transform to avoid jumping. 
+            // Calculated as percentage of screen to move from Right to Center.
+            const movePercent = p1Percent; 
+            const subTextX = (1 - movePercent) * 0; // Relative to its initial right position
+            const subTextY = (movePercent * -35); // Move up slightly as it centers
 
-            subText.style.transform = `translate(${translateX}vw, ${translateY}vh) scale(${subTextScale})`;
-            
+            subText.style.textAlign = movePercent > 0.5 ? 'center' : 'right';
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
             
-            // PHASE 3: White background and "Why we exist"
+            let subTextScale = 1 + (p1Percent * 1.5);
+            if (scrollPercent > 0.1 && scrollPercent <= 0.4) {
+                const shrinkFactor = (scrollPercent - 0.1) / 0.3;
+                subTextScale = 2.5 - (shrinkFactor * 0.7);
+            }
+            
+            // Refined smooth transform
+            subText.style.transform = `translate(${-movePercent * 42}vw, ${subTextY}vh) scale(${subTextScale})`;
+
+            // PHASE 3: White Screen and "Why We Exist"
             if (scrollPercent > 0.5) { 
                 const p3Percent = Math.min((scrollPercent - 0.5) / 0.2, 1);
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
@@ -516,9 +523,9 @@
                     scrollTag.style.color = "#000";
                 }
 
-                // IMAGE ANIMATIONS & Change 1: Added Sustain
+                // IMAGE ANIMATIONS (Change 1: Sustain Logic)
                 if (scrollPercent > 0.7) {
-                    const slideSectionPercent = (scrollPercent - 0.7) / 0.2;
+                    const slideSectionPercent = (scrollPercent - 0.7) / 0.2; // Total duration 0.7 to 0.9
                     const outroPercent = Math.max(0, (scrollPercent - 0.9) / 0.1);
                     
                     const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
@@ -526,36 +533,47 @@
                     const outroDirs = [{x: -500, y: -200}, {x: 0, y: -500}, {x: 500, y: 200}];
 
                     imgs.forEach((img, index) => {
-                        const start = index * 0.25;
+                        // Divide the 0.7-0.9 scroll range into 3 parts for each image
+                        const imgStart = index * 0.33;
+                        const imgEnd = (index + 1) * 0.33;
+                        
                         let opacity = 0;
                         let x = 0;
                         let y = 0;
                         let scale = 0.2;
 
-                        if (slideSectionPercent > start) {
-                            const localProgress = Math.min((slideSectionPercent - start) / 0.4, 1);
+                        if (slideSectionPercent > imgStart) {
+                            // Progress within this image's specific scroll window
+                            const localProgress = Math.min((slideSectionPercent - imgStart) / 0.33, 1);
                             
                             if (localProgress < 0.3) {
-                                // Expansion phase
+                                // Stage A: Expansion (0% - 30% of image window)
                                 const expandFactor = localProgress / 0.3;
                                 opacity = expandFactor;
-                                scale = 0.2 + (expandFactor * 1.3);
+                                scale = 0.2 + (expandFactor * 1.3); // Scales up to 1.5
                                 x = 0;
                             } else if (localProgress >= 0.3 && localProgress < 0.7) {
-                                // CHANGE 1: SUSTAIN PHASE
-                                // Image stays at full size (scale 1.5) and center (x=0) for a while
+                                // Stage B: SUSTAIN (30% - 70% of image window)
                                 opacity = 1;
                                 scale = 1.5;
                                 x = 0;
                             } else {
-                                // Final positioning phase
+                                // Stage C: Contract and Move to Fixed Position (70% - 100%)
                                 const fixFactor = (localProgress - 0.7) / 0.3;
                                 opacity = 1;
-                                scale = 1.5 - (fixFactor * 0.5);
+                                scale = 1.5 - (fixFactor * 0.5); // Back to 1.0
                                 x = targetX[index] * fixFactor;
                             }
                         }
+                        
+                        // Keep images visible once they have finished their animation sequence
+                        if (slideSectionPercent > imgEnd) {
+                            opacity = 1;
+                            scale = 1;
+                            x = targetX[index];
+                        }
 
+                        // Outro logic for the very end of page scroll
                         if (outroPercent > 0) {
                             x += outroDirs[index].x * outroPercent;
                             y += outroDirs[index].y * outroPercent;

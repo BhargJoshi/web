@@ -99,9 +99,10 @@
             white-space: nowrap; 
             opacity: 0;
             position: absolute;
+            /* Center-origin for zoom out */
             left: 50%;
             top: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) scale(10);
             will-change: transform, opacity, color;
             transition: color 0.4s ease;
             z-index: 20;
@@ -175,10 +176,7 @@
             margin-right: 40px; 
         }
 
-        .nav-links li {
-            position: relative;
-        }
-
+        .nav-links li { position: relative; }
         .nav-links a {
             text-decoration: none;
             font-weight: 500;
@@ -187,54 +185,14 @@
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s;
         }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: currentColor;
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            transform: translateY(-5px);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-black {
-            background: rgba(255, 255, 255, 0.8);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
+        .nav-links a:hover { transform: translateY(-5px); }
+        .nav-black { background: rgba(255, 255, 255, 0.8); border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
         .nav-black a { color: #000 !important; }
-        .nav-black .menu-toggle div { background-color: #000 !important; }
         .nav-black .brand-logo { filter: invert(1); }
         .nav-black #nav-title-small { color: #000; }
 
-        .menu-toggle {
-            cursor: pointer;
-            display: flex;
-            flex-direction: column; 
-            gap: 6px; 
-            z-index: 1000; 
-            transition: 0.3s;
-        }
-
-        .menu-toggle div {
-            width: 30px;
-            height: 3px;
-            background-color: white; 
-            transition: all 0.4s ease; 
-        }
-
-        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); }
-        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); }
-        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); }
+        .menu-toggle { cursor: pointer; display: flex; flex-direction: column; gap: 6px; z-index: 1000; }
+        .menu-toggle div { width: 30px; height: 3px; background-color: white; transition: all 0.4s ease; }
 
         .side-menu {
             position: fixed;
@@ -253,26 +211,10 @@
         }
 
         .side-menu.active { right: 0; }
-
-        .side-menu a {
-            text-decoration: none;
-            font-size: 2.2rem;
-            margin: 15px 0; 
-            font-weight: 700; 
-            opacity: 0; 
-            transform: translateX(50px); 
-            transition: 0.4s;
-        }
-
+        .side-menu a { text-decoration: none; font-size: 2.2rem; margin: 15px 0; font-weight: 700; opacity: 0; transform: translateX(50px); transition: 0.4s; }
         .side-menu.active a { opacity: 1; transform: translateX(0); }
-        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
 
-        .hero-content {
-            position: relative;
-            width: 100%;
-            height: 100%; 
-            z-index: 20; 
-        }
+        .hero-content { position: relative; width: 100%; height: 100%; z-index: 20; }
 
         #main-title {
             position: absolute;
@@ -283,7 +225,6 @@
             font-weight: 800; 
             letter-spacing: 15px; 
             white-space: nowrap; 
-            transition: color 0.3s ease;
         }
 
         #sub-text {
@@ -295,10 +236,9 @@
             font-weight: 700; 
             max-width: 450px; 
             line-height: 1.4; 
-            transform-origin: center;
             text-transform: uppercase;
-            transition: color 0.3s ease;
             text-align: right;
+            will-change: transform, opacity;
         }
 
         .scroll-indicator {
@@ -323,7 +263,6 @@
             <img src="ex.jpg" alt="Logo" class="brand-logo" id="navLogo"> 
             <span id="nav-title-small">RESTRO</span>
         </div>
-        
         <div style="display: flex; align-items: center;">
             <ul class="nav-links">
                 <li><a href="#">Home</a></li> 
@@ -351,7 +290,6 @@
         <div class="bg-video-container">
             <video autoplay muted loop playsinline id="bgVideo">
                 <source src="Food Reel - Darío Idoate.mp4" type="video/mp4">
-                Your browser does not support the video tag.
             </video>
             <div class="video-overlay"></div>
         </div>
@@ -360,7 +298,6 @@
         
         <div class="bg-white-page" id="bgWhite"> 
             <h2 id="why-text">WHY WE EXIST ?</h2> 
-            
             <div class="slideshow-container">
                 <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800" class="slide-img" id="img1">
                 <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800" class="slide-img" id="img2">
@@ -375,9 +312,7 @@
     </div>
 
     <script>
-        window.onbeforeunload = function () {
-            window.scrollTo(0, 0);
-        };
+        window.onbeforeunload = function () { window.scrollTo(0, 0); };
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
@@ -385,20 +320,15 @@
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
-            
             function type() {
                 if (i < text.length) {
                     if (text.substring(i, i + 4) === "<br>") {
-                        element.innerHTML += "<br>";
-                        i += 4;
+                        element.innerHTML += "<br>"; i += 4;
                     } else {
-                        element.innerHTML += text.charAt(i);
-                        i++;
+                        element.innerHTML += text.charAt(i); i++;
                     }
                     setTimeout(type, speed);
-                } else if (callback) {
-                    callback();
-                }
+                } else if (callback) callback();
             }
             type();
         }
@@ -406,19 +336,7 @@
         window.addEventListener('load', () => {
             window.scrollTo(0, 0);
             const video = document.getElementById('bgVideo');
-            if (video) {
-                video.muted = true;
-                video.defaultMuted = true;
-                const playVideo = () => {
-                    video.play().then(() => {
-                        console.log("Video playing successfully");
-                    }).catch(() => {
-                        requestAnimationFrame(playVideo);
-                    });
-                };
-                playVideo();
-            }
-
+            if (video) { video.play().catch(() => {}); }
             typeWriter("main-title", titleText, 150, () => {
                 typeWriter("sub-text", taglineText, 50);
             });
@@ -446,12 +364,8 @@
 
             // PHASE 1: Main title shrink and fade
             const p1Percent = Math.min(scrollPercent * 3.33, 1);
-            const titleScale = 1 - (p1Percent * 0.85);
-            const titleTopBase = 25;
-            const titleTopTarget = 3.5;
-            const titleTop = titleTopBase - (p1Percent * (titleTopBase - titleTopTarget));
-            title.style.fontSize = `${12 * titleScale}rem`;
-            title.style.top = `${titleTop}%`;
+            title.style.fontSize = `${12 * (1 - (p1Percent * 0.85))}rem`;
+            title.style.top = `${25 - (p1Percent * 21.5)}%`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
             title.style.opacity = 1 - p1Percent;
 
@@ -464,135 +378,86 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // CHANGE 1: Subtext moves to Center as Brown Screen appears
+            // CHANGE 1 FIX: Smooth Center Move for Tagline 
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
             
-            // Calculate movement from initial right position to center
-            // Initial: bottom 15%, right 8%
-            // Target: Center (50% 50%)
-            const movePercent = p1Percent;
-            const subTextX = -movePercent * 42; // Moves towards horizontal center
-            const subTextY = -movePercent * 35; // Moves towards vertical center
+            // Initial Pos: Bottom 15%, Right 8% -> Center: translate to approx mid-screen
+            // Using viewport units for consistent centering across devices
+            const translateX = p1Percent * -34; // Moves right-to-center
+            const translateY = p1Percent * -35; // Moves bottom-to-center
+            const scale = 1 + (p1Percent * 1.5);
             
-            let subTextScale = 1;
-            if (scrollPercent > 0.1 && scrollPercent <= 0.4) {
-                const shrinkFactor = (scrollPercent - 0.1) / 0.3;
-                subTextScale = 1 + (shrinkFactor * 1.5); // Grows as it centers
-            } else if (scrollPercent > 0.4) {
-                subTextScale = 2.5;
-            }
-            
-            subText.style.textAlign = movePercent > 0.5 ? 'center' : 'right';
-            subText.style.transform = `translate(${subTextX}vw, ${subTextY}vh) scale(${subTextScale})`;
+            subText.style.transform = `translate(${translateX}vw, ${translateY}vh) scale(${scale})`;
+            subText.style.textAlign = p1Percent > 0.8 ? 'center' : 'right';
 
-            // PHASE 3: White Screen and "Why We Exist"
+            // PHASE 2 & 3: "WHY WE EXIST" Zoom Out [cite: 98, 101, 105]
             if (scrollPercent > 0.5) { 
                 const p3Percent = Math.min((scrollPercent - 0.5) / 0.2, 1);
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
                 subText.style.opacity = 1 - (p3Percent * 5);
-                whyText.style.opacity = Math.min(p3Percent * 3, 1);
+                
+                // Zoom-out logic: Starts at scale 10 and moves to 1 [cite: 101]
+                let zoomScale = 10 - (p3Percent * 9); 
+                let currentX = -50;
+                let currentY = -50;
 
-                // CHANGE 2: "WHY WE EXIST" Zoom Out Effect
-                // Starts very large (simulating being inside viewport) and scales down to normal
-                let currentScale = 1;
-                if (p3Percent < 0.6) {
-                    // Zooming out from 10x scale down to 1x
-                    currentScale = 10 - (p3Percent / 0.6 * 9);
-                } else {
-                    // After zooming out, perform the previous slide animation
+                // After zoom out (p3Percent > 0.6), start shifting to top-left [cite: 103, 104]
+                if (p3Percent > 0.6) {
                     const slideFactor = (p3Percent - 0.6) / 0.4;
-                    const finalX = 50 - (slideFactor * 46); 
-                    const finalY = 50 - (slideFactor * 30);
-                    const finalScale = 1 - (slideFactor * 0.7);
-                    
-                    whyText.style.left = `${finalX}%`;
-                    whyText.style.top = `${finalY}%`;
-                    whyText.style.transform = `translate(-${finalX}%, -${finalY}%) scale(${finalScale})`;
+                    currentX = -50 - (slideFactor * 46);
+                    currentY = -50 - (slideFactor * 42);
+                    zoomScale = 1 - (slideFactor * 0.7);
                 }
 
-                if (p3Percent < 0.6) {
-                    whyText.style.left = `50%`;
-                    whyText.style.top = `50%`;
-                    whyText.style.transform = `translate(-50%, -50%) scale(${currentScale})`;
-                }
-
-                whyText.style.fontSize = "8rem";
-                whyText.style.transformOrigin = "center center";
+                whyText.style.opacity = Math.min(p3Percent * 3, 1);
+                whyText.style.transform = `translate(${currentX}%, ${currentY}%) scale(${zoomScale})`;
 
                 if (p3Percent >= 0.98) {
                     bgWhite.style.backgroundColor = "#3d2b1f";
                     whyText.style.color = "#ffffff";
                     navbar.classList.remove('nav-black');
-                    scrollTag.style.color = "#fff";
                 } else {
                     bgWhite.style.backgroundColor = "#ffffff";
                     whyText.style.color = "#3d2b1f";
                     navbar.classList.add('nav-black');
-                    scrollTag.style.color = "#000";
                 }
 
-                // IMAGE ANIMATIONS
+                // IMAGE ANIMATIONS [cite: 108, 115, 128]
                 if (scrollPercent > 0.7) {
                     const slideSectionPercent = (scrollPercent - 0.7) / 0.2;
-                    const outroPercent = Math.max(0, (scrollPercent - 0.9) / 0.1);
                     const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
                     const targetX = [-380, 0, 380];
-                    const outroDirs = [{x: -500, y: -200}, {x: 0, y: -500}, {x: 500, y: 200}];
-
+                    
                     imgs.forEach((img, index) => {
                         const imgStart = index * 0.33;
-                        const imgEnd = (index + 1) * 0.33;
+                        const localProgress = Math.min(Math.max((slideSectionPercent - imgStart) / 0.33, 0), 1);
+                        
                         let opacity = 0;
                         let x = 0;
-                        let y = 0;
-                        let scale = 0.2;
+                        let s = 0.2;
 
-                        if (slideSectionPercent > imgStart) {
-                            const localProgress = Math.min((slideSectionPercent - imgStart) / 0.33, 1);
-                            if (localProgress < 0.3) {
-                                const expandFactor = localProgress / 0.3;
-                                opacity = expandFactor;
-                                scale = 0.2 + (expandFactor * 1.3);
-                                x = 0;
-                            } else if (localProgress >= 0.3 && localProgress < 0.7) {
-                                opacity = 1;
-                                scale = 1.5;
-                                x = 0;
-                            } else {
-                                const fixFactor = (localProgress - 0.7) / 0.3;
-                                opacity = 1;
-                                scale = 1.5 - (fixFactor * 0.5);
-                                x = targetX[index] * fixFactor;
-                            }
+                        if (localProgress > 0) {
+                            opacity = localProgress < 0.3 ? localProgress / 0.3 : 1;
+                            s = localProgress < 0.3 ? 0.2 + (localProgress/0.3 * 1.3) : (localProgress < 0.7 ? 1.5 : 1.5 - ((localProgress-0.7)/0.3 * 0.5));
+                            x = localProgress > 0.7 ? targetX[index] * ((localProgress-0.7)/0.3) : 0;
                         }
                         
-                        if (slideSectionPercent > imgEnd) {
-                            opacity = 1;
-                            scale = 1;
-                            x = targetX[index];
-                        }
-
-                        if (outroPercent > 0) {
-                            x += outroDirs[index].x * outroPercent;
-                            y += outroDirs[index].y * outroPercent;
-                            opacity = 1 - outroPercent;
+                        // Outro logic [cite: 125, 126]
+                        const outro = Math.max(0, (scrollPercent - 0.9) / 0.1);
+                        if (outro > 0) {
+                            x += (index === 0 ? -500 : (index === 2 ? 500 : 0)) * outro;
+                            opacity = 1 - outro;
                         }
 
                         img.style.opacity = opacity;
-                        img.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
-                    });
-                } else {
-                    [1, 2, 3].forEach(i => {
-                        document.getElementById(`img${i}`).style.opacity = 0;
+                        img.style.transform = `translate(${x}px, 0px) scale(${s})`;
                     });
                 }
-
             } else { 
                 bgWhite.style.opacity = 0;
                 whyText.style.opacity = 0;
                 subText.style.opacity = 1;
                 navbar.classList.remove('nav-black');
-                scrollTag.style.color = "#fff";
             } 
         });
     </script>

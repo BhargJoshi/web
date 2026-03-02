@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RESTRO</title>
     <style>
+        [cite_start]/* GLOBAL RESET: Removes default browser spacing and ensures consistent sizing across all elements[cite: 1, 2]. */
         * {
             margin: 0;
             padding: 0;
@@ -13,6 +13,7 @@
             color: #ffffff; 
         }
 
+        [cite_start]/* BODY CONFIGURATION: Sets a dark theme and a massive height (1000vh) to create a long scrollable area for animations[cite: 3]. */
         body {
             background-color: #000;
             height: 1000vh;
@@ -20,6 +21,7 @@
             font-family: 'Segoe UI', sans-serif; 
         }
 
+        [cite_start]/* VIEWPORT CONTAINER: Keeps the content fixed in the user's view while they scroll through the long body height[cite: 4, 5]. */
         .scroll-container {
             position: fixed;
             top: 0;
@@ -32,6 +34,7 @@
             overflow: hidden;
         }
 
+        [cite_start]/* VIDEO BACKGROUND: Positions the video to cover the entire screen behind all other content[cite: 6, 7]. */
         .bg-video-container {
             position: absolute;
             top: 0;
@@ -42,6 +45,7 @@
             overflow: hidden;
         }
 
+        [cite_start]/* VIDEO STYLING: Ensures the video maintains aspect ratio, centers it, and dims it for text readability[cite: 8, 9]. */
         .bg-video-container video {
             min-width: 100%;
             min-height: 100%;
@@ -55,6 +59,7 @@
             filter: brightness(0.5);
         }
 
+        [cite_start]/* VIDEO OVERLAY: Adds a subtle dark tint layer on top of the video to further enhance text contrast[cite: 10, 11]. */
         .video-overlay {
             position: absolute;
             top: 0;
@@ -65,6 +70,7 @@
             z-index: 2;
         }
 
+        [cite_start]/* TRANSITION LAYERS: A brown background that fades in during the middle of the scroll sequence[cite: 12, 13]. */
         .bg-brown {
             position: absolute;
             top: 0;
@@ -76,6 +82,7 @@
             opacity: 0;
         }
 
+        [cite_start]/* WHITE PAGE PHASE: A clean white canvas that appears at the end of the scroll for the "Why" section[cite: 14, 15]. */
         .bg-white-page {
             position: absolute;
             top: 0;
@@ -92,6 +99,7 @@
             transition: background-color 0.4s ease;
         }
 
+        [cite_start]/* CORE TEXT STYLING: Large, impactful typography for the "WHY WE EXIST?" message[cite: 16, 17, 18]. */
         #why-text {
             color: #3d2b1f;
             font-family: 'Impact', 'Arial Black', sans-serif;
@@ -106,6 +114,7 @@
             z-index: 20;
         }
 
+        [cite_start]/* SLIDESHOW AREA: Holds the images that pop up during the final scroll phase[cite: 19, 20]. */
         .slideshow-container {
             position: absolute;
             width: 100%;
@@ -119,6 +128,7 @@
             align-items: center;
         }
 
+        [cite_start]/* SLIDE IMAGE STYLING: Defines the size and look of the animated food/restaurant images[cite: 21, 22]. */
         .slide-img {
             position: absolute;
             width: 320px;
@@ -130,6 +140,7 @@
             will-change: transform, opacity;
         }
 
+        [cite_start]/* NAVIGATION BAR: A persistent header with glassmorphism (blur) effect[cite: 23, 24, 25]. */
         nav {
             position: fixed;
             top: 0;
@@ -146,95 +157,32 @@
             transition: background 0.3s, border-bottom 0.3s;
         }
 
+        [cite_start]/* BRANDING: Container for the small logo and restaurant name in the navbar[cite: 26, 27, 28, 29, 30]. */
         .brand-container {
             display: flex;
             align-items: center;
             gap: 15px;
         }
+        .brand-logo { height: 35px; width: auto; opacity: 0; transition: filter 0.3s ease, opacity 0.3s ease; }
+        #nav-title-small { font-size: 1.5rem; font-weight: 800; letter-spacing: 2px; opacity: 0; transition: color 0.3s ease, opacity 0.3s ease; }
 
-        .brand-logo {
-            height: 35px;
-            width: auto;
-            opacity: 0; 
-            transition: filter 0.3s ease, opacity 0.3s ease;
-        }
+        [cite_start]/* NAV LINKS: Horizontal menu items with hover animations[cite: 31, 32, 33, 34, 35, 36, 37, 38]. */
+        .nav-links { list-style: none; display: flex; gap: 40px; margin-right: 40px; }
+        .nav-links a { text-decoration: none; font-weight: 500; font-size: 1.1rem; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s; }
+        .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: currentColor; transition: width 0.3s ease; }
+        .nav-links a:hover::after { width: 100%; }
 
-        #nav-title-small {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            opacity: 0;
-            transition: color 0.3s ease, opacity 0.3s ease;
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 40px; 
-            margin-right: 40px; 
-        }
-
-        .nav-links li {
-            position: relative;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1rem; 
-            display: inline-block; 
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: currentColor;
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            transform: translateY(-5px);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-black {
-            background: rgba(255, 255, 255, 0.8);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-black a { color: #000 !important; }
+        [cite_start]/* NAV DARK MODE: Switches navbar colors when scrolling over the white section[cite: 39, 40, 41, 42, 43]. */
+        .nav-black { background: rgba(255, 255, 255, 0.8); border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+        .nav-black a, .nav-black #nav-title-small { color: #000 !important; }
         .nav-black .menu-toggle div { background-color: #000 !important; }
         .nav-black .brand-logo { filter: invert(1); }
-        .nav-black #nav-title-small { color: #000; }
 
-        .menu-toggle {
-            cursor: pointer;
-            display: flex;
-            flex-direction: column; 
-            gap: 6px; 
-            z-index: 1000; 
-            transition: 0.3s;
-        }
+        [cite_start]/* HAMBURGER TOGGLE: The three-line icon used to open the side menu[cite: 44, 45, 46, 47, 48, 49]. */
+        .menu-toggle { cursor: pointer; display: flex; flex-direction: column; gap: 6px; z-index: 1000; }
+        .menu-toggle div { width: 30px; height: 3px; background-color: white; transition: all 0.4s ease; }
 
-        .menu-toggle div {
-            width: 30px;
-            height: 3px;
-            background-color: white; 
-            transition: all 0.4s ease; 
-        }
-
-        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); }
-        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); }
-        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); }
-
+        [cite_start]/* SIDE MENU: The slide-out menu panel for mobile/extended navigation[cite: 50, 51, 52, 53, 54, 55, 56, 57]. */
         .side-menu {
             position: fixed;
             top: 0;
@@ -250,67 +198,17 @@
             padding: 60px; 
             transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
         }
-
         .side-menu.active { right: 0; }
-
-        .side-menu a {
-            text-decoration: none;
-            font-size: 2.2rem;
-            margin: 15px 0; 
-            font-weight: 700; 
-            opacity: 0; 
-            transform: translateX(50px); 
-            transition: 0.4s;
-        }
-
+        .side-menu a { text-decoration: none; font-size: 2.2rem; margin: 15px 0; font-weight: 700; opacity: 0; transform: translateX(50px); transition: 0.4s; }
         .side-menu.active a { opacity: 1; transform: translateX(0); }
-        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
 
-        .hero-content {
-            position: relative;
-            width: 100%;
-            height: 100%; 
-            z-index: 20; 
-        }
+        [cite_start]/* HERO CONTENT: Positioning for the dynamic typewriter titles[cite: 58, 59, 60, 61, 62]. */
+        .hero-content { position: relative; width: 100%; height: 100%; z-index: 20; }
+        #main-title { position: absolute; top: 25%; left: 4%; font-size: 12rem; font-weight: 800; letter-spacing: 15px; white-space: nowrap; }
+        #sub-text { position: absolute; bottom: 15%; right: 8%; font-size: 1.4rem; max-width: 450px; text-transform: uppercase; text-align: right; }
 
-        #main-title {
-            position: absolute;
-            top: 25%;
-            left: 4%;
-            transform: translateY(-50%); 
-            font-size: 12rem;
-            font-weight: 800; 
-            letter-spacing: 15px; 
-            white-space: nowrap; 
-            transition: color 0.3s ease;
-        }
-
-        #sub-text {
-            position: absolute;
-            bottom: 15%;
-            right: 8%;
-            font-size: 1.4rem;
-            font-family: 'Kollektif', 'Segoe UI', sans-serif;
-            font-weight: 700; 
-            max-width: 450px; 
-            line-height: 1.4; 
-            transform-origin: center;
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-            text-align: right;
-        }
-
-        .scroll-indicator {
-            position: fixed;
-            bottom: 20px;
-            left: 50%; 
-            transform: translateX(-50%); 
-            font-size: 0.8rem; 
-            opacity: 0.5; 
-            z-index: 100; 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
-        }
+        [cite_start]/* SCROLL TAG: A simple floating label to prompt user action[cite: 63, 64]. */
+        .scroll-indicator { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 0.8rem; opacity: 0.5; z-index: 100; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -322,7 +220,6 @@
             <img src="ex.jpg" alt="Logo" class="brand-logo" id="navLogo"> 
             <span id="nav-title-small">RESTRO</span>
         </div>
-        
         <div style="display: flex; align-items: center;">
             <ul class="nav-links">
                 <li><a href="#">Home</a></li> 
@@ -330,9 +227,7 @@
                 <li><a href="#">About</a></li>
             </ul>
             <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()"> 
-                <div id="line1"></div> 
-                <div id="line2"></div> 
-                <div id="line3"></div>
+                <div id="line1"></div> <div id="line2"></div> <div id="line3"></div>
             </div> 
         </div>
     </nav>
@@ -350,16 +245,13 @@
         <div class="bg-video-container">
             <video autoplay muted loop playsinline id="bgVideo">
                 <source src="Food Reel - Darío Idoate.mp4" type="video/mp4">
-                Your browser does not support the video tag.
             </video>
             <div class="video-overlay"></div>
         </div>
         
         <div class="bg-brown" id="bgBrown"></div> 
-        
         <div class="bg-white-page" id="bgWhite"> 
             <h2 id="why-text">WHY WE EXIST ?</h2> 
-            
             <div class="slideshow-container">
                 <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800" class="slide-img" id="img1">
                 <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800" class="slide-img" id="img2">
@@ -368,66 +260,57 @@
         </div>
 
         <div class="hero-content" id="heroContent"> 
-            <h1 id="main-title"></h1>
+           <h1 id="main-title"></h1>
             <p id="sub-text"></p> 
         </div>
     </div>
 
     <script>
-        window.onbeforeunload = function () {
-            window.scrollTo(0, 0);
-        };
+        [cite_start]/* PAGE RESET: Ensures the user starts at the top of the page on refresh[cite: 71]. */
+        window.onbeforeunload = function () { window.scrollTo(0, 0); };
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
 
+        [cite_start]/* TYPEWRITER FUNCTION: Animates text appearing character by character for the hero titles[cite: 72, 73, 74, 75, 76, 77, 78]. */
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
-            
             function type() {
                 if (i < text.length) {
                     if (text.substring(i, i + 4) === "<br>") {
-                        element.innerHTML += "<br>";
-                        i += 4;
+                        element.innerHTML += "<br>"; i += 4;
                     } else {
-                        element.innerHTML += text.charAt(i);
-                        i++;
+                        element.innerHTML += text.charAt(i); i++;
                     }
                     setTimeout(type, speed);
-                } else if (callback) {
-                    callback();
-                }
+                } else if (callback) { callback(); }
             }
             type();
         }
 
+        [cite_start]/* INITIALIZATION: Plays the video and starts the typewriter sequence once the page loads[cite: 79, 80, 81]. */
         window.addEventListener('load', () => {
             window.scrollTo(0, 0);
             const video = document.getElementById('bgVideo');
             if (video) {
-                video.muted = true;
-                video.defaultMuted = true;
                 const playVideo = () => {
-                    video.play().then(() => {
-                        console.log("Video playing successfully");
-                    }).catch(() => {
-                        requestAnimationFrame(playVideo);
-                    });
+                    video.play().catch(() => { requestAnimationFrame(playVideo); });
                 };
                 playVideo();
             }
-
             typeWriter("main-title", titleText, 150, () => {
                 typeWriter("sub-text", taglineText, 50);
             });
         });
 
+        [cite_start]/* MENU TOGGLE: Handles the opening/closing logic for the side navigation[cite: 82, 83]. */
         function toggleMenu() {
             document.getElementById('sideMenu').classList.toggle('active');
             document.getElementById('menuToggle').classList.toggle('open');
         }
 
+        [cite_start]/* SCROLL ENGINE: The core logic that maps scroll position to visual changes[cite: 84]. */
         window.addEventListener('scroll', () => { 
             const scrollY = window.scrollY;
             const maxScroll = document.body.offsetHeight - window.innerHeight;
@@ -443,18 +326,14 @@
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
 
-            // PHASE 1: Main title shrink and fade
+            [cite_start]/* PHASE 1: Main Title Shrink/Fade. As user scrolls, the big "RESTRO" vanishes[cite: 85, 86, 87]. */
             const p1Percent = Math.min(scrollPercent * 3.33, 1);
             const titleScale = 1 - (p1Percent * 0.85);
-            const titleTopBase = 25;
-            const titleTopTarget = 3.5;
-            const titleTop = titleTopBase - (p1Percent * (titleTopBase - titleTopTarget));
-            
             title.style.fontSize = `${12 * titleScale}rem`;
-            title.style.top = `${titleTop}%`;
-            title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
+            title.style.top = `${25 - (p1Percent * 21.5)}%`;
             title.style.opacity = 1 - p1Percent;
 
+            [cite_start]/* NAV FADE: Brings in the small navbar brand elements as the main title leaves[cite: 88, 89, 90]. */
             if (scrollPercent > 0.2) {
                 const navFade = Math.min((scrollPercent - 0.2) * 5, 1);
                 navLogo.style.opacity = navFade;
@@ -464,42 +343,30 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // PHASE 2: Smooth Tagline movement (Change 2)
-            // We use a continuous transform to avoid jumping. 
-            // Calculated as percentage of screen to move from Right to Center.
-            const movePercent = p1Percent; 
-            const subTextX = (1 - movePercent) * 0; // Relative to its initial right position
-            const subTextY = (movePercent * -35); // Move up slightly as it centers
-
+            /* PHASE 2: Tagline Movement. [cite_start]Centers the tagline and turns the background brown[cite: 91, 92, 93, 94]. */
+            const movePercent = p1Percent;
+            const subTextY = (movePercent * -35);
             subText.style.textAlign = movePercent > 0.5 ? 'center' : 'right';
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
             
             let subTextScale = 1 + (p1Percent * 1.5);
             if (scrollPercent > 0.1 && scrollPercent <= 0.4) {
-                const shrinkFactor = (scrollPercent - 0.1) / 0.3;
-                subTextScale = 2.5 - (shrinkFactor * 0.7);
+                subTextScale = 2.5 - (((scrollPercent - 0.1) / 0.3) * 0.7);
             }
-            
-            // Refined smooth transform
             subText.style.transform = `translate(${-movePercent * 42}vw, ${subTextY}vh) scale(${subTextScale})`;
 
-            // PHASE 3: White Screen and "Why We Exist"
+            /* PHASE 3: White Screen & "Why We Exist". [cite_start]The layout shifts to high-contrast white[cite: 97, 98, 99]. */
             if (scrollPercent > 0.5) { 
                 const p3Percent = Math.min((scrollPercent - 0.5) / 0.2, 1);
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
                 subText.style.opacity = 1 - (p3Percent * 5);
                 whyText.style.opacity = Math.min(p3Percent * 3, 1);
 
-                let currentX = 50;
-                let currentY = 50; 
-                let currentScale = 1;
-
+                [cite_start]/* TEXT ZOOM & SLIDE: "Why We Exist" zooms out and moves to the top-left[cite: 100, 101, 102, 103, 104, 105]. */
+                let currentX = 50, currentY = 50, currentScale = 1;
                 if (p3Percent < 0.3) {
-                    const localScaleFactor = p3Percent / 0.3;
-                    currentScale = 5 - (localScaleFactor * 4); 
-                } else if (p3Percent >= 0.3 && p3Percent < 0.6) {
-                    currentScale = 1;
-                } else {
+                    currentScale = 5 - ((p3Percent / 0.3) * 4); 
+                } else if (p3Percent >= 0.6) {
                     const slideFactor = (p3Percent - 0.6) / 0.4;
                     currentX = 50 - (slideFactor * 46); 
                     currentY = 50 - (slideFactor * 30);
@@ -510,92 +377,67 @@
                 whyText.style.top = `${currentY}%`;
                 whyText.style.fontSize = "8rem";
                 whyText.style.transform = `translate(-${currentX}%, -${currentY}%) scale(${currentScale})`;
-                whyText.style.transformOrigin = "top left";
 
+                [cite_start]/* COLOR THEME SWAP: Changes text/nav colors to black for visibility on white background[cite: 106, 107, 108]. */
                 if (p3Percent >= 0.98) {
                     bgWhite.style.backgroundColor = "#3d2b1f";
                     whyText.style.color = "#ffffff";
                     navbar.classList.remove('nav-black');
-                    scrollTag.style.color = "#fff";
                 } else {
                     bgWhite.style.backgroundColor = "#ffffff";
                     whyText.style.color = "#3d2b1f";
                     navbar.classList.add('nav-black');
-                    scrollTag.style.color = "#000";
                 }
 
-                // IMAGE ANIMATIONS (Change 1: Sustain Logic)
+                [cite_start]/* IMAGE ANIMATIONS: Sequentially grows and positions 3 images[cite: 109, 110, 111, 112, 113, 114]. */
                 if (scrollPercent > 0.7) {
-                    const slideSectionPercent = (scrollPercent - 0.7) / 0.2; // Total duration 0.7 to 0.9
+                    const slideSectionPercent = (scrollPercent - 0.7) / 0.2;
                     const outroPercent = Math.max(0, (scrollPercent - 0.9) / 0.1);
-                    
                     const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
-                    const targetX = [-380, 0, 380]; 
+                    const targetX = [-380, 0, 380];
                     const outroDirs = [{x: -500, y: -200}, {x: 0, y: -500}, {x: 500, y: 200}];
 
                     imgs.forEach((img, index) => {
-                        // Divide the 0.7-0.9 scroll range into 3 parts for each image
                         const imgStart = index * 0.33;
                         const imgEnd = (index + 1) * 0.33;
-                        
-                        let opacity = 0;
-                        let x = 0;
-                        let y = 0;
-                        let scale = 0.2;
+                        let opacity = 0, x = 0, y = 0, scale = 0.2;
 
                         if (slideSectionPercent > imgStart) {
-                            // Progress within this image's specific scroll window
                             const localProgress = Math.min((slideSectionPercent - imgStart) / 0.33, 1);
                             
+                            [cite_start]/* STAGE A, B, C: Handles Expand -> Stay -> Move to Side logic[cite: 115, 116, 117, 118, 119, 120, 121, 122, 123]. */
                             if (localProgress < 0.3) {
-                                // Stage A: Expansion (0% - 30% of image window)
                                 const expandFactor = localProgress / 0.3;
                                 opacity = expandFactor;
-                                scale = 0.2 + (expandFactor * 1.3); // Scales up to 1.5
-                                x = 0;
-                            } else if (localProgress >= 0.3 && localProgress < 0.7) {
-                                // Stage B: SUSTAIN (30% - 70% of image window)
-                                opacity = 1;
-                                scale = 1.5;
-                                x = 0;
+                                scale = 0.2 + (expandFactor * 1.3);
+                            } else if (localProgress < 0.7) {
+                                opacity = 1; scale = 1.5;
                             } else {
-                                // Stage C: Contract and Move to Fixed Position (70% - 100%)
                                 const fixFactor = (localProgress - 0.7) / 0.3;
-                                opacity = 1;
-                                scale = 1.5 - (fixFactor * 0.5); // Back to 1.0
+                                opacity = 1; scale = 1.5 - (fixFactor * 0.5);
                                 x = targetX[index] * fixFactor;
                             }
                         }
                         
-                        // Keep images visible once they have finished their animation sequence
-                        if (slideSectionPercent > imgEnd) {
-                            opacity = 1;
-                            scale = 1;
-                            x = targetX[index];
-                        }
-
-                        // Outro logic for the very end of page scroll
+                        [cite_start]/* SUSTAIN & OUTRO: Keeps images visible and handles the final exit[cite: 124, 125, 126, 127, 128]. */
+                        if (slideSectionPercent > imgEnd) { opacity = 1; scale = 1; x = targetX[index]; }
                         if (outroPercent > 0) {
                             x += outroDirs[index].x * outroPercent;
                             y += outroDirs[index].y * outroPercent;
                             opacity = 1 - outroPercent;
                         }
-
                         img.style.opacity = opacity;
                         img.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
                     });
                 } else {
-                    [1, 2, 3].forEach(i => {
-                        document.getElementById(`img${i}`).style.opacity = 0;
-                    });
+                    [1, 2, 3].forEach(i => document.getElementById(`img${i}`).style.opacity = 0);
                 }
-
             } else { 
+                [cite_start]/* RESET STATE: Reverts animations if user scrolls back up[cite: 129, 130]. */
                 bgWhite.style.opacity = 0;
                 whyText.style.opacity = 0;
                 subText.style.opacity = 1;
                 navbar.classList.remove('nav-black');
-                scrollTag.style.color = "#fff";
             } 
         });
     </script>

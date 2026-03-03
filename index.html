@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -167,7 +168,7 @@
             font-weight: 800;
             letter-spacing: 2px;
             opacity: 0;
-            transition: color 0.3s ease, opacity 0.3s ease;
+            transition: color 0.3s ease, opacity 0.3s x;
         }
 
         .nav-links {
@@ -448,28 +449,18 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // --- SECTION 2: TAGLINE SUSTAINED FIXED POSITION (CHANGE 1) ---
+            // --- SECTION 2: SUB-TEXT CENTER & SHRINK ---
             bgBrown.style.opacity = Math.min(scrollPercent * 3, 1);
-            
-            // Move to center
             const centerProgress = Math.min(scrollPercent * 2, 1); 
             const subX = centerProgress * -42; 
             const subY = centerProgress * -35;
             let subScale = 1;
 
             if (scrollPercent > 0.2) {
-                // HOLDING PHASE: Between 0.2 and 0.4 scroll, the text stays in center
-                if (scrollPercent <= 0.4) {
-                    const sustainFactor = (scrollPercent - 0.2) / 0.2;
-                    // Very mild minimization while fixed
-                    subScale = 2.5 - (sustainFactor * 0.3); 
-                } else {
-                    // SCROLL AWAY PHASE: Fades and minimizes further
-                    const exitFactor = Math.min((scrollPercent - 0.4) / 0.1, 1);
-                    subScale = 2.2 - (exitFactor * 1.2);
-                }
+                // Modified for Change 1: Shrink less and slower (only down to 0.75)
+                const shrinkRange = Math.min((scrollPercent - 0.2) / 0.25, 1);
+                subScale = 2.5 - (shrinkRange * 1.75); 
             } else {
-                // INITIAL ZOOM: Moving to center
                 subScale = 1 + (scrollPercent * 7.5);
             }
 
@@ -477,12 +468,12 @@
             subText.style.transform = `translate(${subX}vw, ${subY}vh) scale(${subScale})`;
             
             let subTextOpacity = 1;
-            if (scrollPercent > 0.45) {
-                subTextOpacity = 1 - (scrollPercent - 0.45) * 15;
+            if (scrollPercent > 0.35) {
+                subTextOpacity = 1 - (scrollPercent - 0.35) * 10;
             }
             subText.style.opacity = Math.max(0, subTextOpacity);
 
-            // --- SECTION 3: "WHY WE EXIST" BOUNDARY CONTROL (CHANGE 2) ---
+            // --- SECTION 3: WHITE PAGE & "WHY WE EXIST" ---
             if (scrollPercent > 0.45) { 
                 const p3Percent = Math.min((scrollPercent - 0.45) / 0.25, 1);
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
@@ -499,11 +490,11 @@
                     currentScale = 1;
                 } else {
                     const slideFactor = (p3Percent - 0.6) / 0.4;
-                    // Boundaries: calc logic prevents it from going off viewport or into navbar
-                    currentX = slideFactor * -30; // Caps movement to left
-                    currentY = slideFactor * -28; // Caps movement upwards to stay below taskbar
-                    currentScale = 1 - (slideFactor * 0.4);
-                    if(slideFactor >= 1) textFixed = true;
+                    // Modified for Change 2: Adjusted X and Y to keep space from top/left
+                    currentX = slideFactor * -40; 
+                    currentY = slideFactor * -35;
+                    currentScale = 1 - (slideFactor * 0.5);
+                    if(slideFactor >= 1) textFixed = true; 
                 }
 
                 whyText.style.transform = `translate(calc(-50% + ${currentX}vw), calc(-50% + ${currentY}vh)) scale(${currentScale})`;

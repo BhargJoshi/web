@@ -167,7 +167,7 @@
             font-weight: 800;
             letter-spacing: 2px;
             opacity: 0;
-            transition: color 0.3s ease, opacity 0.3s ease;
+            transition: color 0.3s ease, opacity 0.3s x;
         }
 
         .nav-links {
@@ -428,7 +428,7 @@
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
 
-            // --- MAIN TITLE LOGIC ---
+            // --- SECTION 1: MAIN TITLE MOVES TO NAV ---
             const p1Percent = Math.min(scrollPercent * 4, 1);
             const titleScale = 1 - (p1Percent * 0.88);
             const startY = window.innerHeight * 0.25;
@@ -447,18 +447,16 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // --- CHANGE 1: SUB-TEXT CENTER & MINIMIZE ---
+            // --- SECTION 2: SUB-TEXT CENTER & SHRINK ---
             bgBrown.style.opacity = Math.min(scrollPercent * 3, 1);
             
             const centerProgress = Math.min(scrollPercent * 2, 1); 
-            // Move from bottom-right to absolute center of screen
             const subX = centerProgress * -42; 
             const subY = centerProgress * -35; 
             
             let subScale = 1;
             if (scrollPercent > 0.2) {
-                // Stay centered and shrink as user scrolls further
-                const shrinkRange = Math.min((scrollPercent - 0.2) / 0.5, 1);
+                const shrinkRange = Math.min((scrollPercent - 0.2) / 0.25, 1);
                 subScale = 2.5 - (shrinkRange * 2.0); 
             } else {
                 subScale = 1 + (scrollPercent * 7.5);
@@ -467,22 +465,24 @@
             subText.style.textAlign = centerProgress > 0.8 ? 'center' : 'right';
             subText.style.transform = `translate(${subX}vw, ${subY}vh) scale(${subScale})`;
             
-            if (scrollPercent > 0.6) {
-                subText.style.opacity = 1 - (scrollPercent - 0.6) * 8;
-            } else {
-                subText.style.opacity = 1;
+            // FADE OUT SUB-TEXT COMPLETELY by 0.45 scroll mark
+            let subTextOpacity = 1;
+            if (scrollPercent > 0.35) {
+                subTextOpacity = 1 - (scrollPercent - 0.35) * 10;
             }
+            subText.style.opacity = Math.max(0, subTextOpacity);
 
-            // --- CHANGE 2: WHY WE EXIST & SEQUENTIAL IMAGES ---
-            let textFixed = false;
-            if (scrollPercent > 0.5) { 
-                const p3Percent = Math.min((scrollPercent - 0.5) / 0.2, 1);
+            // --- SECTION 3: WHITE PAGE & "WHY WE EXIST" ---
+            // Only trigger this section once sub-text is gone (at scrollPercent > 0.45)
+            if (scrollPercent > 0.45) { 
+                const p3Percent = Math.min((scrollPercent - 0.45) / 0.25, 1);
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
                 whyText.style.opacity = Math.min(p3Percent * 3, 1);
 
                 let currentScale = 5;
                 let currentX = 0;
                 let currentY = 0;
+                let textFixed = false;
 
                 if (p3Percent < 0.3) {
                     currentScale = 5 - (p3Percent / 0.3 * 4);
@@ -493,7 +493,7 @@
                     currentX = slideFactor * -43; 
                     currentY = slideFactor * -38;
                     currentScale = 1 - (slideFactor * 0.5);
-                    if(slideFactor >= 1) textFixed = true; // Text is now in top-left
+                    if(slideFactor >= 1) textFixed = true; 
                 }
 
                 whyText.style.transform = `translate(calc(-50% + ${currentX}vw), calc(-50% + ${currentY}vh)) scale(${currentScale})`;
@@ -508,27 +508,21 @@
                     navbar.classList.add('nav-black');
                 }
 
-                // IMAGE SEQUENCING LOGIC
+                // IMAGE SEQUENCING (Triggered only after text is fixed and we scroll more)
                 const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
                 const targetX = [-380, 0, 380];
                 
-                if (textFixed && scrollPercent > 0.7) {
-                    const imgProgress = Math.min((scrollPercent - 0.7) / 0.3, 1);
+                if (textFixed && scrollPercent > 0.72) {
+                    const imgProgress = Math.min((scrollPercent - 0.72) / 0.25, 1);
                     
-                    // Each image gets a 0.33 chunk of the progress
                     imgs.forEach((img, i) => {
                         const start = i * 0.33;
                         const end = (i + 1) * 0.33;
                         
                         if (imgProgress > start) {
-                            // Calculate local progress for THIS image (0 to 1)
                             const local = Math.min((imgProgress - start) / 0.33, 1);
-                            
-                            // Fade in
                             img.style.opacity = local;
                             
-                            // Slide logic: only slide out to side once fully faded in
-                            // Or keep the original logic but make it sequential
                             let x = local > 0.7 ? targetX[i] * ((local - 0.7) / 0.3) : 0;
                             let scale = 1.5 - (local > 0.7 ? (local - 0.7) / 0.3 * 0.5 : 0);
                             

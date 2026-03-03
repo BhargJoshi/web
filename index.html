@@ -14,7 +14,6 @@
 
         body {
             background-color: #000;
-            /* Fix 1: Reduced excessive scroll length */
             height: 500vh;
             overflow-x: hidden; 
             font-family: 'Segoe UI', sans-serif; 
@@ -52,8 +51,6 @@
             left: 50%;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            /* Fix 8: Optimized by using a dark overlay instead of a heavy filter if needed, 
-               but kept filter here for visual consistency; added will-change */
             filter: brightness(0.5);
             will-change: transform;
         }
@@ -103,10 +100,10 @@
             white-space: nowrap; 
             opacity: 0;
             position: absolute;
-            /* Fix 4: Permanently centered to avoid jitter/shaking */
+            /* Change 3: Initial position starts centered for expansion, then moves to specific top-left */
             left: 50%;
             top: 50%;
-            font-size: 8rem;
+            font-size: 6rem;
             transform: translate(-50%, -50%) scale(5);
             will-change: transform, opacity;
             transition: color 0.4s ease;
@@ -181,10 +178,7 @@
             margin-right: 40px; 
         }
 
-        .nav-links li {
-            position: relative;
-        }
-
+        .nav-links li { position: relative; }
         .nav-links a {
             text-decoration: none;
             font-weight: 500;
@@ -204,20 +198,13 @@
             transition: width 0.3s ease;
         }
 
-        .nav-links a:hover {
-            transform: translateY(-5px);
-        }
+        .nav-links a:hover { transform: translateY(-5px); }
+        .nav-links a:hover::after { width: 100%; }
 
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Fix 7: Navbar classes for smooth transition */
         .nav-black {
             background: rgba(255, 255, 255, 0.9) !important;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
-
         .nav-black a { color: #000 !important; }
         .nav-black .menu-toggle div { background-color: #000 !important; }
         .nav-black .brand-logo { filter: invert(1); }
@@ -260,7 +247,6 @@
         }
 
         .side-menu.active { right: 0; }
-
         .side-menu a {
             text-decoration: none;
             font-size: 2.2rem;
@@ -270,7 +256,6 @@
             transform: translateX(50px); 
             transition: 0.4s;
         }
-
         .side-menu.active a { opacity: 1; transform: translateX(0); }
         .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
 
@@ -284,7 +269,7 @@
 
         #main-title {
             position: absolute;
-            /* Fix 3: Using transform for vertical positioning instead of 'top' */
+            /* Change 1: Set to match navbar text position eventually */
             top: 25%;
             left: 4%;
             font-size: 12rem;
@@ -292,6 +277,7 @@
             letter-spacing: 15px; 
             white-space: nowrap; 
             will-change: transform, opacity;
+            transform-origin: left top;
         }
 
         #sub-text {
@@ -304,7 +290,6 @@
             max-width: 450px; 
             line-height: 1.4; 
             text-transform: uppercase;
-            /* Fix 10: Constant alignment to avoid layout jumps */
             text-align: right;
             will-change: transform, opacity;
         }
@@ -360,7 +345,6 @@
         <div class="bg-video-container">
             <video autoplay muted loop playsinline id="bgVideo">
                 <source src="Food Reel - Darío Idoate.mp4" type="video/mp4">
-                Your browser does not support the video tag.
             </video>
             <div class="video-overlay"></div>
         </div>
@@ -384,10 +368,7 @@
     </div>
 
     <script>
-        // Optimization: Handle initial scroll state
-        window.onbeforeunload = function () {
-            window.scrollTo(0, 0);
-        };
+        window.onbeforeunload = function () { window.scrollTo(0, 0); };
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
@@ -395,20 +376,15 @@
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
-            
             function type() {
                 if (i < text.length) {
                     if (text.substring(i, i + 4) === "<br>") {
-                        element.innerHTML += "<br>";
-                        i += 4;
+                        element.innerHTML += "<br>"; i += 4;
                     } else {
-                        element.innerHTML += text.charAt(i);
-                        i++;
+                        element.innerHTML += text.charAt(i); i++;
                     }
                     setTimeout(type, speed);
-                } else if (callback) {
-                    callback();
-                }
+                } else if (callback) { callback(); }
             }
             type();
         }
@@ -416,13 +392,7 @@
         window.addEventListener('load', () => {
             window.scrollTo(0, 0);
             const video = document.getElementById('bgVideo');
-            if (video) {
-                video.muted = true;
-                video.play().catch(() => {
-                    console.log("Autoplay prevented; waiting for interaction.");
-                });
-            }
-
+            if (video) video.play().catch(() => {});
             typeWriter("main-title", titleText, 150, () => {
                 typeWriter("sub-text", taglineText, 50);
             });
@@ -433,7 +403,6 @@
             document.getElementById('menuToggle').classList.toggle('open');
         }
 
-        // Fix 2: requestAnimationFrame throttling for smooth 60fps
         let ticking = false;
         window.addEventListener('scroll', () => {
             if (!ticking) {
@@ -447,7 +416,6 @@
 
         function updateAnimations() {
             const scrollY = window.scrollY;
-            // Fix 5: Use documentElement.scrollHeight for mobile stability
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPercent = Math.max(0, Math.min(scrollY / maxScroll, 1));
             
@@ -457,51 +425,59 @@
             const bgWhite = document.getElementById('bgWhite');
             const whyText = document.getElementById('why-text');
             const navbar = document.getElementById('navbar');
-            const scrollTag = document.getElementById('scrollTag');
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
 
-            // PHASE 1: Main title shrink and fade (0.0 to 0.3)
-            const p1Percent = Math.min(scrollPercent * 3.33, 1);
-            const titleScale = 1 - (p1Percent * 0.7);
-            const titleY = p1Percent * -150; // Move up via transform
+            // CHANGE 1: Main title moves to Top-Left. 
+            // Target: top ~20px, left ~4%. Initial: top 25%, left 4%.
+            const p1Percent = Math.min(scrollPercent * 4, 1); // Completes early
+            const titleScale = 1 - (p1Percent * 0.88); // Shrinks to nav size
             
-            title.style.transform = `translateY(${titleY}px) scale(${titleScale})`;
+            // Calculate movement from 25% height to ~20px height
+            const startY = window.innerHeight * 0.25;
+            const endY = 28; // Navbar center alignment
+            const moveY = (endY - startY) * p1Percent;
+            
+            title.style.transform = `translateY(${moveY}px) scale(${titleScale})`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
-            title.style.opacity = 1 - (p1Percent * 1.2);
+            title.style.opacity = 1 - (p1Percent * 0.9); // Slight fade but visible until nav takes over
 
-            // Navbar Fade In
-            if (scrollPercent > 0.15) {
-                const navFade = Math.min((scrollPercent - 0.15) * 5, 1);
-                navLogo.style.opacity = navFade;
-                navTitleSmall.style.opacity = navFade;
+            // Show Nav elements ONLY when title arrives
+            if (p1Percent >= 0.95) {
+                navLogo.style.opacity = 1;
+                navTitleSmall.style.opacity = 1;
+                title.style.opacity = 0;
             } else {
                 navLogo.style.opacity = 0;
                 navTitleSmall.style.opacity = 0;
             }
 
-            // PHASE 2: Subtext movement (using transforms only)
-            bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
+            // CHANGE 2: Sub-text moves to center when Brown background fades in
+            bgBrown.style.opacity = Math.min(scrollPercent * 3, 1);
             
-            let subTextScale = 1;
-            if (scrollPercent <= 0.4) {
-                subTextScale = 1 + (scrollPercent * 3);
+            // Center movement begins after initial scroll
+            const centerProgress = Math.min(scrollPercent * 2, 1);
+            const subX = centerProgress * -42; // vw
+            const subY = centerProgress * -35; // vh
+            
+            // Continuous shrinking while centered
+            let subScale = 1;
+            if (scrollPercent > 0.2) {
+                // Shrinks gradually over 0.2 to 0.6 scroll range
+                const shrinkRange = Math.min((scrollPercent - 0.2) / 0.4, 1);
+                subScale = 2.5 - (shrinkRange * 1.8);
             } else {
-                const shrinkFactor = Math.min((scrollPercent - 0.4) / 0.2, 1);
-                subTextScale = 2.2 - (shrinkFactor * 1.2);
+                subScale = 1 + (scrollPercent * 7.5); // Grows initially for impact
             }
-            
-            const movePercent = Math.min(scrollPercent * 2, 1);
-            const subTextX = movePercent * -42; // vw
-            const subTextY = movePercent * -35; // vh
-            
-            subText.style.transform = `translate(${subTextX}vw, ${subTextY}vh) scale(${subTextScale})`;
 
-            // PHASE 3: White Screen and "Why We Exist"
+            subText.style.transform = `translate(${subX}vw, ${subY}vh) scale(${subScale})`;
+            // Fade out subtext when white screen arrives
+            if (scrollPercent > 0.5) subText.style.opacity = 1 - (scrollPercent - 0.5) * 10;
+
+            // CHANGE 3: "WHY WE EXIST" Positioning
             if (scrollPercent > 0.5) { 
                 const p3Percent = Math.min((scrollPercent - 0.5) / 0.2, 1);
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
-                subText.style.opacity = 1 - (p3Percent * 4);
                 whyText.style.opacity = Math.min(p3Percent * 3, 1);
 
                 let currentScale = 5;
@@ -509,96 +485,48 @@
                 let currentY = 0;
 
                 if (p3Percent < 0.3) {
-                    const localScaleFactor = p3Percent / 0.3;
-                    currentScale = 5 - (localScaleFactor * 4); 
-                } else if (p3Percent >= 0.3 && p3Percent < 0.6) {
+                    currentScale = 5 - (p3Percent / 0.3 * 4); 
+                } else if (p3Percent < 0.6) {
                     currentScale = 1;
                 } else {
+                    // Transition to fixed top-left (below navbar)
                     const slideFactor = (p3Percent - 0.6) / 0.4;
-                    currentX = slideFactor * -45; // move left
-                    currentY = slideFactor * -35; // move up
-                    currentScale = 1 - (slideFactor * 0.6);
+                    currentX = slideFactor * -43; // horizontal shift to left
+                    currentY = slideFactor * -38; // vertical shift to below navbar
+                    currentScale = 1 - (slideFactor * 0.5);
                 }
 
-                // Fix 4: Applying all movement through one transform string
                 whyText.style.transform = `translate(calc(-50% + ${currentX}vw), calc(-50% + ${currentY}vh)) scale(${currentScale})`;
 
-                // Fix 7: Progressive Navbar Styling
                 if (p3Percent >= 0.9) {
                     bgWhite.style.backgroundColor = "#3d2b1f";
                     whyText.style.color = "#ffffff";
                     navbar.classList.remove('nav-black');
-                    scrollTag.style.color = "#fff";
                 } else {
                     bgWhite.style.backgroundColor = "#ffffff";
                     whyText.style.color = "#3d2b1f";
                     navbar.classList.add('nav-black');
-                    scrollTag.style.color = "#000";
                 }
 
-                // IMAGE ANIMATIONS (Fix 6: Expanded window 0.65 to 0.95)
+                // Image logic (restored for flow)
                 if (scrollPercent > 0.65) {
-                    const slideSectionPercent = Math.min((scrollPercent - 0.65) / 0.25, 1);
-                    const outroPercent = Math.max(0, (scrollPercent - 0.92) / 0.08);
-                    
+                    const slideSec = Math.min((scrollPercent - 0.65) / 0.25, 1);
                     const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
                     const targetX = [-380, 0, 380];
-                    const outroDirs = [{x: -500, y: -200}, {x: 0, y: -500}, {x: 500, y: 200}];
-
-                    imgs.forEach((img, index) => {
-                        const imgStart = index * 0.25;
-                        const imgEnd = (index + 1) * 0.33;
-                        
-                        let opacity = 0;
-                        let x = 0;
-                        let y = 0;
-                        let scale = 0.2;
-
-                        if (slideSectionPercent > imgStart) {
-                            const localProgress = Math.min((slideSectionPercent - imgStart) / 0.33, 1);
-                            
-                            if (localProgress < 0.3) {
-                                const expandFactor = localProgress / 0.3;
-                                opacity = expandFactor;
-                                scale = 0.2 + (expandFactor * 1.3);
-                            } else if (localProgress >= 0.3 && localProgress < 0.7) {
-                                opacity = 1;
-                                scale = 1.5;
-                            } else {
-                                const fixFactor = (localProgress - 0.7) / 0.3;
-                                opacity = 1;
-                                scale = 1.5 - (fixFactor * 0.5);
-                                x = targetX[index] * fixFactor;
-                            }
+                    imgs.forEach((img, i) => {
+                        const start = i * 0.25;
+                        if (slideSec > start) {
+                            const local = Math.min((slideSec - start) / 0.33, 1);
+                            img.style.opacity = local < 0.3 ? local / 0.3 : 1;
+                            let x = local > 0.7 ? targetX[i] * ((local - 0.7) / 0.3) : 0;
+                            img.style.transform = `translateX(${x}px) scale(${1.5 - (local > 0.7 ? (local-0.7)/0.3 * 0.5 : 0)})`;
                         }
-                        
-                        if (slideSectionPercent > imgEnd) {
-                            opacity = 1;
-                            scale = 1;
-                            x = targetX[index];
-                        }
-
-                        if (outroPercent > 0) {
-                            x += outroDirs[index].x * outroPercent;
-                            y += outroDirs[index].y * outroPercent;
-                            opacity = 1 - outroPercent;
-                        }
-
-                        img.style.opacity = opacity;
-                        img.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
-                    });
-                } else {
-                    [1, 2, 3].forEach(i => {
-                        document.getElementById(`img${i}`).style.opacity = 0;
                     });
                 }
-
             } else { 
                 bgWhite.style.opacity = 0;
                 whyText.style.opacity = 0;
-                subText.style.opacity = 1;
                 navbar.classList.remove('nav-black');
-                scrollTag.style.color = "#fff";
             } 
         }
     </script>

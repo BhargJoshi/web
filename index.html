@@ -371,6 +371,7 @@
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
+
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
@@ -432,7 +433,7 @@
             const p1Percent = Math.min(scrollPercent * 4, 1);
             const titleScale = 1 - (p1Percent * 0.88);
             const startY = window.innerHeight * 0.25;
-            const endY = 28; 
+            const endY = 28;
             const moveY = (endY - startY) * p1Percent;
             title.style.transform = `translateY(${moveY}px) scale(${titleScale})`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
@@ -449,15 +450,15 @@
 
             // --- SECTION 2: SUB-TEXT CENTER & SHRINK ---
             bgBrown.style.opacity = Math.min(scrollPercent * 3, 1);
-            
             const centerProgress = Math.min(scrollPercent * 2, 1); 
             const subX = centerProgress * -42; 
-            const subY = centerProgress * -35; 
-            
+            const subY = centerProgress * -35;
             let subScale = 1;
+
             if (scrollPercent > 0.2) {
+                // Modified for Change 1: Shrink less and slower (only down to 0.75)
                 const shrinkRange = Math.min((scrollPercent - 0.2) / 0.25, 1);
-                subScale = 2.5 - (shrinkRange * 2.0); 
+                subScale = 2.5 - (shrinkRange * 1.75); 
             } else {
                 subScale = 1 + (scrollPercent * 7.5);
             }
@@ -465,7 +466,6 @@
             subText.style.textAlign = centerProgress > 0.8 ? 'center' : 'right';
             subText.style.transform = `translate(${subX}vw, ${subY}vh) scale(${subScale})`;
             
-            // FADE OUT SUB-TEXT COMPLETELY by 0.45 scroll mark
             let subTextOpacity = 1;
             if (scrollPercent > 0.35) {
                 subTextOpacity = 1 - (scrollPercent - 0.35) * 10;
@@ -473,7 +473,6 @@
             subText.style.opacity = Math.max(0, subTextOpacity);
 
             // --- SECTION 3: WHITE PAGE & "WHY WE EXIST" ---
-            // Only trigger this section once sub-text is gone (at scrollPercent > 0.45)
             if (scrollPercent > 0.45) { 
                 const p3Percent = Math.min((scrollPercent - 0.45) / 0.25, 1);
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
@@ -490,8 +489,9 @@
                     currentScale = 1;
                 } else {
                     const slideFactor = (p3Percent - 0.6) / 0.4;
-                    currentX = slideFactor * -43; 
-                    currentY = slideFactor * -38;
+                    // Modified for Change 2: Adjusted X and Y to keep space from top/left
+                    currentX = slideFactor * -40; 
+                    currentY = slideFactor * -35;
                     currentScale = 1 - (slideFactor * 0.5);
                     if(slideFactor >= 1) textFixed = true; 
                 }
@@ -508,13 +508,11 @@
                     navbar.classList.add('nav-black');
                 }
 
-                // IMAGE SEQUENCING (Triggered only after text is fixed and we scroll more)
                 const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
                 const targetX = [-380, 0, 380];
                 
                 if (textFixed && scrollPercent > 0.72) {
                     const imgProgress = Math.min((scrollPercent - 0.72) / 0.25, 1);
-                    
                     imgs.forEach((img, i) => {
                         const start = i * 0.33;
                         const end = (i + 1) * 0.33;
@@ -522,10 +520,8 @@
                         if (imgProgress > start) {
                             const local = Math.min((imgProgress - start) / 0.33, 1);
                             img.style.opacity = local;
-                            
                             let x = local > 0.7 ? targetX[i] * ((local - 0.7) / 0.3) : 0;
                             let scale = 1.5 - (local > 0.7 ? (local - 0.7) / 0.3 * 0.5 : 0);
-                            
                             img.style.transform = `translateX(${x}px) scale(${scale})`;
                         } else {
                             img.style.opacity = 0;

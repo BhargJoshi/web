@@ -202,10 +202,6 @@
             transform: translateY(-5px);
         }
 
-        .nav-black a:hover {
-            color: #3d2b1f !important;
-        }
-
         .nav-links a:hover::after {
             width: 100%;
         }
@@ -299,10 +295,10 @@
             font-weight: 700; 
             max-width: 450px; 
             line-height: 1.4; 
-            transform-origin: center;
             text-transform: uppercase;
             transition: color 0.3s ease;
             text-align: right;
+            transform-origin: center;
         }
 
         .scroll-indicator {
@@ -448,10 +444,8 @@
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
 
-            // PHASE 1 & 2: Main title and Tagline
+            // PHASE 1: Main title shrink and fade
             const p1Percent = Math.min(scrollPercent * 3.33, 1);
-            
-            // Title Animation
             const titleScale = 1 - (p1Percent * 0.85);
             const titleTopBase = 25;
             const titleTopTarget = 3.5;
@@ -462,7 +456,6 @@
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
             title.style.opacity = 1 - p1Percent;
 
-            // Nav Elements reveal
             if (scrollPercent > 0.2) {
                 const navFade = Math.min((scrollPercent - 0.2) * 5, 1);
                 navLogo.style.opacity = navFade;
@@ -472,12 +465,15 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // Tagline Transition to Center (Change 1 Fix)
+            // PHASE 2: Tagline movement - Fixed centering logic
             const movePercent = p1Percent;
-            // Move from right:8%, bottom:15% to center:50%, top:50%
-            const subTextX = (movePercent * -42); // Adjusts horizontal offset to center
-            const subTextY = (movePercent * -35); // Adjusts vertical offset to center
             
+            // Initial positioning is bottom 15%, right 8%
+            // Target is viewport center (50%, 50%)
+            // We calculate the translation required to hit the true center of the screen
+            const subTextX = - (movePercent * 34) + (movePercent * 0); 
+            const subTextY = - (movePercent * 35); 
+
             subText.style.textAlign = movePercent > 0.5 ? 'center' : 'right';
             bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
             
@@ -487,9 +483,10 @@
                 subTextScale = 2.5 - (shrinkFactor * 0.7);
             }
             
+            // Applying transform to reach the center regardless of laptop screen size
             subText.style.transform = `translate(${subTextX}vw, ${subTextY}vh) scale(${subTextScale})`;
 
-            // PHASE 3: White Screen and "Why We Exist" Zoom (Change 2 Fix)
+            // PHASE 3: White Screen and "Why We Exist"
             if (scrollPercent > 0.5) { 
                 const p3Percent = Math.min((scrollPercent - 0.5) / 0.2, 1);
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
@@ -497,27 +494,31 @@
                 whyText.style.opacity = Math.min(p3Percent * 3, 1);
 
                 let currentScale = 1;
-                let currentXOffset = 0;
-                let currentYOffset = 0;
+                let translateX = "-50%";
+                let translateY = "-50%";
+                let leftPos = "50%";
+                let topPos = "50%";
 
                 if (p3Percent < 0.3) {
-                    // Zoom Out Effect: Starts huge (5.0) and scales down to 1.0
-                    const zoomFactor = p3Percent / 0.3;
-                    currentScale = 5 - (zoomFactor * 4); 
+                    const localScaleFactor = p3Percent / 0.3;
+                    currentScale = 5 - (localScaleFactor * 4); 
                 } else if (p3Percent >= 0.3 && p3Percent < 0.6) {
-                    // Sustain at center
                     currentScale = 1;
                 } else {
-                    // Move to top-left for images
                     const slideFactor = (p3Percent - 0.6) / 0.4;
-                    currentXOffset = -(slideFactor * 46); 
-                    currentYOffset = -(slideFactor * 30);
-                    currentScale = 1 - (slideFactor * 0.7);
+                    // Move to top-left, but keep it within viewport (below navbar)
+                    leftPos = `${50 - (slideFactor * 46)}%`; 
+                    topPos = `${50 - (slideFactor * 38)}%`; // Adjusted to stay below taskbar
+                    currentScale = 1 - (slideFactor * 0.75);
+                    translateX = "0%";
+                    translateY = "0%";
                 }
 
+                whyText.style.left = leftPos;
+                whyText.style.top = topPos;
                 whyText.style.fontSize = "8rem";
-                // Combined transform: Initial center translate + zoom/slide transforms
-                whyText.style.transform = `translate(calc(-50% + ${currentXOffset}vw), calc(-50% + ${currentYOffset}vh)) scale(${currentScale})`;
+                whyText.style.transform = `translate(${translateX}, ${translateY}) scale(${currentScale})`;
+                whyText.style.transformOrigin = "top left";
 
                 if (p3Percent >= 0.98) {
                     bgWhite.style.backgroundColor = "#3d2b1f";
@@ -549,7 +550,6 @@
 
                         if (slideSectionPercent > imgStart) {
                             const localProgress = Math.min((slideSectionPercent - imgStart) / 0.33, 1);
-                            
                             if (localProgress < 0.3) {
                                 const expandFactor = localProgress / 0.3;
                                 opacity = expandFactor;

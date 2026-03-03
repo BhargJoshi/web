@@ -51,7 +51,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            filter: brightness(0.8);
+            filter: brightness(0.5);
             will-change: transform;
         }
 
@@ -167,7 +167,7 @@
             font-weight: 800;
             letter-spacing: 2px;
             opacity: 0;
-            transition: color 0.3s ease, opacity 0.3s x;
+            transition: color 0.3s ease, opacity 0.3s ease;
         }
 
         .nav-links {
@@ -448,7 +448,7 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // --- SECTION 2: SUB-TEXT CENTER & SHRINK ---
+            // --- SECTION 2: SUB-TEXT CENTER & FIXED SHRINK (CHANGE 1) ---
             bgBrown.style.opacity = Math.min(scrollPercent * 3, 1);
             const centerProgress = Math.min(scrollPercent * 2, 1); 
             const subX = centerProgress * -42; 
@@ -456,9 +456,9 @@
             let subScale = 1;
 
             if (scrollPercent > 0.2) {
-                // Modified for Change 1: Shrink less and slower (only down to 0.75)
-                const shrinkRange = Math.min((scrollPercent - 0.2) / 0.25, 1);
-                subScale = 2.5 - (shrinkRange * 1.75); 
+                // Shrink slowly while staying fixed in center
+                const shrinkRange = Math.min((scrollPercent - 0.2) / 0.3, 1);
+                subScale = 2.5 - (shrinkRange * 1.7); // Ends at 0.8 scale instead of disappearing early
             } else {
                 subScale = 1 + (scrollPercent * 7.5);
             }
@@ -466,13 +466,14 @@
             subText.style.textAlign = centerProgress > 0.8 ? 'center' : 'right';
             subText.style.transform = `translate(${subX}vw, ${subY}vh) scale(${subScale})`;
             
+            // Delayed fade out so it stays visible while "fixed"
             let subTextOpacity = 1;
-            if (scrollPercent > 0.35) {
-                subTextOpacity = 1 - (scrollPercent - 0.35) * 10;
+            if (scrollPercent > 0.42) {
+                subTextOpacity = 1 - (scrollPercent - 0.42) * 12;
             }
             subText.style.opacity = Math.max(0, subTextOpacity);
 
-            // --- SECTION 3: WHITE PAGE & "WHY WE EXIST" ---
+            // --- SECTION 3: WHITE PAGE & "WHY WE EXIST" (CHANGE 2) ---
             if (scrollPercent > 0.45) { 
                 const p3Percent = Math.min((scrollPercent - 0.45) / 0.25, 1);
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
@@ -489,11 +490,11 @@
                     currentScale = 1;
                 } else {
                     const slideFactor = (p3Percent - 0.6) / 0.4;
-                    // Modified for Change 2: Adjusted X and Y to keep space from top/left
-                    currentX = slideFactor * -50; 
-                    currentY = slideFactor * -35;
-                    currentScale = 1 - (slideFactor * 0.5);
-                    if(slideFactor >= 1) textFixed = true; 
+                    // Adjusted X and Y to keep space from top/left boundary
+                    currentX = slideFactor * -35; // Moved less to the left
+                    currentY = slideFactor * -32; // Moved less to the top (stay below nav)
+                    currentScale = 1 - (slideFactor * 0.45);
+                    if(slideFactor >= 1) textFixed = true;
                 }
 
                 whyText.style.transform = `translate(calc(-50% + ${currentX}vw), calc(-50% + ${currentY}vh)) scale(${currentScale})`;

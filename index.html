@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RESTRO</title>
+    <title>RESTRO | Premium Experience</title>
     <style>
         * {
             margin: 0;
@@ -13,12 +12,31 @@
             color: #ffffff; 
         }
 
+        html {
+            /* Enable Smooth Snapping */
+            scroll-snap-type: y proximity;
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: #000;
-            height: 1000vh;
+            height: 500vh; /* Optimized height for better pacing */
             overflow-x: hidden; 
             font-family: 'Segoe UI', sans-serif; 
         }
+
+        /* Snap Points */
+        .snap-point {
+            position: absolute;
+            height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+            pointer-events: none;
+        }
+
+        #snap-1 { top: 0; }
+        #snap-2 { top: 200vh; } /* Snaps to Why We Exist */
+        #snap-3 { top: 400vh; } /* Snaps to Image Sequence */
 
         .scroll-container {
             position: fixed;
@@ -52,17 +70,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            filter: brightness(0.5);
-        }
-
-        .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.2);
-            z-index: 2;
+            filter: brightness(0.6);
         }
 
         .bg-brown {
@@ -74,6 +82,7 @@
             background-color: #3d2b1f; 
             z-index: 3; 
             opacity: 0;
+            will-change: opacity;
         }
 
         .bg-white-page {
@@ -85,11 +94,8 @@
             background-color: #ffffff; 
             z-index: 15; 
             opacity: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
             pointer-events: none;
-            transition: background-color 0.4s ease;
+            will-change: opacity, background-color;
         }
 
         #why-text {
@@ -100,23 +106,12 @@
             white-space: nowrap; 
             opacity: 0;
             position: absolute;
-            transform-origin: center center;
+            left: 50%;
+            top: 50%;
+            font-size: 8rem;
+            transform: translate(-50%, -50%) scale(5);
             will-change: transform, opacity, color;
-            transition: color 0.4s ease;
             z-index: 20;
-        }
-
-        .slideshow-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 18;
-            pointer-events: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .slide-img {
@@ -127,7 +122,11 @@
             border-radius: 10px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             opacity: 0;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
             will-change: transform, opacity;
+            z-index: 18;
         }
 
         nav {
@@ -143,20 +142,23 @@
             backdrop-filter: blur(15px); 
             -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background 0.3s, border-bottom 0.3s;
+            transition: background 0.4s ease, border-bottom 0.4s ease;
         }
 
-        .brand-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .nav-black {
+            background: rgba(255, 255, 255, 0.9) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
+
+        .nav-black * { color: #000 !important; }
+        .nav-black .menu-toggle div { background-color: #000 !important; }
+        .nav-black .brand-logo { filter: invert(1); }
 
         .brand-logo {
             height: 35px;
             width: auto;
             opacity: 0; 
-            transition: filter 0.3s ease, opacity 0.3s ease;
+            transition: opacity 0.3s ease;
         }
 
         #nav-title-small {
@@ -164,7 +166,7 @@
             font-weight: 800;
             letter-spacing: 2px;
             opacity: 0;
-            transition: color 0.3s ease, opacity 0.3s ease;
+            transition: opacity 0.3s ease;
         }
 
         .nav-links {
@@ -174,54 +176,18 @@
             margin-right: 40px; 
         }
 
-        .nav-links li {
-            position: relative;
-        }
-
         .nav-links a {
             text-decoration: none;
             font-weight: 500;
             font-size: 1.1rem; 
-            display: inline-block; 
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s;
+            transition: transform 0.3s ease;
         }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: currentColor;
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            transform: translateY(-5px);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-black {
-            background: rgba(255, 255, 255, 0.8);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-black a { color: #000 !important; }
-        .nav-black .menu-toggle div { background-color: #000 !important; }
-        .nav-black .brand-logo { filter: invert(1); }
-        .nav-black #nav-title-small { color: #000; }
 
         .menu-toggle {
             cursor: pointer;
             display: flex;
             flex-direction: column; 
             gap: 6px; 
-            z-index: 1000; 
-            transition: 0.3s;
         }
 
         .menu-toggle div {
@@ -230,10 +196,6 @@
             background-color: white; 
             transition: all 0.4s ease; 
         }
-
-        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); }
-        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); }
-        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); }
 
         .side-menu {
             position: fixed;
@@ -253,36 +215,15 @@
 
         .side-menu.active { right: 0; }
 
-        .side-menu a {
-            text-decoration: none;
-            font-size: 2.2rem;
-            margin: 15px 0; 
-            font-weight: 700; 
-            opacity: 0; 
-            transform: translateX(50px); 
-            transition: 0.4s;
-        }
-
-        .side-menu.active a { opacity: 1; transform: translateX(0); }
-        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
-
-        .hero-content {
-            position: relative;
-            width: 100%;
-            height: 100%; 
-            z-index: 20; 
-        }
-
         #main-title {
             position: absolute;
             top: 25%;
             left: 4%;
-            transform: translateY(-50%); 
             font-size: 12rem;
             font-weight: 800; 
             letter-spacing: 15px; 
             white-space: nowrap; 
-            transition: color 0.3s ease;
+            will-change: transform, opacity;
         }
 
         #sub-text {
@@ -290,14 +231,12 @@
             bottom: 15%;
             right: 8%;
             font-size: 1.4rem;
-            font-family: 'Kollektif', 'Segoe UI', sans-serif;
             font-weight: 700; 
             max-width: 450px; 
             line-height: 1.4; 
-            transform-origin: center;
             text-transform: uppercase;
-            transition: color 0.3s ease;
             text-align: right;
+            will-change: transform, opacity;
         }
 
         .scroll-indicator {
@@ -315,10 +254,14 @@
 </head>
 <body>
 
+    <div class="snap-point" id="snap-1"></div>
+    <div class="snap-point" id="snap-2"></div>
+    <div class="snap-point" id="snap-3"></div>
+
     <div class="scroll-indicator" id="scrollTag">Scroll Down</div> 
 
     <nav id="navbar">
-        <div class="brand-container">
+        <div class="brand-container" style="display: flex; align-items: center; gap: 15px;">
             <img src="ex.jpg" alt="Logo" class="brand-logo" id="navLogo"> 
             <span id="nav-title-small">RESTRO</span>
         </div>
@@ -330,274 +273,145 @@
                 <li><a href="#">About</a></li>
             </ul>
             <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()"> 
-                <div id="line1"></div> 
-                <div id="line2"></div> 
-                <div id="line3"></div>
+                <div></div><div></div><div></div>
             </div> 
         </div>
     </nav>
 
     <div class="side-menu" id="sideMenu"> 
-        <a href="#" class="close-link" onclick="toggleMenu()">✕ Close Menu</a> 
-        <a href="#" onclick="toggleMenu()">Home</a>
-        <a href="#" onclick="toggleMenu()">Services</a>
-        <a href="#" onclick="toggleMenu()">About</a>
-        <a href="#" onclick="toggleMenu()">Reservations</a>
-        <a href="#" onclick="toggleMenu()">Contact</a>
+        <a href="#" onclick="toggleMenu()">✕ Close Menu</a> 
+        <a href="#">Home</a>
+        <a href="#">Services</a>
+        <a href="#">About</a>
+        <a href="#">Reservations</a>
+        <a href="#">Contact</a>
     </div>
 
     <div class="scroll-container"> 
         <div class="bg-video-container">
             <video autoplay muted loop playsinline id="bgVideo">
                 <source src="Food Reel - Darío Idoate.mp4" type="video/mp4">
-                Your browser does not support the video tag.
             </video>
-            <div class="video-overlay"></div>
         </div>
         
         <div class="bg-brown" id="bgBrown"></div> 
+        <div class="bg-white-page" id="bgWhite"></div>
+        <h2 id="why-text">WHY WE EXIST ?</h2> 
         
-        <div class="bg-white-page" id="bgWhite"> 
-            <h2 id="why-text">WHY WE EXIST ?</h2> 
-            
-            <div class="slideshow-container">
-                <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800" class="slide-img" id="img1">
-                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800" class="slide-img" id="img2">
-                <img src="https://images.unsplash.com/photo-1550966841-3ee7adac1af8?q=80&w=800" class="slide-img" id="img3">
-            </div>
-        </div>
+        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800" class="slide-img" id="img1">
+        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800" class="slide-img" id="img2">
+        <img src="https://images.unsplash.com/photo-1550966841-3ee7adac1af8?q=80&w=800" class="slide-img" id="img3">
 
-        <div class="hero-content" id="heroContent"> 
-            <h1 id="main-title"></h1>
-            <p id="sub-text"></p> 
+        <div class="hero-content"> 
+            <h1 id="main-title">RESTRO</h1>
+            <p id="sub-text">Peak Hours Should Be Your<br>Most Profitable, Not Most Chaotic</p> 
         </div>
     </div>
 
     <script>
-        window.onbeforeunload = function () {
-            window.scrollTo(0, 0);
+        let ticking = false;
+        const elements = {
+            title: document.getElementById('main-title'),
+            subText: document.getElementById('sub-text'),
+            bgBrown: document.getElementById('bgBrown'),
+            bgWhite: document.getElementById('bgWhite'),
+            whyText: document.getElementById('why-text'),
+            navbar: document.getElementById('navbar'),
+            navLogo: document.getElementById('navLogo'),
+            navTitle: document.getElementById('nav-title-small'),
+            scrollTag: document.getElementById('scrollTag'),
+            imgs: [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')]
         };
 
-        const titleText = "RESTRO";
-        const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    handleAnimations();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
 
-        function typeWriter(elementId, text, speed, callback) {
-            let i = 0;
-            const element = document.getElementById(elementId);
+        function handleAnimations() {
+            const scrollY = window.scrollY;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = Math.max(0, Math.min(scrollY / maxScroll, 1));
+
+            // Phase 1: Main Title Fade & Shrink (0 - 25%)
+            const p1 = Math.min(scrollPercent / 0.25, 1);
+            elements.title.style.opacity = 1 - p1;
+            elements.title.style.transform = `scale(${1 - p1 * 0.3}) translateY(${-p1 * 100}px)`;
             
-            function type() {
-                if (i < text.length) {
-                    if (text.substring(i, i + 4) === "<br>") {
-                        element.innerHTML += "<br>";
-                        i += 4;
+            // Nav logo appearance
+            const navAlpha = scrollPercent > 0.1 ? Math.min((scrollPercent - 0.1) * 5, 1) : 0;
+            elements.navLogo.style.opacity = navAlpha;
+            elements.navTitle.style.opacity = navAlpha;
+
+            // Phase 2: Tagline Center (0 - 40%)
+            const p2 = Math.min(scrollPercent / 0.4, 1);
+            elements.subText.style.transform = `translate(${-p2 * 38}vw, ${-p2 * 35}vh) scale(${1 + p2 * 0.5})`;
+            elements.bgBrown.style.opacity = Math.min(p2 * 1.5, 1);
+
+            // Phase 3: White Screen & Why We Exist (45% - 75%)
+            if (scrollPercent > 0.4) {
+                const p3 = Math.min((scrollPercent - 0.4) / 0.35, 1);
+                elements.bgWhite.style.opacity = p3;
+                elements.subText.style.opacity = 1 - (p3 * 3);
+                
+                // Why We Exist scaling
+                const whyScale = Math.max(5 - (p3 * 4), 1);
+                elements.whyText.style.opacity = Math.min(p3 * 2, 1);
+                elements.whyText.style.transform = `translate(-50%, -50%) scale(${whyScale})`;
+
+                // Navbar color transition
+                if (p3 > 0.8) {
+                    elements.navbar.classList.add('nav-black');
+                    elements.scrollTag.style.color = "#000";
+                    
+                    // Final transition to dark background at very end
+                    if (p3 > 0.98) {
+                        elements.bgWhite.style.backgroundColor = "#3d2b1f";
+                        elements.whyText.style.color = "#ffffff";
+                        elements.navbar.classList.remove('nav-black');
+                        elements.scrollTag.style.color = "#fff";
                     } else {
-                        element.innerHTML += text.charAt(i);
-                        i++;
+                        elements.bgWhite.style.backgroundColor = "#ffffff";
+                        elements.whyText.style.color = "#3d2b1f";
                     }
-                    setTimeout(type, speed);
-                } else if (callback) {
-                    callback();
+                } else {
+                    elements.navbar.classList.remove('nav-black');
+                    elements.scrollTag.style.color = "#fff";
                 }
             }
-            type();
-        }
 
-        window.addEventListener('load', () => {
-            window.scrollTo(0, 0);
-            const video = document.getElementById('bgVideo');
-            if (video) {
-                video.muted = true;
-                video.defaultMuted = true;
-                const playVideo = () => {
-                    video.play().then(() => {
-                        console.log("Video playing successfully");
-                    }).catch(() => {
-                        requestAnimationFrame(playVideo);
-                    });
-                };
-                playVideo();
+            // Phase 4: Smooth Image Sequence (70% - 98%)
+            if (scrollPercent > 0.7) {
+                const p4 = Math.min((scrollPercent - 0.7) / 0.28, 1);
+                const spread = 25; // vw distance
+                
+                elements.imgs.forEach((img, i) => {
+                    const start = i * 0.2;
+                    const end = start + 0.4;
+                    const imgP = Math.max(0, Math.min((p4 - start) / (end - start), 1));
+                    
+                    // Smooth bell curve for opacity
+                    img.style.opacity = Math.sin(imgP * Math.PI);
+                    
+                    // Movement: Start center, move to spread position
+                    const xMove = (i - 1) * spread * imgP;
+                    img.style.transform = `translate(calc(-50% + ${xMove}vw), -50%) scale(${0.8 + imgP * 0.4})`;
+                });
+            } else {
+                elements.imgs.forEach(img => img.style.opacity = 0);
             }
-
-            typeWriter("main-title", titleText, 150, () => {
-                typeWriter("sub-text", taglineText, 50);
-            });
-        });
+        }
 
         function toggleMenu() {
             document.getElementById('sideMenu').classList.toggle('active');
-            document.getElementById('menuToggle').classList.toggle('open');
         }
 
-        window.addEventListener('scroll', () => { 
-            const scrollY = window.scrollY;
-            const maxScroll = document.body.offsetHeight - window.innerHeight;
-            const scrollPercent = scrollY / maxScroll;
-            
-            const title = document.getElementById('main-title');
-            const subText = document.getElementById('sub-text');
-            const bgBrown = document.getElementById('bgBrown');
-            const bgWhite = document.getElementById('bgWhite');
-            const whyText = document.getElementById('why-text');
-            const navbar = document.getElementById('navbar');
-            const scrollTag = document.getElementById('scrollTag');
-            const navLogo = document.getElementById('navLogo');
-            const navTitleSmall = document.getElementById('nav-title-small');
-
-            // PHASE 1: Main title shrink and fade
-            const p1Percent = Math.min(scrollPercent * 3.33, 1);
-            const titleScale = 1 - (p1Percent * 0.85);
-            const titleTopBase = 25;
-            const titleTopTarget = 3.5;
-            const titleTop = titleTopBase - (p1Percent * (titleTopBase - titleTopTarget));
-            
-            title.style.fontSize = `${12 * titleScale}rem`;
-            title.style.top = `${titleTop}%`;
-            title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
-            title.style.opacity = 1 - p1Percent;
-
-            if (scrollPercent > 0.2) {
-                const navFade = Math.min((scrollPercent - 0.2) * 5, 1);
-                navLogo.style.opacity = navFade;
-                navTitleSmall.style.opacity = navFade;
-            } else {
-                navLogo.style.opacity = 0;
-                navTitleSmall.style.opacity = 0;
-            }
-
-            // PHASE 2: Smooth Tagline movement (Change 2)
-            // We use a continuous transform to avoid jumping. 
-            // Calculated as percentage of screen to move from Right to Center.
-            const movePercent = p1Percent; 
-            const subTextX = (1 - movePercent) * 0; // Relative to its initial right position
-            const subTextY = (movePercent * -35); // Move up slightly as it centers
-
-            subText.style.textAlign = movePercent > 0.5 ? 'center' : 'right';
-            bgBrown.style.opacity = Math.min(p1Percent * 1.5, 1);
-            
-            let subTextScale = 1 + (p1Percent * 1.5);
-            if (scrollPercent > 0.1 && scrollPercent <= 0.4) {
-                const shrinkFactor = (scrollPercent - 0.1) / 0.3;
-                subTextScale = 2.5 - (shrinkFactor * 0.7);
-            }
-            
-            // Refined smooth transform
-            subText.style.transform = `translate(${-movePercent * 42}vw, ${subTextY}vh) scale(${subTextScale})`;
-
-            // PHASE 3: White Screen and "Why We Exist"
-            if (scrollPercent > 0.5) { 
-                const p3Percent = Math.min((scrollPercent - 0.5) / 0.2, 1);
-                bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
-                subText.style.opacity = 1 - (p3Percent * 5);
-                whyText.style.opacity = Math.min(p3Percent * 3, 1);
-
-                let currentX = 50;
-                let currentY = 50; 
-                let currentScale = 1;
-
-                if (p3Percent < 0.3) {
-                    const localScaleFactor = p3Percent / 0.3;
-                    currentScale = 5 - (localScaleFactor * 4); 
-                } else if (p3Percent >= 0.3 && p3Percent < 0.6) {
-                    currentScale = 1;
-                } else {
-                    const slideFactor = (p3Percent - 0.6) / 0.4;
-                    currentX = 50 - (slideFactor * 46); 
-                    currentY = 50 - (slideFactor * 30);
-                    currentScale = 1 - (slideFactor * 0.7);
-                }
-
-                whyText.style.left = `${currentX}%`;
-                whyText.style.top = `${currentY}%`;
-                whyText.style.fontSize = "8rem";
-                whyText.style.transform = `translate(-${currentX}%, -${currentY}%) scale(${currentScale})`;
-                whyText.style.transformOrigin = "top left";
-
-                if (p3Percent >= 0.98) {
-                    bgWhite.style.backgroundColor = "#3d2b1f";
-                    whyText.style.color = "#ffffff";
-                    navbar.classList.remove('nav-black');
-                    scrollTag.style.color = "#fff";
-                } else {
-                    bgWhite.style.backgroundColor = "#ffffff";
-                    whyText.style.color = "#3d2b1f";
-                    navbar.classList.add('nav-black');
-                    scrollTag.style.color = "#000";
-                }
-
-                // IMAGE ANIMATIONS (Change 1: Sustain Logic)
-                if (scrollPercent > 0.7) {
-                    const slideSectionPercent = (scrollPercent - 0.7) / 0.2; // Total duration 0.7 to 0.9
-                    const outroPercent = Math.max(0, (scrollPercent - 0.9) / 0.1);
-                    
-                    const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
-                    const targetX = [-380, 0, 380]; 
-                    const outroDirs = [{x: -500, y: -200}, {x: 0, y: -500}, {x: 500, y: 200}];
-
-                    imgs.forEach((img, index) => {
-                        // Divide the 0.7-0.9 scroll range into 3 parts for each image
-                        const imgStart = index * 0.33;
-                        const imgEnd = (index + 1) * 0.33;
-                        
-                        let opacity = 0;
-                        let x = 0;
-                        let y = 0;
-                        let scale = 0.2;
-
-                        if (slideSectionPercent > imgStart) {
-                            // Progress within this image's specific scroll window
-                            const localProgress = Math.min((slideSectionPercent - imgStart) / 0.33, 1);
-                            
-                            if (localProgress < 0.3) {
-                                // Stage A: Expansion (0% - 30% of image window)
-                                const expandFactor = localProgress / 0.3;
-                                opacity = expandFactor;
-                                scale = 0.2 + (expandFactor * 1.3); // Scales up to 1.5
-                                x = 0;
-                            } else if (localProgress >= 0.3 && localProgress < 0.7) {
-                                // Stage B: SUSTAIN (30% - 70% of image window)
-                                opacity = 1;
-                                scale = 1.5;
-                                x = 0;
-                            } else {
-                                // Stage C: Contract and Move to Fixed Position (70% - 100%)
-                                const fixFactor = (localProgress - 0.7) / 0.3;
-                                opacity = 1;
-                                scale = 1.5 - (fixFactor * 0.5); // Back to 1.0
-                                x = targetX[index] * fixFactor;
-                            }
-                        }
-                        
-                        // Keep images visible once they have finished their animation sequence
-                        if (slideSectionPercent > imgEnd) {
-                            opacity = 1;
-                            scale = 1;
-                            x = targetX[index];
-                        }
-
-                        // Outro logic for the very end of page scroll
-                        if (outroPercent > 0) {
-                            x += outroDirs[index].x * outroPercent;
-                            y += outroDirs[index].y * outroPercent;
-                            opacity = 1 - outroPercent;
-                        }
-
-                        img.style.opacity = opacity;
-                        img.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
-                    });
-                } else {
-                    [1, 2, 3].forEach(i => {
-                        document.getElementById(`img${i}`).style.opacity = 0;
-                    });
-                }
-
-            } else { 
-                bgWhite.style.opacity = 0;
-                whyText.style.opacity = 0;
-                subText.style.opacity = 1;
-                navbar.classList.remove('nav-black');
-                scrollTag.style.color = "#fff";
-            } 
-        });
+        window.onload = () => window.scrollTo(0, 0);
     </script>
 </body>
 </html>

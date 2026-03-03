@@ -100,7 +100,6 @@
             white-space: nowrap; 
             opacity: 0;
             position: absolute;
-            /* Change 3: Initial position starts centered for expansion, then moves to specific top-left */
             left: 50%;
             top: 50%;
             font-size: 6rem;
@@ -269,7 +268,6 @@
 
         #main-title {
             position: absolute;
-            /* Change 1: Set to match navbar text position eventually */
             top: 25%;
             left: 4%;
             font-size: 12rem;
@@ -292,6 +290,7 @@
             text-transform: uppercase;
             text-align: right;
             will-change: transform, opacity;
+            transform-origin: center center;
         }
 
         .scroll-indicator {
@@ -363,7 +362,7 @@
 
         <div class="hero-content" id="heroContent"> 
            <h1 id="main-title"></h1>
-            <p id="sub-text"></p> 
+           <p id="sub-text"></p> 
         </div>
     </div>
 
@@ -372,16 +371,17 @@
 
         const titleText = "RESTRO";
         const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
-
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
             function type() {
                 if (i < text.length) {
                     if (text.substring(i, i + 4) === "<br>") {
-                        element.innerHTML += "<br>"; i += 4;
+                        element.innerHTML += "<br>";
+                        i += 4;
                     } else {
-                        element.innerHTML += text.charAt(i); i++;
+                        element.innerHTML += text.charAt(i);
+                        i++;
                     }
                     setTimeout(type, speed);
                 } else if (callback) { callback(); }
@@ -428,21 +428,16 @@
             const navLogo = document.getElementById('navLogo');
             const navTitleSmall = document.getElementById('nav-title-small');
 
-            // CHANGE 1: Main title moves to Top-Left. 
-            // Target: top ~20px, left ~4%. Initial: top 25%, left 4%.
-            const p1Percent = Math.min(scrollPercent * 4, 1); // Completes early
-            const titleScale = 1 - (p1Percent * 0.88); // Shrinks to nav size
-            
-            // Calculate movement from 25% height to ~20px height
+            // --- MAIN TITLE LOGIC ---
+            const p1Percent = Math.min(scrollPercent * 4, 1);
+            const titleScale = 1 - (p1Percent * 0.88);
             const startY = window.innerHeight * 0.25;
-            const endY = 28; // Navbar center alignment
+            const endY = 28; 
             const moveY = (endY - startY) * p1Percent;
-            
             title.style.transform = `translateY(${moveY}px) scale(${titleScale})`;
             title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
-            title.style.opacity = 1 - (p1Percent * 0.9); // Slight fade but visible until nav takes over
+            title.style.opacity = 1 - (p1Percent * 0.9);
 
-            // Show Nav elements ONLY when title arrives
             if (p1Percent >= 0.95) {
                 navLogo.style.opacity = 1;
                 navTitleSmall.style.opacity = 1;
@@ -452,29 +447,34 @@
                 navTitleSmall.style.opacity = 0;
             }
 
-            // CHANGE 2: Sub-text moves to center when Brown background fades in
+            // --- CHANGE 1: SUB-TEXT CENTER & MINIMIZE ---
             bgBrown.style.opacity = Math.min(scrollPercent * 3, 1);
             
-            // Center movement begins after initial scroll
-            const centerProgress = Math.min(scrollPercent * 2, 1);
-            const subX = centerProgress * -42; // vw
-            const subY = centerProgress * -35; // vh
+            const centerProgress = Math.min(scrollPercent * 2, 1); 
+            // Move from bottom-right to absolute center of screen
+            const subX = centerProgress * -42; 
+            const subY = centerProgress * -35; 
             
-            // Continuous shrinking while centered
             let subScale = 1;
             if (scrollPercent > 0.2) {
-                // Shrinks gradually over 0.2 to 0.6 scroll range
-                const shrinkRange = Math.min((scrollPercent - 0.2) / 0.4, 1);
-                subScale = 2.5 - (shrinkRange * 1.8);
+                // Stay centered and shrink as user scrolls further
+                const shrinkRange = Math.min((scrollPercent - 0.2) / 0.5, 1);
+                subScale = 2.5 - (shrinkRange * 2.0); 
             } else {
-                subScale = 1 + (scrollPercent * 7.5); // Grows initially for impact
+                subScale = 1 + (scrollPercent * 7.5);
             }
 
+            subText.style.textAlign = centerProgress > 0.8 ? 'center' : 'right';
             subText.style.transform = `translate(${subX}vw, ${subY}vh) scale(${subScale})`;
-            // Fade out subtext when white screen arrives
-            if (scrollPercent > 0.5) subText.style.opacity = 1 - (scrollPercent - 0.5) * 10;
+            
+            if (scrollPercent > 0.6) {
+                subText.style.opacity = 1 - (scrollPercent - 0.6) * 8;
+            } else {
+                subText.style.opacity = 1;
+            }
 
-            // CHANGE 3: "WHY WE EXIST" Positioning
+            // --- CHANGE 2: WHY WE EXIST & SEQUENTIAL IMAGES ---
+            let textFixed = false;
             if (scrollPercent > 0.5) { 
                 const p3Percent = Math.min((scrollPercent - 0.5) / 0.2, 1);
                 bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
@@ -485,19 +485,19 @@
                 let currentY = 0;
 
                 if (p3Percent < 0.3) {
-                    currentScale = 5 - (p3Percent / 0.3 * 4); 
+                    currentScale = 5 - (p3Percent / 0.3 * 4);
                 } else if (p3Percent < 0.6) {
                     currentScale = 1;
                 } else {
-                    // Transition to fixed top-left (below navbar)
                     const slideFactor = (p3Percent - 0.6) / 0.4;
-                    currentX = slideFactor * -43; // horizontal shift to left
-                    currentY = slideFactor * -38; // vertical shift to below navbar
+                    currentX = slideFactor * -43; 
+                    currentY = slideFactor * -38;
                     currentScale = 1 - (slideFactor * 0.5);
+                    if(slideFactor >= 1) textFixed = true; // Text is now in top-left
                 }
 
                 whyText.style.transform = `translate(calc(-50% + ${currentX}vw), calc(-50% + ${currentY}vh)) scale(${currentScale})`;
-
+                
                 if (p3Percent >= 0.9) {
                     bgWhite.style.backgroundColor = "#3d2b1f";
                     whyText.style.color = "#ffffff";
@@ -508,20 +508,37 @@
                     navbar.classList.add('nav-black');
                 }
 
-                // Image logic (restored for flow)
-                if (scrollPercent > 0.65) {
-                    const slideSec = Math.min((scrollPercent - 0.65) / 0.25, 1);
-                    const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
-                    const targetX = [-380, 0, 380];
+                // IMAGE SEQUENCING LOGIC
+                const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
+                const targetX = [-380, 0, 380];
+                
+                if (textFixed && scrollPercent > 0.7) {
+                    const imgProgress = Math.min((scrollPercent - 0.7) / 0.3, 1);
+                    
+                    // Each image gets a 0.33 chunk of the progress
                     imgs.forEach((img, i) => {
-                        const start = i * 0.25;
-                        if (slideSec > start) {
-                            const local = Math.min((slideSec - start) / 0.33, 1);
-                            img.style.opacity = local < 0.3 ? local / 0.3 : 1;
+                        const start = i * 0.33;
+                        const end = (i + 1) * 0.33;
+                        
+                        if (imgProgress > start) {
+                            // Calculate local progress for THIS image (0 to 1)
+                            const local = Math.min((imgProgress - start) / 0.33, 1);
+                            
+                            // Fade in
+                            img.style.opacity = local;
+                            
+                            // Slide logic: only slide out to side once fully faded in
+                            // Or keep the original logic but make it sequential
                             let x = local > 0.7 ? targetX[i] * ((local - 0.7) / 0.3) : 0;
-                            img.style.transform = `translateX(${x}px) scale(${1.5 - (local > 0.7 ? (local-0.7)/0.3 * 0.5 : 0)})`;
+                            let scale = 1.5 - (local > 0.7 ? (local - 0.7) / 0.3 * 0.5 : 0);
+                            
+                            img.style.transform = `translateX(${x}px) scale(${scale})`;
+                        } else {
+                            img.style.opacity = 0;
                         }
                     });
+                } else {
+                    imgs.forEach(img => img.style.opacity = 0);
                 }
             } else { 
                 bgWhite.style.opacity = 0;

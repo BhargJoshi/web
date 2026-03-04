@@ -27,9 +27,15 @@
     overflow-x: hidden;
   }
 
-  /* ── SLIDE SYSTEM ── */
-  .slide { display: none; min-height: 100vh; flex-direction: column; position: relative; overflow: hidden; }
-  .slide.active { display: flex; }
+  /* ── SECTION SYSTEM — normal scroll ── */
+  .slide {
+    display: flex;
+    min-height: 100svh;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
 
   /* ── SLIDE 1: HERO ── */
   #slide1 {
@@ -805,43 +811,92 @@
   .cta-tagline { font-size: 10px; letter-spacing: 5px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
   .cta-counter { font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 2px; }
 
-  /* ── SLIDE DOTS NAV ── */
-  .slide-dots-nav {
-    position: fixed; right: 12px; top: 50%; transform: translateY(-50%);
-    display: flex; flex-direction: column; gap: 6px;
-    z-index: 100;
-  }
-
-  .slide-dot-nav {
-    width: 5px; height: 5px; border-radius: 50%;
-    background: rgba(13,27,94,0.2); cursor: pointer;
-    transition: all 0.3s;
-  }
-
-  .slide-dot-nav.active { background: var(--navy); width: 5px; height: 14px; border-radius: 3px; }
-
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .slide.active > * {
-    animation: fadeUp 0.5s ease forwards;
+  /* ── MOBILE RESPONSIVE ── */
+  /* All px font sizes scale with viewport width on small screens */
+  @media (max-width: 480px) {
+    .hero-title { font-size: clamp(32px, 9vw, 48px); }
+    .btn-primary { font-size: 11px; padding: 16px 36px; letter-spacing: 2px; }
+    .hero-content { padding: 36px 20px 28px; }
+    .hero-tagline { font-size: clamp(16px, 4.5vw, 20px); padding: 32px 20px; }
+    .hero-card { margin: 24px 16px 0; }
+    .restaurant-img { height: clamp(180px, 50vw, 260px); }
+
+    .problem-title { font-size: clamp(30px, 9vw, 42px); }
+    .problem-text { font-size: clamp(16px, 5vw, 22px); }
+    .compare-label { font-size: clamp(16px, 5vw, 22px); }
+    .slide-body { padding: 24px 16px; }
+
+    .shift-title { font-size: clamp(30px, 9vw, 40px); }
+    .flow-circle { width: clamp(90px, 28vw, 130px); height: clamp(90px, 28vw, 130px); font-size: 9px; }
+    .shift-desc { font-size: clamp(14px, 4vw, 17px); }
+    .shift-body { padding: 24px 16px; }
+
+    .hiw-title { font-size: clamp(32px, 9vw, 44px); }
+    .step-num { font-size: clamp(52px, 18vw, 80px); }
+    .step-desc { font-size: clamp(13px, 3.8vw, 15px); }
+    .hiw-body { padding: 20px 16px 0; }
+
+    .pillars-title { font-size: clamp(26px, 7.5vw, 36px); }
+    .pillar-name { font-size: clamp(16px, 5vw, 20px); }
+    .pillar-text { font-size: 10px; }
+    .pillar-number { font-size: clamp(20px, 6vw, 26px); }
+    .pillar-cards { gap: 6px; }
+    .pillar-card { padding: 12px 8px; }
+    .pillars-body { padding: 12px 16px; }
+
+    .dc-title { font-size: clamp(24px, 7.5vw, 34px); }
+    .dc-phone-mockup { width: clamp(150px, 45vw, 200px); height: clamp(280px, 85vw, 380px); }
+    .dc-features-left { left: -4px; gap: 60px; }
+    .dc-feature { font-size: 8px; }
+    .dc-body { padding: 16px 16px 0; }
+
+    .quote-text { font-size: clamp(18px, 5.5vw, 24px); }
+    .receipt-card { padding: 32px 20px 40px; }
+
+    .comp-heading { font-size: clamp(26px, 8vw, 36px); }
+    .comp-table th, .comp-table td { padding: 14px 6px; font-size: clamp(10px, 3vw, 13px); }
+    .comp-body { padding: 24px 16px; }
+
+    .scale-title { font-size: clamp(32px, 9vw, 44px); }
+    .scale-desc { font-size: clamp(14px, 4vw, 17px); }
+    .scale-body { padding: 16px; }
+    .growth-roi { font-size: clamp(20px, 6vw, 26px); }
+
+    .cta-logo { font-size: clamp(40px, 13vw, 60px); }
+    .cta-btn { font-size: clamp(14px, 4vw, 17px); padding: 18px clamp(40px, 15vw, 80px); }
+
+    .nav1 { padding: 16px 16px; }
+    .slide-nav, .shift-nav, .hiw-nav, .pillars-nav, .dc-nav,
+    .testi-nav, .comp-nav, .scale-nav { padding: 14px 16px; }
+    .bottom-nav { padding: 14px 16px 20px; }
+    .bottom-nav-item { font-size: 8px; letter-spacing: 1px; }
+    .pillars-tabs { padding: 12px 16px; }
+    .dc-bottom { padding: 12px 16px 20px; }
+    .testi-bottom-nav { padding: 12px 16px 20px; }
+    .comp-bottom-tabs { padding: 12px 16px 20px; }
+    .scale-bottom { padding: 16px 16px 24px; }
+    .shift-bottom { padding: 16px 16px 24px; }
   }
 
-  .slide.active > *:nth-child(1) { animation-delay: 0s; }
-  .slide.active > *:nth-child(2) { animation-delay: 0.1s; }
-  .slide.active > *:nth-child(3) { animation-delay: 0.2s; }
+  @media (max-width: 360px) {
+    .hero-title { font-size: 28px; }
+    .pillar-cards { flex-direction: column; }
+    .pillar-card { flex-direction: row; align-items: flex-start; gap: 12px; }
+    .dc-phone-mockup { width: 130px; height: 250px; }
+    .dc-features-left { display: none; }
+  }
 
   /* Separator line in step area */
   .step-separator { width: 1px; background: rgba(13,27,46,0.15); position: absolute; right: 0; top: 0; bottom: 0; }
 </style>
 </head>
 <body>
-
-<!-- Slide Dots Navigation -->
-<div class="slide-dots-nav" id="slideDots"></div>
 
 <!-- ══ SLIDE 1: HERO ══ -->
 <section class="slide active" id="slide1">
@@ -1395,46 +1450,16 @@
 </section>
 
 <script>
-  const slides = document.querySelectorAll('.slide');
-  const dotsContainer = document.getElementById('slideDots');
-  let current = 0;
-
-  // Build dots
-  slides.forEach((_, i) => {
-    const dot = document.createElement('div');
-    dot.className = 'slide-dot-nav' + (i === 0 ? ' active' : '');
-    dot.onclick = () => goToSlide(i);
-    dotsContainer.appendChild(dot);
-  });
+  // Map old goToSlide(index) calls to smooth scroll to each section
+  const sectionIds = [
+    'slide1','slide2','slide3','slide4','slide5',
+    'slide6','slide7','slide8','slide9','slide10'
+  ];
 
   function goToSlide(index) {
-    slides[current].classList.remove('active');
-    dotsContainer.children[current].classList.remove('active');
-    current = index;
-    slides[current].classList.add('active');
-    dotsContainer.children[current].classList.add('active');
-    window.scrollTo(0, 0);
+    const el = document.getElementById(sectionIds[index]);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-
-  // Keyboard navigation
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-      if (current < slides.length - 1) goToSlide(current + 1);
-    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-      if (current > 0) goToSlide(current - 1);
-    }
-  });
-
-  // Touch/swipe
-  let touchStartY = 0;
-  document.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; });
-  document.addEventListener('touchend', e => {
-    const dy = touchStartY - e.changedTouches[0].clientY;
-    if (Math.abs(dy) > 50) {
-      if (dy > 0 && current < slides.length - 1) goToSlide(current + 1);
-      else if (dy < 0 && current > 0) goToSlide(current - 1);
-    }
-  });
 </script>
 </body>
 </html>

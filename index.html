@@ -9,13 +9,13 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --navy: #0d1b5e;
-    --cream: #edeee0;
-    --warm-orange: #d4845a;
-    --rose-gold: #c8876a;
-    --sage: #8fa49a;
-    --off-white: #f4f3ed;
-    --light-sage: #b8c5bc;
+    --navy: #1C3163;
+    --cream: #D6B585;
+    --warm-orange: #D6B585;
+    --rose-gold: #c9a96e;
+    --sage: #1C3163;
+    --off-white: #FEFFFF;
+    --light-sage: #D6B585;
   }
 
   html { scroll-behavior: smooth; }
@@ -74,7 +74,7 @@
   }
 
   .btn-primary {
-    background: var(--navy); color: white;
+    background: var(--navy); color: #FEFFFF;
     border: none; cursor: pointer;
     font-family: 'Jost', sans-serif;
     font-size: 12px; font-weight: 500;
@@ -82,18 +82,18 @@
     text-transform: uppercase;
     transition: all 0.3s ease;
   }
-  .btn-primary:hover { background: #1a2b8a; transform: translateY(-2px); }
+  .btn-primary:hover { background: #2a4a9a; transform: translateY(-2px); }
 
   .hero-card {
-    background: white; margin: 32px 20px 0;
+    background: #FEFFFF; margin: 32px 20px 0;
     border-radius: 4px; overflow: hidden;
-    box-shadow: 0 8px 32px rgba(13,27,94,0.08);
+    box-shadow: 0 8px 32px rgba(28,49,99,0.08);
   }
 
   .restaurant-img {
     width: 100%; height: 260px;
     object-fit: cover;
-    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 50%, #3a3532 100%);
+    background: linear-gradient(135deg, #00071B 0%, #1C3163 50%, #00071B 100%);
     display: flex; align-items: center; justify-content: center;
     position: relative; overflow: hidden;
   }
@@ -110,13 +110,13 @@
 
   .restaurant-img-inner {
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 50%, #3d3530 0%, #1a1a1a 100%);
+    background: radial-gradient(ellipse at 50% 50%, #1C3163 0%, #00071B 100%);
   }
 
   .img-caption {
     padding: 16px 20px;
     font-size: 10px; letter-spacing: 4px;
-    color: #999; text-align: center;
+    color: rgba(28,49,99,0.5); text-align: center;
     font-family: 'Jost', sans-serif; font-weight: 400;
   }
 
@@ -131,7 +131,7 @@
   .bottom-nav {
     display: flex; align-items: center; justify-content: space-around;
     padding: 16px 24px 24px;
-    border-top: 1px solid rgba(13,27,94,0.1);
+    border-top: 1px solid rgba(28,49,99,0.1);
     background: var(--cream);
   }
 
@@ -147,8 +147,8 @@
 
   /* ── SLIDE 2: THE PROBLEM ── */
   #slide2 {
-    background: linear-gradient(160deg, #4a6070 0%, #8a9ea8 30%, #b5c5b0 60%, #d4b898 85%, #c4a888 100%);
-    color: white;
+    background: linear-gradient(160deg, #00071B 0%, #1C3163 35%, #2a4a80 60%, #D6B585 100%);
+    color: #FEFFFF;
   }
 
   .slide-nav {
@@ -158,7 +158,7 @@
 
   .back-btn {
     background: none; border: none; cursor: pointer;
-    color: white; font-size: 18px; display: flex; align-items: center; gap: 6px;
+    color: #FEFFFF; font-size: 18px; display: flex; align-items: center; gap: 6px;
     font-family: 'Jost', sans-serif; font-size: 13px; letter-spacing: 1px;
   }
 
@@ -167,7 +167,7 @@
     font-family: 'Jost', sans-serif;
   }
 
-  .more-btn { background: none; border: none; cursor: pointer; color: white; font-size: 20px; }
+  .more-btn { background: none; border: none; cursor: pointer; color: #FEFFFF; font-size: 20px; }
 
   .slide-body { flex: 1; padding: 32px 24px; }
 
@@ -189,7 +189,7 @@
   }
 
   .diagram-label {
-    font-size: 10px; letter-spacing: 2px; color: #6670b0;
+    font-size: 10px; letter-spacing: 2px; color: #1C3163;
     margin-bottom: 12px; font-weight: 400;
   }
 
@@ -199,12 +199,12 @@
   .diagram-stat {
     text-align: right; padding-top: 12px;
   }
-  .diagram-stat strong { font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 700; color: #0d1b5e; }
-  .diagram-stat span { display: block; font-size: 10px; color: #666; margin-top: 2px; }
+  .diagram-stat strong { font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 700; color: #1C3163; }
+  .diagram-stat span { display: block; font-size: 10px; color: #1C3163; margin-top: 2px; }
 
   .diagram-stat-left { padding-top: 0; }
-  .diagram-stat-left strong { color: #0d1b5e; font-size: 15px; font-weight: 700; }
-  .diagram-stat-left span { font-size: 10px; color: #666; }
+  .diagram-stat-left strong { color: #1C3163; font-size: 15px; font-weight: 700; }
+  .diagram-stat-left span { font-size: 10px; color: #1C3163; }
 
   .compare-row {
     display: flex; align-items: center; justify-content: space-between;
@@ -223,7 +223,7 @@
   .view-solution {
     display: flex; align-items: center; gap: 12px;
     font-size: 11px; letter-spacing: 3px; font-weight: 500;
-    text-decoration: none; color: white;
+    text-decoration: none; color: #FEFFFF;
     border-bottom: 1px solid rgba(255,255,255,0.5);
     padding-bottom: 8px; cursor: pointer;
     background: none; border-left: none; border-right: none; border-top: none;
@@ -265,7 +265,7 @@
   .flow-circle {
     width: 130px; height: 130px; border-radius: 50%;
     background: rgba(255,255,255,0.7);
-    border: 1px solid rgba(13,27,94,0.12);
+    border: 1px solid rgba(28,49,99,0.12);
     display: flex; align-items: center; justify-content: center;
     font-size: 10px; letter-spacing: 3px; color: var(--navy);
     font-weight: 500;
@@ -273,7 +273,7 @@
 
   .flow-dash {
     width: 1px; height: 60px;
-    border-left: 1px dashed rgba(13,27,94,0.3);
+    border-left: 1px dashed rgba(28,49,99,0.3);
   }
 
   .shift-desc {
@@ -285,7 +285,7 @@
   .shift-bottom {
     display: flex; align-items: center; justify-content: space-between;
     padding: 20px 24px 32px;
-    border-top: 1px solid rgba(13,27,94,0.1);
+    border-top: 1px solid rgba(28,49,99,0.1);
   }
 
   .current-concept { font-size: 9px; letter-spacing: 2px; color: var(--navy); opacity: 0.5; }
@@ -295,15 +295,15 @@
   .arrow-btn {
     width: 44px; height: 44px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer; border: 1px solid rgba(13,27,94,0.2);
+    cursor: pointer; border: 1px solid rgba(28,49,99,0.2);
     background: none; color: var(--navy); font-size: 18px;
     transition: all 0.2s;
   }
-  .arrow-btn.filled { background: var(--navy); color: white; border-color: var(--navy); }
+  .arrow-btn.filled { background: var(--navy); color: #FEFFFF; border-color: var(--navy); }
 
   /* ── SLIDE 4: HOW IT WORKS ── */
   #slide4 {
-    background: linear-gradient(140deg, #d4916a 0%, #c9856a 25%, #b87a8a 50%, #8a7aaa 75%, #7a8ab5 100%);
+    background: linear-gradient(140deg, #D6B585 0%, #c9a96e 30%, #1C3163 70%, #00071B 100%);
   }
 
   .hiw-nav {
@@ -313,7 +313,7 @@
 
   .hiw-logo {
     font-family: 'Playfair Display', serif;
-    font-size: 22px; font-style: italic; color: #1a1a2e;
+    font-size: 22px; font-style: italic; color: #00071B;
   }
 
   .hiw-body { flex: 1; padding: 24px 24px 0; }
@@ -321,10 +321,10 @@
   .hiw-title {
     font-family: 'Playfair Display', serif;
     font-size: 44px; font-weight: 400;
-    color: #0d1b2e; margin-bottom: 6px;
+    color: #00071B; margin-bottom: 6px;
   }
 
-  .hiw-line { width: 48px; height: 2px; background: #0d1b2e; margin-bottom: 40px; }
+  .hiw-line { width: 48px; height: 2px; background: #00071B; margin-bottom: 40px; }
 
   .steps-layout { display: flex; gap: 16px; }
   .steps-left { flex: 1; }
@@ -337,17 +337,17 @@
     position: absolute; left: -4px; top: -16px;
     font-family: 'Playfair Display', serif;
     font-size: 80px; font-weight: 700;
-    color: rgba(13,27,46,0.08); line-height: 1;
+    color: rgba(0,7,27,0.08); line-height: 1;
     pointer-events: none;
   }
 
   .step-title {
     font-size: 11px; letter-spacing: 3px; font-weight: 600;
-    color: #0d1b2e; margin-bottom: 6px; position: relative; z-index: 1;
+    color: #00071B; margin-bottom: 6px; position: relative; z-index: 1;
   }
 
   .step-desc {
-    font-size: 15px; line-height: 1.5; color: #1a2840;
+    font-size: 15px; line-height: 1.5; color: #00071B;
     position: relative; z-index: 1;
   }
 
@@ -363,7 +363,7 @@
 
   .hiw-btn {
     display: block; width: 100%;
-    background: #0d1b3e; color: white;
+    background: #1C3163; color: #FEFFFF;
     border: none; cursor: pointer;
     font-family: 'Jost', sans-serif;
     font-size: 11px; letter-spacing: 4px;
@@ -392,23 +392,23 @@
     color: var(--navy); line-height: 1.2; margin-bottom: 16px;
   }
 
-  .pillars-divider { height: 1px; background: rgba(13,27,94,0.15); margin-bottom: 20px; }
+  .pillars-divider { height: 1px; background: rgba(28,49,99,0.15); margin-bottom: 20px; }
 
   .pillar-cards { display: flex; gap: 8px; margin-bottom: 20px; }
 
   .pillar-card {
-    flex: 1; background: white; border-radius: 4px;
+    flex: 1; background: #FEFFFF; border-radius: 4px;
     padding: 16px 12px; display: flex; flex-direction: column;
-    border: 1px solid rgba(13,27,94,0.06);
+    border: 1px solid rgba(28,49,99,0.06);
   }
 
   .pillar-icon { font-size: 18px; margin-bottom: 12px; }
   .pillar-name { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: var(--navy); margin-bottom: 8px; }
-  .pillar-text { font-size: 11px; line-height: 1.6; color: #444; flex: 1; }
+  .pillar-text { font-size: 11px; line-height: 1.6; color: #00071B; flex: 1; }
 
   .pillar-metric {
     margin-top: 24px; padding-top: 12px;
-    border-top: 1px solid rgba(13,27,94,0.1);
+    border-top: 1px solid rgba(28,49,99,0.1);
   }
 
   .pillar-number { font-size: 26px; font-weight: 700; color: var(--navy); }
@@ -416,7 +416,7 @@
 
   .pillars-tabs {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 20px; border-top: 1px solid rgba(13,27,94,0.1);
+    padding: 16px 20px; border-top: 1px solid rgba(28,49,99,0.1);
   }
 
   .tab { font-size: 10px; letter-spacing: 2px; color: var(--navy); opacity: 0.4; cursor: pointer; padding-bottom: 4px; }
@@ -431,7 +431,7 @@
     padding: 20px 24px;
   }
 
-  .dc-back { background: none; border: none; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(13,27,94,0.2); display: flex; align-items: center; justify-content: center; color: var(--navy); font-size: 16px; }
+  .dc-back { background: none; border: none; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(28,49,99,0.2); display: flex; align-items: center; justify-content: center; color: var(--navy); font-size: 16px; }
 
   .dc-counter-wrap { text-align: center; }
   .dc-variant-label { font-size: 9px; letter-spacing: 3px; color: var(--navy); opacity: 0.5; display: block; }
@@ -467,12 +467,12 @@
 
   .dc-phone-mockup {
     width: 200px; height: 380px;
-    background: white;
+    background: #FEFFFF;
     border-radius: 32px;
     border: 4px solid var(--navy);
     overflow: hidden;
     position: relative;
-    box-shadow: 0 20px 60px rgba(13,27,94,0.2);
+    box-shadow: 0 20px 60px rgba(28,49,99,0.2);
   }
 
   .dc-notch {
@@ -485,14 +485,14 @@
 
   .dc-screen-avatar {
     width: 28px; height: 28px; border-radius: 50%;
-    background: #ddd; margin-bottom: 8px;
+    background: rgba(214,181,133,0.3); margin-bottom: 8px;
   }
 
   .dc-screen-search {
     width: 28px; height: 28px; border-radius: 50%;
     position: absolute; top: 36px; right: 12px;
     background: none; display: flex; align-items: center; justify-content: center;
-    font-size: 14px; color: #999;
+    font-size: 14px; color: rgba(28,49,99,0.5);
   }
 
   .dc-screen-bar { height: 28px; background: var(--navy); border-radius: 6px; width: 70%; margin-bottom: 12px; }
@@ -507,24 +507,24 @@
     overflow: hidden;
   }
 
-  .dc-thumb-1 { background: linear-gradient(135deg, #2a4a2a, #1a3a1a); }
-  .dc-thumb-2 { background: linear-gradient(135deg, #8a5a2a, #6a3a1a); }
+  .dc-thumb-1 { background: linear-gradient(135deg, #1C3163, #00071B); }
+  .dc-thumb-2 { background: linear-gradient(135deg, #D6B585, #c9a96e); }
 
   .dc-screen-lines { flex: 1; }
-  .dc-screen-line { height: 6px; background: #e0e0e0; border-radius: 3px; margin-bottom: 4px; }
+  .dc-screen-line { height: 6px; background: rgba(214,181,133,0.4); border-radius: 3px; margin-bottom: 4px; }
   .dc-screen-line.w80 { width: 80%; }
   .dc-screen-line.w60 { width: 60%; }
 
-  .dc-screen-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
+  .dc-screen-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(28,49,99,0.2); flex-shrink: 0; }
 
   .dc-screen-dots { display: flex; gap: 6px; justify-content: center; position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); }
-  .dc-screen-dots span { width: 6px; height: 6px; border-radius: 50%; background: #ccc; }
+  .dc-screen-dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(28,49,99,0.2); }
   .dc-screen-dots span.active { background: var(--navy); }
 
   .dc-bottom {
     display: flex; align-items: center; justify-content: space-between;
     padding: 16px 24px 24px;
-    border-top: 1px solid rgba(13,27,94,0.1);
+    border-top: 1px solid rgba(28,49,99,0.1);
   }
 
   .dc-next { font-size: 9px; letter-spacing: 2px; color: var(--navy); opacity: 0.5; }
@@ -541,14 +541,14 @@
     padding: 20px 24px; gap: 16px;
   }
 
-  .testi-back { background: none; border: none; cursor: pointer; font-size: 22px; color: #888; }
-  .testi-slide-label { font-size: 10px; letter-spacing: 3px; color: #999; }
+  .testi-back { background: none; border: none; cursor: pointer; font-size: 22px; color: rgba(28,49,99,0.5); }
+  .testi-slide-label { font-size: 10px; letter-spacing: 3px; color: rgba(28,49,99,0.5); }
 
   .testi-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 32px 20px 0; }
 
   .receipt-card {
     position: relative; width: 100%;
-    background: linear-gradient(150deg, #d4916a 0%, #c87a5a 30%, #b86a5a 60%, #c4826a 100%);
+    background: linear-gradient(150deg, #D6B585 0%, #c9a96e 40%, #b8983a 70%, #D6B585 100%);
     border-radius: 4px;
     padding: 40px 32px 48px;
     text-align: center;
@@ -581,13 +581,13 @@
   .quote-text {
     font-family: 'Playfair Display', serif;
     font-size: 24px; font-style: italic;
-    color: #0d1b3e; line-height: 1.4; margin-bottom: 24px;
+    color: #1C3163; line-height: 1.4; margin-bottom: 24px;
   }
 
-  .quote-divider { width: 40px; height: 1px; background: rgba(13,27,62,0.3); margin: 0 auto 16px; }
+  .quote-divider { width: 40px; height: 1px; background: rgba(28,49,99,0.3); margin: 0 auto 16px; }
 
-  .quote-author { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: #0d1b3e; }
-  .quote-place { font-size: 9px; letter-spacing: 3px; color: rgba(13,27,62,0.6); margin-top: 4px; }
+  .quote-author { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: #1C3163; }
+  .quote-place { font-size: 9px; letter-spacing: 3px; color: rgba(28,49,99,0.6); margin-top: 4px; }
 
   .quote-avatars {
     display: flex; justify-content: center; gap: -8px; margin-top: 20px;
@@ -602,12 +602,12 @@
     font-size: 14px;
   }
 
-  .testi-proof { font-size: 10px; letter-spacing: 4px; color: #aaa; margin-top: 28px; text-align: center; }
+  .testi-proof { font-size: 10px; letter-spacing: 4px; color: rgba(28,49,99,0.4); margin-top: 28px; text-align: center; }
 
   .testi-explore {
     margin-top: 20px;
     padding: 16px 48px; border-radius: 40px;
-    border: 1px solid rgba(13,27,94,0.2);
+    border: 1px solid rgba(28,49,99,0.2);
     background: none; cursor: pointer;
     font-family: 'Jost', sans-serif;
     font-size: 11px; letter-spacing: 3px; color: var(--navy);
@@ -615,12 +615,12 @@
     transition: all 0.3s;
   }
 
-  .testi-explore:hover { background: var(--navy); color: white; }
+  .testi-explore:hover { background: var(--navy); color: #FEFFFF; }
 
   .testi-bottom-nav {
     display: flex; align-items: center; justify-content: space-around;
     padding: 16px 24px 24px;
-    border-top: 1px solid rgba(13,27,94,0.1);
+    border-top: 1px solid rgba(28,49,99,0.1);
   }
 
   .testi-nav-item {
@@ -634,7 +634,7 @@
 
   /* ── SLIDE 8: COMPARISON ── */
   #slide8 {
-    background: linear-gradient(160deg, #c4886a 0%, #c09080 40%, #b89098 70%, #b09aaa 100%);
+    background: linear-gradient(160deg, #1C3163 0%, #2a4a80 40%, #00071B 100%);
   }
 
   .comp-nav {
@@ -643,8 +643,8 @@
     border-bottom: 1px solid rgba(255,255,255,0.15);
   }
 
-  .comp-back { background: none; border: none; cursor: pointer; color: white; font-size: 22px; }
-  .comp-title-nav { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: white; }
+  .comp-back { background: none; border: none; cursor: pointer; color: #FEFFFF; font-size: 22px; }
+  .comp-title-nav { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: #FEFFFF; }
 
   .comp-body { flex: 1; padding: 32px 20px; }
 
@@ -690,7 +690,7 @@
 
   .comp-variant { font-size: 9px; letter-spacing: 3px; color: rgba(255,255,255,0.3); }
   .comp-dots { display: flex; gap: 8px; }
-  .comp-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(13,27,94,0.3); }
+  .comp-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(28,49,99,0.3); }
   .comp-dot.active { background: var(--navy); }
 
   .comp-bottom-tabs {
@@ -700,12 +700,12 @@
     border-top: 1px solid rgba(255,255,255,0.15);
   }
 
-  .comp-tab { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 9px; letter-spacing: 2px; color: white; opacity: 0.4; cursor: pointer; }
-  .comp-tab.active { opacity: 1; background: rgba(13,27,94,0.3); padding: 6px 12px; border-radius: 4px; }
+  .comp-tab { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 9px; letter-spacing: 2px; color: #FEFFFF; opacity: 0.4; cursor: pointer; }
+  .comp-tab.active { opacity: 1; background: rgba(28,49,99,0.3); padding: 6px 12px; border-radius: 4px; }
 
   /* ── SLIDE 9: SCALABILITY ── */
   #slide9 {
-    background: linear-gradient(170deg, #d4916a 0%, #c8856a 20%, #b87a7a 40%, #9a7a9a 60%, #8a8ab0 80%, #7a9ab0 100%);
+    background: linear-gradient(170deg, #D6B585 0%, #c9a96e 20%, #1C3163 55%, #00071B 100%);
   }
 
   .scale-nav {
@@ -713,10 +713,10 @@
     padding: 20px 24px;
   }
 
-  .scale-back { background: none; border: none; cursor: pointer; color: white; font-size: 22px; }
+  .scale-back { background: none; border: none; cursor: pointer; color: #FEFFFF; font-size: 22px; }
   .scale-dots { display: flex; gap: 6px; }
   .scale-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); }
-  .scale-dot.active { background: white; width: 20px; border-radius: 3px; }
+  .scale-dot.active { background: #FEFFFF; width: 20px; border-radius: 3px; }
 
   .scale-body { flex: 1; padding: 24px; }
 
@@ -725,7 +725,7 @@
   .scale-title {
     font-family: 'Playfair Display', serif;
     font-size: 44px; font-style: italic;
-    color: white; margin-bottom: 10px;
+    color: #FEFFFF; margin-bottom: 10px;
   }
 
   .scale-desc {
@@ -744,7 +744,7 @@
     margin-bottom: 4px;
   }
 
-  .growth-label { font-size: 9px; letter-spacing: 3px; color: #888; }
+  .growth-label { font-size: 9px; letter-spacing: 3px; color: rgba(28,49,99,0.5); }
   .growth-roi { font-family: 'Jost', sans-serif; font-size: 26px; font-weight: 700; color: var(--navy); }
 
   .growth-chart { height: 100px; position: relative; margin: 12px 0; }
@@ -753,14 +753,14 @@
 
   .growth-x-labels {
     display: flex; justify-content: space-between;
-    font-size: 8px; letter-spacing: 2px; color: #aaa; padding: 0 4px;
+    font-size: 8px; letter-spacing: 2px; color: rgba(28,49,99,0.4); padding: 0 4px;
   }
 
   .scale-features { display: flex; flex-direction: column; gap: 20px; }
 
   .scale-feature { display: flex; gap: 16px; align-items: flex-start; }
   .scale-feature-icon { font-size: 20px; width: 24px; flex-shrink: 0; margin-top: 2px; }
-  .scale-feature-title { font-size: 10px; letter-spacing: 3px; font-weight: 600; color: white; margin-bottom: 4px; }
+  .scale-feature-title { font-size: 10px; letter-spacing: 3px; font-weight: 600; color: #FEFFFF; margin-bottom: 4px; }
   .scale-feature-desc { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.4; }
 
   .scale-bottom {
@@ -769,10 +769,10 @@
   }
 
   .next-step-label { font-size: 9px; letter-spacing: 2px; color: rgba(255,255,255,0.5); }
-  .next-step-name { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; color: white; }
+  .next-step-name { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; color: #FEFFFF; }
 
   .continue-btn {
-    background: var(--navy); color: white;
+    background: var(--navy); color: #FEFFFF;
     border: none; cursor: pointer;
     font-family: 'Jost', sans-serif;
     font-size: 15px; padding: 14px 28px;
@@ -782,7 +782,7 @@
 
   /* ── SLIDE 10: CTA ── */
   #slide10 {
-    background: linear-gradient(170deg, #b8c8b8 0%, #9ab5aa 20%, #88aaaa 40%, #8a9ab0 60%, #b0a898 80%, #c4a890 100%);
+    background: linear-gradient(170deg, #1C3163 0%, #2a4a80 30%, #D6B585 65%, #c9a96e 100%);
     display: flex; flex-direction: column; align-items: center; justify-content: space-between;
   }
 
@@ -796,14 +796,14 @@
   }
 
   .cta-btn {
-    background: var(--navy); color: white;
+    background: var(--navy); color: #FEFFFF;
     border: none; cursor: pointer;
     font-family: 'Jost', sans-serif;
     font-size: 17px; padding: 20px 80px;
     border-radius: 50px; font-weight: 400;
     letter-spacing: 1px;
     transition: all 0.3s;
-    box-shadow: 0 8px 32px rgba(13,27,94,0.3);
+    box-shadow: 0 8px 32px rgba(28,49,99,0.3);
   }
 
   .cta-bottom { padding: 32px; text-align: center; width: 100%; }
@@ -893,7 +893,7 @@
   }
 
   /* Separator line in step area */
-  .step-separator { width: 1px; background: rgba(13,27,46,0.15); position: absolute; right: 0; top: 0; bottom: 0; }
+  .step-separator { width: 1px; background: rgba(0,7,27,0.15); position: absolute; right: 0; top: 0; bottom: 0; }
 </style>
 </head>
 <body>
@@ -981,7 +981,7 @@
     <div class="diagram-card" style="margin-top:16px;">
       <div class="diagram-label" style="text-align:right;">02. Precision</div>
       <svg class="precision-svg" viewBox="0 0 300 80">
-        <line x1="30" y1="40" x2="270" y2="40" stroke="#0d1b5e" stroke-width="1.5"/>
+        <line x1="30" y1="40" x2="270" y2="40" stroke="#1C3163" stroke-width="1.5"/>
       </svg>
       <div class="diagram-stat-left">
         <strong>100% VISIBILITY</strong>
@@ -1044,7 +1044,7 @@
 <!-- ══ SLIDE 4: HOW IT WORKS ══ -->
 <section class="slide" id="slide4">
   <div class="hiw-nav">
-    <button class="hamburger" style="color:#0d1b2e;">☰</button>
+    <button class="hamburger" style="color:#00071B;">☰</button>
     <div class="hiw-logo">Restro</div>
     <div style="width:32px;"></div>
   </div>
@@ -1078,13 +1078,13 @@
       </div>
 
       <div class="steps-right">
-        <svg class="phone-sketch" viewBox="0 0 90 160" fill="none" stroke="#0d1b2e" stroke-width="1.5">
+        <svg class="phone-sketch" viewBox="0 0 90 160" fill="none" stroke="#00071B" stroke-width="1.5">
           <rect x="10" y="5" width="70" height="120" rx="10"/>
           <line x1="35" y1="135" x2="55" y2="135" stroke-width="2"/>
           <!-- dots on right -->
-          <circle cx="88" cy="60" r="2" fill="#0d1b2e"/>
-          <circle cx="88" cy="75" r="2" fill="#0d1b2e"/>
-          <circle cx="88" cy="90" r="2" fill="#0d1b2e"/>
+          <circle cx="88" cy="60" r="2" fill="#00071B"/>
+          <circle cx="88" cy="75" r="2" fill="#00071B"/>
+          <circle cx="88" cy="90" r="2" fill="#00071B"/>
           <!-- cable -->
           <path d="M50 125 Q70 140 80 155" stroke-dasharray="4 3"/>
         </svg>
@@ -1234,7 +1234,7 @@
         OVERVIEW
       </div>
       <div class="dc-tab active">
-        <svg viewBox="0 0 24 24" fill="var(--navy)"><rect x="7" y="2" width="10" height="20" rx="2"/></svg>
+        <svg viewBox="0 0 24 24" fill="#1C3163"><rect x="7" y="2" width="10" height="20" rx="2"/></svg>
         PREVIEW
       </div>
       <div class="dc-tab">
@@ -1280,7 +1280,7 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" opacity="0.4"><path d="M12 2l3 7h7l-6 4 2 7-6-4-6 4 2-7-6-4h7z"/></svg>
     </div>
     <div class="testi-nav-item active">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--navy)"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#1C3163"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
       <div class="dot"></div>
     </div>
     <div class="testi-nav-item" onclick="goToSlide(9)">
@@ -1332,7 +1332,7 @@
         <tr>
           <td class="feature-col">Smart Queuing</td>
           <td>✗</td>
-          <td style="color:rgba(13,27,94,0.3);">✓</td>
+          <td style="color:rgba(28,49,99,0.3);">✓</td>
           <td class="restro-col">✓</td>
         </tr>
       </tbody>
@@ -1349,19 +1349,19 @@
 
   <div class="comp-bottom-tabs">
     <div class="comp-tab" onclick="goToSlide(4)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.4"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#FEFFFF" opacity="0.4"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
       STUDIO
     </div>
     <div class="comp-tab active">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M8 8h8M8 16h5" stroke="white" stroke-width="1.5" fill="none"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#FEFFFF"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M8 8h8M8 16h5" stroke="#FEFFFF" stroke-width="1.5" fill="none"/></svg>
       COMPARE
     </div>
     <div class="comp-tab" onclick="goToSlide(8)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" opacity="0.4"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FEFFFF" stroke-width="1.5" opacity="0.4"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
       IMPACT
     </div>
     <div class="comp-tab" onclick="goToSlide(9)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.4"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#FEFFFF" opacity="0.4"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       PROFILE
     </div>
   </div>
@@ -1392,8 +1392,8 @@
       <div class="growth-chart">
         <svg viewBox="0 0 280 100" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M 10 90 Q 80 88 120 75 Q 160 60 200 40 Q 230 25 265 10"
-                stroke="#0d1b5e" stroke-width="2" fill="none"/>
-          <circle cx="265" cy="10" r="4" fill="#0d1b5e"/>
+                stroke="#1C3163" stroke-width="2" fill="none"/>
+          <circle cx="265" cy="10" r="4" fill="#1C3163"/>
         </svg>
       </div>
       <div class="growth-x-labels">

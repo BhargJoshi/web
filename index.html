@@ -1,542 +1,294 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RESTRO</title>
+    <title>Restro | Digital Waitlist Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box; 
-            color: #ffffff; 
+        :root {
+            --cream: #F9F8E6;
+            --navy: #000080;
+            --light-navy: #00004d;
+            --text-gray: #555;
+            --transition: all 0.4s ease;
         }
 
-        body {
-            background-color: #000;
-            height: 500vh;
-            overflow-x: hidden; 
-            font-family: 'Segoe UI', sans-serif; 
-        }
-
-        .scroll-container {
-            position: fixed;
-            top: 0;
-            left: 0; 
-            width: 100%; 
-            height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            overflow: hidden;
-        }
-
-        .bg-video-container {
-            position: absolute;
-            top: 0;
-            left: 0; 
-            width: 100%; 
+        /* Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { 
             height: 100%; 
-            z-index: 1; 
-            overflow: hidden;
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--cream);
+            color: var(--navy);
+            overflow: hidden; 
         }
 
-        .bg-video-container video {
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-            filter: brightness(0.5);
-            will-change: transform;
+        .serif { font-family: 'Playfair Display', serif; }
+        .italic { font-style: italic; }
+        .caps { text-transform: uppercase; letter-spacing: 2px; font-size: 10px; opacity: 0.7; }
+
+        /* Full Page Scroll Container */
+        .main-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
         }
 
-        .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
+        section {
+            height: 100vh;
             width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.2);
-            z-index: 2;
-        }
-
-        .bg-brown {
-            position: absolute;
-            top: 0;
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background-color: #3d2b1f; 
-            z-index: 3; 
-            opacity: 0;
-        }
-
-        .bg-white-page {
-            position: absolute;
-            top: 0;
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background-color: #ffffff; 
-            z-index: 15; 
-            opacity: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            pointer-events: none;
-            transition: background-color 0.6s ease;
-        }
-
-        #why-text {
-            color: #3d2b1f;
-            font-family: 'Impact', 'Arial Black', sans-serif;
-            font-weight: 900; 
-            text-transform: uppercase; 
-            white-space: nowrap; 
-            opacity: 0;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            font-size: 6rem;
-            transform: translate(-50%, -50%) scale(5);
-            will-change: transform, opacity;
-            transition: color 0.4s ease;
-            z-index: 20;
-        }
-
-        .slideshow-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 18;
-            pointer-events: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .slide-img {
-            position: absolute;
-            width: 320px;
-            height: 240px;
-            object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            opacity: 0;
-            will-change: transform, opacity;
-        }
-
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 20px 4%; 
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background 0.5s ease, border-bottom 0.5s ease;
-        }
-
-        .brand-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .brand-logo {
-            height: 35px;
-            width: auto;
-            opacity: 0; 
-            transition: filter 0.3s ease, opacity 0.3s ease;
-        }
-
-        #nav-title-small {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            opacity: 0;
-            transition: color 0.3s ease, opacity 0.3s x;
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 40px; 
-            margin-right: 40px; 
-        }
-
-        .nav-links li { position: relative; }
-        .nav-links a {
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1rem; 
-            display: inline-block; 
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: currentColor;
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover { transform: translateY(-5px); }
-        .nav-links a:hover::after { width: 100%; }
-
-        .nav-black {
-            background: rgba(255, 255, 255, 0.9) !important;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-        .nav-black a { color: #000 !important; }
-        .nav-black .menu-toggle div { background-color: #000 !important; }
-        .nav-black .brand-logo { filter: invert(1); }
-        .nav-black #nav-title-small { color: #000; }
-
-        .menu-toggle {
-            cursor: pointer;
-            display: flex;
-            flex-direction: column; 
-            gap: 6px; 
-            z-index: 1000; 
-            transition: 0.3s;
-        }
-
-        .menu-toggle div {
-            width: 30px;
-            height: 3px;
-            background-color: white; 
-            transition: all 0.4s ease; 
-        }
-
-        .menu-toggle.open #line1 { transform: rotate(45deg) translate(6px, 6px); }
-        .menu-toggle.open #line2 { opacity: 0; transform: translateX(-20px); }
-        .menu-toggle.open #line3 { transform: rotate(-45deg) translate(7px, -7px); }
-
-        .side-menu {
-            position: fixed;
-            top: 0;
-            right: -100%; 
-            width: 350px; 
-            height: 100vh; 
-            background: rgba(20, 20, 20, 0.98); 
-            backdrop-filter: blur(15px); 
-            z-index: 999; 
+            scroll-snap-align: start;
+            position: relative;
+            padding: 60px 30px;
             display: flex;
             flex-direction: column;
-            justify-content: center; 
-            padding: 60px; 
-            transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+            align-items: center;
+            overflow: hidden;
         }
 
-        .side-menu.active { right: 0; }
-        .side-menu a {
-            text-decoration: none;
-            font-size: 2.2rem;
-            margin: 15px 0; 
-            font-weight: 700; 
-            opacity: 0; 
-            transform: translateX(50px); 
-            transition: 0.4s;
-        }
-        .side-menu.active a { opacity: 1; transform: translateX(0); }
-        .side-menu a:hover { color: #d2a679; letter-spacing: 2px; }
-
-        .hero-content {
-            position: relative;
-            width: 100%;
-            height: 100%; 
-            z-index: 20; 
-            pointer-events: none;
-        }
-
-        #main-title {
-            position: absolute;
-            top: 25%;
-            left: 4%;
-            font-size: 12rem;
-            font-weight: 800; 
-            letter-spacing: 15px; 
-            white-space: nowrap; 
-            will-change: transform, opacity;
-            transform-origin: left top;
-        }
-
-        #sub-text {
-            position: absolute;
-            bottom: 15%;
-            right: 8%;
-            font-size: 1.4rem;
-            font-family: 'Kollektif', 'Segoe UI', sans-serif;
-            font-weight: 700; 
-            max-width: 450px; 
-            line-height: 1.4; 
-            text-transform: uppercase;
-            text-align: right;
-            will-change: transform, opacity;
-            transform-origin: center center;
-        }
-
-        .scroll-indicator {
+        /* Navigation Overlay */
+        nav {
             position: fixed;
-            bottom: 20px;
-            left: 50%; 
-            transform: translateX(-50%); 
-            font-size: 0.8rem; 
-            opacity: 0.5; 
-            z-index: 100; 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
-            transition: color 0.4s ease;
+            top: 0; width: 100%;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
         }
+
+        .logo { font-weight: 600; letter-spacing: 3px; font-size: 14px; }
+        .hamburger { cursor: pointer; }
+        .hamburger div { width: 20px; height: 2px; background: var(--navy); margin: 4px; }
+
+        /* Buttons */
+        .btn-primary {
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* SLIDE 1: HERO */
+        .hero-slide { background: var(--cream); text-align: center; }
+        .hero-slide h1 { font-size: 42px; line-height: 1.1; margin: 40px 0 20px; }
+        .img-card { 
+            background: white; padding: 10px; margin: 20px 0; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05); width: 100%;
+        }
+        .placeholder-img { background: #e0e0e0; height: 260px; width: 100%; filter: grayscale(1); }
+
+        /* SLIDE 2: THE PROBLEM (Gradient) */
+        .problem-slide { 
+            background: linear-gradient(180deg, #71889a 0%, #F9F8E6 100%);
+            color: var(--navy);
+        }
+        .problem-slide h2 { font-size: 36px; margin-bottom: 5px; }
+        .graph-area {
+            background: white; width: 100%; height: 250px; margin: 30px 0;
+            position: relative; border: 1px solid rgba(0,0,0,0.05);
+        }
+        /* SVG Line Decoration */
+        .chaos-lines { position: absolute; width: 100%; height: 100%; opacity: 0.3; }
+
+        /* SLIDE 5: PILLARS */
+        .pillars-slide { background: #f2f2f2; padding: 40px 15px; }
+        .pillar-container { 
+            display: flex; gap: 10px; width: 100%; margin-top: 30px; 
+            height: 60%;
+        }
+        .pillar-card {
+            background: white; flex: 1; padding: 20px 10px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            text-align: left; box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+        .pillar-card h4 { font-size: 14px; margin: 10px 0; }
+        .pillar-card p { font-size: 10px; line-height: 1.4; color: var(--text-gray); }
+        .stat { font-weight: 700; font-size: 18px; border-top: 1px solid #eee; padding-top: 10px; }
+
+        /* SLIDE 8: COMPARISON (Copper) */
+        .comparison-slide { 
+            background: linear-gradient(135deg, #e2a785 0%, #8e6d5a 100%); 
+            color: white; 
+        }
+        .comparison-slide h2 { font-size: 32px; margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { text-align: left; font-size: 10px; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.2); }
+        td { padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 12px; }
+        .check { color: #fff; font-weight: bold; }
+
+        /* Footer Nav Bar (Fixed at bottom of Section 1) */
+        .bottom-bar {
+            display: flex; justify-content: space-between; width: 100%;
+            position: absolute; bottom: 30px; padding: 0 40px; font-size: 10px;
+        }
+
+        /* Animations */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
+        .visible { opacity: 1; transform: translateY(0); }
+
     </style>
 </head>
 <body>
 
-    <div class="scroll-indicator" id="scrollTag">Scroll Down</div> 
-
-    <nav id="navbar">
-        <div class="brand-container">
-            <img src="ex.jpg" alt="Logo" class="brand-logo" id="navLogo"> 
-            <span id="nav-title-small">RESTRO</span>
-        </div>
-        
-        <div style="display: flex; align-items: center;">
-            <ul class="nav-links">
-                <li><a href="#">Home</a></li> 
-                <li><a href="#">Services</a></li> 
-                <li><a href="#">About</a></li>
-            </ul>
-            <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()"> 
-                <div id="line1"></div> 
-                <div id="line2"></div> 
-                <div id="line3"></div>
-            </div> 
+    <nav>
+        <div class="logo">RESTRO</div>
+        <div class="hamburger">
+            <div></div><div></div><div></div>
         </div>
     </nav>
 
-    <div class="side-menu" id="sideMenu"> 
-        <a href="#" class="close-link" onclick="toggleMenu()">✕ Close Menu</a> 
-        <a href="#" onclick="toggleMenu()">Home</a>
-        <a href="#" onclick="toggleMenu()">Services</a>
-        <a href="#" onclick="toggleMenu()">About</a>
-        <a href="#" onclick="toggleMenu()">Reservations</a>
-        <a href="#" onclick="toggleMenu()">Contact</a>
-    </div>
-
-    <div class="scroll-container"> 
-        <div class="bg-video-container">
-            <video autoplay muted loop playsinline id="bgVideo">
-                <source src="Food Reel - Darío Idoate.mp4" type="video/mp4">
-            </video>
-            <div class="video-overlay"></div>
-        </div>
+    <div class="main-container" id="scroll-container">
         
-        <div class="bg-brown" id="bgBrown"></div> 
-        
-        <div class="bg-white-page" id="bgWhite"> 
-            <h2 id="why-text">WHY WE EXIST ?</h2> 
-            
-            <div class="slideshow-container">
-                <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800" class="slide-img" id="img1">
-                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800" class="slide-img" id="img2">
-                <img src="https://images.unsplash.com/photo-1550966841-3ee7adac1af8?q=80&w=800" class="slide-img" id="img3">
+        <section class="hero-slide">
+            <div class="fade-in">
+                <h1 class="serif">Stop Losing<br>Walk-In Revenue</h1>
+                <button class="btn-primary">BOOK A DEMO</button>
+                <div class="img-card">
+                    <div class="placeholder-img"></div>
+                    <p class="caps" style="margin-top:10px">The New Standard of Service</p>
+                </div>
+                <p style="font-size: 14px; padding: 0 20px; line-height: 1.6;">
+                    A digital waitlist system designed for the most discerning dining rooms.
+                </p>
             </div>
-        </div>
+            <div class="bottom-bar">
+                <span class="caps">● Arrival</span>
+                <span class="caps">Insights</span>
+                <span class="caps">Contact</span>
+            </div>
+        </section>
 
-        <div class="hero-content" id="heroContent"> 
-           <h1 id="main-title"></h1>
-           <p id="sub-text"></p> 
-        </div>
+        <section class="problem-slide">
+            <p class="caps" style="margin-bottom: 20px;">Slide 2 of 10</p>
+            <h2 class="serif italic">The Problem</h2>
+            <p class="caps">A Study in Friction vs. Efficiency</p>
+            
+            <div class="graph-area">
+                <svg viewBox="0 0 100 100" class="chaos-lines">
+                    <line x1="0" y1="20" x2="100" y2="80" stroke="blue" stroke-width="0.5"/>
+                    <line x1="10" y1="90" x2="90" y2="10" stroke="blue" stroke-width="0.5"/>
+                    <line x1="0" y1="50" x2="100" y2="50" stroke="blue" stroke-width="0.5"/>
+                </svg>
+                <div style="position:absolute; bottom:15px; right:15px; text-align:right">
+                    <div style="font-weight:bold; font-size:18px">30% LOSS</div>
+                    <div class="caps" style="font-size:8px">Revenue leakage</div>
+                </div>
+            </div>
+
+            <p style="font-size: 15px; margin-top: 20px;">
+                Unstructured queues create invisible friction. Every walk-away is a silent drain on your revenue.
+            </p>
+            <a href="#" style="color:var(--navy); text-decoration:none; margin-top:30px; font-weight:600; border-bottom:1px solid var(--navy)">VIEW THE SOLUTION →</a>
+        </section>
+
+        <section class="pillars-slide">
+            <p class="caps">Variant 05 — Pillars</p>
+            <h2 class="serif" style="font-size: 32px; margin: 15px 0;">The 3 Pillars of<br>Value Creation</h2>
+            
+            <div class="pillar-container">
+                <div class="pillar-card">
+                    <div>
+                        <span style="font-size:20px">↗</span>
+                        <h4 class="serif italic">Revenue</h4>
+                        <p>Optimizing seat turnover through precise AI sequencing.</p>
+                    </div>
+                    <div class="stat">+22% <br><small class="caps">Yield</small></div>
+                </div>
+                <div class="pillar-card">
+                    <div>
+                        <span style="font-size:20px">⌛</span>
+                        <h4 class="serif italic">Trust</h4>
+                        <p>Clarity in waiting creates a seamless transition.</p>
+                    </div>
+                    <div class="stat">88% <br><small class="caps">Trust</small></div>
+                </div>
+                <div class="pillar-card">
+                    <div>
+                        <span style="font-size:20px">✦</span>
+                        <h4 class="serif italic">Flow</h4>
+                        <p>Intelligent pacing preserves the spirit of your staff.</p>
+                    </div>
+                    <div class="stat">-40% <br><small class="caps">Stress</small></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="comparison-slide">
+            <p class="caps">Comparison</p>
+            <h2 class="serif">Why Choose <span class="italic">Restro</span></h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>FEATURE</th>
+                        <th>MANUAL</th>
+                        <th>RESTRO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Walk-in Optimization</td>
+                        <td>✕</td>
+                        <td class="check">✔</td>
+                    </tr>
+                    <tr>
+                        <td>Kitchen Coordination</td>
+                        <td>✕</td>
+                        <td class="check">✔</td>
+                    </tr>
+                    <tr>
+                        <td>Revenue Retention</td>
+                        <td>✕</td>
+                        <td class="check">✔</td>
+                    </tr>
+                    <tr>
+                        <td>Smart Queuing</td>
+                        <td>✕</td>
+                        <td class="check">✔</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="hero-slide" style="justify-content:center; background: linear-gradient(180deg, #d3dfd5 0%, #fff 100%);">
+            <h1 class="serif" style="font-size: 56px;">Restro</h1>
+            <button class="btn-primary" style="border-radius: 50px; padding: 20px 60px;">Book a Demo</button>
+            <p class="caps" style="position:absolute; bottom:40px">Simple. Smart. Seamless.</p>
+        </section>
+
     </div>
 
     <script>
-        window.onbeforeunload = function () { window.scrollTo(0, 0); };
+        // Intersection Observer to trigger animations when sliding
+        const observerOptions = {
+            threshold: 0.2
+        };
 
-        const titleText = "RESTRO";
-        const taglineText = "Peak Hours Should Be Your<br>Most Profitable ,Not Most Chaotic";
-
-        function typeWriter(elementId, text, speed, callback) {
-            let i = 0;
-            const element = document.getElementById(elementId);
-            function type() {
-                if (i < text.length) {
-                    if (text.substring(i, i + 4) === "<br>") {
-                        element.innerHTML += "<br>";
-                        i += 4;
-                    } else {
-                        element.innerHTML += text.charAt(i);
-                        i++;
-                    }
-                    setTimeout(type, speed);
-                } else if (callback) { callback(); }
-            }
-            type();
-        }
-
-        window.addEventListener('load', () => {
-            window.scrollTo(0, 0);
-            const video = document.getElementById('bgVideo');
-            if (video) video.play().catch(() => {});
-            typeWriter("main-title", titleText, 150, () => {
-                typeWriter("sub-text", taglineText, 50);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
             });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Optional: Simple JS to handle slide change events or counters
+        const container = document.getElementById('scroll-container');
+        container.addEventListener('scroll', () => {
+            // You could add logic here to update a slide counter "1/10"
         });
-
-        function toggleMenu() {
-            document.getElementById('sideMenu').classList.toggle('active');
-            document.getElementById('menuToggle').classList.toggle('open');
-        }
-
-        let ticking = false;
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    updateAnimations();
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        });
-
-        function updateAnimations() {
-            const scrollY = window.scrollY;
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = Math.max(0, Math.min(scrollY / maxScroll, 1));
-            
-            const title = document.getElementById('main-title');
-            const subText = document.getElementById('sub-text');
-            const bgBrown = document.getElementById('bgBrown');
-            const bgWhite = document.getElementById('bgWhite');
-            const whyText = document.getElementById('why-text');
-            const navbar = document.getElementById('navbar');
-            const navLogo = document.getElementById('navLogo');
-            const navTitleSmall = document.getElementById('nav-title-small');
-
-            // --- SECTION 1: MAIN TITLE MOVES TO NAV ---
-            const p1Percent = Math.min(scrollPercent * 4, 1);
-            const titleScale = 1 - (p1Percent * 0.88);
-            const startY = window.innerHeight * 0.25;
-            const endY = 28;
-            const moveY = (endY - startY) * p1Percent;
-            title.style.transform = `translateY(${moveY}px) scale(${titleScale})`;
-            title.style.letterSpacing = `${15 * (1 - p1Percent)}px`;
-            title.style.opacity = 1 - (p1Percent * 0.9);
-
-            if (p1Percent >= 0.95) {
-                navLogo.style.opacity = 1;
-                navTitleSmall.style.opacity = 1;
-                title.style.opacity = 0;
-            } else {
-                navLogo.style.opacity = 0;
-                navTitleSmall.style.opacity = 0;
-            }
-
-            // --- SECTION 2: SUB-TEXT CENTER & SHRINK ---
-            bgBrown.style.opacity = Math.min(scrollPercent * 3, 1);
-            const centerProgress = Math.min(scrollPercent * 2, 1); 
-            const subX = centerProgress * -42; 
-            const subY = centerProgress * -35;
-            let subScale = 1;
-
-            if (scrollPercent > 0.2) {
-                // Modified for Change 1: Shrink less and slower (only down to 0.75)
-                const shrinkRange = Math.min((scrollPercent - 0.2) / 0.25, 1);
-                subScale = 2.5 - (shrinkRange * 1.75); 
-            } else {
-                subScale = 1 + (scrollPercent * 7.5);
-            }
-
-            subText.style.textAlign = centerProgress > 0.8 ? 'center' : 'right';
-            subText.style.transform = `translate(${subX}vw, ${subY}vh) scale(${subScale})`;
-            
-            let subTextOpacity = 1;
-            if (scrollPercent > 0.35) {
-                subTextOpacity = 1 - (scrollPercent - 0.35) * 10;
-            }
-            subText.style.opacity = Math.max(0, subTextOpacity);
-
-            // --- SECTION 3: WHITE PAGE & "WHY WE EXIST" ---
-            if (scrollPercent > 0.45) { 
-                const p3Percent = Math.min((scrollPercent - 0.45) / 0.25, 1);
-                bgWhite.style.opacity = Math.min(p3Percent * 2, 1);
-                whyText.style.opacity = Math.min(p3Percent * 3, 1);
-
-                let currentScale = 5;
-                let currentX = 0;
-                let currentY = 0;
-                let textFixed = false;
-
-                if (p3Percent < 0.3) {
-                    currentScale = 5 - (p3Percent / 0.3 * 4);
-                } else if (p3Percent < 0.6) {
-                    currentScale = 1;
-                } else {
-                    const slideFactor = (p3Percent - 0.6) / 0.4;
-                    // Modified for Change 2: Adjusted X and Y to keep space from top/left
-                    currentX = slideFactor * -40; 
-                    currentY = slideFactor * -35;
-                    currentScale = 1 - (slideFactor * 0.5);
-                    if(slideFactor >= 1) textFixed = true; 
-                }
-
-                whyText.style.transform = `translate(calc(-50% + ${currentX}vw), calc(-50% + ${currentY}vh)) scale(${currentScale})`;
-                
-                if (p3Percent >= 0.9) {
-                    bgWhite.style.backgroundColor = "#3d2b1f";
-                    whyText.style.color = "#ffffff";
-                    navbar.classList.remove('nav-black');
-                } else {
-                    bgWhite.style.backgroundColor = "#ffffff";
-                    whyText.style.color = "#3d2b1f";
-                    navbar.classList.add('nav-black');
-                }
-
-                const imgs = [document.getElementById('img1'), document.getElementById('img2'), document.getElementById('img3')];
-                const targetX = [-380, 0, 380];
-                
-                if (textFixed && scrollPercent > 0.72) {
-                    const imgProgress = Math.min((scrollPercent - 0.72) / 0.25, 1);
-                    imgs.forEach((img, i) => {
-                        const start = i * 0.33;
-                        const end = (i + 1) * 0.33;
-                        
-                        if (imgProgress > start) {
-                            const local = Math.min((imgProgress - start) / 0.33, 1);
-                            img.style.opacity = local;
-                            let x = local > 0.7 ? targetX[i] * ((local - 0.7) / 0.3) : 0;
-                            let scale = 1.5 - (local > 0.7 ? (local - 0.7) / 0.3 * 0.5 : 0);
-                            img.style.transform = `translateX(${x}px) scale(${scale})`;
-                        } else {
-                            img.style.opacity = 0;
-                        }
-                    });
-                } else {
-                    imgs.forEach(img => img.style.opacity = 0);
-                }
-            } else { 
-                bgWhite.style.opacity = 0;
-                whyText.style.opacity = 0;
-                navbar.classList.remove('nav-black');
-            } 
-        }
     </script>
 </body>
 </html>

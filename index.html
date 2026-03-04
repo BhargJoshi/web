@@ -451,26 +451,25 @@
 
             // --- SECTION 2: SUB-TEXT CENTER & SHRINK ---
             bgBrown.style.opacity = Math.min(scrollPercent * 3, 1);
-            const centerProgress = Math.min(scrollPercent * 2, 1);
-            const subX = centerProgress * -42;
+            const centerProgress = Math.min(scrollPercent * 2, 1); 
+            const subX = centerProgress * -42; 
             const subY = centerProgress * -35;
             let subScale = 1;
 
             if (scrollPercent > 0.2) {
+                // Modified for Change 1: Shrink less and slower (only down to 0.75)
                 const shrinkRange = Math.min((scrollPercent - 0.2) / 0.25, 1);
-                subScale = 2.5 - (shrinkRange * 1.75);
+                subScale = 2.5 - (shrinkRange * 1.75); 
             } else {
                 subScale = 1 + (scrollPercent * 7.5);
             }
 
             subText.style.textAlign = centerProgress > 0.8 ? 'center' : 'right';
             subText.style.transform = `translate(${subX}vw, ${subY}vh) scale(${subScale})`;
-
-            // Modified: Keep text visible longer, fade slowly after reaching center
+            
             let subTextOpacity = 1;
-            if (scrollPercent > 0.55) {
-                // Start fading only after scrollPercent 0.55 (text stays fixed longer)
-                subTextOpacity = 1 - (scrollPercent - 0.55) * 2.2;
+            if (scrollPercent > 0.35) {
+                subTextOpacity = 1 - (scrollPercent - 0.35) * 10;
             }
             subText.style.opacity = Math.max(0, subTextOpacity);
 
@@ -492,11 +491,10 @@
                 } else {
                     const slideFactor = (p3Percent - 0.6) / 0.4;
                     // Modified for Change 2: Adjusted X and Y to keep space from top/left
-                    // Limit movement to stay within viewport (away from navbar and left edge)
-                    currentX = slideFactor * -25;
-                    currentY = slideFactor * -20;
+                    currentX = slideFactor * -40; 
+                    currentY = slideFactor * -35;
                     currentScale = 1 - (slideFactor * 0.5);
-                    if(slideFactor >= 1) textFixed = true;
+                    if(slideFactor >= 1) textFixed = true; 
                 }
 
                 whyText.style.transform = `translate(calc(-50% + ${currentX}vw), calc(-50% + ${currentY}vh)) scale(${currentScale})`;

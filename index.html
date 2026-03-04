@@ -1,294 +1,1440 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restro | Digital Waitlist Experience</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --cream: #F9F8E6;
-            --navy: #000080;
-            --light-navy: #00004d;
-            --text-gray: #555;
-            --transition: all 0.4s ease;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restro — The New Standard of Service</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* Base Styles */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { 
-            height: 100%; 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--cream);
-            color: var(--navy);
-            overflow: hidden; 
-        }
+  :root {
+    --navy: #0d1b5e;
+    --cream: #edeee0;
+    --warm-orange: #d4845a;
+    --rose-gold: #c8876a;
+    --sage: #8fa49a;
+    --off-white: #f4f3ed;
+    --light-sage: #b8c5bc;
+  }
 
-        .serif { font-family: 'Playfair Display', serif; }
-        .italic { font-style: italic; }
-        .caps { text-transform: uppercase; letter-spacing: 2px; font-size: 10px; opacity: 0.7; }
+  html { scroll-behavior: smooth; }
 
-        /* Full Page Scroll Container */
-        .main-container {
-            height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-        }
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    overflow-x: hidden;
+  }
 
-        section {
-            height: 100vh;
-            width: 100%;
-            scroll-snap-align: start;
-            position: relative;
-            padding: 60px 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow: hidden;
-        }
+  /* ── SLIDE SYSTEM ── */
+  .slide { display: none; min-height: 100vh; flex-direction: column; position: relative; overflow: hidden; }
+  .slide.active { display: flex; }
 
-        /* Navigation Overlay */
-        nav {
-            position: fixed;
-            top: 0; width: 100%;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-        }
+  /* ── SLIDE 1: HERO ── */
+  #slide1 {
+    background: var(--cream);
+    padding: 0;
+  }
 
-        .logo { font-weight: 600; letter-spacing: 3px; font-size: 14px; }
-        .hamburger { cursor: pointer; }
-        .hamburger div { width: 20px; height: 2px; background: var(--navy); margin: 4px; }
+  .nav1 {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+    position: sticky; top: 0; z-index: 10;
+    background: var(--cream);
+  }
 
-        /* Buttons */
-        .btn-primary {
-            background: var(--navy);
-            color: white;
-            border: none;
-            padding: 16px 32px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin: 20px 0;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Jost', sans-serif; font-weight: 600;
+    font-size: 14px; letter-spacing: 2px; color: var(--navy);
+  }
 
-        /* SLIDE 1: HERO */
-        .hero-slide { background: var(--cream); text-align: center; }
-        .hero-slide h1 { font-size: 42px; line-height: 1.1; margin: 40px 0 20px; }
-        .img-card { 
-            background: white; padding: 10px; margin: 20px 0; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05); width: 100%;
-        }
-        .placeholder-img { background: #e0e0e0; height: 260px; width: 100%; filter: grayscale(1); }
+  .fork-icon { font-size: 22px; }
+  .hamburger { font-size: 24px; cursor: pointer; color: var(--navy); background: none; border: none; }
 
-        /* SLIDE 2: THE PROBLEM (Gradient) */
-        .problem-slide { 
-            background: linear-gradient(180deg, #71889a 0%, #F9F8E6 100%);
-            color: var(--navy);
-        }
-        .problem-slide h2 { font-size: 36px; margin-bottom: 5px; }
-        .graph-area {
-            background: white; width: 100%; height: 250px; margin: 30px 0;
-            position: relative; border: 1px solid rgba(0,0,0,0.05);
-        }
-        /* SVG Line Decoration */
-        .chaos-lines { position: absolute; width: 100%; height: 100%; opacity: 0.3; }
+  .hero-content {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-start;
+    padding: 48px 32px 40px;
+    text-align: center;
+  }
 
-        /* SLIDE 5: PILLARS */
-        .pillars-slide { background: #f2f2f2; padding: 40px 15px; }
-        .pillar-container { 
-            display: flex; gap: 10px; width: 100%; margin-top: 30px; 
-            height: 60%;
-        }
-        .pillar-card {
-            background: white; flex: 1; padding: 20px 10px;
-            display: flex; flex-direction: column; justify-content: space-between;
-            text-align: left; box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-        }
-        .pillar-card h4 { font-size: 14px; margin: 10px 0; }
-        .pillar-card p { font-size: 10px; line-height: 1.4; color: var(--text-gray); }
-        .stat { font-weight: 700; font-size: 18px; border-top: 1px solid #eee; padding-top: 10px; }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 10vw, 56px);
+    font-weight: 400; line-height: 1.1;
+    color: var(--navy); margin-bottom: 32px;
+  }
 
-        /* SLIDE 8: COMPARISON (Copper) */
-        .comparison-slide { 
-            background: linear-gradient(135deg, #e2a785 0%, #8e6d5a 100%); 
-            color: white; 
-        }
-        .comparison-slide h2 { font-size: 32px; margin-bottom: 30px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { text-align: left; font-size: 10px; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.2); }
-        td { padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 12px; }
-        .check { color: #fff; font-weight: bold; }
+  .btn-primary {
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px; font-weight: 500;
+    letter-spacing: 3px; padding: 18px 48px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+  .btn-primary:hover { background: #1a2b8a; transform: translateY(-2px); }
 
-        /* Footer Nav Bar (Fixed at bottom of Section 1) */
-        .bottom-bar {
-            display: flex; justify-content: space-between; width: 100%;
-            position: absolute; bottom: 30px; padding: 0 40px; font-size: 10px;
-        }
+  .hero-card {
+    background: white; margin: 32px 20px 0;
+    border-radius: 4px; overflow: hidden;
+    box-shadow: 0 8px 32px rgba(13,27,94,0.08);
+  }
 
-        /* Animations */
-        .fade-in { opacity: 0; transform: translateY(20px); transition: 1s ease-out; }
-        .visible { opacity: 1; transform: translateY(0); }
+  .restaurant-img {
+    width: 100%; height: 260px;
+    object-fit: cover;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 50%, #3a3532 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
 
-    </style>
+  .restaurant-img::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 30%),
+      radial-gradient(circle at 60% 20%, rgba(255,255,255,0.2) 0%, transparent 25%),
+      radial-gradient(circle at 80% 40%, rgba(255,255,255,0.1) 0%, transparent 20%),
+      radial-gradient(circle at 40% 60%, rgba(255,255,255,0.08) 0%, transparent 35%);
+  }
+
+  .restaurant-img-inner {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, #3d3530 0%, #1a1a1a 100%);
+  }
+
+  .img-caption {
+    padding: 16px 20px;
+    font-size: 10px; letter-spacing: 4px;
+    color: #999; text-align: center;
+    font-family: 'Jost', sans-serif; font-weight: 400;
+  }
+
+  .hero-tagline {
+    padding: 48px 32px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 20px;
+    line-height: 1.6; color: var(--navy);
+    text-align: center; opacity: 0.85;
+  }
+
+  .bottom-nav {
+    display: flex; align-items: center; justify-content: space-around;
+    padding: 16px 24px 24px;
+    border-top: 1px solid rgba(13,27,94,0.1);
+    background: var(--cream);
+  }
+
+  .bottom-nav-item {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 4px; font-size: 9px; letter-spacing: 2px;
+    color: var(--navy); opacity: 0.5; cursor: pointer;
+    font-weight: 500; text-transform: uppercase;
+    transition: opacity 0.2s;
+  }
+  .bottom-nav-item.active { opacity: 1; }
+  .bottom-nav-item svg { width: 20px; height: 20px; }
+
+  /* ── SLIDE 2: THE PROBLEM ── */
+  #slide2 {
+    background: linear-gradient(160deg, #4a6070 0%, #8a9ea8 30%, #b5c5b0 60%, #d4b898 85%, #c4a888 100%);
+    color: white;
+  }
+
+  .slide-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+  }
+
+  .back-btn {
+    background: none; border: none; cursor: pointer;
+    color: white; font-size: 18px; display: flex; align-items: center; gap: 6px;
+    font-family: 'Jost', sans-serif; font-size: 13px; letter-spacing: 1px;
+  }
+
+  .slide-counter {
+    font-size: 10px; letter-spacing: 3px; opacity: 0.8;
+    font-family: 'Jost', sans-serif;
+  }
+
+  .more-btn { background: none; border: none; cursor: pointer; color: white; font-size: 20px; }
+
+  .slide-body { flex: 1; padding: 32px 24px; }
+
+  .problem-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px; font-style: italic; font-weight: 400;
+    margin-bottom: 8px;
+  }
+
+  .problem-subtitle {
+    font-size: 10px; letter-spacing: 4px; opacity: 0.7;
+    margin-bottom: 32px; font-weight: 300;
+  }
+
+  .diagram-card {
+    background: rgba(255,255,255,0.92);
+    border-radius: 4px; padding: 20px;
+    margin-bottom: 16px; position: relative;
+  }
+
+  .diagram-label {
+    font-size: 10px; letter-spacing: 2px; color: #6670b0;
+    margin-bottom: 12px; font-weight: 400;
+  }
+
+  .chaos-svg { width: 100%; height: 140px; }
+  .precision-svg { width: 100%; height: 100px; }
+
+  .diagram-stat {
+    text-align: right; padding-top: 12px;
+  }
+  .diagram-stat strong { font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 700; color: #0d1b5e; }
+  .diagram-stat span { display: block; font-size: 10px; color: #666; margin-top: 2px; }
+
+  .diagram-stat-left { padding-top: 0; }
+  .diagram-stat-left strong { color: #0d1b5e; font-size: 15px; font-weight: 700; }
+  .diagram-stat-left span { font-size: 10px; color: #666; }
+
+  .compare-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .compare-label { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 400; }
+  .compare-tag { font-size: 9px; letter-spacing: 3px; opacity: 0.7; }
+
+  .problem-text {
+    padding: 24px 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 400; line-height: 1.5;
+  }
+
+  .view-solution {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 11px; letter-spacing: 3px; font-weight: 500;
+    text-decoration: none; color: white;
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    padding-bottom: 8px; cursor: pointer;
+    background: none; border-left: none; border-right: none; border-top: none;
+  }
+
+  .slide2-bottom {
+    padding: 24px; display: flex; justify-content: space-around;
+  }
+
+  .shape-nav { width: 20px; height: 20px; opacity: 0.5; cursor: pointer; }
+
+  /* ── SLIDE 3: THE SHIFT ── */
+  #slide3 { background: var(--cream); }
+
+  .shift-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+  }
+
+  .shift-back { background: none; border: none; cursor: pointer; font-size: 13px; letter-spacing: 1px; color: var(--navy); display: flex; align-items: center; gap: 4px; }
+  .shift-variant { font-size: 10px; letter-spacing: 3px; color: var(--navy); opacity: 0.6; }
+
+  .shift-body { flex: 1; padding: 32px 24px; }
+
+  .shift-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px; font-weight: 400;
+    color: var(--navy); margin-bottom: 8px;
+  }
+
+  .shift-line { width: 48px; height: 1px; background: var(--navy); opacity: 0.3; margin: 12px 0; }
+  .shift-subtitle { font-size: 10px; letter-spacing: 4px; color: var(--navy); opacity: 0.6; margin-bottom: 48px; }
+
+  .flow-diagram {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0; padding: 0 32px; margin-bottom: 48px;
+  }
+
+  .flow-circle {
+    width: 130px; height: 130px; border-radius: 50%;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(13,27,94,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; letter-spacing: 3px; color: var(--navy);
+    font-weight: 500;
+  }
+
+  .flow-dash {
+    width: 1px; height: 60px;
+    border-left: 1px dashed rgba(13,27,94,0.3);
+  }
+
+  .shift-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px; line-height: 1.7; color: var(--navy); opacity: 0.8;
+    margin-bottom: 48px;
+  }
+
+  .shift-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px 32px;
+    border-top: 1px solid rgba(13,27,94,0.1);
+  }
+
+  .current-concept { font-size: 9px; letter-spacing: 2px; color: var(--navy); opacity: 0.5; }
+  .current-concept strong { display: block; font-size: 14px; color: var(--navy); opacity: 1; letter-spacing: 0; margin-top: 4px; font-family: 'Jost', sans-serif; font-weight: 400; }
+
+  .nav-arrows { display: flex; gap: 12px; }
+  .arrow-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border: 1px solid rgba(13,27,94,0.2);
+    background: none; color: var(--navy); font-size: 18px;
+    transition: all 0.2s;
+  }
+  .arrow-btn.filled { background: var(--navy); color: white; border-color: var(--navy); }
+
+  /* ── SLIDE 4: HOW IT WORKS ── */
+  #slide4 {
+    background: linear-gradient(140deg, #d4916a 0%, #c9856a 25%, #b87a8a 50%, #8a7aaa 75%, #7a8ab5 100%);
+  }
+
+  .hiw-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+  }
+
+  .hiw-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-style: italic; color: #1a1a2e;
+  }
+
+  .hiw-body { flex: 1; padding: 24px 24px 0; }
+
+  .hiw-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px; font-weight: 400;
+    color: #0d1b2e; margin-bottom: 6px;
+  }
+
+  .hiw-line { width: 48px; height: 2px; background: #0d1b2e; margin-bottom: 40px; }
+
+  .steps-layout { display: flex; gap: 16px; }
+  .steps-left { flex: 1; }
+
+  .step {
+    margin-bottom: 32px; position: relative;
+  }
+
+  .step-num {
+    position: absolute; left: -4px; top: -16px;
+    font-family: 'Playfair Display', serif;
+    font-size: 80px; font-weight: 700;
+    color: rgba(13,27,46,0.08); line-height: 1;
+    pointer-events: none;
+  }
+
+  .step-title {
+    font-size: 11px; letter-spacing: 3px; font-weight: 600;
+    color: #0d1b2e; margin-bottom: 6px; position: relative; z-index: 1;
+  }
+
+  .step-desc {
+    font-size: 15px; line-height: 1.5; color: #1a2840;
+    position: relative; z-index: 1;
+  }
+
+  .steps-right {
+    width: 120px; display: flex; align-items: center; justify-content: center;
+  }
+
+  .phone-sketch {
+    width: 90px; opacity: 0.7;
+  }
+
+  .hiw-btn-wrap { padding: 0; }
+
+  .hiw-btn {
+    display: block; width: 100%;
+    background: #0d1b3e; color: white;
+    border: none; cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: 4px;
+    font-weight: 500; padding: 22px;
+    text-transform: uppercase; text-align: center;
+    transition: background 0.3s;
+  }
+
+  /* ── SLIDE 5: PILLARS ── */
+  #slide5 { background: var(--off-white); }
+
+  .pillars-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+  }
+
+  .pillars-logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--navy); }
+
+  .pillars-body { flex: 1; padding: 16px 20px; }
+
+  .pillars-variant { font-size: 9px; letter-spacing: 3px; color: var(--navy); opacity: 0.5; margin-bottom: 8px; }
+
+  .pillars-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; font-style: italic;
+    color: var(--navy); line-height: 1.2; margin-bottom: 16px;
+  }
+
+  .pillars-divider { height: 1px; background: rgba(13,27,94,0.15); margin-bottom: 20px; }
+
+  .pillar-cards { display: flex; gap: 8px; margin-bottom: 20px; }
+
+  .pillar-card {
+    flex: 1; background: white; border-radius: 4px;
+    padding: 16px 12px; display: flex; flex-direction: column;
+    border: 1px solid rgba(13,27,94,0.06);
+  }
+
+  .pillar-icon { font-size: 18px; margin-bottom: 12px; }
+  .pillar-name { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: var(--navy); margin-bottom: 8px; }
+  .pillar-text { font-size: 11px; line-height: 1.6; color: #444; flex: 1; }
+
+  .pillar-metric {
+    margin-top: 24px; padding-top: 12px;
+    border-top: 1px solid rgba(13,27,94,0.1);
+  }
+
+  .pillar-number { font-size: 26px; font-weight: 700; color: var(--navy); }
+  .pillar-unit { font-size: 9px; letter-spacing: 2px; color: var(--navy); opacity: 0.5; display: block; margin-top: 2px; }
+
+  .pillars-tabs {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; border-top: 1px solid rgba(13,27,94,0.1);
+  }
+
+  .tab { font-size: 10px; letter-spacing: 2px; color: var(--navy); opacity: 0.4; cursor: pointer; padding-bottom: 4px; }
+  .tab.active { opacity: 1; border-bottom: 1px solid var(--navy); }
+  .tab-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--navy); }
+
+  /* ── SLIDE 6: DIGITAL CONNOISSEUR ── */
+  #slide6 { background: var(--off-white); }
+
+  .dc-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+  }
+
+  .dc-back { background: none; border: none; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(13,27,94,0.2); display: flex; align-items: center; justify-content: center; color: var(--navy); font-size: 16px; }
+
+  .dc-counter-wrap { text-align: center; }
+  .dc-variant-label { font-size: 9px; letter-spacing: 3px; color: var(--navy); opacity: 0.5; display: block; }
+  .dc-variant-title { font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--navy); }
+
+  .dc-body { flex: 1; padding: 24px 24px 0; position: relative; }
+
+  .dc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px; color: var(--navy);
+    margin-bottom: 4px; font-weight: 400;
+  }
+
+  .dc-title em { font-style: italic; font-weight: 700; }
+
+  .dc-phone-wrapper {
+    position: relative; display: flex; justify-content: center;
+    margin-top: 24px;
+  }
+
+  .dc-features-left {
+    position: absolute; left: 0; top: 60px;
+    display: flex; flex-direction: column; gap: 80px;
+  }
+
+  .dc-feature {
+    font-size: 9px; letter-spacing: 2px;
+    color: var(--navy); opacity: 0.7;
+  }
+
+  .dc-feature strong { display: block; font-weight: 600; margin-bottom: 2px; }
+  .dc-feature span { opacity: 0.7; font-size: 8px; }
+
+  .dc-phone-mockup {
+    width: 200px; height: 380px;
+    background: white;
+    border-radius: 32px;
+    border: 4px solid var(--navy);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(13,27,94,0.2);
+  }
+
+  .dc-notch {
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+    width: 80px; height: 10px;
+    background: var(--navy); border-radius: 10px;
+  }
+
+  .dc-screen { padding: 30px 12px 12px; height: 100%; }
+
+  .dc-screen-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #ddd; margin-bottom: 8px;
+  }
+
+  .dc-screen-search {
+    width: 28px; height: 28px; border-radius: 50%;
+    position: absolute; top: 36px; right: 12px;
+    background: none; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: #999;
+  }
+
+  .dc-screen-bar { height: 28px; background: var(--navy); border-radius: 6px; width: 70%; margin-bottom: 12px; }
+
+  .dc-screen-item {
+    display: flex; gap: 10px; margin-bottom: 10px; align-items: center;
+  }
+
+  .dc-screen-thumb {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: #e8e8e8; flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .dc-thumb-1 { background: linear-gradient(135deg, #2a4a2a, #1a3a1a); }
+  .dc-thumb-2 { background: linear-gradient(135deg, #8a5a2a, #6a3a1a); }
+
+  .dc-screen-lines { flex: 1; }
+  .dc-screen-line { height: 6px; background: #e0e0e0; border-radius: 3px; margin-bottom: 4px; }
+  .dc-screen-line.w80 { width: 80%; }
+  .dc-screen-line.w60 { width: 60%; }
+
+  .dc-screen-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
+
+  .dc-screen-dots { display: flex; gap: 6px; justify-content: center; position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); }
+  .dc-screen-dots span { width: 6px; height: 6px; border-radius: 50%; background: #ccc; }
+  .dc-screen-dots span.active { background: var(--navy); }
+
+  .dc-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px 24px;
+    border-top: 1px solid rgba(13,27,94,0.1);
+  }
+
+  .dc-next { font-size: 9px; letter-spacing: 2px; color: var(--navy); opacity: 0.5; }
+  .dc-tabs { display: flex; gap: 24px; }
+  .dc-tab { font-size: 9px; letter-spacing: 2px; color: var(--navy); opacity: 0.4; cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .dc-tab.active { opacity: 1; border-bottom: 2px solid var(--navy); padding-bottom: 2px; }
+  .dc-tab svg { width: 18px; height: 18px; }
+
+  /* ── SLIDE 7: TESTIMONIAL ── */
+  #slide7 { background: var(--cream); }
+
+  .testi-nav {
+    display: flex; align-items: center;
+    padding: 20px 24px; gap: 16px;
+  }
+
+  .testi-back { background: none; border: none; cursor: pointer; font-size: 22px; color: #888; }
+  .testi-slide-label { font-size: 10px; letter-spacing: 3px; color: #999; }
+
+  .testi-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 32px 20px 0; }
+
+  .receipt-card {
+    position: relative; width: 100%;
+    background: linear-gradient(150deg, #d4916a 0%, #c87a5a 30%, #b86a5a 60%, #c4826a 100%);
+    border-radius: 4px;
+    padding: 40px 32px 48px;
+    text-align: center;
+  }
+
+  .receipt-top {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 20px; overflow: hidden;
+  }
+
+  .receipt-top::before {
+    content: '';
+    position: absolute; top: -10px; left: -5px; right: -5px; bottom: 0;
+    background: var(--cream);
+    clip-path: polygon(0 0, 5% 100%, 10% 0, 15% 100%, 20% 0, 25% 100%, 30% 0, 35% 100%, 40% 0, 45% 100%, 50% 0, 55% 100%, 60% 0, 65% 100%, 70% 0, 75% 100%, 80% 0, 85% 100%, 90% 0, 95% 100%, 100% 0, 100% 0, 0 0);
+  }
+
+  .receipt-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 20px; overflow: hidden;
+  }
+
+  .receipt-bottom::before {
+    content: '';
+    position: absolute; top: 0; left: -5px; right: -5px; bottom: -10px;
+    background: var(--cream);
+    clip-path: polygon(0 100%, 5% 0, 10% 100%, 15% 0, 20% 100%, 25% 0, 30% 100%, 35% 0, 40% 100%, 45% 0, 50% 100%, 55% 0, 60% 100%, 65% 0, 70% 100%, 75% 0, 80% 100%, 85% 0, 90% 100%, 95% 0, 100% 100%, 100% 100%, 0 100%);
+  }
+
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-style: italic;
+    color: #0d1b3e; line-height: 1.4; margin-bottom: 24px;
+  }
+
+  .quote-divider { width: 40px; height: 1px; background: rgba(13,27,62,0.3); margin: 0 auto 16px; }
+
+  .quote-author { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: #0d1b3e; }
+  .quote-place { font-size: 9px; letter-spacing: 3px; color: rgba(13,27,62,0.6); margin-top: 4px; }
+
+  .quote-avatars {
+    display: flex; justify-content: center; gap: -8px; margin-top: 20px;
+  }
+
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    border: 2px solid rgba(255,255,255,0.5);
+    margin-left: -8px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  .testi-proof { font-size: 10px; letter-spacing: 4px; color: #aaa; margin-top: 28px; text-align: center; }
+
+  .testi-explore {
+    margin-top: 20px;
+    padding: 16px 48px; border-radius: 40px;
+    border: 1px solid rgba(13,27,94,0.2);
+    background: none; cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: 3px; color: var(--navy);
+    font-weight: 500; text-transform: uppercase;
+    transition: all 0.3s;
+  }
+
+  .testi-explore:hover { background: var(--navy); color: white; }
+
+  .testi-bottom-nav {
+    display: flex; align-items: center; justify-content: space-around;
+    padding: 16px 24px 24px;
+    border-top: 1px solid rgba(13,27,94,0.1);
+  }
+
+  .testi-nav-item {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 4px; font-size: 9px; letter-spacing: 1px;
+    color: var(--navy); opacity: 0.4; cursor: pointer;
+  }
+
+  .testi-nav-item.active { opacity: 1; }
+  .testi-nav-item .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--navy); }
+
+  /* ── SLIDE 8: COMPARISON ── */
+  #slide8 {
+    background: linear-gradient(160deg, #c4886a 0%, #c09080 40%, #b89098 70%, #b09aaa 100%);
+  }
+
+  .comp-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .comp-back { background: none; border: none; cursor: pointer; color: white; font-size: 22px; }
+  .comp-title-nav { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: white; }
+
+  .comp-body { flex: 1; padding: 32px 20px; }
+
+  .comp-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; font-weight: 400; color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .comp-heading em { font-style: italic; font-weight: 700; }
+
+  .comp-underline { width: 60px; height: 2px; background: var(--navy); margin-bottom: 32px; }
+
+  .comp-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+
+  .comp-table th {
+    font-size: 9px; letter-spacing: 2px; font-weight: 500;
+    padding: 12px 8px; text-align: center;
+    color: rgba(255,255,255,0.5);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .comp-table th.feature-col { text-align: left; }
+  .comp-table th.restro-col { color: var(--navy); font-weight: 700; font-size: 11px; }
+
+  .comp-table td {
+    padding: 18px 8px; text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.4); font-size: 15px;
+  }
+
+  .comp-table td.feature-col {
+    text-align: left; font-size: 13px;
+    color: var(--navy); font-weight: 400;
+  }
+
+  .comp-table td.restro-col { color: var(--navy); font-size: 18px; font-weight: 700; }
+
+  .comp-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px;
+  }
+
+  .comp-variant { font-size: 9px; letter-spacing: 3px; color: rgba(255,255,255,0.3); }
+  .comp-dots { display: flex; gap: 8px; }
+  .comp-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(13,27,94,0.3); }
+  .comp-dot.active { background: var(--navy); }
+
+  .comp-bottom-tabs {
+    display: flex; align-items: center; justify-content: space-around;
+    padding: 16px 24px 24px;
+    background: rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .comp-tab { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 9px; letter-spacing: 2px; color: white; opacity: 0.4; cursor: pointer; }
+  .comp-tab.active { opacity: 1; background: rgba(13,27,94,0.3); padding: 6px 12px; border-radius: 4px; }
+
+  /* ── SLIDE 9: SCALABILITY ── */
+  #slide9 {
+    background: linear-gradient(170deg, #d4916a 0%, #c8856a 20%, #b87a7a 40%, #9a7a9a 60%, #8a8ab0 80%, #7a9ab0 100%);
+  }
+
+  .scale-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+  }
+
+  .scale-back { background: none; border: none; cursor: pointer; color: white; font-size: 22px; }
+  .scale-dots { display: flex; gap: 6px; }
+  .scale-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); }
+  .scale-dot.active { background: white; width: 20px; border-radius: 3px; }
+
+  .scale-body { flex: 1; padding: 24px; }
+
+  .scale-variant { font-size: 9px; letter-spacing: 3px; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+
+  .scale-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px; font-style: italic;
+    color: white; margin-bottom: 10px;
+  }
+
+  .scale-desc {
+    font-size: 17px; line-height: 1.5;
+    color: rgba(255,255,255,0.85); margin-bottom: 24px;
+  }
+
+  .growth-card {
+    background: rgba(255,255,255,0.9);
+    border-radius: 12px; padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .growth-card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 4px;
+  }
+
+  .growth-label { font-size: 9px; letter-spacing: 3px; color: #888; }
+  .growth-roi { font-family: 'Jost', sans-serif; font-size: 26px; font-weight: 700; color: var(--navy); }
+
+  .growth-chart { height: 100px; position: relative; margin: 12px 0; }
+
+  .growth-chart svg { width: 100%; height: 100%; }
+
+  .growth-x-labels {
+    display: flex; justify-content: space-between;
+    font-size: 8px; letter-spacing: 2px; color: #aaa; padding: 0 4px;
+  }
+
+  .scale-features { display: flex; flex-direction: column; gap: 20px; }
+
+  .scale-feature { display: flex; gap: 16px; align-items: flex-start; }
+  .scale-feature-icon { font-size: 20px; width: 24px; flex-shrink: 0; margin-top: 2px; }
+  .scale-feature-title { font-size: 10px; letter-spacing: 3px; font-weight: 600; color: white; margin-bottom: 4px; }
+  .scale-feature-desc { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.4; }
+
+  .scale-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px 32px;
+  }
+
+  .next-step-label { font-size: 9px; letter-spacing: 2px; color: rgba(255,255,255,0.5); }
+  .next-step-name { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; color: white; }
+
+  .continue-btn {
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px; padding: 14px 28px;
+    border-radius: 40px; font-weight: 400;
+    transition: all 0.3s;
+  }
+
+  /* ── SLIDE 10: CTA ── */
+  #slide10 {
+    background: linear-gradient(170deg, #b8c8b8 0%, #9ab5aa 20%, #88aaaa 40%, #8a9ab0 60%, #b0a898 80%, #c4a890 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  }
+
+  .cta-top { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+  .cta-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 60px; font-weight: 600;
+    color: var(--navy); letter-spacing: -1px;
+    margin-bottom: 48px;
+  }
+
+  .cta-btn {
+    background: var(--navy); color: white;
+    border: none; cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 17px; padding: 20px 80px;
+    border-radius: 50px; font-weight: 400;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    box-shadow: 0 8px 32px rgba(13,27,94,0.3);
+  }
+
+  .cta-bottom { padding: 32px; text-align: center; width: 100%; }
+
+  .cta-tagline { font-size: 10px; letter-spacing: 5px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+  .cta-counter { font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 2px; }
+
+  /* ── SLIDE DOTS NAV ── */
+  .slide-dots-nav {
+    position: fixed; right: 12px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 6px;
+    z-index: 100;
+  }
+
+  .slide-dot-nav {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: rgba(13,27,94,0.2); cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .slide-dot-nav.active { background: var(--navy); width: 5px; height: 14px; border-radius: 3px; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .slide.active > * {
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .slide.active > *:nth-child(1) { animation-delay: 0s; }
+  .slide.active > *:nth-child(2) { animation-delay: 0.1s; }
+  .slide.active > *:nth-child(3) { animation-delay: 0.2s; }
+
+  /* Separator line in step area */
+  .step-separator { width: 1px; background: rgba(13,27,46,0.15); position: absolute; right: 0; top: 0; bottom: 0; }
+</style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">RESTRO</div>
-        <div class="hamburger">
-            <div></div><div></div><div></div>
-        </div>
-    </nav>
+<!-- Slide Dots Navigation -->
+<div class="slide-dots-nav" id="slideDots"></div>
 
-    <div class="main-container" id="scroll-container">
-        
-        <section class="hero-slide">
-            <div class="fade-in">
-                <h1 class="serif">Stop Losing<br>Walk-In Revenue</h1>
-                <button class="btn-primary">BOOK A DEMO</button>
-                <div class="img-card">
-                    <div class="placeholder-img"></div>
-                    <p class="caps" style="margin-top:10px">The New Standard of Service</p>
-                </div>
-                <p style="font-size: 14px; padding: 0 20px; line-height: 1.6;">
-                    A digital waitlist system designed for the most discerning dining rooms.
-                </p>
-            </div>
-            <div class="bottom-bar">
-                <span class="caps">● Arrival</span>
-                <span class="caps">Insights</span>
-                <span class="caps">Contact</span>
-            </div>
-        </section>
+<!-- ══ SLIDE 1: HERO ══ -->
+<section class="slide active" id="slide1">
+  <nav class="nav1">
+    <div class="nav-logo">
+      <span class="fork-icon">🍴</span>
+      <span>RESTRO</span>
+    </div>
+    <button class="hamburger">☰</button>
+  </nav>
 
-        <section class="problem-slide">
-            <p class="caps" style="margin-bottom: 20px;">Slide 2 of 10</p>
-            <h2 class="serif italic">The Problem</h2>
-            <p class="caps">A Study in Friction vs. Efficiency</p>
-            
-            <div class="graph-area">
-                <svg viewBox="0 0 100 100" class="chaos-lines">
-                    <line x1="0" y1="20" x2="100" y2="80" stroke="blue" stroke-width="0.5"/>
-                    <line x1="10" y1="90" x2="90" y2="10" stroke="blue" stroke-width="0.5"/>
-                    <line x1="0" y1="50" x2="100" y2="50" stroke="blue" stroke-width="0.5"/>
-                </svg>
-                <div style="position:absolute; bottom:15px; right:15px; text-align:right">
-                    <div style="font-weight:bold; font-size:18px">30% LOSS</div>
-                    <div class="caps" style="font-size:8px">Revenue leakage</div>
-                </div>
-            </div>
+  <div class="hero-content">
+    <h1 class="hero-title">Stop Losing<br>Walk-In Revenue</h1>
+    <button class="btn-primary" onclick="goToSlide(9)">BOOK A DEMO</button>
+  </div>
 
-            <p style="font-size: 15px; margin-top: 20px;">
-                Unstructured queues create invisible friction. Every walk-away is a silent drain on your revenue.
-            </p>
-            <a href="#" style="color:var(--navy); text-decoration:none; margin-top:30px; font-weight:600; border-bottom:1px solid var(--navy)">VIEW THE SOLUTION →</a>
-        </section>
+  <div class="hero-card">
+    <div class="restaurant-img">
+      <div class="restaurant-img-inner"></div>
+    </div>
+    <div class="img-caption">THE NEW STANDARD OF SERVICE</div>
+  </div>
 
-        <section class="pillars-slide">
-            <p class="caps">Variant 05 — Pillars</p>
-            <h2 class="serif" style="font-size: 32px; margin: 15px 0;">The 3 Pillars of<br>Value Creation</h2>
-            
-            <div class="pillar-container">
-                <div class="pillar-card">
-                    <div>
-                        <span style="font-size:20px">↗</span>
-                        <h4 class="serif italic">Revenue</h4>
-                        <p>Optimizing seat turnover through precise AI sequencing.</p>
-                    </div>
-                    <div class="stat">+22% <br><small class="caps">Yield</small></div>
-                </div>
-                <div class="pillar-card">
-                    <div>
-                        <span style="font-size:20px">⌛</span>
-                        <h4 class="serif italic">Trust</h4>
-                        <p>Clarity in waiting creates a seamless transition.</p>
-                    </div>
-                    <div class="stat">88% <br><small class="caps">Trust</small></div>
-                </div>
-                <div class="pillar-card">
-                    <div>
-                        <span style="font-size:20px">✦</span>
-                        <h4 class="serif italic">Flow</h4>
-                        <p>Intelligent pacing preserves the spirit of your staff.</p>
-                    </div>
-                    <div class="stat">-40% <br><small class="caps">Stress</small></div>
-                </div>
-            </div>
-        </section>
+  <p class="hero-tagline">A digital waitlist system designed for the most discerning dining rooms. Elevate the guest experience from the moment they arrive.</p>
 
-        <section class="comparison-slide">
-            <p class="caps">Comparison</p>
-            <h2 class="serif">Why Choose <span class="italic">Restro</span></h2>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>FEATURE</th>
-                        <th>MANUAL</th>
-                        <th>RESTRO</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Walk-in Optimization</td>
-                        <td>✕</td>
-                        <td class="check">✔</td>
-                    </tr>
-                    <tr>
-                        <td>Kitchen Coordination</td>
-                        <td>✕</td>
-                        <td class="check">✔</td>
-                    </tr>
-                    <tr>
-                        <td>Revenue Retention</td>
-                        <td>✕</td>
-                        <td class="check">✔</td>
-                    </tr>
-                    <tr>
-                        <td>Smart Queuing</td>
-                        <td>✕</td>
-                        <td class="check">✔</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+  <nav class="bottom-nav">
+    <div class="bottom-nav-item active" onclick="goToSlide(0)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="4" height="4" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/></svg>
+      ARRIVAL
+    </div>
+    <div class="bottom-nav-item" onclick="goToSlide(1)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      INSIGHTS
+    </div>
+    <div class="bottom-nav-item" onclick="goToSlide(9)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      CONTACT
+    </div>
+  </nav>
+</section>
 
-        <section class="hero-slide" style="justify-content:center; background: linear-gradient(180deg, #d3dfd5 0%, #fff 100%);">
-            <h1 class="serif" style="font-size: 56px;">Restro</h1>
-            <button class="btn-primary" style="border-radius: 50px; padding: 20px 60px;">Book a Demo</button>
-            <p class="caps" style="position:absolute; bottom:40px">Simple. Smart. Seamless.</p>
-        </section>
+<!-- ══ SLIDE 2: THE PROBLEM ══ -->
+<section class="slide" id="slide2">
+  <div class="slide-nav">
+    <button class="back-btn" onclick="goToSlide(0)">← </button>
+    <span class="slide-counter">SLIDE 2 OF 10</span>
+    <button class="more-btn">•••</button>
+  </div>
 
+  <div class="slide-body">
+    <h2 class="problem-title">The Problem</h2>
+    <p class="problem-subtitle">A STUDY IN FRICTION VS. EFFICIENCY</p>
+
+    <!-- Chaos diagram -->
+    <div class="diagram-card">
+      <div class="diagram-label">01. Friction</div>
+      <svg class="chaos-svg" viewBox="0 0 300 140">
+        <g stroke="#8890c8" stroke-width="1" opacity="0.6">
+          <line x1="20" y1="70" x2="280" y2="30"/>
+          <line x1="50" y1="10" x2="200" y2="130"/>
+          <line x1="10" y1="90" x2="270" y2="50"/>
+          <line x1="100" y1="5" x2="180" y2="135"/>
+          <line x1="30" y1="120" x2="290" y2="20"/>
+          <line x1="150" y1="0" x2="80" y2="140"/>
+          <line x1="5" y1="40" x2="250" y2="100"/>
+          <line x1="200" y1="5" x2="60" y2="130"/>
+          <line x1="120" y1="140" x2="240" y2="10"/>
+        </g>
+      </svg>
+      <div class="diagram-stat">
+        <strong>30% LOSS</strong>
+        <span>Revenue leakage via walk-aways</span>
+      </div>
     </div>
 
-    <script>
-        // Intersection Observer to trigger animations when sliding
-        const observerOptions = {
-            threshold: 0.2
-        };
+    <div class="compare-row">
+      <span class="compare-label">The Chaos</span>
+      <span class="compare-tag">MANUAL QUEUEING</span>
+    </div>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
+    <!-- Precision diagram -->
+    <div class="diagram-card" style="margin-top:16px;">
+      <div class="diagram-label" style="text-align:right;">02. Precision</div>
+      <svg class="precision-svg" viewBox="0 0 300 80">
+        <line x1="30" y1="40" x2="270" y2="40" stroke="#0d1b5e" stroke-width="1.5"/>
+      </svg>
+      <div class="diagram-stat-left">
+        <strong>100% VISIBILITY</strong>
+        <span>Real-time floor optimization</span>
+      </div>
+    </div>
 
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    <div class="compare-row">
+      <span class="compare-label">The Flow</span>
+      <span class="compare-tag">RESTRO OPTIMIZED</span>
+    </div>
 
-        // Optional: Simple JS to handle slide change events or counters
-        const container = document.getElementById('scroll-container');
-        container.addEventListener('scroll', () => {
-            // You could add logic here to update a slide counter "1/10"
-        });
-    </script>
+    <p class="problem-text">Unstructured queues create invisible friction. Every walk-away is a silent drain on your revenue.</p>
+
+    <button class="view-solution" onclick="goToSlide(2)">VIEW THE SOLUTION →</button>
+  </div>
+
+  <div class="slide2-bottom">
+    <svg class="shape-nav" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="rgba(255,255,255,0.4)"/></svg>
+    <svg class="shape-nav" viewBox="0 0 20 20"><polygon points="10,2 18,18 2,18" fill="rgba(255,255,255,0.6)"/></svg>
+    <svg class="shape-nav" viewBox="0 0 20 20"><rect x="2" y="2" width="16" height="16" fill="rgba(255,255,255,0.4)"/></svg>
+  </div>
+</section>
+
+<!-- ══ SLIDE 3: THE SHIFT ══ -->
+<section class="slide" id="slide3">
+  <div class="shift-nav">
+    <button class="shift-back" onclick="goToSlide(1)">‹ BACK</button>
+    <span class="shift-variant">VARIANT 3 / 10</span>
+  </div>
+
+  <div class="shift-body">
+    <h2 class="shift-title">The Shift</h2>
+    <div class="shift-line"></div>
+    <p class="shift-subtitle">ARCHITECTURAL STRATEGY</p>
+
+    <div class="flow-diagram">
+      <div class="flow-circle">CAPTURE</div>
+      <div class="flow-dash"></div>
+      <div class="flow-circle">SCHEDULE</div>
+      <div class="flow-dash"></div>
+      <div class="flow-circle">BALANCE</div>
+    </div>
+
+    <p class="shift-desc">A refined blueprint for modern hospitality. Moving beyond chaos to a structured, linear flow of guest intake and kitchen management.</p>
+  </div>
+
+  <div class="shift-bottom">
+    <div>
+      <div class="current-concept">CURRENT CONCEPT</div>
+      <strong style="font-family:'Jost',sans-serif; font-size:15px; color:var(--navy); display:block; margin-top:4px;">Linear Progression</strong>
+    </div>
+    <div class="nav-arrows">
+      <button class="arrow-btn" onclick="goToSlide(1)">‹</button>
+      <button class="arrow-btn filled" onclick="goToSlide(3)">›</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 4: HOW IT WORKS ══ -->
+<section class="slide" id="slide4">
+  <div class="hiw-nav">
+    <button class="hamburger" style="color:#0d1b2e;">☰</button>
+    <div class="hiw-logo">Restro</div>
+    <div style="width:32px;"></div>
+  </div>
+
+  <div class="hiw-body">
+    <h2 class="hiw-title">How It Works</h2>
+    <div class="hiw-line"></div>
+
+    <div class="steps-layout">
+      <div class="steps-left">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-title">ENTRY</div>
+          <div class="step-desc">Scan the QR code at the entrance for instant access.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-title">EXPLORE</div>
+          <div class="step-desc">Browse the live menu with real-time availability updates.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-title">PRE-ORDER</div>
+          <div class="step-desc">Place your order while waiting for your table to be ready.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-title">ARRIVAL</div>
+          <div class="step-desc">Your food begins preparation the moment you are seated.</div>
+        </div>
+      </div>
+
+      <div class="steps-right">
+        <svg class="phone-sketch" viewBox="0 0 90 160" fill="none" stroke="#0d1b2e" stroke-width="1.5">
+          <rect x="10" y="5" width="70" height="120" rx="10"/>
+          <line x1="35" y1="135" x2="55" y2="135" stroke-width="2"/>
+          <!-- dots on right -->
+          <circle cx="88" cy="60" r="2" fill="#0d1b2e"/>
+          <circle cx="88" cy="75" r="2" fill="#0d1b2e"/>
+          <circle cx="88" cy="90" r="2" fill="#0d1b2e"/>
+          <!-- cable -->
+          <path d="M50 125 Q70 140 80 155" stroke-dasharray="4 3"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="hiw-btn-wrap">
+    <button class="hiw-btn" onclick="goToSlide(9)">START EXPERIENCE</button>
+  </div>
+</section>
+
+<!-- ══ SLIDE 5: PILLARS ══ -->
+<section class="slide" id="slide5">
+  <div class="pillars-nav">
+    <button class="hamburger">☰</button>
+    <div class="pillars-logo">Restro.</div>
+    <div style="width:32px;"></div>
+  </div>
+
+  <div class="pillars-body">
+    <div class="pillars-variant">VARIANT 05 — PILLARS</div>
+    <h2 class="pillars-title">The 3 Pillars of Value Creation</h2>
+    <div class="pillars-divider"></div>
+
+    <div class="pillar-cards">
+      <div class="pillar-card">
+        <div class="pillar-icon">↗</div>
+        <div class="pillar-name">Revenue</div>
+        <div class="pillar-text">Optimizing seat turnover through precise AI sequencing. Every empty chair is a missed note in the symphony of service.</div>
+        <div class="pillar-metric">
+          <div class="pillar-number">+22%</div>
+          <span class="pillar-unit">YIELD</span>
+        </div>
+      </div>
+
+      <div class="pillar-card">
+        <div class="pillar-icon">⏳</div>
+        <div class="pillar-name">Trust</div>
+        <div class="pillar-text">Clarity in waiting creates a seamless transition from street to table. Transparency is the highest form of hospitality.</div>
+        <div class="pillar-metric">
+          <div class="pillar-number">88%</div>
+          <span class="pillar-unit">&nbsp;</span>
+        </div>
+      </div>
+
+      <div class="pillar-card">
+        <div class="pillar-icon">✦</div>
+        <div class="pillar-name">Flow</div>
+        <div class="pillar-text">Intelligent pacing preserves the spirit of your staff. We manage the friction so they can manage the magic.</div>
+        <div class="pillar-metric">
+          <div class="pillar-number">-40%</div>
+          <span class="pillar-unit">STRESS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillars-tabs">
+    <span class="tab active">FOCUS</span>
+    <span class="tab">IMPACT</span>
+    <span class="tab">VISION</span>
+    <span class="tab-dot"></span>
+  </div>
+</section>
+
+<!-- ══ SLIDE 6: DIGITAL CONNOISSEUR ══ -->
+<section class="slide" id="slide6">
+  <div class="dc-nav">
+    <button class="dc-back" onclick="goToSlide(4)">‹</button>
+    <div class="dc-counter-wrap">
+      <span class="dc-variant-label">VARIANT 6 OF 10</span>
+      <span class="dc-variant-title">PRODUCT EXPERIENCE</span>
+    </div>
+    <div style="width:36px;"></div>
+  </div>
+
+  <div class="dc-body">
+    <h2 class="dc-title">The Digital <em>Connoisseur</em></h2>
+
+    <div class="dc-phone-wrapper">
+      <div class="dc-features-left">
+        <div class="dc-feature">
+          <strong>VISUAL CURATION</strong>
+          <span>Rich imagery for every dish.</span>
+        </div>
+        <div class="dc-feature">
+          <strong>FAST CHECKOUT</strong>
+          <span>Seamless payment integration.</span>
+        </div>
+        <div class="dc-feature">
+          <strong>SMART SORTING</strong>
+          <span>Dietary filters with a single tap.</span>
+        </div>
+      </div>
+
+      <div class="dc-phone-mockup">
+        <div class="dc-notch"></div>
+        <div class="dc-screen">
+          <div style="position:relative;">
+            <div class="dc-screen-avatar"></div>
+            <div class="dc-screen-search">🔍</div>
+          </div>
+          <div class="dc-screen-bar"></div>
+
+          <div class="dc-screen-item">
+            <div class="dc-screen-thumb dc-thumb-1"></div>
+            <div class="dc-screen-lines">
+              <div class="dc-screen-line w80"></div>
+              <div class="dc-screen-line w60"></div>
+            </div>
+            <div class="dc-screen-dot"></div>
+          </div>
+
+          <div class="dc-screen-item">
+            <div class="dc-screen-thumb dc-thumb-2"></div>
+            <div class="dc-screen-lines">
+              <div class="dc-screen-line w80"></div>
+              <div class="dc-screen-line w60"></div>
+            </div>
+            <div class="dc-screen-dot"></div>
+          </div>
+
+          <div class="dc-screen-item">
+            <div class="dc-screen-thumb"></div>
+            <div class="dc-screen-lines">
+              <div class="dc-screen-line w80"></div>
+              <div class="dc-screen-line w60"></div>
+            </div>
+            <div class="dc-screen-dot"></div>
+          </div>
+        </div>
+        <div class="dc-screen-dots" style="position:absolute; bottom:16px; left:50%; transform:translateX(-50%); display:flex; gap:6px;">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--navy);"></span>
+          <span style="width:6px;height:6px;border-radius:50%;background:#ccc;"></span>
+          <span style="width:6px;height:6px;border-radius:50%;background:#ccc;"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dc-bottom">
+    <span class="dc-next">NEXT: QUEUE FLOW</span>
+    <div class="dc-tabs">
+      <div class="dc-tab">
+        <svg viewBox="0 0 24 24" fill="currentColor" opacity="0.4"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+        OVERVIEW
+      </div>
+      <div class="dc-tab active">
+        <svg viewBox="0 0 24 24" fill="var(--navy)"><rect x="7" y="2" width="10" height="20" rx="2"/></svg>
+        PREVIEW
+      </div>
+      <div class="dc-tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>
+        SUPPORT
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 7: TESTIMONIAL ══ -->
+<section class="slide" id="slide7">
+  <div class="testi-nav">
+    <button class="testi-back" onclick="goToSlide(5)">←</button>
+    <span class="testi-slide-label">SLIDE 7 OF 10</span>
+  </div>
+
+  <div class="testi-body">
+    <div class="receipt-card">
+      <div class="receipt-top"></div>
+      <p class="quote-text">"Restro saved our Friday nights."</p>
+      <div class="quote-divider"></div>
+      <div class="quote-author">MARCO ROSSI</div>
+      <div class="quote-place">THE GREEN BISTRO</div>
+      <div class="quote-avatars">
+        <div class="avatar">👩</div>
+        <div class="avatar">👨</div>
+        <div class="avatar">🧑</div>
+      </div>
+      <div class="receipt-bottom"></div>
+    </div>
+
+    <div class="testi-proof">SOCIAL PROOF</div>
+
+    <button class="testi-explore" onclick="goToSlide(7)">EXPLORE IMPACT</button>
+  </div>
+
+  <div class="testi-bottom-nav">
+    <div class="testi-nav-item" onclick="goToSlide(0)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" opacity="0.4"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+    </div>
+    <div class="testi-nav-item" onclick="goToSlide(4)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" opacity="0.4"><path d="M12 2l3 7h7l-6 4 2 7-6-4-6 4 2-7-6-4h7z"/></svg>
+    </div>
+    <div class="testi-nav-item active">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--navy)"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      <div class="dot"></div>
+    </div>
+    <div class="testi-nav-item" onclick="goToSlide(9)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" opacity="0.4"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 8: COMPARISON ══ -->
+<section class="slide" id="slide8">
+  <div class="comp-nav">
+    <button class="comp-back" onclick="goToSlide(6)">‹</button>
+    <span class="comp-title-nav">COMPARISON</span>
+    <div style="width:24px;"></div>
+  </div>
+
+  <div class="comp-body">
+    <h2 class="comp-heading">Why Choose <em>Restro</em></h2>
+    <div class="comp-underline"></div>
+
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th class="feature-col">FEATURE</th>
+          <th>MANUAL</th>
+          <th>RES. APPS</th>
+          <th class="restro-col">RESTRO</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feature-col">Walk-in Optimization</td>
+          <td>✗</td>
+          <td>✗</td>
+          <td class="restro-col">✓</td>
+        </tr>
+        <tr>
+          <td class="feature-col">Kitchen Coordination</td>
+          <td>✗</td>
+          <td>✗</td>
+          <td class="restro-col">✓</td>
+        </tr>
+        <tr>
+          <td class="feature-col">Revenue Retention</td>
+          <td>✗</td>
+          <td>✗</td>
+          <td class="restro-col">✓</td>
+        </tr>
+        <tr>
+          <td class="feature-col">Smart Queuing</td>
+          <td>✗</td>
+          <td style="color:rgba(13,27,94,0.3);">✓</td>
+          <td class="restro-col">✓</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="comp-footer">
+    <span class="comp-variant">VARIANT 8 OF 10</span>
+    <div class="comp-dots">
+      <div class="comp-dot active"></div>
+      <div class="comp-dot"></div>
+    </div>
+  </div>
+
+  <div class="comp-bottom-tabs">
+    <div class="comp-tab" onclick="goToSlide(4)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.4"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+      STUDIO
+    </div>
+    <div class="comp-tab active">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M8 8h8M8 16h5" stroke="white" stroke-width="1.5" fill="none"/></svg>
+      COMPARE
+    </div>
+    <div class="comp-tab" onclick="goToSlide(8)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" opacity="0.4"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      IMPACT
+    </div>
+    <div class="comp-tab" onclick="goToSlide(9)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white" opacity="0.4"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      PROFILE
+    </div>
+  </div>
+</section>
+
+<!-- ══ SLIDE 9: SCALABILITY ══ -->
+<section class="slide" id="slide9">
+  <div class="scale-nav">
+    <button class="scale-back" onclick="goToSlide(7)">←</button>
+    <div class="scale-dots">
+      <div class="scale-dot"></div>
+      <div class="scale-dot"></div>
+      <div class="scale-dot active"></div>
+      <div class="scale-dot"></div>
+    </div>
+  </div>
+
+  <div class="scale-body">
+    <div class="scale-variant">VARIANT 09 — 10</div>
+    <h2 class="scale-title">Scalability</h2>
+    <p class="scale-desc">A pure SaaS model designed for exponential growth with zero friction.</p>
+
+    <div class="growth-card">
+      <div class="growth-card-header">
+        <span class="growth-label">GROWTH CURVE</span>
+        <span class="growth-roi">12mo ROI</span>
+      </div>
+      <div class="growth-chart">
+        <svg viewBox="0 0 280 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 10 90 Q 80 88 120 75 Q 160 60 200 40 Q 230 25 265 10"
+                stroke="#0d1b5e" stroke-width="2" fill="none"/>
+          <circle cx="265" cy="10" r="4" fill="#0d1b5e"/>
+        </svg>
+      </div>
+      <div class="growth-x-labels">
+        <span>LAUNCH</span>
+        <span>EXPANSION</span>
+        <span>DOMINANCE</span>
+      </div>
+    </div>
+
+    <div class="scale-features">
+      <div class="scale-feature">
+        <div class="scale-feature-icon">📱</div>
+        <div>
+          <div class="scale-feature-title">ZERO HARDWARE</div>
+          <div class="scale-feature-desc">Compatible with any modern smartphone or tablet.</div>
+        </div>
+      </div>
+      <div class="scale-feature">
+        <div class="scale-feature-icon">🔗</div>
+        <div>
+          <div class="scale-feature-title">MULTI-LOCATION</div>
+          <div class="scale-feature-desc">Sync infinite branches under one digital roof.</div>
+        </div>
+      </div>
+      <div class="scale-feature">
+        <div class="scale-feature-icon">☁️</div>
+        <div>
+          <div class="scale-feature-title">SAAS MODEL</div>
+          <div class="scale-feature-desc">Continuous updates with no deployment downtime.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scale-bottom">
+    <div>
+      <div class="next-step-label">NEXT STEP</div>
+      <div class="next-step-name">Global Network</div>
+    </div>
+    <button class="continue-btn" onclick="goToSlide(9)">Continue</button>
+  </div>
+</section>
+
+<!-- ══ SLIDE 10: FINAL CTA ══ -->
+<section class="slide" id="slide10">
+  <div class="cta-top">
+    <div class="cta-logo">Restro</div>
+    <button class="cta-btn">Book a Demo</button>
+  </div>
+  <div class="cta-bottom">
+    <div class="cta-tagline">SIMPLE. SMART. SEAMLESS.</div>
+    <div class="cta-counter">10 / 10</div>
+  </div>
+</section>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dotsContainer = document.getElementById('slideDots');
+  let current = 0;
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'slide-dot-nav' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goToSlide(i);
+    dotsContainer.appendChild(dot);
+  });
+
+  function goToSlide(index) {
+    slides[current].classList.remove('active');
+    dotsContainer.children[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+    dotsContainer.children[current].classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      if (current < slides.length - 1) goToSlide(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      if (current > 0) goToSlide(current - 1);
+    }
+  });
+
+  // Touch/swipe
+  let touchStartY = 0;
+  document.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; });
+  document.addEventListener('touchend', e => {
+    const dy = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(dy) > 50) {
+      if (dy > 0 && current < slides.length - 1) goToSlide(current + 1);
+      else if (dy < 0 && current > 0) goToSlide(current - 1);
+    }
+  });
+</script>
 </body>
 </html>

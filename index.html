@@ -9,13 +9,17 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --navy: #1C3163;
-    --cream: #D6B585;
-    --warm-orange: #D6B585;
-    --rose-gold: #c9a96e;
-    --sage: #1C3163;
-    --off-white: #FEFFFF;
-    --light-sage: #D6B585;
+    --navy: #2C3639;
+    --cream: #DCD7C9;
+    --warm-orange: #A27B5B;
+    --rose-gold: #A27B5B;
+    --sage: #3F4E4F;
+    --off-white: #DCD7C9;
+    --light-sage: #A27B5B;
+    --inkwell: #2C3639;
+    --lunar: #3F4E4F;
+    --creme-brulee: #A27B5B;
+    --au-lait: #DCD7C9;
   }
 
   html { scroll-behavior: smooth; }
@@ -74,7 +78,7 @@
   }
 
   .btn-primary {
-    background: var(--navy); color: #FEFFFF;
+    background: var(--navy); color: #DCD7C9;
     border: none; cursor: pointer;
     font-family: 'Jost', sans-serif;
     font-size: 12px; font-weight: 500;
@@ -82,10 +86,10 @@
     text-transform: uppercase;
     transition: all 0.3s ease;
   }
-  .btn-primary:hover { background: #2a4a9a; transform: translateY(-2px); }
+  .btn-primary:hover { background: #3F4E4F; transform: translateY(-2px); }
 
   .hero-card {
-    background: #FEFFFF; margin: 32px 20px 0;
+    background: #F5F3EE; margin: 32px 20px 0;
     border-radius: 4px; overflow: hidden;
     box-shadow: 0 8px 32px rgba(28,49,99,0.08);
   }
@@ -93,7 +97,7 @@
   .restaurant-img {
     width: 100%; height: 260px;
     object-fit: cover;
-    background: linear-gradient(135deg, #00071B 0%, #1C3163 50%, #00071B 100%);
+    background: linear-gradient(135deg, #2C3639 0%, #3F4E4F 50%, #2C3639 100%);
     display: flex; align-items: center; justify-content: center;
     position: relative; overflow: hidden;
   }
@@ -110,13 +114,13 @@
 
   .restaurant-img-inner {
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 50%, #1C3163 0%, #00071B 100%);
+    background: radial-gradient(ellipse at 50% 50%, #3F4E4F 0%, #2C3639 100%);
   }
 
   .img-caption {
     padding: 16px 20px;
     font-size: 10px; letter-spacing: 4px;
-    color: rgba(28,49,99,0.5); text-align: center;
+    color: rgba(44,54,57,0.5); text-align: center;
     font-family: 'Jost', sans-serif; font-weight: 400;
   }
 
@@ -131,7 +135,7 @@
   .bottom-nav {
     display: flex; align-items: center; justify-content: space-around;
     padding: 16px 24px 24px;
-    border-top: 1px solid rgba(28,49,99,0.1);
+    border-top: 1px solid rgba(44,54,57,0.1);
     background: var(--cream);
   }
 
@@ -147,8 +151,8 @@
 
   /* ── SLIDE 2: THE PROBLEM ── */
   #slide2 {
-    background: linear-gradient(160deg, #D6B585 0%, #c9a96e 35%, #e8d5b0 65%, #FEFFFF 100%);
-    color: #1C3163;
+    background: linear-gradient(160deg, #DCD7C9 0%, #A27B5B 35%, #d4cfc2 65%, #DCD7C9 100%);
+    color: #2C3639;
   }
 
   .slide-nav {
@@ -158,7 +162,7 @@
 
   .back-btn {
     background: none; border: none; cursor: pointer;
-    color: #1C3163; font-size: 18px; display: flex; align-items: center; gap: 6px;
+    color: #2C3639; font-size: 18px; display: flex; align-items: center; gap: 6px;
     font-family: 'Jost', sans-serif; font-size: 13px; letter-spacing: 1px;
   }
 
@@ -167,7 +171,7 @@
     font-family: 'Jost', sans-serif;
   }
 
-  .more-btn { background: none; border: none; cursor: pointer; color: #1C3163; font-size: 20px; }
+  .more-btn { background: none; border: none; cursor: pointer; color: #2C3639; font-size: 20px; }
 
   .slide-body { flex: 1; padding: 32px 24px; }
 
@@ -189,7 +193,7 @@
   }
 
   .diagram-label {
-    font-size: 10px; letter-spacing: 2px; color: #1C3163;
+    font-size: 10px; letter-spacing: 2px; color: #2C3639;
     margin-bottom: 12px; font-weight: 400;
   }
 
@@ -199,16 +203,16 @@
   .diagram-stat {
     text-align: right; padding-top: 12px;
   }
-  .diagram-stat strong { font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 700; color: #1C3163; }
-  .diagram-stat span { display: block; font-size: 10px; color: #1C3163; margin-top: 2px; }
+  .diagram-stat strong { font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 700; color: #2C3639; }
+  .diagram-stat span { display: block; font-size: 10px; color: #2C3639; margin-top: 2px; }
 
   .diagram-stat-left { padding-top: 0; }
-  .diagram-stat-left strong { color: #1C3163; font-size: 15px; font-weight: 700; }
-  .diagram-stat-left span { font-size: 10px; color: #1C3163; }
+  .diagram-stat-left strong { color: #2C3639; font-size: 15px; font-weight: 700; }
+  .diagram-stat-left span { font-size: 10px; color: #2C3639; }
 
   .compare-row {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 0; border-bottom: 1px solid rgba(28,49,99,0.2);
+    padding: 14px 0; border-bottom: 1px solid rgba(44,54,57,0.2);
   }
 
   .compare-label { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 400; }
@@ -223,8 +227,8 @@
   .view-solution {
     display: flex; align-items: center; gap: 12px;
     font-size: 11px; letter-spacing: 3px; font-weight: 500;
-    text-decoration: none; color: #1C3163;
-    border-bottom: 1px solid rgba(28,49,99,0.4);
+    text-decoration: none; color: #2C3639;
+    border-bottom: 1px solid rgba(44,54,57,0.4);
     padding-bottom: 8px; cursor: pointer;
     background: none; border-left: none; border-right: none; border-top: none;
   }
@@ -299,11 +303,11 @@
     background: none; color: var(--navy); font-size: 18px;
     transition: all 0.2s;
   }
-  .arrow-btn.filled { background: var(--navy); color: #FEFFFF; border-color: var(--navy); }
+  .arrow-btn.filled { background: var(--navy); color: #DCD7C9; border-color: var(--navy); }
 
   /* ── SLIDE 4: HOW IT WORKS ── */
   #slide4 {
-    background: linear-gradient(140deg, #D6B585 0%, #c9a96e 40%, #e8d5b0 70%, #FEFFFF 100%);
+    background: linear-gradient(140deg, #DCD7C9 0%, #A27B5B 40%, #d4cfc2 70%, #DCD7C9 100%);
   }
 
   .hiw-nav {
@@ -313,7 +317,7 @@
 
   .hiw-logo {
     font-family: 'Playfair Display', serif;
-    font-size: 22px; font-style: italic; color: #00071B;
+    font-size: 22px; font-style: italic; color: #2C3639;
   }
 
   .hiw-body { flex: 1; padding: 24px 24px 0; }
@@ -321,10 +325,10 @@
   .hiw-title {
     font-family: 'Playfair Display', serif;
     font-size: 44px; font-weight: 400;
-    color: #00071B; margin-bottom: 6px;
+    color: #2C3639; margin-bottom: 6px;
   }
 
-  .hiw-line { width: 48px; height: 2px; background: #00071B; margin-bottom: 40px; }
+  .hiw-line { width: 48px; height: 2px; background: #2C3639; margin-bottom: 40px; }
 
   .steps-layout { display: flex; gap: 16px; }
   .steps-left { flex: 1; }
@@ -337,17 +341,17 @@
     position: absolute; left: -4px; top: -16px;
     font-family: 'Playfair Display', serif;
     font-size: 80px; font-weight: 700;
-    color: rgba(0,7,27,0.08); line-height: 1;
+    color: rgba(44,54,57,0.08); line-height: 1;
     pointer-events: none;
   }
 
   .step-title {
     font-size: 11px; letter-spacing: 3px; font-weight: 600;
-    color: #00071B; margin-bottom: 6px; position: relative; z-index: 1;
+    color: #2C3639; margin-bottom: 6px; position: relative; z-index: 1;
   }
 
   .step-desc {
-    font-size: 15px; line-height: 1.5; color: #00071B;
+    font-size: 15px; line-height: 1.5; color: #2C3639;
     position: relative; z-index: 1;
   }
 
@@ -363,7 +367,7 @@
 
   .hiw-btn {
     display: block; width: 100%;
-    background: #1C3163; color: #FEFFFF;
+    background: #2C3639; color: #DCD7C9;
     border: none; cursor: pointer;
     font-family: 'Jost', sans-serif;
     font-size: 11px; letter-spacing: 4px;
@@ -397,14 +401,14 @@
   .pillar-cards { display: flex; gap: 8px; margin-bottom: 20px; }
 
   .pillar-card {
-    flex: 1; background: #FEFFFF; border-radius: 4px;
+    flex: 1; background: #F5F3EE; border-radius: 4px;
     padding: 16px 12px; display: flex; flex-direction: column;
     border: 1px solid rgba(28,49,99,0.06);
   }
 
   .pillar-icon { font-size: 18px; margin-bottom: 12px; }
   .pillar-name { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: var(--navy); margin-bottom: 8px; }
-  .pillar-text { font-size: 11px; line-height: 1.6; color: #00071B; flex: 1; }
+  .pillar-text { font-size: 11px; line-height: 1.6; color: #2C3639; flex: 1; }
 
   .pillar-metric {
     margin-top: 24px; padding-top: 12px;
@@ -467,7 +471,7 @@
 
   .dc-phone-mockup {
     width: 200px; height: 380px;
-    background: #FEFFFF;
+    background: #F5F3EE;
     border-radius: 32px;
     border: 4px solid var(--navy);
     overflow: hidden;
@@ -485,7 +489,7 @@
 
   .dc-screen-avatar {
     width: 28px; height: 28px; border-radius: 50%;
-    background: rgba(214,181,133,0.3); margin-bottom: 8px;
+    background: rgba(162,123,91,0.3); margin-bottom: 8px;
   }
 
   .dc-screen-search {
@@ -507,11 +511,11 @@
     overflow: hidden;
   }
 
-  .dc-thumb-1 { background: linear-gradient(135deg, #1C3163, #00071B); }
-  .dc-thumb-2 { background: linear-gradient(135deg, #D6B585, #c9a96e); }
+  .dc-thumb-1 { background: linear-gradient(135deg, #2C3639, #3F4E4F); }
+  .dc-thumb-2 { background: linear-gradient(135deg, #A27B5B, #DCD7C9); }
 
   .dc-screen-lines { flex: 1; }
-  .dc-screen-line { height: 6px; background: rgba(214,181,133,0.4); border-radius: 3px; margin-bottom: 4px; }
+  .dc-screen-line { height: 6px; background: rgba(162,123,91,0.4); border-radius: 3px; margin-bottom: 4px; }
   .dc-screen-line.w80 { width: 80%; }
   .dc-screen-line.w60 { width: 60%; }
 
@@ -548,7 +552,7 @@
 
   .receipt-card {
     position: relative; width: 100%;
-    background: linear-gradient(150deg, #D6B585 0%, #c9a96e 40%, #b8983a 70%, #D6B585 100%);
+    background: linear-gradient(150deg, #A27B5B 0%, #8a6a4a 40%, #7a5c3e 70%, #A27B5B 100%);
     border-radius: 4px;
     padding: 40px 32px 48px;
     text-align: center;
@@ -562,7 +566,7 @@
   .receipt-top::before {
     content: '';
     position: absolute; top: -10px; left: -5px; right: -5px; bottom: 0;
-    background: var(--cream);
+    background: var(--au-lait);
     clip-path: polygon(0 0, 5% 100%, 10% 0, 15% 100%, 20% 0, 25% 100%, 30% 0, 35% 100%, 40% 0, 45% 100%, 50% 0, 55% 100%, 60% 0, 65% 100%, 70% 0, 75% 100%, 80% 0, 85% 100%, 90% 0, 95% 100%, 100% 0, 100% 0, 0 0);
   }
 
@@ -574,20 +578,20 @@
   .receipt-bottom::before {
     content: '';
     position: absolute; top: 0; left: -5px; right: -5px; bottom: -10px;
-    background: var(--cream);
+    background: var(--au-lait);
     clip-path: polygon(0 100%, 5% 0, 10% 100%, 15% 0, 20% 100%, 25% 0, 30% 100%, 35% 0, 40% 100%, 45% 0, 50% 100%, 55% 0, 60% 100%, 65% 0, 70% 100%, 75% 0, 80% 100%, 85% 0, 90% 100%, 95% 0, 100% 100%, 100% 100%, 0 100%);
   }
 
   .quote-text {
     font-family: 'Playfair Display', serif;
     font-size: 24px; font-style: italic;
-    color: #1C3163; line-height: 1.4; margin-bottom: 24px;
+    color: #DCD7C9; line-height: 1.4; margin-bottom: 24px;
   }
 
-  .quote-divider { width: 40px; height: 1px; background: rgba(28,49,99,0.3); margin: 0 auto 16px; }
+  .quote-divider { width: 40px; height: 1px; background: rgba(220,215,201,0.5); margin: 0 auto 16px; }
 
-  .quote-author { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: #1C3163; }
-  .quote-place { font-size: 9px; letter-spacing: 3px; color: rgba(28,49,99,0.6); margin-top: 4px; }
+  .quote-author { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: #DCD7C9; }
+  .quote-place { font-size: 9px; letter-spacing: 3px; color: rgba(220,215,201,0.7); margin-top: 4px; }
 
   .quote-avatars {
     display: flex; justify-content: center; gap: -8px; margin-top: 20px;
@@ -615,7 +619,7 @@
     transition: all 0.3s;
   }
 
-  .testi-explore:hover { background: var(--navy); color: #FEFFFF; }
+  .testi-explore:hover { background: var(--navy); color: #DCD7C9; }
 
   .testi-bottom-nav {
     display: flex; align-items: center; justify-content: space-around;
@@ -634,7 +638,7 @@
 
   /* ── SLIDE 8: COMPARISON ── */
   #slide8 {
-    background: linear-gradient(160deg, #D6B585 0%, #c9a96e 40%, #e8d5b0 70%, #FEFFFF 100%);
+    background: linear-gradient(160deg, #DCD7C9 0%, #A27B5B 40%, #d4cfc2 70%, #DCD7C9 100%);
   }
 
   .comp-nav {
@@ -643,8 +647,8 @@
     border-bottom: 1px solid rgba(28,49,99,0.15);
   }
 
-  .comp-back { background: none; border: none; cursor: pointer; color: #1C3163; font-size: 22px; }
-  .comp-title-nav { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: #1C3163; }
+  .comp-back { background: none; border: none; cursor: pointer; color: #2C3639; font-size: 22px; }
+  .comp-title-nav { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: #2C3639; }
 
   .comp-body { flex: 1; padding: 32px 20px; }
 
@@ -663,8 +667,8 @@
   .comp-table th {
     font-size: 9px; letter-spacing: 2px; font-weight: 500;
     padding: 12px 8px; text-align: center;
-    color: rgba(28,49,99,0.5);
-    border-bottom: 1px solid rgba(28,49,99,0.15);
+    color: rgba(44,54,57,0.5);
+    border-bottom: 1px solid rgba(44,54,57,0.15);
   }
 
   .comp-table th.feature-col { text-align: left; }
@@ -672,8 +676,8 @@
 
   .comp-table td {
     padding: 18px 8px; text-align: center;
-    border-bottom: 1px solid rgba(28,49,99,0.1);
-    color: rgba(28,49,99,0.3); font-size: 15px;
+    border-bottom: 1px solid rgba(44,54,57,0.1);
+    color: rgba(44,54,57,0.3); font-size: 15px;
   }
 
   .comp-table td.feature-col {
@@ -690,7 +694,7 @@
 
   .comp-variant { font-size: 9px; letter-spacing: 3px; color: rgba(28,49,99,0.4); }
   .comp-dots { display: flex; gap: 8px; }
-  .comp-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(28,49,99,0.2); }
+  .comp-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(44,54,57,0.2); }
   .comp-dot.active { background: var(--navy); }
 
   .comp-bottom-tabs {
@@ -700,12 +704,12 @@
     border-top: 1px solid rgba(28,49,99,0.1);
   }
 
-  .comp-tab { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 9px; letter-spacing: 2px; color: #1C3163; opacity: 0.4; cursor: pointer; }
-  .comp-tab.active { opacity: 1; background: rgba(28,49,99,0.1); padding: 6px 12px; border-radius: 4px; }
+  .comp-tab { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 9px; letter-spacing: 2px; color: #2C3639; opacity: 0.4; cursor: pointer; }
+  .comp-tab.active { opacity: 1; background: rgba(44,54,57,0.1); padding: 6px 12px; border-radius: 4px; }
 
   /* ── SLIDE 9: SCALABILITY ── */
   #slide9 {
-    background: linear-gradient(170deg, #D6B585 0%, #c9a96e 30%, #e8d5b0 65%, #FEFFFF 100%);
+    background: linear-gradient(170deg, #DCD7C9 0%, #A27B5B 30%, #d4cfc2 65%, #DCD7C9 100%);
   }
 
   .scale-nav {
@@ -713,10 +717,10 @@
     padding: 20px 24px;
   }
 
-  .scale-back { background: none; border: none; cursor: pointer; color: #1C3163; font-size: 22px; }
+  .scale-back { background: none; border: none; cursor: pointer; color: #2C3639; font-size: 22px; }
   .scale-dots { display: flex; gap: 6px; }
-  .scale-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(28,49,99,0.2); }
-  .scale-dot.active { background: #1C3163; width: 20px; border-radius: 3px; }
+  .scale-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(44,54,57,0.2); }
+  .scale-dot.active { background: #2C3639; width: 20px; border-radius: 3px; }
 
   .scale-body { flex: 1; padding: 24px; }
 
@@ -725,12 +729,12 @@
   .scale-title {
     font-family: 'Playfair Display', serif;
     font-size: 44px; font-style: italic;
-    color: #1C3163; margin-bottom: 10px;
+    color: #2C3639; margin-bottom: 10px;
   }
 
   .scale-desc {
     font-size: 17px; line-height: 1.5;
-    color: rgba(0,7,27,0.75); margin-bottom: 24px;
+    color: rgba(44,54,57,0.85); margin-bottom: 24px;
   }
 
   .growth-card {
@@ -760,19 +764,19 @@
 
   .scale-feature { display: flex; gap: 16px; align-items: flex-start; }
   .scale-feature-icon { font-size: 20px; width: 24px; flex-shrink: 0; margin-top: 2px; }
-  .scale-feature-title { font-size: 10px; letter-spacing: 3px; font-weight: 600; color: #1C3163; margin-bottom: 4px; }
-  .scale-feature-desc { font-size: 14px; color: rgba(0,7,27,0.7); line-height: 1.4; }
+  .scale-feature-title { font-size: 10px; letter-spacing: 3px; font-weight: 600; color: #2C3639; margin-bottom: 4px; }
+  .scale-feature-desc { font-size: 14px; color: rgba(44,54,57,0.75); line-height: 1.4; }
 
   .scale-bottom {
     display: flex; align-items: center; justify-content: space-between;
     padding: 20px 24px 32px;
   }
 
-  .next-step-label { font-size: 9px; letter-spacing: 2px; color: rgba(28,49,99,0.5); }
-  .next-step-name { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; color: #1C3163; }
+  .next-step-label { font-size: 9px; letter-spacing: 2px; color: rgba(44,54,57,0.5); }
+  .next-step-name { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; color: #2C3639; }
 
   .continue-btn {
-    background: var(--navy); color: #FEFFFF;
+    background: var(--navy); color: #DCD7C9;
     border: none; cursor: pointer;
     font-family: 'Jost', sans-serif;
     font-size: 15px; padding: 14px 28px;
@@ -782,7 +786,7 @@
 
   /* ── SLIDE 10: CTA ── */
   #slide10 {
-    background: linear-gradient(170deg, #D6B585 0%, #c9a96e 35%, #e8d5b0 65%, #FEFFFF 100%);
+    background: linear-gradient(170deg, #DCD7C9 0%, #A27B5B 35%, #d4cfc2 65%, #DCD7C9 100%);
     display: flex; flex-direction: column; align-items: center; justify-content: space-between;
   }
 
@@ -796,26 +800,74 @@
   }
 
   .cta-btn {
-    background: var(--navy); color: #FEFFFF;
+    background: var(--navy); color: #DCD7C9;
     border: none; cursor: pointer;
     font-family: 'Jost', sans-serif;
     font-size: 17px; padding: 20px 80px;
     border-radius: 50px; font-weight: 400;
     letter-spacing: 1px;
     transition: all 0.3s;
-    box-shadow: 0 8px 32px rgba(28,49,99,0.3);
+    box-shadow: 0 8px 32px rgba(44,54,57,0.3);
   }
 
   .cta-bottom { padding: 32px; text-align: center; width: 100%; }
 
-  .cta-tagline { font-size: 10px; letter-spacing: 5px; color: rgba(28,49,99,0.5); margin-bottom: 20px; }
-  .cta-counter { font-size: 12px; color: rgba(28,49,99,0.4); letter-spacing: 2px; }
+  .cta-tagline { font-size: 10px; letter-spacing: 5px; color: rgba(44,54,57,0.5); margin-bottom: 20px; }
+  .cta-counter { font-size: 12px; color: rgba(44,54,57,0.4); letter-spacing: 2px; }
 
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+
+  .reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal-left.revealed {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal-right.revealed {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.94);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal-scale.revealed {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* stagger delays */
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.45s; }
 
   /* ── MOBILE RESPONSIVE ── */
   /* All px font sizes scale with viewport width on small screens */
@@ -909,18 +961,18 @@
   </nav>
 
   <div class="hero-content">
-    <h1 class="hero-title">Peak Hours Should Be Your <br> <b>Most Profitable</b> <br> Not Most Chaotic</h1>
-    <button class="btn-primary" onclick="goToSlide(9)">BOOK A DEMO</button>
+    <h1 class="hero-title reveal">Peak Hours Should Be Your <br> <b>Most Profitable</b> <br> Not Most Chaotic</h1>
+    <button class="btn-primary reveal reveal-delay-1" onclick="goToSlide(9)">BOOK A DEMO</button>
   </div>
 
-  <div class="hero-card">
+  <div class="hero-card reveal reveal-delay-2">
     <div class="restaurant-img">
       <div class="restaurant-img-inner"></div>
     </div>
     <div class="img-caption">THE NEW STANDARD OF SERVICE</div>
   </div>
 
-  <p class="hero-tagline"><b>Elevate your customer's experience from the moment they arrive.</b></p>
+  <p class="hero-tagline reveal reveal-delay-3"><b>Elevate your customer's experience from the moment they arrive.</b></p>
 
   
 </section>
@@ -930,13 +982,13 @@
   
 
   <div class="slide-body">
-    <h2 class="problem-title">The Problem</h2>
+    <h2 class="problem-title reveal">The Problem</h2>
 
     <!-- Chaos diagram -->
-    <div class="diagram-card">
+    <div class="diagram-card reveal reveal-delay-1">
       <div class="diagram-label">01. Friction</div>
       <svg class="chaos-svg" viewBox="0 0 300 140">
-        <g stroke="#8890c8" stroke-width="1" opacity="0.6">
+        <g stroke="#7a8a8b" stroke-width="1" opacity="0.6">
           <line x1="20" y1="70" x2="280" y2="30"/>
           <line x1="50" y1="10" x2="200" y2="130"/>
           <line x1="10" y1="90" x2="270" y2="50"/>
@@ -957,10 +1009,10 @@
    
 
     <!-- Precision diagram -->
-    <div class="diagram-card" style="margin-top:16px;">
+    <div class="diagram-card reveal reveal-delay-2" style="margin-top:16px;">
       <div class="diagram-label" style="text-align:right;">02. Precision</div>
       <svg class="precision-svg" viewBox="0 0 300 80">
-        <line x1="30" y1="40" x2="270" y2="40" stroke="#1C3163" stroke-width="1.5"/>
+        <line x1="30" y1="40" x2="270" y2="40" stroke="#2C3639" stroke-width="1.5"/>
       </svg>
       <div class="diagram-stat-left">
         <strong>100% VISIBILITY</strong>
@@ -969,7 +1021,7 @@
     </div>
 
    
-    <p class="problem-text"><b>Customers Leave Not Because <br> They Don't Want To Wait, <br> But Because They Are Unsure About Their Turn</b></p>
+    <p class="problem-text reveal reveal-delay-3"><b>They Leave Not Because <br> They Don't Want To Wait, <br> But Because They Are Unsure About Their Turn</b></p>
 
    
   </div>
@@ -981,11 +1033,11 @@
   
 
   <div class="shift-body">
-    <h2 class="shift-title">The Shift</h2>
-    <div class="shift-line"></div>
-    <p class="shift-subtitle">INNOVATIVE STRATEGY</p>
+    <h2 class="shift-title reveal">The Shift</h2>
+    <div class="shift-line reveal reveal-delay-1"></div>
+    <p class="shift-subtitle reveal reveal-delay-1">INNOVATIVE STRATEGY</p>
 
-    <div class="flow-diagram">
+    <div class="flow-diagram reveal reveal-delay-2">
       <div class="flow-circle">CAPTURE</div>
       <div class="flow-dash"></div>
       <div class="flow-circle">SCHEDULE</div>
@@ -993,7 +1045,7 @@
       <div class="flow-circle">BALANCE</div>
     </div>
 
-    <p class="shift-desc"><b>THE BETTER THE CUSTOMER FEELS, THE BETTER YOUR OUTLET WILL BECOME.</b></p>
+    <p class="shift-desc reveal reveal-delay-3"><b>THE BETTER THE CUSTOMER FEELS, THE BETTER YOUR OUTLET WILL BECOME.</b></p>
   </div>
 
 </section>
@@ -1003,10 +1055,10 @@
   
 
   <div class="hiw-body">
-    <h2 class="hiw-title">How It Works</h2>
-    <div class="hiw-line"></div>
+    <h2 class="hiw-title reveal">How It Works</h2>
+    <div class="hiw-line reveal reveal-delay-1"></div>
 
-    <div class="steps-layout">
+    <div class="steps-layout reveal reveal-delay-2">
       <div class="steps-left">
         <div class="step">
           <div class="step-num">01</div>
@@ -1031,13 +1083,13 @@
       </div>
 
       <div class="steps-right">
-        <svg class="phone-sketch" viewBox="0 0 90 160" fill="none" stroke="#00071B" stroke-width="1.5">
+        <svg class="phone-sketch" viewBox="0 0 90 160" fill="none" stroke="#2C3639" stroke-width="1.5">
           <rect x="10" y="5" width="70" height="120" rx="10"/>
           <line x1="35" y1="135" x2="55" y2="135" stroke-width="2"/>
           <!-- dots on right -->
-          <circle cx="88" cy="60" r="2" fill="#00071B"/>
-          <circle cx="88" cy="75" r="2" fill="#00071B"/>
-          <circle cx="88" cy="90" r="2" fill="#00071B"/>
+          <circle cx="88" cy="60" r="2" fill="#2C3639"/>
+          <circle cx="88" cy="75" r="2" fill="#2C3639"/>
+          <circle cx="88" cy="90" r="2" fill="#2C3639"/>
           <!-- cable -->
           <path d="M50 125 Q70 140 80 155" stroke-dasharray="4 3"/>
         </svg>
@@ -1056,10 +1108,10 @@
 
   <div class="pillars-body">
     
-    <h2 class="pillars-title">The 3 Pillars of Value Creation</h2>
-    <div class="pillars-divider"></div>
+    <h2 class="pillars-title reveal">The 3 Pillars of Value Creation</h2>
+    <div class="pillars-divider reveal reveal-delay-1"></div>
 
-    <div class="pillar-cards">
+    <div class="pillar-cards reveal reveal-delay-2">
       <div class="pillar-card">
         <div class="pillar-icon">↗</div>
         <div class="pillar-name"><b>Revenue</b></div>
@@ -1108,9 +1160,9 @@
   </div>
 
   <div class="dc-body">
-    <h2 class="dc-title">The Digital <em>Connoisseur</em></h2>
+    <h2 class="dc-title reveal">The Digital <em>Connoisseur</em></h2>
 
-    <div class="dc-phone-wrapper">
+    <div class="dc-phone-wrapper reveal reveal-delay-2">
       <div class="dc-features-left">
         <div class="dc-feature">
           <strong>VISUAL CURATION</strong>
@@ -1164,8 +1216,8 @@
         </div>
         <div class="dc-screen-dots" style="position:absolute; bottom:16px; left:50%; transform:translateX(-50%); display:flex; gap:6px;">
           <span style="width:6px;height:6px;border-radius:50%;background:var(--navy);"></span>
-          <span style="width:6px;height:6px;border-radius:50%;background:#ccc;"></span>
-          <span style="width:6px;height:6px;border-radius:50%;background:#ccc;"></span>
+          <span style="width:6px;height:6px;border-radius:50%;background:rgba(44,54,57,0.3);"></span>
+          <span style="width:6px;height:6px;border-radius:50%;background:rgba(44,54,57,0.3);"></span>
         </div>
       </div>
     </div>
@@ -1178,7 +1230,7 @@
 <section class="slide" id="slide7">
   
   <div class="testi-body">
-    <div class="receipt-card">
+    <div class="receipt-card reveal reveal-scale">
       <div class="receipt-top"></div>
       <p class="quote-text">"Restro saved our Friday nights."</p>
       <div class="quote-divider"></div>
@@ -1192,9 +1244,9 @@
       <div class="receipt-bottom"></div>
     </div>
 
-    <div class="testi-proof">SOCIAL PROOF</div>
+    <div class="testi-proof reveal reveal-delay-2">SOCIAL PROOF</div>
 
-    <button class="testi-explore" onclick="goToSlide(7)">EXPLORE IMPACT</button>
+    <button class="testi-explore reveal reveal-delay-3" onclick="goToSlide(7)">EXPLORE IMPACT</button>
   </div>
 
   
@@ -1209,10 +1261,10 @@
   </div>
 
   <div class="comp-body">
-    <h2 class="comp-heading">Why Choose <em>Restro</em></h2>
-    <div class="comp-underline"></div>
+    <h2 class="comp-heading reveal">Why Choose <em>Restro</em></h2>
+    <div class="comp-underline reveal reveal-delay-1"></div>
 
-    <table class="comp-table">
+    <table class="comp-table reveal reveal-delay-2">
       <thead>
         <tr>
           <th class="feature-col">FEATURE</th>
@@ -1254,19 +1306,19 @@
 
   <div class="comp-bottom-tabs">
     <div class="comp-tab" onclick="goToSlide(4)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="#1C3163" opacity="0.4"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#2C3639" opacity="0.4"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
       STUDIO
     </div>
     <div class="comp-tab active">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="#1C3163"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M8 8h8M8 16h5" stroke="#FEFFFF" stroke-width="1.5" fill="none"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#2C3639"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M8 8h8M8 16h5" stroke="#DCD7C9" stroke-width="1.5" fill="none"/></svg>
       COMPARE
     </div>
     <div class="comp-tab" onclick="goToSlide(8)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C3163" stroke-width="1.5" opacity="0.4"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2C3639" stroke-width="1.5" opacity="0.4"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
       IMPACT
     </div>
     <div class="comp-tab" onclick="goToSlide(9)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="#1C3163" opacity="0.4"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#2C3639" opacity="0.4"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       PROFILE
     </div>
   </div>
@@ -1281,10 +1333,10 @@
 
   <div class="scale-body">
     
-    <h2 class="scale-title">Scalability</h2>
-    <p class="scale-desc">A pure SaaS model designed for exponential growth with zero friction.</p>
+    <h2 class="scale-title reveal">Scalability</h2>
+    <p class="scale-desc reveal reveal-delay-1">A pure SaaS model designed for exponential growth with zero friction.</p>
 
-    <div class="growth-card">
+    <div class="growth-card reveal reveal-delay-2">
       <div class="growth-card-header">
         <span class="growth-label">GROWTH CURVE</span>
         <span class="growth-roi">12mo ROI</span>
@@ -1292,8 +1344,8 @@
       <div class="growth-chart">
         <svg viewBox="0 0 280 100" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M 10 90 Q 80 88 120 75 Q 160 60 200 40 Q 230 25 265 10"
-                stroke="#1C3163" stroke-width="2" fill="none"/>
-          <circle cx="265" cy="10" r="4" fill="#1C3163"/>
+                stroke="#2C3639" stroke-width="2" fill="none"/>
+          <circle cx="265" cy="10" r="4" fill="#2C3639"/>
         </svg>
       </div>
       <div class="growth-x-labels">
@@ -1303,7 +1355,7 @@
       </div>
     </div>
 
-    <div class="scale-features">
+    <div class="scale-features reveal reveal-delay-3">
       <div class="scale-feature">
         <div class="scale-feature-icon">📱</div>
         <div>
@@ -1340,10 +1392,10 @@
 <!-- ══ SLIDE 10: FINAL CTA ══ -->
 <section class="slide" id="slide10">
   <div class="cta-top">
-    <div class="cta-logo">Restro</div>
-    <button class="cta-btn">Book a Demo</button>
+    <div class="cta-logo reveal">Restro</div>
+    <button class="cta-btn reveal reveal-delay-2">Book a Demo</button>
   </div>
-  <div class="cta-bottom">
+  <div class="cta-bottom reveal reveal-delay-3">
     <div class="cta-tagline">SIMPLE. SMART. SEAMLESS.</div>
     <div class="cta-counter">10 / 10</div>
   </div>
@@ -1360,6 +1412,20 @@
     const el = document.getElementById(sectionIds[index]);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+
+  // Scroll Reveal via IntersectionObserver
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+    revealObserver.observe(el);
+  });
 </script>
 </body>
 </html>

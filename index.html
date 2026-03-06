@@ -102,6 +102,13 @@
     position: relative; overflow: hidden;
   }
 
+  #hero-video {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    position: absolute; inset: 0;
+    display: block;
+  }
+
   .restaurant-img::before {
     content: '';
     position: absolute; inset: 0;
@@ -889,6 +896,117 @@
   /* ── SCALE FEATURE ITEMS ── */
   .scale-feature { will-change: transform, opacity; }
 
+  /* ══════════════════════════════════════════════
+     SLIDE 1B: WHY WE EXIST
+  ══════════════════════════════════════════════ */
+  #slide-why {
+    background: var(--inkwell);
+    position: relative;
+    overflow: hidden;
+    /* Extra tall to give scroll room for the pin */
+    min-height: 100svh;
+  }
+
+  .why-pin-wrapper {
+    position: relative;
+    /* height set via JS for pin spacer */
+  }
+
+  .why-stage {
+    position: relative;
+    width: 100%;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* The big title */
+  .why-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 11vw, 72px);
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--au-lait);
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    white-space: nowrap;
+    pointer-events: none;
+    will-change: transform, font-size, top, left;
+  }
+
+  /* Three image cards */
+  .why-img-grid {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+  }
+
+  .why-img-card {
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--lunar);
+    flex-shrink: 0;
+    will-change: transform, width, height, opacity;
+    position: relative;
+  }
+
+  .why-img-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(162,123,91,0.3) 0%, transparent 60%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .why-img-card .why-card-inner {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    padding: 12px;
+  }
+
+  /* Placeholder gradients for the 3 cards */
+  .why-card-1 .why-card-inner {
+    background-image: linear-gradient(135deg, #3F4E4F 0%, #2C3639 40%, #A27B5B 100%);
+  }
+  .why-card-2 .why-card-inner {
+    background-image: linear-gradient(160deg, #2C3639 0%, #A27B5B 50%, #3F4E4F 100%);
+  }
+  .why-card-3 .why-card-inner {
+    background-image: linear-gradient(110deg, #A27B5B 0%, #3F4E4F 40%, #2C3639 100%);
+  }
+
+  .why-card-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--au-lait);
+    opacity: 0.7;
+    font-family: 'Jost', sans-serif;
+    font-weight: 500;
+    position: relative;
+    z-index: 2;
+    text-transform: uppercase;
+  }
+
   /* ── MOBILE RESPONSIVE ── */
   /* All px font sizes scale with viewport width on small screens */
   @media (max-width: 480px) {
@@ -991,7 +1109,19 @@
 
   <div class="hero-card" id="hero-card">
     <div class="restaurant-img">
-      <div class="restaurant-img-inner" id="hero-img-inner"></div>
+      <video
+        id="hero-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;"
+        src="Food Reel - Darío Idoate.mp4"
+      >
+        <!-- Fallback if video cannot load -->
+        <div class="restaurant-img-inner" id="hero-img-inner"></div>
+      </video>
     </div>
     <div class="img-caption" id="hero-caption">THE NEW STANDARD OF SERVICE</div>
   </div>
@@ -999,6 +1129,35 @@
   <p class="hero-tagline" id="hero-tagline"><b>Elevate your customer's experience from the moment they arrive.</b></p>
 
   
+</section>
+
+<!-- ══ SLIDE 1B: WHY WE EXIST ══ -->
+<section id="slide-why">
+  <div class="why-stage" id="why-stage">
+
+    <!-- The title — starts huge (zoomed in), user scrolls → normal size, then shrinks to top-left -->
+    <div class="why-title" id="why-title">WHY WE EXIST?</div>
+
+    <!-- Three image cards — start tiny, each expands as user scrolls, then shrinks again, then exit -->
+    <div class="why-img-grid" id="why-img-grid">
+      <div class="why-img-card why-card-1" id="why-card-1">
+        <div class="why-card-inner">
+          <span class="why-card-label">The Wait</span>
+        </div>
+      </div>
+      <div class="why-img-card why-card-2" id="why-card-2">
+        <div class="why-card-inner">
+          <span class="why-card-label">The Moment</span>
+        </div>
+      </div>
+      <div class="why-img-card why-card-3" id="why-card-3">
+        <div class="why-card-inner">
+          <span class="why-card-label">The Experience</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <!-- ══ SLIDE 2: THE PROBLEM ══ -->
@@ -1428,10 +1587,37 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
   /* ══════════════════════════════════════════════
+     VIDEO AUTOPLAY — Chrome compliance
+     muted + playsinline satisfies Chrome's autoplay policy.
+     We also attempt .play() after a short delay as extra insurance.
+  ══════════════════════════════════════════════ */
+  (function() {
+    const vid = document.getElementById('hero-video');
+    if (!vid) return;
+    vid.muted = true;
+    vid.playsInline = true;
+    const tryPlay = () => {
+      vid.play().catch(() => {
+        // If autoplay blocked (unmuted), force muted and retry once
+        vid.muted = true;
+        vid.play().catch(() => {});
+      });
+    };
+    if (document.readyState === 'complete') {
+      tryPlay();
+    } else {
+      window.addEventListener('load', tryPlay);
+    }
+    // Also retry on first user interaction as extra safety net
+    document.addEventListener('click', tryPlay, { once: true });
+    document.addEventListener('touchstart', tryPlay, { once: true });
+  })();
+
+  /* ══════════════════════════════════════════════
      NAVIGATION HELPER
   ══════════════════════════════════════════════ */
   const sectionIds = [
-    'slide1','slide2','slide3','slide4','slide5',
+    'slide1','slide-why','slide2','slide3','slide4','slide5',
     'slide6','slide7','slide8','slide9','slide10'
   ];
   function goToSlide(index) {
@@ -1493,6 +1679,151 @@
     ease: 'none',
     scrollTrigger: { trigger: '#slide1', start: 'top top', end: 'bottom top', scrub: 1.5 }
   });
+
+  /* ══════════════════════════════════════════════
+     SLIDE 1B: WHY WE EXIST — pinned scroll-driven
+  ══════════════════════════════════════════════ */
+  (function() {
+    const stage      = document.getElementById('why-stage');
+    const title      = document.getElementById('why-title');
+    const grid       = document.getElementById('why-img-grid');
+    const card1      = document.getElementById('why-card-1');
+    const card2      = document.getElementById('why-card-2');
+    const card3      = document.getElementById('why-card-3');
+    const section    = document.getElementById('slide-why');
+
+    // ── Phase sizing helpers ──
+    // Cards start tiny (thumbnail), expand to a comfortable size, shrink again
+    const CARD_TINY  = { w: 60,  h: 70  };
+    const CARD_MID   = { w: 95,  h: 120 };
+    const CARD_FULL  = { w: 'calc(30vw - 16px)', h: '46vw' }; // full expanded
+
+    // Set initial tiny state for cards (hidden, scale 0)
+    gsap.set([card1, card2, card3], {
+      width: CARD_TINY.w, height: CARD_TINY.h,
+      opacity: 0, scale: 0.4,
+      transformOrigin: 'center center'
+    });
+
+    // Title starts HUGE (zoomed in effect) and off-opacity
+    gsap.set(title, {
+      scale: 5,
+      opacity: 0,
+    });
+
+    // ── MASTER SCRUB TIMELINE — pinned ──
+    // Total scroll travel = 500vh worth of pin
+    const whyTL = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: '+=480%',           // 4.8 screens worth of scroll
+        pin: true,
+        scrub: 1.2,
+        anticipatePin: 1,
+      }
+    });
+
+    // PHASE 1 (0 → 0.12): Title zooms IN from huge to normal, fades in
+    whyTL.to(title, {
+      scale: 1,
+      opacity: 1,
+      ease: 'power2.out',
+      duration: 0.12
+    }, 0);
+
+    // PHASE 2 (0.12 → 0.24): Title stays centered, cards appear tiny
+    whyTL.to([card1, card2, card3], {
+      opacity: 1,
+      scale: 1,
+      ease: 'back.out(1.5)',
+      stagger: 0.02,
+      duration: 0.08
+    }, 0.12);
+
+    // PHASE 3 (0.22 → 0.32): Title shrinks and moves to top-left, cards go to mid size
+    whyTL.to(title, {
+      scale: 0.38,
+      x: () => -(window.innerWidth / 2) + 90,
+      y: () => -(window.innerHeight / 2) + 44,
+      ease: 'power2.inOut',
+      duration: 0.12
+    }, 0.20);
+
+    // PHASE 4 (0.32 → 0.50): Card 1 expands, others stay mid
+    whyTL.to(card1, {
+      width: '32vw', height: '46vw',
+      ease: 'power2.inOut',
+      duration: 0.14
+    }, 0.32);
+    whyTL.to([card2, card3], {
+      width: CARD_MID.w, height: CARD_MID.h,
+      ease: 'power2.inOut',
+      duration: 0.14
+    }, 0.32);
+
+    // PHASE 5 (0.50 → 0.60): Card 1 shrinks, Card 2 expands
+    whyTL.to(card1, {
+      width: CARD_MID.w, height: CARD_MID.h,
+      ease: 'power2.inOut',
+      duration: 0.10
+    }, 0.50);
+    whyTL.to(card2, {
+      width: '32vw', height: '46vw',
+      ease: 'power2.inOut',
+      duration: 0.10
+    }, 0.50);
+    whyTL.to(card3, {
+      width: CARD_MID.w, height: CARD_MID.h,
+      ease: 'power2.inOut',
+      duration: 0.10
+    }, 0.50);
+
+    // PHASE 6 (0.62 → 0.72): Card 2 shrinks, Card 3 expands
+    whyTL.to(card2, {
+      width: CARD_MID.w, height: CARD_MID.h,
+      ease: 'power2.inOut',
+      duration: 0.10
+    }, 0.62);
+    whyTL.to(card3, {
+      width: '32vw', height: '46vw',
+      ease: 'power2.inOut',
+      duration: 0.10
+    }, 0.62);
+
+    // PHASE 7 (0.74 → 0.86): Card 3 shrinks back to mid, all three pause at mid size
+    whyTL.to(card3, {
+      width: CARD_MID.w, height: CARD_MID.h,
+      ease: 'power2.inOut',
+      duration: 0.10
+    }, 0.74);
+
+    // PHASE 8 (0.86 → 1.0): Cards fly out in different directions, title fades out
+    whyTL.to(card1, {
+      x: '-130vw', y: '-60vh',
+      opacity: 0, scale: 0.5,
+      ease: 'power3.in',
+      duration: 0.14
+    }, 0.86);
+    whyTL.to(card2, {
+      y: '120vh',
+      opacity: 0, scale: 0.5,
+      ease: 'power3.in',
+      duration: 0.14
+    }, 0.86);
+    whyTL.to(card3, {
+      x: '130vw', y: '-50vh',
+      opacity: 0, scale: 0.5,
+      ease: 'power3.in',
+      duration: 0.14
+    }, 0.86);
+    whyTL.to(title, {
+      opacity: 0, y: -40,
+      ease: 'power2.in',
+      duration: 0.12
+    }, 0.88);
+
+  })();
 
   /* ══════════════════════════════════════════════
      SLIDE 2: THE PROBLEM — SVG line draw + cards

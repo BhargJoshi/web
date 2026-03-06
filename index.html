@@ -1,1488 +1,1432 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Restro — Smart Queue Movement</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<title>Restro</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --black: #080808;
-    --white: #f0ede8;
-    --cream: #e8e2d9;
-    --amber: #e8a020;
-    --amber-dim: #c27a10;
-    --red: #c0392b;
-    --green: #1a7a4a;
-    --muted: #3a3632;
-    --border: rgba(240,237,232,0.1);
-    --font-display: 'Bebas Neue', sans-serif;
-    --font-serif: 'DM Serif Display', serif;
-    --font-body: 'DM Sans', sans-serif;
+    --navy: #2C3639;
+    --cream: #DCD7C9;
+    --warm-orange: #A27B5B;
+    --rose-gold: #A27B5B;
+    --sage: #3F4E4F;
+    --off-white: #DCD7C9;
+    --light-sage: #A27B5B;
+    --inkwell: #2C3639;
+    --lunar: #3F4E4F;
+    --creme-brulee: #A27B5B;
+    --au-lait: #DCD7C9;
   }
 
-  html { scroll-behavior: auto; }
+  html { scroll-behavior: smooth; }
 
   body {
-    background: var(--black);
-    color: var(--white);
-    font-family: var(--font-body);
-    font-size: 16px;
-    line-height: 1.6;
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
     overflow-x: hidden;
   }
 
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-    padding: 20px 48px;
-    display: flex; align-items: center; justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(12px);
-    background: rgba(8,8,8,0.7);
-  }
-  .nav-logo {
-    font-family: var(--font-display);
-    font-size: 28px;
-    letter-spacing: 3px;
-    color: var(--amber);
-  }
-  .nav-links { display: flex; gap: 32px; list-style: none; }
-  .nav-links a {
-    color: var(--white); text-decoration: none;
-    font-size: 13px; font-weight: 300; letter-spacing: 1.5px; text-transform: uppercase;
-    opacity: 0.6; transition: opacity 0.3s;
-  }
-  .nav-links a:hover { opacity: 1; }
-  .nav-cta {
-    background: var(--amber); color: var(--black);
-    padding: 10px 24px; border: none; cursor: pointer;
-    font-family: var(--font-body); font-size: 12px; font-weight: 500;
-    letter-spacing: 2px; text-transform: uppercase;
-  }
-
-  /* ── SECTIONS ── */
-  section { position: relative; overflow: hidden; }
-
-  /* ─── HERO ─── */
-  #hero {
-    height: 100vh; min-height: 700px;
-    display: flex; flex-direction: column;
-    justify-content: flex-end; padding: 0 48px 80px;
-    background: var(--black);
-  }
-  .hero-bg {
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(232,160,32,0.07) 0%, transparent 70%);
-  }
-  .hero-grid-overlay {
-    position: absolute; inset: 0;
-    background-image: 
-      linear-gradient(rgba(240,237,232,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(240,237,232,0.03) 1px, transparent 1px);
-    background-size: 80px 80px;
-  }
-  .hero-noise {
-    position: absolute; inset: 0; opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 200px 200px;
-  }
-
-  /* Parallax restaurant scene */
-  .hero-scene {
-    position: absolute; top: 0; right: 0;
-    width: 55%; height: 100%;
+  /* ── SECTION SYSTEM — normal scroll ── */
+  .slide {
+    display: flex;
+    min-height: 100svh;
+    flex-direction: column;
+    position: relative;
     overflow: hidden;
+    width: 100%;
   }
-  .hero-scene-inner {
-    position: absolute; inset: -20%;
-    background: 
-      linear-gradient(180deg, rgba(8,8,8,0.9) 0%, rgba(8,8,8,0.2) 40%, rgba(8,8,8,0.6) 100%),
-      linear-gradient(90deg, rgba(8,8,8,1) 0%, rgba(8,8,8,0) 30%);
-  }
-  /* Stylized geometric restaurant silhouette */
-  .hero-illustration {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .hero-illustration svg { width: 100%; height: 100%; }
 
-  .hero-eyebrow {
-    font-size: 11px; font-weight: 400; letter-spacing: 4px; text-transform: uppercase;
-    color: var(--amber); margin-bottom: 16px; opacity: 0;
+  /* ── SLIDE 1: HERO ── */
+  #slide1 {
+    background: var(--cream);
+    padding: 0;
   }
-  .hero-headline {
-    font-family: var(--font-display);
-    font-size: clamp(72px, 10vw, 140px);
-    line-height: 0.92;
-    letter-spacing: 1px;
-    color: var(--white);
-    margin-bottom: 24px;
-  }
-  .hero-headline .line { display: block; overflow: hidden; }
-  .hero-headline .word { display: inline-block; transform: translateY(110%); }
-  .hero-headline .accent { color: var(--amber); }
 
-  .hero-sub {
-    font-size: 16px; font-weight: 300; line-height: 1.7;
-    color: rgba(240,237,232,0.55);
-    max-width: 440px; margin-bottom: 40px; opacity: 0;
+  .nav1 {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+    position: sticky; top: 0; z-index: 10;
+    background: var(--cream);
   }
-  .hero-ctas { display: flex; gap: 16px; align-items: center; opacity: 0; }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Jost', sans-serif; font-weight: 600;
+    font-size: 14px; letter-spacing: 2px; color: var(--navy);
+  }
+
+  .fork-icon { font-size: 22px; }
+  .hamburger { font-size: 24px; cursor: pointer; color: var(--navy); background: none; border: none; }
+
+  .hero-content {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-start;
+    padding: 48px 32px 40px;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-family: 'Helvetica', serif;
+    font-size: clamp(42px, 10vw, 56px);
+    font-weight: 400; line-height: 1.1;
+    color: var(--navy); margin-bottom: 32px;
+  }
+
   .btn-primary {
-    background: var(--amber); color: var(--black);
-    padding: 16px 36px; border: none; cursor: pointer;
-    font-family: var(--font-body); font-size: 13px; font-weight: 500;
-    letter-spacing: 2px; text-transform: uppercase;
+    background: var(--navy); color: #DCD7C9;
+    border: none; cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px; font-weight: 500;
+    letter-spacing: 3px; padding: 18px 48px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+  .btn-primary:hover { background: #3F4E4F; transform: translateY(-2px); }
+
+  .hero-card {
+    background: #F5F3EE; margin: 32px 20px 0;
+    border-radius: 4px; overflow: hidden;
+    box-shadow: 0 8px 32px rgba(28,49,99,0.08);
+  }
+
+  .restaurant-img {
+    width: 100%; height: 260px;
+    object-fit: cover;
+    background: linear-gradient(135deg, #2C3639 0%, #3F4E4F 50%, #2C3639 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+
+  .restaurant-img::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 30%),
+      radial-gradient(circle at 60% 20%, rgba(255,255,255,0.2) 0%, transparent 25%),
+      radial-gradient(circle at 80% 40%, rgba(255,255,255,0.1) 0%, transparent 20%),
+      radial-gradient(circle at 40% 60%, rgba(255,255,255,0.08) 0%, transparent 35%);
+  }
+
+  .restaurant-img-inner {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, #3F4E4F 0%, #2C3639 100%);
+  }
+
+  .img-caption {
+    padding: 16px 20px;
+    font-size: 10px; letter-spacing: 4px;
+    color: rgba(44,54,57,0.5); text-align: center;
+    font-family: 'Jost', sans-serif; font-weight: 400;
+  }
+
+  .hero-tagline {
+    padding: 48px 32px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 20px;
+    line-height: 1.6; color: var(--navy);
+    text-align: center; opacity: 0.85;
+  }
+
+  .bottom-nav {
+    display: flex; align-items: center; justify-content: space-around;
+    padding: 16px 24px 24px;
+    border-top: 1px solid rgba(44,54,57,0.1);
+    background: var(--cream);
+  }
+
+  .bottom-nav-item {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 4px; font-size: 9px; letter-spacing: 2px;
+    color: var(--navy); opacity: 0.5; cursor: pointer;
+    font-weight: 500; text-transform: uppercase;
+    transition: opacity 0.2s;
+  }
+  .bottom-nav-item.active { opacity: 1; }
+  .bottom-nav-item svg { width: 20px; height: 20px; }
+
+  /* ── SLIDE 2: THE PROBLEM ── */
+  #slide2 {
+    background: linear-gradient(160deg, #DCD7C9 0%, #A27B5B 35%, #d4cfc2 65%, #DCD7C9 100%);
+    color: #2C3639;
+  }
+
+  .slide-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+  }
+
+  .back-btn {
+    background: none; border: none; cursor: pointer;
+    color: #2C3639; font-size: 18px; display: flex; align-items: center; gap: 6px;
+    font-family: 'Jost', sans-serif; font-size: 13px; letter-spacing: 1px;
+  }
+
+  .slide-counter {
+    font-size: 10px; letter-spacing: 3px; opacity: 0.8;
+    font-family: 'Jost', sans-serif;
+  }
+
+  .more-btn { background: none; border: none; cursor: pointer; color: #2C3639; font-size: 20px; }
+
+  .slide-body { flex: 1; padding: 32px 24px; }
+
+  .problem-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px; font-style: italic; font-weight: 400;
+    margin-bottom: 8px;
+  }
+
+  .problem-subtitle {
+    font-size: 10px; letter-spacing: 4px; opacity: 0.7;
+    margin-bottom: 32px; font-weight: 300;
+  }
+
+  .diagram-card {
+    background: rgba(255,255,255,0.92);
+    border-radius: 4px; padding: 20px;
+    margin-bottom: 16px; position: relative;
+  }
+
+  .diagram-label {
+    font-size: 10px; letter-spacing: 2px; color: #2C3639;
+    margin-bottom: 12px; font-weight: 400;
+  }
+
+  .chaos-svg { width: 100%; height: 140px; }
+  .precision-svg { width: 100%; height: 100px; }
+
+  .diagram-stat {
+    text-align: right; padding-top: 12px;
+  }
+  .diagram-stat strong { font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 700; color: #2C3639; }
+  .diagram-stat span { display: block; font-size: 10px; color: #2C3639; margin-top: 2px; }
+
+  .diagram-stat-left { padding-top: 0; }
+  .diagram-stat-left strong { color: #2C3639; font-size: 15px; font-weight: 700; }
+  .diagram-stat-left span { font-size: 10px; color: #2C3639; }
+
+  .compare-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0; border-bottom: 1px solid rgba(44,54,57,0.2);
+  }
+
+  .compare-label { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 400; }
+  .compare-tag { font-size: 9px; letter-spacing: 3px; opacity: 0.7; }
+
+  .problem-text {
+    padding: 24px 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 400; line-height: 1.5;
+  }
+
+  .view-solution {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 11px; letter-spacing: 3px; font-weight: 500;
+    text-decoration: none; color: #2C3639;
+    border-bottom: 1px solid rgba(44,54,57,0.4);
+    padding-bottom: 8px; cursor: pointer;
+    background: none; border-left: none; border-right: none; border-top: none;
+  }
+
+  .slide2-bottom {
+    padding: 24px; display: flex; justify-content: space-around;
+  }
+
+  .shape-nav { width: 20px; height: 20px; opacity: 0.5; cursor: pointer; }
+
+  /* ── SLIDE 3: THE SHIFT ── */
+  #slide3 { background: var(--cream); }
+
+  .shift-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+  }
+
+  .shift-back { background: none; border: none; cursor: pointer; font-size: 13px; letter-spacing: 1px; color: var(--navy); display: flex; align-items: center; gap: 4px; }
+  .shift-variant { font-size: 10px; letter-spacing: 3px; color: var(--navy); opacity: 0.6; }
+
+  .shift-body { flex: 1; padding: 32px 24px; }
+
+  .shift-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px; font-weight: 400;
+    color: var(--navy); margin-bottom: 8px;
+  }
+
+  .shift-line { width: 48px; height: 1px; background: var(--navy); opacity: 0.3; margin: 12px 0; }
+  .shift-subtitle { font-size: 10px; letter-spacing: 4px; color: var(--navy); opacity: 0.6; margin-bottom: 48px; }
+
+  .flow-diagram {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0; padding: 0 32px; margin-bottom: 48px;
+  }
+
+  .flow-circle {
+    width: 130px; height: 130px; border-radius: 50%;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(28,49,99,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; letter-spacing: 3px; color: var(--navy);
+    font-weight: 500;
+  }
+
+  .flow-dash {
+    width: 1px; height: 60px;
+    border-left: 1px dashed rgba(28,49,99,0.3);
+  }
+
+  .shift-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px; line-height: 1.7; color: var(--navy); opacity: 0.8;
+    margin-bottom: 48px;
+  }
+
+  .shift-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px 32px;
+    border-top: 1px solid rgba(28,49,99,0.1);
+  }
+
+  .current-concept { font-size: 9px; letter-spacing: 2px; color: var(--navy); opacity: 0.5; }
+  .current-concept strong { display: block; font-size: 14px; color: var(--navy); opacity: 1; letter-spacing: 0; margin-top: 4px; font-family: 'Jost', sans-serif; font-weight: 400; }
+
+  .nav-arrows { display: flex; gap: 12px; }
+  .arrow-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border: 1px solid rgba(28,49,99,0.2);
+    background: none; color: var(--navy); font-size: 18px;
+    transition: all 0.2s;
+  }
+  .arrow-btn.filled { background: var(--navy); color: #DCD7C9; border-color: var(--navy); }
+
+  /* ── SLIDE 4: HOW IT WORKS ── */
+  #slide4 {
+    background: linear-gradient(140deg, #DCD7C9 0%, #A27B5B 40%, #d4cfc2 70%, #DCD7C9 100%);
+  }
+
+  .hiw-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+  }
+
+  .hiw-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-style: italic; color: #2C3639;
+  }
+
+  .hiw-body { flex: 1; padding: 24px 24px 0; }
+
+  .hiw-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px; font-weight: 400;
+    color: #2C3639; margin-bottom: 6px;
+  }
+
+  .hiw-line { width: 48px; height: 2px; background: #2C3639; margin-bottom: 40px; }
+
+  .steps-layout { display: flex; gap: 16px; }
+  .steps-left { flex: 1; }
+
+  .step {
+    margin-bottom: 32px; position: relative;
+  }
+
+  .step-num {
+    position: absolute; left: -4px; top: -16px;
+    font-family: 'Playfair Display', serif;
+    font-size: 80px; font-weight: 700;
+    color: rgba(44,54,57,0.08); line-height: 1;
+    pointer-events: none;
+  }
+
+  .step-title {
+    font-size: 11px; letter-spacing: 3px; font-weight: 600;
+    color: #2C3639; margin-bottom: 6px; position: relative; z-index: 1;
+  }
+
+  .step-desc {
+    font-size: 15px; line-height: 1.5; color: #2C3639;
+    position: relative; z-index: 1;
+  }
+
+  .steps-right {
+    width: 120px; display: flex; align-items: center; justify-content: center;
+  }
+
+  .phone-sketch {
+    width: 90px; opacity: 0.7;
+  }
+
+  .hiw-btn-wrap { padding: 0; }
+
+  .hiw-btn {
+    display: block; width: 100%;
+    background: #2C3639; color: #DCD7C9;
+    border: none; cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: 4px;
+    font-weight: 500; padding: 22px;
+    text-transform: uppercase; text-align: center;
     transition: background 0.3s;
   }
-  .btn-primary:hover { background: var(--white); }
-  .btn-ghost {
-    background: transparent; color: var(--white);
-    padding: 16px 36px; border: 1px solid rgba(240,237,232,0.2); cursor: pointer;
-    font-family: var(--font-body); font-size: 13px; font-weight: 400;
-    letter-spacing: 2px; text-transform: uppercase;
-    transition: border-color 0.3s;
-  }
-  .btn-ghost:hover { border-color: var(--white); }
 
-  .hero-scroll-hint {
-    position: absolute; bottom: 32px; right: 48px;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    opacity: 0;
-  }
-  .scroll-hint-line {
-    width: 1px; height: 60px; background: var(--amber);
-    transform-origin: top; animation: scrollLine 2s ease-in-out infinite;
-  }
-  @keyframes scrollLine {
-    0%,100% { transform: scaleY(1); opacity:1; }
-    50% { transform: scaleY(0.3); opacity:0.3; }
-  }
-  .scroll-hint-text { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; opacity: 0.4; writing-mode: vertical-rl; }
+  /* ── SLIDE 5: PILLARS ── */
+  #slide5 { background: var(--off-white); }
 
-  /* ─── STATS BAR ─── */
-  #stats-bar {
-    background: var(--amber);
-    padding: 28px 48px;
-    display: flex; align-items: center; gap: 0;
-  }
-  .stat-item {
-    flex: 1; text-align: center;
-    border-right: 1px solid rgba(8,8,8,0.2);
-    padding: 0 24px;
-  }
-  .stat-item:last-child { border-right: none; }
-  .stat-num {
-    font-family: var(--font-display);
-    font-size: 48px; line-height: 1;
-    color: var(--black); display: block;
-    transform: translateY(40px); opacity: 0;
-  }
-  .stat-label {
-    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-    color: rgba(8,8,8,0.6); font-weight: 500;
-    display: block; margin-top: 4px;
-    transform: translateY(20px); opacity: 0;
+  .pillars-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
   }
 
-  /* ─── PROBLEM ─── */
-  #problem {
-    min-height: 100vh;
-    padding: 120px 48px;
-    background: var(--black);
-  }
-  .section-label {
-    font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
-    color: var(--amber); margin-bottom: 64px; opacity: 0;
-    display: flex; align-items: center; gap: 16px;
-  }
-  .section-label::before {
-    content: ''; display: block; width: 40px; height: 1px; background: var(--amber);
-  }
-  .problem-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
-    align-items: start;
-  }
-  .problem-headline {
-    font-family: var(--font-serif);
-    font-size: clamp(36px, 5vw, 62px);
-    line-height: 1.15;
-    font-style: italic;
-    color: var(--white);
-  }
-  .problem-headline .highlight { color: var(--amber); font-style: normal; }
-  .problem-right { padding-top: 16px; }
-  .problem-cards { display: flex; flex-direction: column; gap: 2px; }
-  .prob-card {
-    padding: 28px 32px;
-    border: 1px solid var(--border);
-    background: rgba(240,237,232,0.02);
-    display: flex; align-items: flex-start; gap: 20px;
-    opacity: 0; transform: translateX(60px);
-  }
-  .prob-icon {
-    width: 40px; height: 40px; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-  }
-  .prob-card-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
-  .prob-card-desc { font-size: 13px; color: rgba(240,237,232,0.5); font-weight: 300; line-height: 1.6; }
-  .split-visual {
-    margin-top: 48px; 
-    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
-    opacity: 0;
-  }
-  .split-side {
-    padding: 24px;
-    display: flex; flex-direction: column; gap: 12px;
-  }
-  .split-side.chaos { background: rgba(192,57,43,0.1); border: 1px solid rgba(192,57,43,0.2); }
-  .split-side.flow { background: rgba(26,122,74,0.1); border: 1px solid rgba(26,122,74,0.2); }
-  .split-label {
-    font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 500;
-  }
-  .chaos .split-label { color: var(--red); }
-  .flow .split-label { color: var(--green); }
-  .split-items { display: flex; flex-direction: column; gap: 8px; }
-  .split-item { font-size: 12px; color: rgba(240,237,232,0.5); display: flex; gap: 8px; align-items: center; }
-  .split-item::before { content: '—'; opacity: 0.4; }
+  .pillars-logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--navy); }
 
-  /* ─── HOW IT WORKS (PINNED) ─── */
-  #how-it-works-wrapper {
-    /* will be height set by JS */
-  }
-  #how-it-works {
-    height: 100vh;
-    display: flex; align-items: center;
-    padding: 0 48px;
-    background: var(--black);
-    position: relative;
-  }
-  .hiw-left {
-    width: 45%; padding-right: 80px;
-  }
-  .hiw-section-label {
-    font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
-    color: var(--amber); margin-bottom: 32px;
-    display: flex; align-items: center; gap: 16px;
-  }
-  .hiw-section-label::before { content: ''; display: block; width: 40px; height: 1px; background: var(--amber); }
-  .hiw-headline {
-    font-family: var(--font-display);
-    font-size: clamp(48px, 6vw, 88px);
-    line-height: 0.95;
-    color: var(--white);
-    margin-bottom: 24px;
-  }
-  .hiw-desc {
-    font-size: 15px; color: rgba(240,237,232,0.5); font-weight: 300; line-height: 1.8;
-    max-width: 360px;
-  }
-  .hiw-steps {
-    margin-top: 40px; display: flex; flex-direction: column; gap: 0;
-  }
-  .hiw-step {
-    display: flex; gap: 20px; align-items: flex-start;
-    padding: 20px 0; border-top: 1px solid var(--border);
-    opacity: 0.3; transition: opacity 0.4s;
-  }
-  .hiw-step.active { opacity: 1; }
-  .step-num {
-    font-family: var(--font-display); font-size: 32px;
-    color: var(--amber); line-height: 1; flex-shrink: 0; width: 40px;
-  }
-  .step-text-title { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
-  .step-text-desc { font-size: 13px; color: rgba(240,237,232,0.5); font-weight: 300; }
+  .pillars-body { flex: 1; padding: 16px 20px; }
 
-  .hiw-right {
-    width: 55%; height: 70vh;
-    position: relative; display: flex; align-items: center; justify-content: center;
+  .pillars-variant { font-size: 9px; letter-spacing: 3px; color: var(--navy); opacity: 0.5; margin-bottom: 8px; }
+
+  .pillars-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; font-style: italic;
+    color: var(--navy); line-height: 1.2; margin-bottom: 16px;
   }
-  .hiw-phone {
-    width: 240px; height: 480px;
-    border: 2px solid rgba(240,237,232,0.15);
+
+  .pillars-divider { height: 1px; background: rgba(28,49,99,0.15); margin-bottom: 20px; }
+
+  .pillar-cards { display: flex; gap: 8px; margin-bottom: 20px; }
+
+  .pillar-card {
+    flex: 1; background: #F5F3EE; border-radius: 4px;
+    padding: 16px 12px; display: flex; flex-direction: column;
+    border: 1px solid rgba(28,49,99,0.06);
+  }
+
+  .pillar-icon { font-size: 18px; margin-bottom: 12px; }
+  .pillar-name { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: var(--navy); margin-bottom: 8px; }
+  .pillar-text { font-size: 11px; line-height: 1.6; color: #2C3639; flex: 1; }
+
+  .pillar-metric {
+    margin-top: 24px; padding-top: 12px;
+    border-top: 1px solid rgba(28,49,99,0.1);
+  }
+
+  .pillar-number { font-size: 26px; font-weight: 700; color: var(--navy); }
+  .pillar-unit { font-size: 9px; letter-spacing: 2px; color: var(--navy); opacity: 0.5; display: block; margin-top: 2px; }
+
+  .pillars-tabs {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; border-top: 1px solid rgba(28,49,99,0.1);
+  }
+
+  .tab { font-size: 10px; letter-spacing: 2px; color: var(--navy); opacity: 0.4; cursor: pointer; padding-bottom: 4px; }
+  .tab.active { opacity: 1; border-bottom: 1px solid var(--navy); }
+  .tab-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--navy); }
+
+  /* ── SLIDE 6: DIGITAL CONNOISSEUR ── */
+  #slide6 { background: var(--off-white); }
+
+  .dc-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+  }
+
+  .dc-back { background: none; border: none; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(28,49,99,0.2); display: flex; align-items: center; justify-content: center; color: var(--navy); font-size: 16px; }
+
+  .dc-counter-wrap { text-align: center; }
+  .dc-variant-label { font-size: 9px; letter-spacing: 3px; color: var(--navy); opacity: 0.5; display: block; }
+  .dc-variant-title { font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--navy); }
+
+  .dc-body { flex: 1; padding: 24px 24px 0; position: relative; }
+
+  .dc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px; color: var(--navy);
+    margin-bottom: 4px; font-weight: 400;
+  }
+
+  .dc-title em { font-style: italic; font-weight: 700; }
+
+  .dc-phone-wrapper {
+    position: relative; display: flex; justify-content: center;
+    margin-top: 24px;
+  }
+
+  .dc-features-left {
+    position: absolute; left: 0; top: 60px;
+    display: flex; flex-direction: column; gap: 80px;
+  }
+
+  .dc-feature {
+    font-size: 9px; letter-spacing: 2px;
+    color: var(--navy); opacity: 0.7;
+  }
+
+  .dc-feature strong { display: block; font-weight: 600; margin-bottom: 2px; }
+  .dc-feature span { opacity: 0.7; font-size: 8px; }
+
+  .dc-phone-mockup {
+    width: 200px; height: 380px;
+    background: #F5F3EE;
     border-radius: 32px;
-    background: rgba(240,237,232,0.03);
-    position: relative; overflow: hidden;
-    backdrop-filter: blur(10px);
+    border: 4px solid var(--navy);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(28,49,99,0.2);
   }
-  .hiw-phone::before {
-    content: ''; position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
-    width: 60px; height: 4px; background: rgba(240,237,232,0.2); border-radius: 2px;
+
+  .dc-notch {
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+    width: 80px; height: 10px;
+    background: var(--navy); border-radius: 10px;
   }
-  .phone-screen {
-    position: absolute; inset: 20px 8px 8px;
-    background: rgba(8,8,8,0.8);
-    border-radius: 24px;
+
+  .dc-screen { padding: 30px 12px 12px; height: 100%; }
+
+  .dc-screen-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(162,123,91,0.3); margin-bottom: 8px;
+  }
+
+  .dc-screen-search {
+    width: 28px; height: 28px; border-radius: 50%;
+    position: absolute; top: 36px; right: 12px;
+    background: none; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: rgba(28,49,99,0.5);
+  }
+
+  .dc-screen-bar { height: 28px; background: var(--navy); border-radius: 6px; width: 70%; margin-bottom: 12px; }
+
+  .dc-screen-item {
+    display: flex; gap: 10px; margin-bottom: 10px; align-items: center;
+  }
+
+  .dc-screen-thumb {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: #e8e8e8; flex-shrink: 0;
     overflow: hidden;
   }
-  .phone-step { 
-    position: absolute; inset: 0; 
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 24px; gap: 16px;
-    opacity: 0; transition: opacity 0.5s;
+
+  .dc-thumb-1 { background: linear-gradient(135deg, #2C3639, #3F4E4F); }
+  .dc-thumb-2 { background: linear-gradient(135deg, #A27B5B, #DCD7C9); }
+
+  .dc-screen-lines { flex: 1; }
+  .dc-screen-line { height: 6px; background: rgba(162,123,91,0.4); border-radius: 3px; margin-bottom: 4px; }
+  .dc-screen-line.w80 { width: 80%; }
+  .dc-screen-line.w60 { width: 60%; }
+
+  .dc-screen-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(28,49,99,0.2); flex-shrink: 0; }
+
+  .dc-screen-dots { display: flex; gap: 6px; justify-content: center; position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); }
+  .dc-screen-dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(28,49,99,0.2); }
+  .dc-screen-dots span.active { background: var(--navy); }
+
+  .dc-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px 24px;
+    border-top: 1px solid rgba(28,49,99,0.1);
   }
-  .phone-step.active { opacity: 1; }
-  .phone-step-icon { font-size: 48px; }
-  .phone-step-title { 
-    font-size: 16px; font-weight: 500; text-align: center; color: var(--white); 
+
+  .dc-next { font-size: 9px; letter-spacing: 2px; color: var(--navy); opacity: 0.5; }
+  .dc-tabs { display: flex; gap: 24px; }
+  .dc-tab { font-size: 9px; letter-spacing: 2px; color: var(--navy); opacity: 0.4; cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .dc-tab.active { opacity: 1; border-bottom: 2px solid var(--navy); padding-bottom: 2px; }
+  .dc-tab svg { width: 18px; height: 18px; }
+
+  /* ── SLIDE 7: TESTIMONIAL ── */
+  #slide7 { background: var(--cream); }
+
+  .testi-nav {
+    display: flex; align-items: center;
+    padding: 20px 24px; gap: 16px;
   }
-  .phone-step-sub { 
-    font-size: 12px; color: rgba(240,237,232,0.4); text-align: center; font-weight: 300;
+
+  .testi-back { background: none; border: none; cursor: pointer; font-size: 22px; color: rgba(28,49,99,0.5); }
+  .testi-slide-label { font-size: 10px; letter-spacing: 3px; color: rgba(28,49,99,0.5); }
+
+  .testi-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 32px 20px 0; }
+
+  .receipt-card {
+    position: relative; width: 100%;
+    background: linear-gradient(150deg, #A27B5B 0%, #8a6a4a 40%, #7a5c3e 70%, #A27B5B 100%);
+    border-radius: 4px;
+    padding: 40px 32px 48px;
+    text-align: center;
   }
-  /* QR pattern */
-  .qr-pattern {
-    width: 80px; height: 80px;
-    background: 
-      linear-gradient(var(--white) 0%, var(--white) 100%) 0 0 / 24px 24px no-repeat,
-      linear-gradient(var(--white) 0%, var(--white) 100%) 56px 0 / 24px 24px no-repeat,
-      linear-gradient(var(--white) 0%, var(--white) 100%) 0 56px / 24px 24px no-repeat,
-      linear-gradient(var(--white) 0%, var(--white) 100%) 28px 28px / 24px 24px no-repeat;
-    opacity: 0.8;
+
+  .receipt-top {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 20px; overflow: hidden;
   }
-  .menu-preview {
-    width: 100%; background: rgba(240,237,232,0.05);
-    border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px;
+
+  .receipt-top::before {
+    content: '';
+    position: absolute; top: -10px; left: -5px; right: -5px; bottom: 0;
+    background: var(--au-lait);
+    clip-path: polygon(0 0, 5% 100%, 10% 0, 15% 100%, 20% 0, 25% 100%, 30% 0, 35% 100%, 40% 0, 45% 100%, 50% 0, 55% 100%, 60% 0, 65% 100%, 70% 0, 75% 100%, 80% 0, 85% 100%, 90% 0, 95% 100%, 100% 0, 100% 0, 0 0);
   }
-  .menu-item-row {
-    display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 1px solid var(--border); padding-bottom: 8px;
+
+  .receipt-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 20px; overflow: hidden;
   }
-  .menu-item-row:last-child { border-bottom: none; }
-  .menu-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--amber); }
-  .menu-item-name { font-size: 11px; color: var(--white); flex: 1; padding: 0 8px; }
-  .menu-item-price { font-size: 11px; color: var(--amber); }
-  .queue-visual {
-    width: 100%; background: rgba(240,237,232,0.05); border-radius: 8px; padding: 12px;
+
+  .receipt-bottom::before {
+    content: '';
+    position: absolute; top: 0; left: -5px; right: -5px; bottom: -10px;
+    background: var(--au-lait);
+    clip-path: polygon(0 100%, 5% 0, 10% 100%, 15% 0, 20% 100%, 25% 0, 30% 100%, 35% 0, 40% 100%, 45% 0, 50% 100%, 55% 0, 60% 100%, 65% 0, 70% 100%, 75% 0, 80% 100%, 85% 0, 90% 100%, 95% 0, 100% 100%, 100% 100%, 0 100%);
   }
-  .queue-bar-wrap { display: flex; flex-direction: column; gap: 8px; }
-  .queue-bar-row { display: flex; align-items: center; gap: 8px; }
-  .queue-bar-label { font-size: 10px; color: rgba(240,237,232,0.4); width: 24px; }
-  .queue-bar-track { flex: 1; height: 6px; background: rgba(240,237,232,0.1); border-radius: 3px; }
-  .queue-bar-fill { height: 100%; border-radius: 3px; background: var(--amber); }
-  .kitchen-grid {
-    width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-style: italic;
+    color: #DCD7C9; line-height: 1.4; margin-bottom: 24px;
   }
-  .kitchen-cell {
-    aspect-ratio: 1;
-    border-radius: 6px;
+
+  .quote-divider { width: 40px; height: 1px; background: rgba(220,215,201,0.5); margin: 0 auto 16px; }
+
+  .quote-author { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: #DCD7C9; }
+  .quote-place { font-size: 9px; letter-spacing: 3px; color: rgba(220,215,201,0.7); margin-top: 4px; }
+
+  .quote-avatars {
+    display: flex; justify-content: center; gap: -8px; margin-top: 20px;
+  }
+
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    border: 2px solid rgba(255,255,255,0.5);
+    margin-left: -8px; overflow: hidden;
     display: flex; align-items: center; justify-content: center;
-    font-size: 10px; font-weight: 500;
-  }
-  .kitchen-cell.busy { background: rgba(192,57,43,0.3); border: 1px solid rgba(192,57,43,0.4); color: var(--red); }
-  .kitchen-cell.idle { background: rgba(26,122,74,0.2); border: 1px solid rgba(26,122,74,0.3); color: var(--green); }
-  .kitchen-cell.prep { background: rgba(232,160,32,0.2); border: 1px solid rgba(232,160,32,0.3); color: var(--amber); }
-
-  /* ─── BENEFITS ─── */
-  #benefits {
-    padding: 120px 48px;
-    background: var(--black);
-  }
-  .benefits-header {
-    display: flex; justify-content: space-between; align-items: flex-end;
-    margin-bottom: 80px;
-  }
-  .benefits-headline {
-    font-family: var(--font-display);
-    font-size: clamp(48px, 7vw, 96px);
-    line-height: 0.9;
-    color: var(--white);
-    max-width: 600px;
-  }
-  .benefits-headline .line { display: block; overflow: hidden; }
-  .benefits-headline .word { display: inline-block; transform: translateY(110%); }
-  .benefits-desc {
-    max-width: 280px; font-size: 14px; color: rgba(240,237,232,0.5);
-    font-weight: 300; line-height: 1.8; opacity: 0; transform: translateY(20px);
+    font-size: 14px;
   }
 
-  .benefits-cards {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
-  }
-  .benefit-card {
-    padding: 48px 36px; border: 1px solid var(--border);
-    position: relative; overflow: hidden;
-    opacity: 0; transform: translateY(80px) scale(0.96);
-  }
-  .benefit-card::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(232,160,32,0.06) 0%, transparent 60%);
-    opacity: 0; transition: opacity 0.4s;
-  }
-  .benefit-card:hover::before { opacity: 1; }
-  .benefit-card-num {
-    font-family: var(--font-display); font-size: 72px;
-    color: rgba(240,237,232,0.06); line-height: 1;
-    position: absolute; top: 16px; right: 24px;
-  }
-  .benefit-tag {
-    display: inline-block; font-size: 10px; letter-spacing: 3px;
-    text-transform: uppercase; color: var(--amber);
-    border: 1px solid rgba(232,160,32,0.3); padding: 4px 12px;
-    margin-bottom: 32px;
-  }
-  .benefit-icon { font-size: 36px; margin-bottom: 20px; display: block; }
-  .benefit-title {
-    font-family: var(--font-serif); font-size: 26px; font-style: italic;
-    color: var(--white); margin-bottom: 16px; line-height: 1.3;
-  }
-  .benefit-items { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .benefit-items li {
-    font-size: 13px; color: rgba(240,237,232,0.55); font-weight: 300;
-    padding-left: 16px; position: relative; line-height: 1.6;
-  }
-  .benefit-items li::before {
-    content: '↗'; position: absolute; left: 0;
-    color: var(--amber); font-size: 11px;
+  .testi-proof { font-size: 10px; letter-spacing: 4px; color: rgba(28,49,99,0.4); margin-top: 28px; text-align: center; }
+
+  .testi-explore {
+    margin-top: 20px;
+    padding: 16px 48px; border-radius: 40px;
+    border: 1px solid rgba(28,49,99,0.2);
+    background: none; cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: 3px; color: var(--navy);
+    font-weight: 500; text-transform: uppercase;
+    transition: all 0.3s;
   }
 
-  /* ─── COMPARISON ─── */
-  #comparison {
-    padding: 120px 48px;
-    background: #0c0a08;
-  }
-  .comparison-header { text-align: center; margin-bottom: 64px; }
-  .comparison-eyebrow {
-    font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
-    color: var(--amber); margin-bottom: 20px; opacity: 0;
-  }
-  .comparison-headline {
-    font-family: var(--font-display); font-size: clamp(40px, 6vw, 80px);
-    line-height: 0.95; color: var(--white); opacity: 0;
-  }
-  .comparison-table {
-    border: 1px solid var(--border);
-    overflow: hidden;
-    opacity: 0; transform: translateY(40px);
-  }
-  .table-header {
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1.3fr;
-    background: rgba(240,237,232,0.04);
-    border-bottom: 1px solid var(--border);
-  }
-  .th { 
-    padding: 20px 24px; font-size: 11px; letter-spacing: 2px;
-    text-transform: uppercase; font-weight: 500;
-  }
-  .th.restro { color: var(--amber); background: rgba(232,160,32,0.06); }
-  .table-row {
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1.3fr;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.2s;
-  }
-  .table-row:last-child { border-bottom: none; }
-  .table-row:hover { background: rgba(240,237,232,0.02); }
-  .td { 
-    padding: 18px 24px; font-size: 13px; color: rgba(240,237,232,0.6);
-    display: flex; align-items: center; gap: 8px;
-    border-right: 1px solid var(--border);
-  }
-  .td:last-child { border-right: none; }
-  .td.feature-name { color: var(--white); font-weight: 500; font-size: 14px; }
-  .td.restro { background: rgba(232,160,32,0.04); }
-  .check { color: var(--green); font-size: 16px; }
-  .cross { color: var(--red); font-size: 16px; opacity: 0.5; }
-  .partial { color: var(--amber); font-size: 16px; opacity: 0.7; }
+  .testi-explore:hover { background: var(--navy); color: #DCD7C9; }
 
-  /* ─── TESTIMONIALS ─── */
-  #testimonials {
-    padding: 120px 48px;
-    background: var(--black);
-    overflow: hidden;
-  }
-  .test-header { margin-bottom: 64px; }
-  .test-eyebrow {
-    font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
-    color: var(--amber); margin-bottom: 20px; opacity: 0;
-    display: flex; align-items: center; gap: 16px;
-  }
-  .test-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--amber); }
-  .test-headline {
-    font-family: var(--font-display); font-size: clamp(40px, 6vw, 80px);
-    color: var(--white); line-height: 0.95;
-  }
-  .test-headline .line { display: block; overflow: hidden; }
-  .test-headline .word { display: inline-block; transform: translateY(110%); }
-  .testimonials-track {
-    display: flex; gap: 24px;
-  }
-  .test-card {
-    flex: 0 0 380px; padding: 40px 36px;
-    border: 1px solid var(--border);
-    background: rgba(240,237,232,0.02);
-    opacity: 0; transform: translateX(60px);
-  }
-  .test-quote {
-    font-family: var(--font-serif); font-size: 20px; font-style: italic;
-    color: var(--white); line-height: 1.6; margin-bottom: 28px;
-  }
-  .test-quote::before { content: '"'; color: var(--amber); font-size: 32px; line-height: 0; vertical-align: -14px; margin-right: 4px; }
-  .test-author { display: flex; align-items: center; gap: 16px; }
-  .test-avatar {
-    width: 44px; height: 44px; border-radius: 50%;
-    background: var(--muted);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display); font-size: 18px; color: var(--amber);
-    flex-shrink: 0;
-  }
-  .test-name { font-size: 14px; font-weight: 500; }
-  .test-role { font-size: 12px; color: rgba(240,237,232,0.4); font-weight: 300; }
-  .test-stars { color: var(--amber); font-size: 12px; margin-bottom: 4px; }
-
-  /* ─── BUSINESS MODEL ─── */
-  #business {
-    padding: 120px 48px;
-    background: #0c0a08;
-  }
-  .business-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-  .business-left {}
-  .business-eyebrow {
-    font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
-    color: var(--amber); margin-bottom: 24px; opacity: 0;
-    display: flex; align-items: center; gap: 16px;
-  }
-  .business-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--amber); }
-  .business-headline {
-    font-family: var(--font-display); font-size: clamp(44px, 6vw, 80px);
-    line-height: 0.95; color: var(--white); margin-bottom: 32px;
-  }
-  .business-headline .line { display: block; overflow: hidden; }
-  .business-headline .word { display: inline-block; transform: translateY(110%); }
-  .business-desc {
-    font-size: 15px; color: rgba(240,237,232,0.5); font-weight: 300; line-height: 1.8;
-    margin-bottom: 40px; opacity: 0;
-  }
-  .business-features { display: flex; flex-direction: column; gap: 2px; }
-  .biz-feat {
-    display: flex; align-items: center; gap: 20px; padding: 20px 24px;
-    border: 1px solid var(--border);
-    opacity: 0; transform: translateX(-40px);
-  }
-  .biz-feat-icon { font-size: 24px; width: 40px; flex-shrink: 0; text-align: center; }
-  .biz-feat-title { font-size: 14px; font-weight: 500; }
-  .biz-feat-desc { font-size: 12px; color: rgba(240,237,232,0.4); font-weight: 300; }
-
-  /* Growth visual */
-  .business-right {
-    display: flex; flex-direction: column; gap: 32px;
-    opacity: 0; transform: translateX(60px);
-  }
-  .growth-chart {
-    border: 1px solid var(--border); padding: 32px; position: relative;
-  }
-  .growth-chart-label {
-    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-    color: rgba(240,237,232,0.4); margin-bottom: 20px;
-  }
-  .chart-bars {
-    display: flex; align-items: flex-end; gap: 8px; height: 120px;
-  }
-  .chart-bar {
-    flex: 1; background: var(--amber); border-radius: 2px 2px 0 0;
-    transition: height 0.4s;
-  }
-  .chart-bar:nth-child(1) { height: 20%; opacity: 0.3; }
-  .chart-bar:nth-child(2) { height: 35%; opacity: 0.4; }
-  .chart-bar:nth-child(3) { height: 52%; opacity: 0.5; }
-  .chart-bar:nth-child(4) { height: 65%; opacity: 0.6; }
-  .chart-bar:nth-child(5) { height: 78%; opacity: 0.7; }
-  .chart-bar:nth-child(6) { height: 88%; opacity: 0.85; }
-  .chart-bar:nth-child(7) { height: 100%; opacity: 1; }
-  .chart-x {
-    display: flex; gap: 8px; margin-top: 8px;
-  }
-  .chart-x-label { flex: 1; text-align: center; font-size: 10px; color: rgba(240,237,232,0.3); }
-
-  .pricing-card {
-    border: 1px solid rgba(232,160,32,0.3);
-    padding: 32px; background: rgba(232,160,32,0.04);
-  }
-  .price-tag { font-family: var(--font-display); font-size: 56px; color: var(--amber); line-height: 1; }
-  .price-tag span { font-size: 20px; color: rgba(240,237,232,0.5); }
-  .price-desc { font-size: 13px; color: rgba(240,237,232,0.5); margin-top: 4px; margin-bottom: 16px; }
-  .price-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-  .price-features li { font-size: 13px; color: rgba(240,237,232,0.6); display: flex; gap: 8px; }
-  .price-features li::before { content: '✓'; color: var(--green); }
-
-  /* ─── CTA ─── */
-  #cta {
-    min-height: 80vh;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center; padding: 120px 48px;
-    background: var(--black);
-    position: relative; overflow: hidden;
-  }
-  .cta-bg-text {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    font-family: var(--font-display); font-size: clamp(120px, 20vw, 280px);
-    color: rgba(240,237,232,0.02); white-space: nowrap; pointer-events: none;
-    line-height: 1; letter-spacing: 8px;
-  }
-  .cta-eyebrow {
-    font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
-    color: var(--amber); margin-bottom: 32px; opacity: 0;
-  }
-  .cta-headline {
-    font-family: var(--font-display);
-    font-size: clamp(56px, 9vw, 120px);
-    line-height: 0.9; color: var(--white);
-    margin-bottom: 24px; max-width: 800px;
-  }
-  .cta-headline .line { display: block; overflow: hidden; }
-  .cta-headline .word { display: inline-block; transform: translateY(110%); }
-  .cta-headline .amber { color: var(--amber); }
-  .cta-sub {
-    font-size: 16px; color: rgba(240,237,232,0.5); font-weight: 300; line-height: 1.7;
-    max-width: 480px; margin-bottom: 48px; opacity: 0;
-  }
-  .cta-buttons { display: flex; gap: 16px; opacity: 0; }
-  .btn-large {
-    padding: 20px 48px; font-size: 14px; letter-spacing: 2.5px;
+  .testi-bottom-nav {
+    display: flex; align-items: center; justify-content: space-around;
+    padding: 16px 24px 24px;
+    border-top: 1px solid rgba(28,49,99,0.1);
   }
 
-  /* ─── FOOTER ─── */
-  footer {
-    padding: 48px;
-    border-top: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center;
-    background: var(--black);
-  }
-  .footer-logo { font-family: var(--font-display); font-size: 24px; letter-spacing: 3px; color: var(--amber); }
-  .footer-text { font-size: 12px; color: rgba(240,237,232,0.3); }
-  .footer-links { display: flex; gap: 24px; }
-  .footer-links a { font-size: 12px; color: rgba(240,237,232,0.4); text-decoration: none; }
-
-  /* ─── CURSOR ─── */
-  .cursor {
-    width: 12px; height: 12px; border-radius: 50%; background: var(--amber);
-    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
-    transform: translate(-50%, -50%); mix-blend-mode: difference;
-    transition: width 0.3s, height 0.3s;
-  }
-  .cursor-ring {
-    width: 40px; height: 40px; border-radius: 50%;
-    border: 1px solid rgba(232,160,32,0.4);
-    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998;
-    transform: translate(-50%, -50%);
+  .testi-nav-item {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 4px; font-size: 9px; letter-spacing: 1px;
+    color: var(--navy); opacity: 0.4; cursor: pointer;
   }
 
-  /* Progress bar */
-  .scroll-progress {
-    position: fixed; top: 0; left: 0; height: 2px;
-    background: var(--amber); z-index: 2000;
-    transform-origin: left; transform: scaleX(0);
+  .testi-nav-item.active { opacity: 1; }
+  .testi-nav-item .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--navy); }
+
+  /* ── SLIDE 8: COMPARISON ── */
+  #slide8 {
+    background: linear-gradient(160deg, #DCD7C9 0%, #A27B5B 40%, #d4cfc2 70%, #DCD7C9 100%);
   }
 
-  /* Utility */
-  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+  .comp-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(28,49,99,0.15);
+  }
+
+  .comp-back { background: none; border: none; cursor: pointer; color: #2C3639; font-size: 22px; }
+  .comp-title-nav { font-size: 11px; letter-spacing: 3px; font-weight: 600; color: #2C3639; }
+
+  .comp-body { flex: 1; padding: 32px 20px; }
+
+  .comp-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; font-weight: 400; color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .comp-heading em { font-style: italic; font-weight: 700; }
+
+  .comp-underline { width: 60px; height: 2px; background: var(--navy); margin-bottom: 32px; }
+
+  .comp-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+
+  .comp-table th {
+    font-size: 9px; letter-spacing: 2px; font-weight: 500;
+    padding: 12px 8px; text-align: center;
+    color: rgba(44,54,57,0.5);
+    border-bottom: 1px solid rgba(44,54,57,0.15);
+  }
+
+  .comp-table th.feature-col { text-align: left; }
+  .comp-table th.restro-col { color: var(--navy); font-weight: 700; font-size: 11px; }
+
+  .comp-table td {
+    padding: 18px 8px; text-align: center;
+    border-bottom: 1px solid rgba(44,54,57,0.1);
+    color: rgba(44,54,57,0.3); font-size: 15px;
+  }
+
+  .comp-table td.feature-col {
+    text-align: left; font-size: 13px;
+    color: var(--navy); font-weight: 400;
+  }
+
+  .comp-table td.restro-col { color: var(--navy); font-size: 18px; font-weight: 700; }
+
+  .comp-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px;
+  }
+
+  .comp-variant { font-size: 9px; letter-spacing: 3px; color: rgba(28,49,99,0.4); }
+  .comp-dots { display: flex; gap: 8px; }
+  .comp-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(44,54,57,0.2); }
+  .comp-dot.active { background: var(--navy); }
+
+  .comp-bottom-tabs {
+    display: flex; align-items: center; justify-content: space-around;
+    padding: 16px 24px 24px;
+    background: rgba(255,255,255,0.4);
+    border-top: 1px solid rgba(28,49,99,0.1);
+  }
+
+  .comp-tab { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 9px; letter-spacing: 2px; color: #2C3639; opacity: 0.4; cursor: pointer; }
+  .comp-tab.active { opacity: 1; background: rgba(44,54,57,0.1); padding: 6px 12px; border-radius: 4px; }
+
+  /* ── SLIDE 9: SCALABILITY ── */
+  #slide9 {
+    background: linear-gradient(170deg, #DCD7C9 0%, #A27B5B 30%, #d4cfc2 65%, #DCD7C9 100%);
+  }
+
+  .scale-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+  }
+
+  .scale-back { background: none; border: none; cursor: pointer; color: #2C3639; font-size: 22px; }
+  .scale-dots { display: flex; gap: 6px; }
+  .scale-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(44,54,57,0.2); }
+  .scale-dot.active { background: #2C3639; width: 20px; border-radius: 3px; }
+
+  .scale-body { flex: 1; padding: 24px; }
+
+  .scale-variant { font-size: 9px; letter-spacing: 3px; color: rgba(28,49,99,0.5); margin-bottom: 6px; }
+
+  .scale-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px; font-style: italic;
+    color: #2C3639; margin-bottom: 10px;
+  }
+
+  .scale-desc {
+    font-size: 17px; line-height: 1.5;
+    color: rgba(44,54,57,0.85); margin-bottom: 24px;
+  }
+
+  .growth-card {
+    background: rgba(255,255,255,0.9);
+    border-radius: 12px; padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .growth-card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 4px;
+  }
+
+  .growth-label { font-size: 9px; letter-spacing: 3px; color: rgba(28,49,99,0.5); }
+  .growth-roi { font-family: 'Jost', sans-serif; font-size: 26px; font-weight: 700; color: var(--navy); }
+
+  .growth-chart { height: 100px; position: relative; margin: 12px 0; }
+
+  .growth-chart svg { width: 100%; height: 100%; }
+
+  .growth-x-labels {
+    display: flex; justify-content: space-between;
+    font-size: 8px; letter-spacing: 2px; color: rgba(28,49,99,0.4); padding: 0 4px;
+  }
+
+  .scale-features { display: flex; flex-direction: column; gap: 20px; }
+
+  .scale-feature { display: flex; gap: 16px; align-items: flex-start; }
+  .scale-feature-icon { font-size: 20px; width: 24px; flex-shrink: 0; margin-top: 2px; }
+  .scale-feature-title { font-size: 10px; letter-spacing: 3px; font-weight: 600; color: #2C3639; margin-bottom: 4px; }
+  .scale-feature-desc { font-size: 14px; color: rgba(44,54,57,0.75); line-height: 1.4; }
+
+  .scale-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px 32px;
+  }
+
+  .next-step-label { font-size: 9px; letter-spacing: 2px; color: rgba(44,54,57,0.5); }
+  .next-step-name { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; color: #2C3639; }
+
+  .continue-btn {
+    background: var(--navy); color: #DCD7C9;
+    border: none; cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px; padding: 14px 28px;
+    border-radius: 40px; font-weight: 400;
+    transition: all 0.3s;
+  }
+
+  /* ── SLIDE 10: CTA ── */
+  #slide10 {
+    background: linear-gradient(170deg, #DCD7C9 0%, #A27B5B 35%, #d4cfc2 65%, #DCD7C9 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  }
+
+  .cta-top { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+  .cta-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 60px; font-weight: 600;
+    color: var(--navy); letter-spacing: -1px;
+    margin-bottom: 48px;
+  }
+
+  .cta-btn {
+    background: var(--navy); color: #DCD7C9;
+    border: none; cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 17px; padding: 20px 80px;
+    border-radius: 50px; font-weight: 400;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    box-shadow: 0 8px 32px rgba(44,54,57,0.3);
+  }
+
+  .cta-bottom { padding: 32px; text-align: center; width: 100%; }
+
+  .cta-tagline { font-size: 10px; letter-spacing: 5px; color: rgba(44,54,57,0.5); margin-bottom: 20px; }
+  .cta-counter { font-size: 12px; color: rgba(44,54,57,0.4); letter-spacing: 2px; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+
+  .reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal-left.revealed {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal-right.revealed {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.94);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal-scale.revealed {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* stagger delays */
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.45s; }
+
+  /* ── MOBILE RESPONSIVE ── */
+  /* All px font sizes scale with viewport width on small screens */
+  @media (max-width: 480px) {
+    .hero-title { font-size: clamp(32px, 9vw, 48px); }
+    .btn-primary { font-size: 11px; padding: 16px 36px; letter-spacing: 2px; }
+    .hero-content { padding: 36px 20px 28px; }
+    .hero-tagline { font-size: clamp(16px, 4.5vw, 20px); padding: 32px 20px; }
+    .hero-card { margin: 24px 16px 0; }
+    .restaurant-img { height: clamp(180px, 50vw, 260px); }
+
+    .problem-title { font-size: clamp(30px, 9vw, 42px); }
+    .problem-text { font-size: clamp(16px, 5vw, 22px); }
+    .compare-label { font-size: clamp(16px, 5vw, 22px); }
+    .slide-body { padding: 24px 16px; }
+
+    .shift-title { font-size: clamp(30px, 9vw, 40px); }
+    .flow-circle { width: clamp(90px, 28vw, 130px); height: clamp(90px, 28vw, 130px); font-size: 9px; }
+    .shift-desc { font-size: clamp(14px, 4vw, 17px); }
+    .shift-body { padding: 24px 16px; }
+
+    .hiw-title { font-size: clamp(32px, 9vw, 44px); }
+    .step-num { font-size: clamp(52px, 18vw, 80px); }
+    .step-desc { font-size: clamp(13px, 3.8vw, 15px); }
+    .hiw-body { padding: 20px 16px 0; }
+
+    .pillars-title { font-size: clamp(26px, 7.5vw, 36px); }
+    .pillar-name { font-size: clamp(16px, 5vw, 20px); }
+    .pillar-text { font-size: 10px; }
+    .pillar-number { font-size: clamp(20px, 6vw, 26px); }
+    .pillar-cards { gap: 6px; }
+    .pillar-card { padding: 12px 8px; }
+    .pillars-body { padding: 12px 16px; }
+
+    .dc-title { font-size: clamp(24px, 7.5vw, 34px); }
+    .dc-phone-mockup { width: clamp(150px, 45vw, 200px); height: clamp(280px, 85vw, 380px); }
+    .dc-features-left { left: -4px; gap: 60px; }
+    .dc-feature { font-size: 8px; }
+    .dc-body { padding: 16px 16px 0; }
+
+    .quote-text { font-size: clamp(18px, 5.5vw, 24px); }
+    .receipt-card { padding: 32px 20px 40px; }
+
+    .comp-heading { font-size: clamp(26px, 8vw, 36px); }
+    .comp-table th, .comp-table td { padding: 14px 6px; font-size: clamp(10px, 3vw, 13px); }
+    .comp-body { padding: 24px 16px; }
+
+    .scale-title { font-size: clamp(32px, 9vw, 44px); }
+    .scale-desc { font-size: clamp(14px, 4vw, 17px); }
+    .scale-body { padding: 16px; }
+    .growth-roi { font-size: clamp(20px, 6vw, 26px); }
+
+    .cta-logo { font-size: clamp(40px, 13vw, 60px); }
+    .cta-btn { font-size: clamp(14px, 4vw, 17px); padding: 18px clamp(40px, 15vw, 80px); }
+
+    .nav1 { padding: 16px 16px; }
+    .slide-nav, .shift-nav, .hiw-nav, .pillars-nav, .dc-nav,
+    .testi-nav, .comp-nav, .scale-nav { padding: 14px 16px; }
+    .bottom-nav { padding: 14px 16px 20px; }
+    .bottom-nav-item { font-size: 8px; letter-spacing: 1px; }
+    .pillars-tabs { padding: 12px 16px; }
+    .dc-bottom { padding: 12px 16px 20px; }
+    .testi-bottom-nav { padding: 12px 16px 20px; }
+    .comp-bottom-tabs { padding: 12px 16px 20px; }
+    .scale-bottom { padding: 16px 16px 24px; }
+    .shift-bottom { padding: 16px 16px 24px; }
+  }
+
+  @media (max-width: 360px) {
+    .hero-title { font-size: 28px; }
+    .pillar-cards { flex-direction: column; }
+    .pillar-card { flex-direction: row; align-items: flex-start; gap: 12px; }
+    .dc-phone-mockup { width: 130px; height: 250px; }
+    .dc-features-left { display: none; }
+  }
+
+  /* Separator line in step area */
+  .step-separator { width: 1px; background: rgba(0,7,27,0.15); position: absolute; right: 0; top: 0; bottom: 0; }
 </style>
 </head>
 <body>
 
-<!-- Progress -->
-<div class="scroll-progress" id="scrollProgress"></div>
+<!-- ══ SLIDE 1: HERO ══ -->
+<section class="slide active" id="slide1">
+  <nav class="nav1">
+    <div class="nav-logo">
+      <span class="fork-icon">🍴</span>
+      <span>RESTRO</span>
+    </div>
+    <button class="hamburger">☰</button>
+  </nav>
 
-<!-- Cursor -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+  <div class="hero-content">
+    <h1 class="hero-title reveal">Peak Hours Should Be Your <br> <b>Most Profitable</b> <br> Not Most Chaotic</h1>
+    <button class="btn-primary reveal reveal-delay-1" onclick="goToSlide(9)">BOOK A DEMO</button>
+  </div>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">RESTRO</div>
-  <ul class="nav-links">
-    <li><a href="#how-it-works">How It Works</a></li>
-    <li><a href="#benefits">Benefits</a></li>
-    <li><a href="#comparison">Compare</a></li>
-    <li><a href="#cta">Pricing</a></li>
-  </ul>
-  <button class="nav-cta">Book Demo</button>
-</nav>
+  <div class="hero-card reveal reveal-delay-2">
+    <div class="restaurant-img">
+      <div class="restaurant-img-inner"></div>
+    </div>
+    <div class="img-caption">THE NEW STANDARD OF SERVICE</div>
+  </div>
 
-<!-- ─── HERO ─── -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid-overlay"></div>
-  <div class="hero-noise"></div>
+  <p class="hero-tagline reveal reveal-delay-3"><b>Elevate your customer's experience from the moment they arrive.</b></p>
 
-  <div class="hero-scene">
-    <div class="hero-scene-inner"></div>
-    <div class="hero-illustration" id="heroIllustration">
-      <!-- Animated SVG restaurant scene -->
-      <svg viewBox="0 0 600 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Tables -->
-        <g id="tableGroup" opacity="0.6">
-          <rect x="80" y="200" width="120" height="80" rx="4" stroke="#e8a020" stroke-width="1" fill="rgba(232,160,32,0.05)"/>
-          <rect x="240" y="180" width="120" height="80" rx="4" stroke="#e8a020" stroke-width="1" fill="rgba(232,160,32,0.05)"/>
-          <rect x="400" y="220" width="120" height="80" rx="4" stroke="#e8a020" stroke-width="1" fill="rgba(232,160,32,0.05)"/>
-          <rect x="100" y="380" width="120" height="80" rx="4" stroke="rgba(232,160,32,0.4)" stroke-width="1" fill="rgba(232,160,32,0.02)"/>
-          <rect x="280" y="360" width="120" height="80" rx="4" stroke="rgba(232,160,32,0.4)" stroke-width="1" fill="rgba(232,160,32,0.02)"/>
-          <rect x="420" y="390" width="120" height="80" rx="4" stroke="rgba(232,160,32,0.4)" stroke-width="1" fill="rgba(232,160,32,0.02)"/>
-        </g>
-        <!-- People dots -->
-        <g id="peopleGroup">
-          <circle cx="140" cy="160" r="8" fill="#e8a020" opacity="0.7"/>
-          <circle cx="300" cy="150" r="8" fill="#e8a020" opacity="0.5"/>
-          <circle cx="460" cy="170" r="8" fill="#e8a020" opacity="0.6"/>
-          <circle cx="160" cy="320" r="8" fill="rgba(232,160,32,0.3)"/>
-          <circle cx="340" cy="310" r="8" fill="rgba(232,160,32,0.3)"/>
-          <!-- Queue people -->
-          <circle cx="120" cy="560" r="8" fill="#e8a020" opacity="0.9"/>
-          <circle cx="160" cy="560" r="8" fill="#e8a020" opacity="0.8"/>
-          <circle cx="200" cy="560" r="8" fill="#e8a020" opacity="0.7"/>
-          <circle cx="240" cy="560" r="8" fill="#e8a020" opacity="0.6"/>
-          <circle cx="280" cy="560" r="8" fill="#e8a020" opacity="0.4"/>
-        </g>
-        <!-- Queue line -->
-        <line x1="100" y1="560" x2="300" y2="560" stroke="#e8a020" stroke-width="1" stroke-dasharray="4 4" opacity="0.3"/>
-        <!-- QR signal waves -->
-        <g id="qrSignal" opacity="0.5">
-          <circle cx="460" cy="560" r="20" stroke="#e8a020" stroke-width="1" fill="none"/>
-          <circle cx="460" cy="560" r="35" stroke="#e8a020" stroke-width="0.5" fill="none"/>
-          <circle cx="460" cy="560" r="50" stroke="#e8a020" stroke-width="0.3" fill="none"/>
-          <rect x="448" y="548" width="24" height="24" rx="2" fill="rgba(232,160,32,0.1)" stroke="#e8a020" stroke-width="1"/>
-        </g>
-        <!-- Kitchen area -->
-        <rect x="160" y="660" width="280" height="100" rx="4" stroke="rgba(232,160,32,0.3)" stroke-width="1" fill="rgba(232,160,32,0.03)"/>
-        <text x="300" y="715" fill="rgba(232,160,32,0.4)" font-size="11" text-anchor="middle" font-family="sans-serif" letter-spacing="3">KITCHEN</text>
-        <!-- Connecting lines (data flow) -->
-        <g opacity="0.2">
-          <line x1="460" y1="580" x2="460" y2="640" stroke="#e8a020" stroke-width="1" stroke-dasharray="4 4"/>
-          <line x1="460" y1="640" x2="300" y2="660" stroke="#e8a020" stroke-width="1" stroke-dasharray="4 4"/>
+  
+</section>
+
+<!-- ══ SLIDE 2: THE PROBLEM ══ -->
+<section class="slide" id="slide2">
+  
+
+  <div class="slide-body">
+    <h2 class="problem-title reveal">The Problem</h2>
+
+    <!-- Chaos diagram -->
+    <div class="diagram-card reveal reveal-delay-1">
+      <div class="diagram-label">01. Friction</div>
+      <svg class="chaos-svg" viewBox="0 0 300 140">
+        <g stroke="#7a8a8b" stroke-width="1" opacity="0.6">
+          <line x1="20" y1="70" x2="280" y2="30"/>
+          <line x1="50" y1="10" x2="200" y2="130"/>
+          <line x1="10" y1="90" x2="270" y2="50"/>
+          <line x1="100" y1="5" x2="180" y2="135"/>
+          <line x1="30" y1="120" x2="290" y2="20"/>
+          <line x1="150" y1="0" x2="80" y2="140"/>
+          <line x1="5" y1="40" x2="250" y2="100"/>
+          <line x1="200" y1="5" x2="60" y2="130"/>
+          <line x1="120" y1="140" x2="240" y2="10"/>
         </g>
       </svg>
+      <div class="diagram-stat">
+        <strong>30% LOSS</strong>
+        <span>Revenue leakage via walk-aways</span>
+      </div>
+    </div>
+
+   
+
+    <!-- Precision diagram -->
+    <div class="diagram-card reveal reveal-delay-2" style="margin-top:16px;">
+      <div class="diagram-label" style="text-align:right;">02. Precision</div>
+      <svg class="precision-svg" viewBox="0 0 300 80">
+        <line x1="30" y1="40" x2="270" y2="40" stroke="#2C3639" stroke-width="1.5"/>
+      </svg>
+      <div class="diagram-stat-left">
+        <strong>100% VISIBILITY</strong>
+        <span>Real-time floor optimization</span>
+      </div>
+    </div>
+
+   
+    <p class="problem-text reveal reveal-delay-3"><b>They Leave Not Because <br> They Don't Want To Wait, <br> But Because They Are Unsure About Their Turn</b></p>
+
+   
+  </div>
+ 
+</section>
+
+<!-- ══ SLIDE 3: THE SHIFT ══ -->
+<section class="slide" id="slide3">
+  
+
+  <div class="shift-body">
+    <h2 class="shift-title reveal">The Shift</h2>
+    <div class="shift-line reveal reveal-delay-1"></div>
+    <p class="shift-subtitle reveal reveal-delay-1">INNOVATIVE STRATEGY</p>
+
+    <div class="flow-diagram reveal reveal-delay-2">
+      <div class="flow-circle">CAPTURE</div>
+      <div class="flow-dash"></div>
+      <div class="flow-circle">SCHEDULE</div>
+      <div class="flow-dash"></div>
+      <div class="flow-circle">BALANCE</div>
+    </div>
+
+    <p class="shift-desc reveal reveal-delay-3"><b>THE BETTER THE CUSTOMER FEELS, THE BETTER YOUR OUTLET WILL BECOME.</b></p>
+  </div>
+
+</section>
+
+<!-- ══ SLIDE 4: HOW IT WORKS ══ -->
+<section class="slide" id="slide4">
+  
+
+  <div class="hiw-body">
+    <h2 class="hiw-title reveal">How It Works</h2>
+    <div class="hiw-line reveal reveal-delay-1"></div>
+
+    <div class="steps-layout reveal reveal-delay-2">
+      <div class="steps-left">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-title">ENTRY</div>
+          <div class="step-desc">Scan the QR code at the entrance for instant access.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-title">EXPLORE</div>
+          <div class="step-desc">Browse the live menu with real-time availability updates.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-title">PRE-ORDER</div>
+          <div class="step-desc">Place your order while waiting for your table to be ready.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-title">ARRIVAL</div>
+          <div class="step-desc">Your food begins preparation the moment you are seated.</div>
+        </div>
+      </div>
+
+      <div class="steps-right">
+        <svg class="phone-sketch" viewBox="0 0 90 160" fill="none" stroke="#2C3639" stroke-width="1.5">
+          <rect x="10" y="5" width="70" height="120" rx="10"/>
+          <line x1="35" y1="135" x2="55" y2="135" stroke-width="2"/>
+          <!-- dots on right -->
+          <circle cx="88" cy="60" r="2" fill="#2C3639"/>
+          <circle cx="88" cy="75" r="2" fill="#2C3639"/>
+          <circle cx="88" cy="90" r="2" fill="#2C3639"/>
+          <!-- cable -->
+          <path d="M50 125 Q70 140 80 155" stroke-dasharray="4 3"/>
+        </svg>
+      </div>
     </div>
   </div>
 
-  <div style="position:relative;z-index:2;">
-    <p class="hero-eyebrow" id="heroEyebrow">Walk-In Queue Intelligence</p>
-    <h1 class="hero-headline">
-      <span class="line"><span class="word">Stop</span></span>
-      <span class="line"><span class="word">Losing</span></span>
-      <span class="line"><span class="word accent">Walk-Ins.</span></span>
-    </h1>
-    <p class="hero-sub" id="heroSub">Restro converts chaotic walk-in overflow into a seamless, revenue-generating digital queue. QR-based. Real-time. No hardware required.</p>
-    <div class="hero-ctas" id="heroCtas">
-      <button class="btn-primary btn-large">Book a Demo</button>
-      <button class="btn-ghost btn-large">Watch How It Works</button>
-    </div>
-  </div>
-
-  <div class="hero-scroll-hint" id="heroScrollHint">
-    <div class="scroll-hint-line"></div>
-    <span class="scroll-hint-text">Scroll</span>
+  <div class="hiw-btn-wrap">
+    <button class="hiw-btn" onclick="goToSlide(9)">YOUR CUSTOMER'S EXPERIENCE SAYS MORE ABOUT YOUR RESTAURANT THEN YOUR WORDS</button>
   </div>
 </section>
 
-<!-- ─── STATS BAR ─── -->
-<div id="stats-bar">
-  <div class="stat-item">
-    <span class="stat-num" id="stat1">38%</span>
-    <span class="stat-label">Revenue Increase</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" id="stat2">0</span>
-    <span class="stat-label">Hardware Needed</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" id="stat3">4 Steps</span>
-    <span class="stat-label">To Go Live</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" id="stat4">Live</span>
-    <span class="stat-label">Real-Time Queue</span>
-  </div>
-</div>
+<!-- ══ SLIDE 5: PILLARS ══ -->
+<section class="slide" id="slide5">
+  
 
-<!-- ─── PROBLEM ─── -->
-<section id="problem">
-  <div class="section-label" id="problemLabel">02 — The Problem</div>
-  <div class="problem-grid">
-    <div class="problem-left">
-      <h2 class="problem-headline" id="problemHeadline">
-        Every empty table<br>is <span class="highlight">lost revenue.</span><br>
-        <em>Every.</em>
-      </h2>
-      <div class="split-visual" id="splitVisual">
-        <div class="split-side chaos">
-          <span class="split-label">Before Restro</span>
-          <div class="split-items">
-            <div class="split-item">Walk-ins leave frustrated</div>
-            <div class="split-item">Kitchen overwhelmed</div>
-            <div class="split-item">Staff coordination chaos</div>
-            <div class="split-item">Revenue walks out the door</div>
-          </div>
-        </div>
-        <div class="split-side flow">
-          <span class="split-label">After Restro</span>
-          <div class="split-items">
-            <div class="split-item">Customers order while waiting</div>
-            <div class="split-item">Kitchen flow scheduled</div>
-            <div class="split-item">Staff friction eliminated</div>
-            <div class="split-item">Revenue retained & grown</div>
-          </div>
+  <div class="pillars-body">
+    
+    <h2 class="pillars-title reveal">The 3 Pillars of Value Creation</h2>
+    <div class="pillars-divider reveal reveal-delay-1"></div>
+
+    <div class="pillar-cards reveal reveal-delay-2">
+      <div class="pillar-card">
+        <div class="pillar-icon">↗</div>
+        <div class="pillar-name"><b>Revenue</b></div>
+        <div class="pillar-text">Optimizing seat turnover through precise AI sequencing. Every empty chair is a missed note in the symphony of service.</div>
+        <div class="pillar-metric">
+          <div class="pillar-number">BETTER</div>
+          <span class="pillar-unit">BUSINESS</span>
         </div>
       </div>
-    </div>
-    <div class="problem-right">
-      <div class="problem-cards">
-        <div class="prob-card">
-          <div class="prob-icon">👣</div>
-          <div>
-            <div class="prob-card-title">Walk-ins Leave Empty-Handed</div>
-            <div class="prob-card-desc">Customers arrive, see no table, and walk out — taking their spend with them.</div>
-          </div>
+
+      <div class="pillar-card">
+        <div class="pillar-icon">⏳</div>
+        <div class="pillar-name"><b>Trust</b></div>
+        <div class="pillar-text">Clarity in waiting creates a seamless transition from street to table. Transparency is the highest form of hospitality.</div>
+        <div class="pillar-metric">
+          <div class="pillar-number">MORE</div>
+          <span class="pillar-unit">SATISFACTION</span>
+          <span class="pillar-unit">&nbsp;</span>
         </div>
-        <div class="prob-card">
-          <div class="prob-icon">💸</div>
-          <div>
-            <div class="prob-card-title">Unstructured Queues Lose Revenue</div>
-            <div class="prob-card-desc">No system means impatient customers and zero chance to capture pre-orders.</div>
-          </div>
-        </div>
-        <div class="prob-card">
-          <div class="prob-icon">🔥</div>
-          <div>
-            <div class="prob-card-title">Kitchen Overwhelm</div>
-            <div class="prob-card-desc">Chaotic order bursts create bottlenecks. Quality drops. Staff burns out.</div>
-          </div>
-        </div>
-        <div class="prob-card">
-          <div class="prob-icon">📡</div>
-          <div>
-            <div class="prob-card-title">Zero Coordination</div>
-            <div class="prob-card-desc">Front-of-house and kitchen operate in silos, amplifying every problem.</div>
-          </div>
+      </div>
+
+      <div class="pillar-card">
+        <div class="pillar-icon">✦</div>
+        <div class="pillar-name"><b>Flow</b></div>
+        <div class="pillar-text">Intelligent pacing preserves the spirit of your staff. We manage the friction so they can manage the magic.</div>
+        <div class="pillar-metric">
+          <div class="pillar-number">HIGH</div>
+          <span class="pillar-unit">RETENTION</span>
         </div>
       </div>
     </div>
   </div>
+
+  
 </section>
 
-<!-- ─── HOW IT WORKS (PINNED) ─── -->
-<div id="how-it-works-wrapper">
-  <section id="how-it-works">
-    <div class="hiw-left">
-      <div class="hiw-section-label">03 — The System</div>
-      <h2 class="hiw-headline">HOW<br>IT<br>WORKS</h2>
-      <p class="hiw-desc">Four seamless steps that transform chaotic walk-in overflow into a structured, revenue-generating experience.</p>
-      <div class="hiw-steps">
-        <div class="hiw-step active" data-step="0">
-          <span class="step-num">01</span>
-          <div>
-            <div class="step-text-title">Customer Scans QR</div>
-            <div class="step-text-desc">Placed at entrance or waiting area — zero friction, no app download.</div>
-          </div>
+<!-- ══ SLIDE 6: DIGITAL CONNOISSEUR ══ -->
+<section class="slide" id="slide6">
+  <div class="dc-nav">
+    <button class="dc-back" onclick="goToSlide(4)">‹</button>
+    <div class="dc-counter-wrap">
+      
+      <span class="dc-variant-title">PRODUCT EXPERIENCE</span>
+    </div>
+    <div style="width:36px;"></div>
+  </div>
+
+  <div class="dc-body">
+    <h2 class="dc-title reveal">The Digital <em>Connoisseur</em></h2>
+
+    <div class="dc-phone-wrapper reveal reveal-delay-2">
+      <div class="dc-features-left">
+        <div class="dc-feature">
+          <strong>VISUAL CURATION</strong>
+          <span>Rich imagery for every dish.</span>
         </div>
-        <div class="hiw-step" data-step="1">
-          <span class="step-num">02</span>
-          <div>
-            <div class="step-text-title">Browses Live Digital Menu</div>
-            <div class="step-text-desc">Real-time availability, prices, and specials — always up to date.</div>
-          </div>
+        <div class="dc-feature">
+          <strong>FAST CHECKOUT</strong>
+          <span>Seamless payment integration.</span>
         </div>
-        <div class="hiw-step" data-step="2">
-          <span class="step-num">03</span>
-          <div>
-            <div class="step-text-title">Places Order While Waiting</div>
-            <div class="step-text-desc">Converts waiting time into revenue. Order placed before they sit.</div>
-          </div>
-        </div>
-        <div class="hiw-step" data-step="3">
-          <span class="step-num">04</span>
-          <div>
-            <div class="step-text-title">Kitchen Gets Smart Queue</div>
-            <div class="step-text-desc">Fatigue-balanced scheduling. Fair, fast, and synchronized.</div>
-          </div>
+        <div class="dc-feature">
+          <strong>SMART SORTING</strong>
+          <span>Dietary filters with a single tap.</span>
         </div>
       </div>
-    </div>
-    <div class="hiw-right">
-      <div class="hiw-phone">
-        <div class="phone-screen">
-          <div class="phone-step active" id="phoneStep0">
-            <div class="phone-step-icon">📱</div>
-            <div class="qr-pattern"></div>
-            <div class="phone-step-title">Scan QR to Join Queue</div>
-            <div class="phone-step-sub">No app needed · Instant access</div>
+
+      <div class="dc-phone-mockup">
+        <div class="dc-notch"></div>
+        <div class="dc-screen">
+          <div style="position:relative;">
+            <div class="dc-screen-avatar"></div>
+            <div class="dc-screen-search">🔍</div>
           </div>
-          <div class="phone-step" id="phoneStep1">
-            <div class="phone-step-icon">🍽️</div>
-            <div class="menu-preview">
-              <div class="menu-item-row"><div class="menu-dot"></div><span class="menu-item-name">Truffle Risotto</span><span class="menu-item-price">₹480</span></div>
-              <div class="menu-item-row"><div class="menu-dot"></div><span class="menu-item-name">Grilled Salmon</span><span class="menu-item-price">₹620</span></div>
-              <div class="menu-item-row"><div class="menu-dot"></div><span class="menu-item-name">Lamb Rogan Josh</span><span class="menu-item-price">₹540</span></div>
-              <div class="menu-item-row"><div class="menu-dot" style="background:#3a3632"></div><span class="menu-item-name">Mango Kulfi</span><span class="menu-item-price">₹180</span></div>
+          <div class="dc-screen-bar"></div>
+
+          <div class="dc-screen-item">
+            <div class="dc-screen-thumb dc-thumb-1"></div>
+            <div class="dc-screen-lines">
+              <div class="dc-screen-line w80"></div>
+              <div class="dc-screen-line w60"></div>
             </div>
-            <div class="phone-step-sub">Live menu · Updated in real-time</div>
+            <div class="dc-screen-dot"></div>
           </div>
-          <div class="phone-step" id="phoneStep2">
-            <div class="phone-step-icon">✅</div>
-            <div class="queue-visual">
-              <div style="font-size:11px;color:var(--amber);margin-bottom:10px;letter-spacing:2px;text-transform:uppercase">Your Position</div>
-              <div style="font-size:36px;font-family:var(--font-display);color:var(--white);line-height:1">#3</div>
-              <div style="font-size:11px;color:rgba(240,237,232,0.4);margin-top:4px">Est. wait: 12 minutes</div>
-              <div class="queue-bar-wrap" style="margin-top:16px">
-                <div class="queue-bar-row"><span class="queue-bar-label">#1</span><div class="queue-bar-track"><div class="queue-bar-fill" style="width:80%"></div></div></div>
-                <div class="queue-bar-row"><span class="queue-bar-label">#2</span><div class="queue-bar-track"><div class="queue-bar-fill" style="width:40%"></div></div></div>
-                <div class="queue-bar-row" style="opacity:0.5"><span class="queue-bar-label">#3</span><div class="queue-bar-track"><div class="queue-bar-fill" style="width:5%"></div></div></div>
-              </div>
+
+          <div class="dc-screen-item">
+            <div class="dc-screen-thumb dc-thumb-2"></div>
+            <div class="dc-screen-lines">
+              <div class="dc-screen-line w80"></div>
+              <div class="dc-screen-line w60"></div>
             </div>
-            <div class="phone-step-sub">Order placed · Kitchen notified</div>
+            <div class="dc-screen-dot"></div>
           </div>
-          <div class="phone-step" id="phoneStep3">
-            <div class="phone-step-icon">👨‍🍳</div>
-            <div class="kitchen-grid">
-              <div class="kitchen-cell busy">BUSY</div>
-              <div class="kitchen-cell idle">IDLE</div>
-              <div class="kitchen-cell prep">PREP</div>
-              <div class="kitchen-cell prep">PREP</div>
-              <div class="kitchen-cell busy">BUSY</div>
-              <div class="kitchen-cell idle">IDLE</div>
+
+          <div class="dc-screen-item">
+            <div class="dc-screen-thumb"></div>
+            <div class="dc-screen-lines">
+              <div class="dc-screen-line w80"></div>
+              <div class="dc-screen-line w60"></div>
             </div>
-            <div class="phone-step-sub">Fatigue-balanced · Fair queue</div>
+            <div class="dc-screen-dot"></div>
           </div>
+        </div>
+        <div class="dc-screen-dots" style="position:absolute; bottom:16px; left:50%; transform:translateX(-50%); display:flex; gap:6px;">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--navy);"></span>
+          <span style="width:6px;height:6px;border-radius:50%;background:rgba(44,54,57,0.3);"></span>
+          <span style="width:6px;height:6px;border-radius:50%;background:rgba(44,54,57,0.3);"></span>
         </div>
       </div>
     </div>
-  </section>
-</div>
-
-<!-- ─── BENEFITS ─── -->
-<section id="benefits">
-  <div class="benefits-header">
-    <h2 class="benefits-headline">
-      <span class="line"><span class="word">THREE</span></span>
-      <span class="line"><span class="word">PILLARS</span></span>
-      <span class="line"><span class="word">OF</span></span>
-      <span class="line"><span class="word">VALUE</span></span>
-    </h2>
-    <p class="benefits-desc" id="benefitsDesc">Restro delivers measurable outcomes for restaurants, customers, and operations — simultaneously.</p>
   </div>
-  <div class="benefits-cards">
-    <div class="benefit-card" id="bcard1">
-      <span class="benefit-card-num">01</span>
-      <span class="benefit-tag">For Restaurants</span>
-      <span class="benefit-icon">🏪</span>
-      <h3 class="benefit-title">More Revenue,<br>Less Chaos</h3>
-      <ul class="benefit-items">
-        <li>Capture revenue from waiting customers via pre-orders</li>
-        <li>Structured kitchen workflow reduces errors and waste</li>
-        <li>Eliminate staff friction with automated coordination</li>
-        <li>Dashboard analytics for peak optimization</li>
-      </ul>
+
+  
+</section>
+
+<!-- ══ SLIDE 7: TESTIMONIAL ══ -->
+<section class="slide" id="slide7">
+  
+  <div class="testi-body">
+    <div class="receipt-card reveal reveal-scale">
+      <div class="receipt-top"></div>
+      <p class="quote-text">"Restro saved our Friday nights."</p>
+      <div class="quote-divider"></div>
+      <div class="quote-author">MARCO ROSSI</div>
+      <div class="quote-place">THE GREEN BISTRO</div>
+      <div class="quote-avatars">
+        <div class="avatar">👩</div>
+        <div class="avatar">👨</div>
+        <div class="avatar">🧑</div>
+      </div>
+      <div class="receipt-bottom"></div>
     </div>
-    <div class="benefit-card" id="bcard2">
-      <span class="benefit-card-num">02</span>
-      <span class="benefit-tag">For Customers</span>
-      <span class="benefit-icon">🙂</span>
-      <h3 class="benefit-title">No Wasted<br>Waiting</h3>
-      <ul class="benefit-items">
-        <li>Browse & order from the queue — food arrives with you</li>
-        <li>Live wait-time estimation, no guessing</li>
-        <li>No app download, just a QR scan</li>
-        <li>Transparent, first-come-first-serve fairness</li>
-      </ul>
+
+    <div class="testi-proof reveal reveal-delay-2">SOCIAL PROOF</div>
+
+    <button class="testi-explore reveal reveal-delay-3" onclick="goToSlide(7)">EXPLORE IMPACT</button>
+  </div>
+
+  
+</section>
+
+<!-- ══ SLIDE 8: COMPARISON ══ -->
+<section class="slide" id="slide8">
+  <div class="comp-nav">
+    <button class="comp-back" onclick="goToSlide(6)">‹</button>
+    <span class="comp-title-nav">COMPARISON</span>
+    <div style="width:24px;"></div>
+  </div>
+
+  <div class="comp-body">
+    <h2 class="comp-heading reveal">Why Choose <em>Restro</em></h2>
+    <div class="comp-underline reveal reveal-delay-1"></div>
+
+    <table class="comp-table reveal reveal-delay-2">
+      <thead>
+        <tr>
+          <th class="feature-col">FEATURE</th>
+          <th>MANUAL</th>
+          <th>RES. APPS</th>
+          <th class="restro-col">RESTRO</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feature-col">Walk-in Optimization</td>
+          <td>✗</td>
+          <td>✗</td>
+          <td class="restro-col">✓</td>
+        </tr>
+        <tr>
+          <td class="feature-col">Kitchen Coordination</td>
+          <td>✗</td>
+          <td>✗</td>
+          <td class="restro-col">✓</td>
+        </tr>
+        <tr>
+          <td class="feature-col">Revenue Retention</td>
+          <td>✗</td>
+          <td>✗</td>
+          <td class="restro-col">✓</td>
+        </tr>
+        <tr>
+          <td class="feature-col">Smart Queuing</td>
+          <td>✗</td>
+          <td style="color:rgba(28,49,99,0.3);">✓</td>
+          <td class="restro-col">✓</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+
+  <div class="comp-bottom-tabs">
+    <div class="comp-tab" onclick="goToSlide(4)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#2C3639" opacity="0.4"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+      STUDIO
     </div>
-    <div class="benefit-card" id="bcard3">
-      <span class="benefit-card-num">03</span>
-      <span class="benefit-tag">For Operations</span>
-      <span class="benefit-icon">⚙️</span>
-      <h3 class="benefit-title">Intelligence,<br>Not Instinct</h3>
-      <ul class="benefit-items">
-        <li>Queue intelligence with real-time demand forecasting</li>
-        <li>Fatigue management keeps kitchen output consistent</li>
-        <li>First-come fairness builds customer loyalty</li>
-        <li>Multi-location scaling from a single dashboard</li>
-      </ul>
+    <div class="comp-tab active">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#2C3639"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M8 8h8M8 16h5" stroke="#DCD7C9" stroke-width="1.5" fill="none"/></svg>
+      COMPARE
+    </div>
+    <div class="comp-tab" onclick="goToSlide(8)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2C3639" stroke-width="1.5" opacity="0.4"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      IMPACT
+    </div>
+    <div class="comp-tab" onclick="goToSlide(9)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#2C3639" opacity="0.4"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      PROFILE
     </div>
   </div>
 </section>
 
-<!-- ─── COMPARISON ─── -->
-<section id="comparison">
-  <div class="comparison-header">
-    <div class="comparison-eyebrow" id="compEyebrow">08 — Differentiation</div>
-    <h2 class="comparison-headline" id="compHeadline">WHY CHOOSE RESTRO</h2>
+<!-- ══ SLIDE 9: SCALABILITY ══ -->
+<section class="slide" id="slide9">
+  <div class="scale-nav">
+    <button class="scale-back" onclick="goToSlide(7)">←</button>
+    
   </div>
-  <div class="comparison-table" id="compTable">
-    <div class="table-header">
-      <div class="th">Feature</div>
-      <div class="th">Traditional</div>
-      <div class="th">Reservation Apps</div>
-      <div class="th restro">✦ Restro</div>
-    </div>
-    <div class="table-row">
-      <div class="td feature-name">Walk-in optimization</div>
-      <div class="td"><span class="cross">✕</span> Manual chaos</div>
-      <div class="td"><span class="cross">✕</span> Table booking only</div>
-      <div class="td restro"><span class="check">✓</span> Smart overflow</div>
-    </div>
-    <div class="table-row">
-      <div class="td feature-name">QR-based ordering</div>
-      <div class="td"><span class="cross">✕</span> None</div>
-      <div class="td"><span class="partial">◐</span> Limited</div>
-      <div class="td restro"><span class="check">✓</span> Full queue menu</div>
-    </div>
-    <div class="table-row">
-      <div class="td feature-name">Kitchen coordination</div>
-      <div class="td"><span class="cross">✕</span> No system</div>
-      <div class="td"><span class="cross">✕</span> Not included</div>
-      <div class="td restro"><span class="check">✓</span> Smart scheduling</div>
-    </div>
-    <div class="table-row">
-      <div class="td feature-name">Fatigue management</div>
-      <div class="td"><span class="cross">✕</span> None</div>
-      <div class="td"><span class="cross">✕</span> None</div>
-      <div class="td restro"><span class="check">✓</span> Built-in</div>
-    </div>
-    <div class="table-row">
-      <div class="td feature-name">Revenue from wait time</div>
-      <div class="td"><span class="cross">✕</span> Lost customers</div>
-      <div class="td"><span class="partial">◐</span> Some retention</div>
-      <div class="td restro"><span class="check">✓</span> Full conversion</div>
-    </div>
-    <div class="table-row">
-      <div class="td feature-name">Hardware requirement</div>
-      <div class="td"><span class="cross">✕</span> High cost</div>
-      <div class="td"><span class="partial">◐</span> Moderate</div>
-      <div class="td restro"><span class="check">✓</span> Zero hardware</div>
-    </div>
-  </div>
-</section>
 
-<!-- ─── TESTIMONIALS ─── -->
-<section id="testimonials">
-  <div class="test-header">
-    <div class="test-eyebrow" id="testEyebrow">07 — Pilot Feedback</div>
-    <h2 class="test-headline">
-      <span class="line"><span class="word">WHAT</span></span>
-      <span class="line"><span class="word">THEY</span></span>
-      <span class="line"><span class="word">SAY</span></span>
-    </h2>
-  </div>
-  <div class="testimonials-track">
-    <div class="test-card" id="tc1">
-      <div class="test-stars">★★★★★</div>
-      <p class="test-quote">We used to lose 30% of walk-ins on Friday nights. Since Restro, they browse the menu in the queue and their food is ready when they sit. Revenue up, stress down.</p>
-      <div class="test-author">
-        <div class="test-avatar">R</div>
-        <div>
-          <div class="test-name">Rahul Mehta</div>
-          <div class="test-role">Owner, The Spice Garden · Ahmedabad</div>
-        </div>
-      </div>
-    </div>
-    <div class="test-card" id="tc2">
-      <div class="test-stars">★★★★★</div>
-      <p class="test-quote">I used to dread the 8pm rush. Now the kitchen gets orders staggered, my team isn't overwhelmed, and quality is consistent even at peak. This is exactly what we needed.</p>
-      <div class="test-author">
-        <div class="test-avatar">P</div>
-        <div>
-          <div class="test-name">Priya Nair</div>
-          <div class="test-role">Head Chef, Coastal Kitchen · Mumbai</div>
-        </div>
-      </div>
-    </div>
-    <div class="test-card" id="tc3">
-      <div class="test-stars">★★★★★</div>
-      <p class="test-quote">Scanned the QR, ordered my biryani, got a table in 10 minutes and the food came out in 5. That is the future of dining out. Zero frustration.</p>
-      <div class="test-author">
-        <div class="test-avatar">A</div>
-        <div>
-          <div class="test-name">Ayesha Khan</div>
-          <div class="test-role">Beta Customer · Bangalore</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  <div class="scale-body">
+    
+    <h2 class="scale-title reveal">Scalability</h2>
+    <p class="scale-desc reveal reveal-delay-1">A pure SaaS model designed for exponential growth with zero friction.</p>
 
-<!-- ─── BUSINESS MODEL ─── -->
-<section id="business">
-  <div class="business-grid">
-    <div class="business-left">
-      <div class="business-eyebrow" id="bizEyebrow">09 — Business Model</div>
-      <h2 class="business-headline">
-        <span class="line"><span class="word">BUILT</span></span>
-        <span class="line"><span class="word">TO</span></span>
-        <span class="line"><span class="word">SCALE</span></span>
-      </h2>
-      <p class="business-desc" id="bizDesc">A SaaS model designed to grow with you — from single-location restaurants to multi-city chains.</p>
-      <div class="business-features">
-        <div class="biz-feat" id="bf1">
-          <div class="biz-feat-icon">📦</div>
-          <div>
-            <div class="biz-feat-title">SaaS Subscription</div>
-            <div class="biz-feat-desc">Simple monthly pricing, no hidden fees</div>
-          </div>
-        </div>
-        <div class="biz-feat" id="bf2">
-          <div class="biz-feat-icon">🔌</div>
-          <div>
-            <div class="biz-feat-title">Easy Integration</div>
-            <div class="biz-feat-desc">Works with your existing POS and setup</div>
-          </div>
-        </div>
-        <div class="biz-feat" id="bf3">
-          <div class="biz-feat-icon">📡</div>
-          <div>
-            <div class="biz-feat-title">Zero Hardware</div>
-            <div class="biz-feat-desc">Just QR codes. No terminals. No investment.</div>
-          </div>
-        </div>
-        <div class="biz-feat" id="bf4">
-          <div class="biz-feat-icon">🌐</div>
-          <div>
-            <div class="biz-feat-title">Multi-Location Ready</div>
-            <div class="biz-feat-desc">Scale from 1 to 100 outlets seamlessly</div>
-          </div>
-        </div>
+    <div class="growth-card reveal reveal-delay-2">
+      <div class="growth-card-header">
+        <span class="growth-label">GROWTH CURVE</span>
+        <span class="growth-roi">12mo ROI</span>
       </div>
-    </div>
-    <div class="business-right" id="bizRight">
       <div class="growth-chart">
-        <div class="growth-chart-label">Revenue Growth After Restro</div>
-        <div class="chart-bars">
-          <div class="chart-bar"></div>
-          <div class="chart-bar"></div>
-          <div class="chart-bar"></div>
-          <div class="chart-bar"></div>
-          <div class="chart-bar"></div>
-          <div class="chart-bar"></div>
-          <div class="chart-bar"></div>
-        </div>
-        <div class="chart-x">
-          <span class="chart-x-label">Jan</span>
-          <span class="chart-x-label">Feb</span>
-          <span class="chart-x-label">Mar</span>
-          <span class="chart-x-label">Apr</span>
-          <span class="chart-x-label">May</span>
-          <span class="chart-x-label">Jun</span>
-          <span class="chart-x-label">Jul</span>
+        <svg viewBox="0 0 280 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 10 90 Q 80 88 120 75 Q 160 60 200 40 Q 230 25 265 10"
+                stroke="#2C3639" stroke-width="2" fill="none"/>
+          <circle cx="265" cy="10" r="4" fill="#2C3639"/>
+        </svg>
+      </div>
+      <div class="growth-x-labels">
+        <span>LAUNCH</span>
+        <span>EXPANSION</span>
+        <span>DOMINANCE</span>
+      </div>
+    </div>
+
+    <div class="scale-features reveal reveal-delay-3">
+      <div class="scale-feature">
+        <div class="scale-feature-icon">📱</div>
+        <div>
+          <div class="scale-feature-title">ZERO HARDWARE</div>
+          <div class="scale-feature-desc">Compatible with any modern smartphone or tablet.</div>
         </div>
       </div>
-      <div class="pricing-card">
-        <div class="price-tag">₹4,999<span>/mo</span></div>
-        <div class="price-desc">Per location · Cancel anytime</div>
-        <ul class="price-features">
-          <li>Unlimited QR codes & sessions</li>
-          <li>Real-time kitchen dashboard</li>
-          <li>Analytics & reporting</li>
-          <li>Multi-location support</li>
-          <li>Priority support</li>
-        </ul>
+      <div class="scale-feature">
+        <div class="scale-feature-icon">🔗</div>
+        <div>
+          <div class="scale-feature-title">MULTI-LOCATION</div>
+          <div class="scale-feature-desc">Sync infinite branches under one digital roof.</div>
+        </div>
+      </div>
+      <div class="scale-feature">
+        <div class="scale-feature-icon">☁️</div>
+        <div>
+          <div class="scale-feature-title">SAAS MODEL</div>
+          <div class="scale-feature-desc">Continuous updates with no deployment downtime.</div>
+        </div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- ─── CTA ─── -->
-<section id="cta">
-  <div class="cta-bg-text">RESTRO</div>
-  <div class="cta-eyebrow" id="ctaEyebrow">10 — Join the Movement</div>
-  <h2 class="cta-headline">
-    <span class="line"><span class="word">STOP</span></span>
-    <span class="line"><span class="word amber">LOSING</span></span>
-    <span class="line"><span class="word">WALK-INS.</span></span>
-  </h2>
-  <p class="cta-sub" id="ctaSub">Join hundreds of restaurants already using Restro to turn their busiest nights into their most profitable ones.</p>
-  <div class="cta-buttons" id="ctaBtns">
-    <button class="btn-primary btn-large">Book a Free Demo</button>
-    <button class="btn-ghost btn-large">View Pricing</button>
+  <div class="scale-bottom">
+    <div>
+      <div class="next-step-label">NEXT STEP</div>
+      <div class="next-step-name">Global Network</div>
+    </div>
+    <button class="continue-btn" onclick="goToSlide(9)">Continue</button>
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">RESTRO</div>
-  <div class="footer-text">© 2026 Restro Technologies. All rights reserved.</div>
-  <div class="footer-links">
-    <a href="#">Privacy</a>
-    <a href="#">Terms</a>
-    <a href="#">Contact</a>
+<!-- ══ SLIDE 10: FINAL CTA ══ -->
+<section class="slide" id="slide10">
+  <div class="cta-top">
+    <div class="cta-logo reveal">Restro</div>
+    <button class="cta-btn reveal reveal-delay-2">Book a Demo</button>
   </div>
-</footer>
-
-<!-- GSAP -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <div class="cta-bottom reveal reveal-delay-3">
+    <div class="cta-tagline">SIMPLE. SMART. SEAMLESS.</div>
+    <div class="cta-counter">10 / 10</div>
+  </div>
+</section>
 
 <script>
-gsap.registerPlugin(ScrollTrigger);
+  // Map old goToSlide(index) calls to smooth scroll to each section
+  const sectionIds = [
+    'slide1','slide2','slide3','slide4','slide5',
+    'slide6','slide7','slide8','slide9','slide10'
+  ];
 
-// ── CURSOR ──
-const cursor = document.getElementById('cursor');
-const cursorRing = document.getElementById('cursorRing');
-let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX; mouseY = e.clientY;
-  gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1 });
-});
-
-gsap.ticker.add(() => {
-  ringX += (mouseX - ringX) * 0.1;
-  ringY += (mouseY - ringY) * 0.1;
-  gsap.set(cursorRing, { x: ringX, y: ringY });
-});
-
-document.querySelectorAll('button, a, .prob-card, .benefit-card, .test-card').forEach(el => {
-  el.addEventListener('mouseenter', () => gsap.to(cursor, { width: 24, height: 24, duration: 0.3 }));
-  el.addEventListener('mouseleave', () => gsap.to(cursor, { width: 12, height: 12, duration: 0.3 }));
-});
-
-// ── SCROLL PROGRESS ──
-const progressBar = document.getElementById('scrollProgress');
-gsap.to(progressBar, {
-  scaleX: 1,
-  ease: 'none',
-  scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: true }
-});
-
-// ── HERO ENTRANCE ──
-const heroTl = gsap.timeline({ delay: 0.3 });
-heroTl
-  .to('#heroEyebrow', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' })
-  .to('.hero-headline .word', { y: 0, duration: 0.9, stagger: 0.12, ease: 'power3.out' }, '-=0.4')
-  .to('#heroSub', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.4')
-  .to('#heroCtas', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
-  .to('#heroScrollHint', { opacity: 1, duration: 0.8 }, '-=0.2');
-
-// Hero parallax
-gsap.to('.hero-scene-inner', {
-  yPercent: 30,
-  ease: 'none',
-  scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true }
-});
-gsap.to('.hero-grid-overlay', {
-  yPercent: 15,
-  ease: 'none',
-  scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true }
-});
-gsap.to('#heroIllustration', {
-  yPercent: 20,
-  ease: 'none',
-  scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true }
-});
-
-// SVG animation
-gsap.to('#tableGroup', {
-  opacity: 0.9,
-  duration: 2, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 1
-});
-gsap.to('#qrSignal circle', {
-  scale: 1.1, opacity: 0.8,
-  duration: 1.5, repeat: -1, yoyo: true, stagger: 0.3, ease: 'sine.inOut',
-  transformOrigin: '460px 560px'
-});
-
-// ── STATS BAR ──
-ScrollTrigger.create({
-  trigger: '#stats-bar',
-  start: 'top 85%',
-  onEnter: () => {
-    gsap.to('.stat-num', { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: 'power3.out' });
-    gsap.to('.stat-label', { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, delay: 0.2, ease: 'power2.out' });
+  function goToSlide(index) {
+    const el = document.getElementById(sectionIds[index]);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-});
 
-// ── PROBLEM SECTION ──
-ScrollTrigger.create({
-  trigger: '#problem',
-  start: 'top 75%',
-  onEnter: () => {
-    gsap.to('#problemLabel', { opacity: 1, x: 0, duration: 0.8, ease: 'power2.out' });
-    gsap.fromTo('#problemHeadline', 
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.2 }
-    );
-    gsap.to('.prob-card', {
-      opacity: 1, x: 0, duration: 0.7,
-      stagger: 0.12, delay: 0.4, ease: 'power3.out'
+  // Scroll Reveal via IntersectionObserver
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        revealObserver.unobserve(entry.target);
+      }
     });
-    gsap.to('#splitVisual', {
-      opacity: 1, y: 0, duration: 0.8, delay: 0.9, ease: 'power2.out'
-    });
-  }
-});
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-// ── HOW IT WORKS (PINNED) ──
-const steps = [0, 1, 2, 3];
-const stepHeight = window.innerHeight;
-
-// Set wrapper height for pinning space
-document.getElementById('how-it-works-wrapper').style.height = `${stepHeight * (steps.length + 1)}px`;
-
-const hiwTl = gsap.timeline({
-  scrollTrigger: {
-    trigger: '#how-it-works-wrapper',
-    start: 'top top',
-    end: 'bottom bottom',
-    pin: '#how-it-works',
-    scrub: 0.8,
-    snap: { snapTo: 1 / steps.length, duration: 0.4, ease: 'power2.inOut' }
-  }
-});
-
-steps.forEach((step, i) => {
-  hiwTl.addLabel(`step${i}`, i / steps.length)
-    .call(() => {
-      // Update active step
-      document.querySelectorAll('.hiw-step').forEach((s, si) => s.classList.toggle('active', si === step));
-      document.querySelectorAll('.phone-step').forEach((s, si) => s.classList.toggle('active', si === step));
-    }, null, i / steps.length);
-});
-
-// Phone screen parallax
-gsap.to('.hiw-phone', {
-  y: -30,
-  ease: 'none',
-  scrollTrigger: {
-    trigger: '#how-it-works-wrapper',
-    start: 'top top',
-    end: 'bottom bottom',
-    scrub: true
-  }
-});
-
-// ── BENEFITS ──
-ScrollTrigger.create({
-  trigger: '#benefits',
-  start: 'top 70%',
-  onEnter: () => {
-    // Headline words
-    gsap.to('.benefits-headline .word', {
-      y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out'
-    });
-    gsap.to('#benefitsDesc', { opacity: 1, y: 0, duration: 0.8, delay: 0.4, ease: 'power2.out' });
-    // Cards stagger with scale
-    gsap.to(['#bcard1', '#bcard2', '#bcard3'], {
-      opacity: 1, y: 0, scale: 1,
-      duration: 0.8, stagger: 0.18, delay: 0.5,
-      ease: 'power3.out'
-    });
-  }
-});
-
-// Benefit cards hover lift
-document.querySelectorAll('.benefit-card').forEach(card => {
-  card.addEventListener('mouseenter', () => gsap.to(card, { y: -8, duration: 0.3, ease: 'power2.out' }));
-  card.addEventListener('mouseleave', () => gsap.to(card, { y: 0, duration: 0.3, ease: 'power2.out' }));
-});
-
-// ── COMPARISON ──
-ScrollTrigger.create({
-  trigger: '#comparison',
-  start: 'top 75%',
-  onEnter: () => {
-    gsap.to('#compEyebrow', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' });
-    gsap.to('#compHeadline', { opacity: 1, y: 0, duration: 0.8, delay: 0.15, ease: 'power3.out' });
-    gsap.to('#compTable', { opacity: 1, y: 0, duration: 0.9, delay: 0.3, ease: 'power2.out' });
-    // Stagger table rows
-    gsap.fromTo('.table-row',
-      { opacity: 0, x: -20 },
-      { opacity: 1, x: 0, duration: 0.5, stagger: 0.1, delay: 0.6, ease: 'power2.out' }
-    );
-  }
-});
-
-// ── TESTIMONIALS ──
-ScrollTrigger.create({
-  trigger: '#testimonials',
-  start: 'top 75%',
-  onEnter: () => {
-    gsap.to('#testEyebrow', { opacity: 1, duration: 0.7, ease: 'power2.out' });
-    gsap.to('.test-headline .word', { y: 0, duration: 0.9, stagger: 0.1, ease: 'power3.out', delay: 0.1 });
-    gsap.to(['#tc1','#tc2','#tc3'], {
-      opacity: 1, x: 0, duration: 0.8, stagger: 0.15, delay: 0.4, ease: 'power3.out'
-    });
-  }
-});
-
-// Testimonials horizontal scroll on scroll
-gsap.to('.testimonials-track', {
-  x: () => -(document.querySelector('.testimonials-track').scrollWidth - window.innerWidth + 96),
-  ease: 'none',
-  scrollTrigger: {
-    trigger: '#testimonials',
-    start: 'top top',
-    end: () => `+=${document.querySelector('.testimonials-track').scrollWidth}`,
-    pin: true,
-    scrub: 1,
-    invalidateOnRefresh: true
-  }
-});
-
-// ── BUSINESS MODEL ──
-ScrollTrigger.create({
-  trigger: '#business',
-  start: 'top 75%',
-  onEnter: () => {
-    gsap.to('#bizEyebrow', { opacity: 1, duration: 0.7, ease: 'power2.out' });
-    gsap.to('.business-headline .word', { y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out', delay: 0.1 });
-    gsap.to('#bizDesc', { opacity: 1, y: 0, duration: 0.7, delay: 0.4, ease: 'power2.out' });
-    gsap.to(['#bf1','#bf2','#bf3','#bf4'], {
-      opacity: 1, x: 0, duration: 0.6, stagger: 0.12, delay: 0.5, ease: 'power3.out'
-    });
-    gsap.to('#bizRight', { opacity: 1, x: 0, duration: 1, delay: 0.3, ease: 'power3.out' });
-  }
-});
-
-// Growth chart bars animate in
-ScrollTrigger.create({
-  trigger: '.growth-chart',
-  start: 'top 80%',
-  onEnter: () => {
-    const bars = document.querySelectorAll('.chart-bar');
-    const heights = ['20%','35%','52%','65%','78%','88%','100%'];
-    bars.forEach((bar, i) => {
-      const final = parseFloat(heights[i]);
-      gsap.fromTo(bar, { height: 0 }, {
-        height: `${final}%`, duration: 0.8,
-        delay: i * 0.1, ease: 'power2.out'
-      });
-    });
-  }
-});
-
-// ── CTA SECTION ──
-ScrollTrigger.create({
-  trigger: '#cta',
-  start: 'top 75%',
-  onEnter: () => {
-    gsap.to('#ctaEyebrow', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' });
-    gsap.to('.cta-headline .word', { y: 0, duration: 1, stagger: 0.12, ease: 'power3.out', delay: 0.1 });
-    gsap.to('#ctaSub', { opacity: 1, y: 0, duration: 0.8, delay: 0.5, ease: 'power2.out' });
-    gsap.to('#ctaBtns', { opacity: 1, y: 0, duration: 0.7, delay: 0.7, ease: 'power2.out' });
-  }
-});
-
-// CTA bg text parallax
-gsap.to('.cta-bg-text', {
-  yPercent: -20,
-  ease: 'none',
-  scrollTrigger: { trigger: '#cta', start: 'top bottom', end: 'bottom top', scrub: true }
-});
-
-// ── GLOBAL PARALLAX on problem section ──
-gsap.to('#problem', {
-  backgroundPositionY: '30%',
-  ease: 'none',
-  scrollTrigger: { trigger: '#problem', start: 'top bottom', end: 'bottom top', scrub: true }
-});
-
-// ── SMOOTH REFRESH ──
-ScrollTrigger.refresh();
-window.addEventListener('resize', () => {
-  document.getElementById('how-it-works-wrapper').style.height = `${window.innerHeight * (steps.length + 1)}px`;
-  ScrollTrigger.refresh();
-});
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+    revealObserver.observe(el);
+  });
 </script>
 </body>
 </html>

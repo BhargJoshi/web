@@ -72,7 +72,7 @@
 
   .hero-title {
     font-family: 'Helvetica', serif;
-    font-size: clamp(42px, 10vw, 56px);
+    font-size: clamp(31.5px, 7.5vw, 42px);
     font-weight: 400; line-height: 1.1;
     color: var(--navy); margin-bottom: 32px;
   }
@@ -907,6 +907,7 @@
        in the DOM. If overflow is hidden the spacer is clipped and the next
        section overrides its position, causing the glitch. */
     overflow: visible;
+    isolation: isolate;
   }
 
   .why-stage {
@@ -917,6 +918,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background: var(--inkwell);
     /* Stage clips the flying cards so they don't visually bleed,
        but the section itself stays overflow:visible for the spacer */
     overflow: hidden;
@@ -1747,14 +1749,16 @@
         end: '+=550%',
         pin: true,
         pinSpacing: true,
-        scrub: true,
+        scrub: 3,
         anticipatePin: 0,
         invalidateOnRefresh: true,
         onLeave: () => {
-          gsap.set([card1, card2, card3, title], { opacity: 0 });
+          gsap.set([card1, card2, card3], { opacity: 0 });
+          gsap.set(title, { opacity: 0 });
         },
         onEnterBack: () => {
-          gsap.set([card1, card2, card3, title], { opacity: 1 });
+          // Let the scrub timeline control opacity — don't force-show here
+          // to avoid elements popping in at the wrong animation state.
         },
       }
     });
@@ -1763,8 +1767,8 @@
     whyTL.to(title, {
       y: 0,
       opacity: 1,
-      ease: 'power3.out',
-      duration: 0.15,
+      ease: 'power2.out',
+      duration: 0.18,
     }, 0.00);
 
     // ── PHASE 2: Title rests at centre — implicit hold, no tween needed ──
@@ -1774,75 +1778,75 @@
       scale: 0.38,
       x: () => -(window.innerWidth  / 2) + 84,
       y: () => -(window.innerHeight / 2) + 40,
-      ease: 'power2.inOut',
-      duration: 0.14,
+      ease: 'power1.inOut',
+      duration: 0.18,
     }, 0.22);
 
     // ── PHASE 4: Card 1 fades in at base size ──
     whyTL.to(card1, {
       opacity: 1,
       ease: 'power2.out',
-      duration: 0.04,
+      duration: 0.06,
     }, 0.37);
 
     // ── PHASE 4b: Card 1 expands to full ──
     whyTL.to(card1, {
       width:  CARD_FULL_W,
       height: CARD_FULL_H,
-      ease: 'power2.inOut',
-      duration: 0.09,
+      ease: 'power1.inOut',
+      duration: 0.14,
     }, 0.41);
 
     // ── PHASE 5: Card 1 shrinks back to base ──
     whyTL.to(card1, {
       width:  CARD_BASE_W,
       height: CARD_BASE_H,
-      ease: 'power2.inOut',
-      duration: 0.06,
+      ease: 'power1.inOut',
+      duration: 0.10,
     }, 0.46);
 
     // ── PHASE 6: Card 2 fades in, expands ──
     whyTL.to(card2, {
       opacity: 1,
       ease: 'power2.out',
-      duration: 0.04,
+      duration: 0.06,
     }, 0.51);
 
     whyTL.to(card2, {
       width:  CARD_FULL_W,
       height: CARD_FULL_H,
-      ease: 'power2.inOut',
-      duration: 0.09,
+      ease: 'power1.inOut',
+      duration: 0.14,
     }, 0.55);
 
     // ── PHASE 7: Card 2 shrinks back ──
     whyTL.to(card2, {
       width:  CARD_BASE_W,
       height: CARD_BASE_H,
-      ease: 'power2.inOut',
-      duration: 0.06,
+      ease: 'power1.inOut',
+      duration: 0.10,
     }, 0.60);
 
     // ── PHASE 8: Card 3 fades in, expands ──
     whyTL.to(card3, {
       opacity: 1,
       ease: 'power2.out',
-      duration: 0.04,
+      duration: 0.06,
     }, 0.65);
 
     whyTL.to(card3, {
       width:  CARD_FULL_W,
       height: CARD_FULL_H,
-      ease: 'power2.inOut',
-      duration: 0.09,
+      ease: 'power1.inOut',
+      duration: 0.14,
     }, 0.69);
 
     // ── PHASE 9: Card 3 shrinks back ──
     whyTL.to(card3, {
       width:  CARD_BASE_W,
       height: CARD_BASE_H,
-      ease: 'power2.inOut',
-      duration: 0.06,
+      ease: 'power1.inOut',
+      duration: 0.10,
     }, 0.74);
 
     // ── PHASE 10: Cards exit simultaneously in three directions ──

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -822,53 +821,73 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ── SCROLL REVEAL ── */
-  .reveal {
-    opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 0.65s ease, transform 0.65s ease;
+  /* ── GSAP INITIAL STATES (set by JS, these are fallbacks) ── */
+  .gsap-hidden { opacity: 0; }
+
+  /* ── PINNED SECTION WRAPPERS ── */
+  .pin-wrap {
+    position: relative;
+    overflow: hidden;
   }
 
-  .reveal.revealed {
-    opacity: 1;
-    transform: translateY(0);
+  /* ── PARALLAX LAYER ── */
+  .parallax-bg {
+    position: absolute;
+    inset: -20%;
+    will-change: transform;
+    pointer-events: none;
   }
 
-  .reveal-left {
-    opacity: 0;
-    transform: translateX(-28px);
-    transition: opacity 0.65s ease, transform 0.65s ease;
+  /* ── FLOATING ORBS (decorative parallax elements) ── */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    will-change: transform;
+    opacity: 0.18;
   }
-  .reveal-left.revealed {
-    opacity: 1;
-    transform: translateX(0);
+  .orb-1 { width: 220px; height: 220px; background: var(--creme-brulee); top: -60px; right: -60px; }
+  .orb-2 { width: 140px; height: 140px; background: var(--lunar); bottom: 40px; left: -40px; }
+  .orb-3 { width: 100px; height: 100px; background: var(--creme-brulee); top: 30%; right: 10px; }
+  .orb-4 { width: 180px; height: 180px; background: var(--inkwell); top: -40px; left: -60px; opacity: 0.1; }
+  .orb-5 { width: 120px; height: 120px; background: var(--creme-brulee); bottom: 60px; right: -30px; }
+
+  /* ── SPLIT TEXT CHARS ── */
+  .char-wrap { display: inline-block; overflow: hidden; }
+  .char { display: inline-block; will-change: transform; }
+
+  /* ── FLOW CIRCLE ASSEMBLY STATES ── */
+  .flow-circle { will-change: transform, opacity; }
+  .flow-dash { will-change: transform, opacity; }
+
+  /* ── STEP ASSEMBLY ── */
+  .step { will-change: transform, opacity; }
+
+  /* ── PILLAR CARD ASSEMBLY ── */
+  .pillar-card { will-change: transform, opacity; }
+
+  /* ── DIAGRAM LINE DRAW ── */
+  .chaos-svg line { stroke-dasharray: 300; stroke-dashoffset: 300; }
+  .precision-svg line { stroke-dasharray: 300; stroke-dashoffset: 300; }
+
+  /* ── GROWTH CHART PATH DRAW ── */
+  .growth-chart path { stroke-dasharray: 400; stroke-dashoffset: 400; }
+
+  /* ── SCROLL PROGRESS BAR ── */
+  #scroll-progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--creme-brulee);
+    z-index: 9999;
+    transform-origin: left center;
+    width: 100%;
+    transform: scaleX(0);
   }
 
-  .reveal-right {
-    opacity: 0;
-    transform: translateX(28px);
-    transition: opacity 0.65s ease, transform 0.65s ease;
-  }
-  .reveal-right.revealed {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  /* ── TABLE ROW ASSEMBLY ── */
+  .comp-table tr { will-change: transform, opacity; }
 
-  .reveal-scale {
-    opacity: 0;
-    transform: scale(0.94);
-    transition: opacity 0.65s ease, transform 0.65s ease;
-  }
-  .reveal-scale.revealed {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  /* stagger delays */
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.45s; }
+  /* ── SCALE FEATURE ITEMS ── */
+  .scale-feature { will-change: transform, opacity; }
 
   /* ── MOBILE RESPONSIVE ── */
   /* All px font sizes scale with viewport width on small screens */
@@ -950,9 +969,13 @@
 </style>
 </head>
 <body>
+<div id="scroll-progress"></div>
 
 <!-- ══ SLIDE 1: HERO ══ -->
 <section class="slide active" id="slide1">
+  <!-- parallax orbs -->
+  <div class="orb orb-1" id="orb-hero-1"></div>
+  <div class="orb orb-2" id="orb-hero-2"></div>
   <nav class="nav1">
     <div class="nav-logo">
       <span class="fork-icon">🍴</span>
@@ -962,31 +985,32 @@
   </nav>
 
   <div class="hero-content">
-    <h1 class="hero-title reveal">Peak Hours Should Be Your <br> <b>Most Profitable</b> <br> Not Most Chaotic</h1>
-    <button class="btn-primary reveal reveal-delay-1" onclick="goToSlide(9)">BOOK A DEMO</button>
+    <h1 class="hero-title" id="hero-title">Peak Hours Should Be Your <br> <b>Most Profitable</b> <br> Not Most Chaotic</h1>
+    <button class="btn-primary" id="hero-btn" onclick="goToSlide(9)">BOOK A DEMO</button>
   </div>
 
-  <div class="hero-card reveal reveal-delay-2">
+  <div class="hero-card" id="hero-card">
     <div class="restaurant-img">
-      <div class="restaurant-img-inner"></div>
+      <div class="restaurant-img-inner" id="hero-img-inner"></div>
     </div>
-    <div class="img-caption">THE NEW STANDARD OF SERVICE</div>
+    <div class="img-caption" id="hero-caption">THE NEW STANDARD OF SERVICE</div>
   </div>
 
-  <p class="hero-tagline reveal reveal-delay-3"><b>Elevate your customer's experience from the moment they arrive.</b></p>
+  <p class="hero-tagline" id="hero-tagline"><b>Elevate your customer's experience from the moment they arrive.</b></p>
 
   
 </section>
 
 <!-- ══ SLIDE 2: THE PROBLEM ══ -->
 <section class="slide" id="slide2">
-  
+  <div class="orb orb-3" id="orb-s2-1"></div>
+  <div class="orb orb-4" id="orb-s2-2"></div>
 
   <div class="slide-body">
-    <h2 class="problem-title reveal">The Problem</h2>
+    <h2 class="problem-title" id="prob-title">The Problem</h2>
 
     <!-- Chaos diagram -->
-    <div class="diagram-card reveal reveal-delay-1">
+    <div class="diagram-card" id="chaos-card">
       <div class="diagram-label">01. Friction</div>
       <svg class="chaos-svg" viewBox="0 0 300 140">
         <g stroke="#7a8a8b" stroke-width="1" opacity="0.6">
@@ -1001,119 +1025,113 @@
           <line x1="120" y1="140" x2="240" y2="10"/>
         </g>
       </svg>
-      <div class="diagram-stat">
+      <div class="diagram-stat" id="chaos-stat">
         <strong>30% LOSS</strong>
         <span>Revenue leakage via walk-aways</span>
       </div>
     </div>
 
-   
-
     <!-- Precision diagram -->
-    <div class="diagram-card reveal reveal-delay-2" style="margin-top:16px;">
+    <div class="diagram-card" id="precision-card" style="margin-top:16px;">
       <div class="diagram-label" style="text-align:right;">02. Precision</div>
       <svg class="precision-svg" viewBox="0 0 300 80">
         <line x1="30" y1="40" x2="270" y2="40" stroke="#2C3639" stroke-width="1.5"/>
       </svg>
-      <div class="diagram-stat-left">
+      <div class="diagram-stat-left" id="precision-stat">
         <strong>100% VISIBILITY</strong>
         <span>Real-time floor optimization</span>
       </div>
     </div>
 
-   
-    <p class="problem-text reveal reveal-delay-3"><b>They Leave Not Because <br> They Don't Want To Wait, <br> But Because They Are Unsure About Their Turn</b></p>
+    <p class="problem-text" id="prob-text"><b>They Leave Not Because <br> They Don't Want To Wait, <br> But Because They Are Unsure About Their Turn</b></p>
 
-   
   </div>
  
 </section>
 
 <!-- ══ SLIDE 3: THE SHIFT ══ -->
 <section class="slide" id="slide3">
-  
+  <div class="orb orb-5" id="orb-s3-1"></div>
 
   <div class="shift-body">
-    <h2 class="shift-title reveal">The Shift</h2>
-    <div class="shift-line reveal reveal-delay-1"></div>
-    <p class="shift-subtitle reveal reveal-delay-1">INNOVATIVE STRATEGY</p>
+    <h2 class="shift-title" id="shift-title">The Shift</h2>
+    <div class="shift-line" id="shift-line"></div>
+    <p class="shift-subtitle" id="shift-subtitle">INNOVATIVE STRATEGY</p>
 
-    <div class="flow-diagram reveal reveal-delay-2">
-      <div class="flow-circle">CAPTURE</div>
-      <div class="flow-dash"></div>
-      <div class="flow-circle">SCHEDULE</div>
-      <div class="flow-dash"></div>
-      <div class="flow-circle">BALANCE</div>
+    <div class="flow-diagram" id="flow-diagram">
+      <div class="flow-circle" id="flow-c1">CAPTURE</div>
+      <div class="flow-dash" id="flow-d1"></div>
+      <div class="flow-circle" id="flow-c2">SCHEDULE</div>
+      <div class="flow-dash" id="flow-d2"></div>
+      <div class="flow-circle" id="flow-c3">BALANCE</div>
     </div>
 
-    <p class="shift-desc reveal reveal-delay-3"><b>THE BETTER THE CUSTOMER FEELS, THE BETTER YOUR OUTLET WILL BECOME.</b></p>
+    <p class="shift-desc" id="shift-desc"><b>THE BETTER THE CUSTOMER FEELS, THE BETTER YOUR OUTLET WILL BECOME.</b></p>
   </div>
 
 </section>
 
 <!-- ══ SLIDE 4: HOW IT WORKS ══ -->
 <section class="slide" id="slide4">
-  
+  <div class="orb orb-1" id="orb-s4-1" style="opacity:0.10;"></div>
 
   <div class="hiw-body">
-    <h2 class="hiw-title reveal">How It Works</h2>
-    <div class="hiw-line reveal reveal-delay-1"></div>
+    <h2 class="hiw-title" id="hiw-title">How It Works</h2>
+    <div class="hiw-line" id="hiw-line"></div>
 
-    <div class="steps-layout reveal reveal-delay-2">
+    <div class="steps-layout">
       <div class="steps-left">
-        <div class="step">
+        <div class="step" id="step-1">
           <div class="step-num">01</div>
           <div class="step-title">ENTRY</div>
           <div class="step-desc">Scan the QR code at the entrance for instant access.</div>
         </div>
-        <div class="step">
+        <div class="step" id="step-2">
           <div class="step-num">02</div>
           <div class="step-title">EXPLORE</div>
           <div class="step-desc">Browse the live menu with real-time availability updates.</div>
         </div>
-        <div class="step">
+        <div class="step" id="step-3">
           <div class="step-num">03</div>
           <div class="step-title">PRE-ORDER</div>
           <div class="step-desc">Place your order while waiting for your table to be ready.</div>
         </div>
-        <div class="step">
+        <div class="step" id="step-4">
           <div class="step-num">04</div>
           <div class="step-title">ARRIVAL</div>
           <div class="step-desc">Your food begins preparation the moment you are seated.</div>
         </div>
       </div>
 
-      <div class="steps-right">
+      <div class="steps-right" id="hiw-phone">
         <svg class="phone-sketch" viewBox="0 0 90 160" fill="none" stroke="#2C3639" stroke-width="1.5">
           <rect x="10" y="5" width="70" height="120" rx="10"/>
           <line x1="35" y1="135" x2="55" y2="135" stroke-width="2"/>
-          <!-- dots on right -->
           <circle cx="88" cy="60" r="2" fill="#2C3639"/>
           <circle cx="88" cy="75" r="2" fill="#2C3639"/>
           <circle cx="88" cy="90" r="2" fill="#2C3639"/>
-          <!-- cable -->
           <path d="M50 125 Q70 140 80 155" stroke-dasharray="4 3"/>
         </svg>
       </div>
     </div>
   </div>
 
-  <div class="hiw-btn-wrap">
+  <div class="hiw-btn-wrap" id="hiw-btn-wrap">
     <button class="hiw-btn" onclick="goToSlide(9)">YOUR CUSTOMER'S EXPERIENCE SAYS MORE ABOUT YOUR RESTAURANT THEN YOUR WORDS</button>
   </div>
 </section>
 
 <!-- ══ SLIDE 5: PILLARS ══ -->
 <section class="slide" id="slide5">
-  
+  <div class="orb orb-2" id="orb-s5-1" style="opacity:0.12;bottom:unset;top:-40px;"></div>
 
   <div class="pillars-body">
     
-    <h2 class="pillars-title reveal">The 3 Pillars of Value Creation</h2>
-    <div class="pillars-divider reveal reveal-delay-1"></div>
+    <h2 class="pillars-title" id="pillars-title">The 3 Pillars of Value Creation</h2>
+    <div class="pillars-divider" id="pillars-divider"></div>
 
-    <div class="pillar-cards reveal reveal-delay-2">
-      <div class="pillar-card">
+    <div class="pillar-cards" id="pillar-cards">
+      <div class="pillar-card" id="pillar-1">
         <div class="pillar-icon">↗</div>
         <div class="pillar-name"><b>Revenue</b></div>
         <div class="pillar-text">Optimizing seat turnover through precise AI sequencing. Every empty chair is a missed note in the symphony of service.</div>
@@ -1123,7 +1141,7 @@
         </div>
       </div>
 
-      <div class="pillar-card">
+      <div class="pillar-card" id="pillar-2">
         <div class="pillar-icon">⏳</div>
         <div class="pillar-name"><b>Trust</b></div>
         <div class="pillar-text">Clarity in waiting creates a seamless transition from street to table. Transparency is the highest form of hospitality.</div>
@@ -1134,7 +1152,7 @@
         </div>
       </div>
 
-      <div class="pillar-card">
+      <div class="pillar-card" id="pillar-3">
         <div class="pillar-icon">✦</div>
         <div class="pillar-name"><b>Flow</b></div>
         <div class="pillar-text">Intelligent pacing preserves the spirit of your staff. We manage the friction so they can manage the magic.</div>
@@ -1151,29 +1169,29 @@
 
 <!-- ══ SLIDE 6: DIGITAL CONNOISSEUR ══ -->
 <section class="slide" id="slide6">
+  <div class="orb orb-3" id="orb-s6-1" style="opacity:0.12;"></div>
   <div class="dc-nav">
     <button class="dc-back" onclick="goToSlide(4)">‹</button>
     <div class="dc-counter-wrap">
-      
       <span class="dc-variant-title">PRODUCT EXPERIENCE</span>
     </div>
     <div style="width:36px;"></div>
   </div>
 
   <div class="dc-body">
-    <h2 class="dc-title reveal">The Digital <em>Connoisseur</em></h2>
+    <h2 class="dc-title" id="dc-title">The Digital <em>Connoisseur</em></h2>
 
-    <div class="dc-phone-wrapper reveal reveal-delay-2">
-      <div class="dc-features-left">
-        <div class="dc-feature">
+    <div class="dc-phone-wrapper" id="dc-phone-wrapper">
+      <div class="dc-features-left" id="dc-features-left">
+        <div class="dc-feature" id="dc-feat-1">
           <strong>VISUAL CURATION</strong>
           <span>Rich imagery for every dish.</span>
         </div>
-        <div class="dc-feature">
+        <div class="dc-feature" id="dc-feat-2">
           <strong>FAST CHECKOUT</strong>
           <span>Seamless payment integration.</span>
         </div>
-        <div class="dc-feature">
+        <div class="dc-feature" id="dc-feat-3">
           <strong>SMART SORTING</strong>
           <span>Dietary filters with a single tap.</span>
         </div>
@@ -1229,25 +1247,26 @@
 
 <!-- ══ SLIDE 7: TESTIMONIAL ══ -->
 <section class="slide" id="slide7">
+  <div class="orb orb-1" id="orb-s7-1" style="opacity:0.12;"></div>
   
   <div class="testi-body">
-    <div class="receipt-card reveal reveal-scale">
+    <div class="receipt-card" id="receipt-card">
       <div class="receipt-top"></div>
-      <p class="quote-text">"Restro saved our Friday nights."</p>
-      <div class="quote-divider"></div>
-      <div class="quote-author">MARCO ROSSI</div>
-      <div class="quote-place">THE GREEN BISTRO</div>
-      <div class="quote-avatars">
-        <div class="avatar">👩</div>
-        <div class="avatar">👨</div>
-        <div class="avatar">🧑</div>
+      <p class="quote-text" id="quote-text">"Restro saved our Friday nights."</p>
+      <div class="quote-divider" id="quote-divider"></div>
+      <div class="quote-author" id="quote-author">MARCO ROSSI</div>
+      <div class="quote-place" id="quote-place">THE GREEN BISTRO</div>
+      <div class="quote-avatars" id="quote-avatars">
+        <div class="avatar" id="av-1">👩</div>
+        <div class="avatar" id="av-2">👨</div>
+        <div class="avatar" id="av-3">🧑</div>
       </div>
       <div class="receipt-bottom"></div>
     </div>
 
-    <div class="testi-proof reveal reveal-delay-2">SOCIAL PROOF</div>
+    <div class="testi-proof" id="testi-proof">SOCIAL PROOF</div>
 
-    <button class="testi-explore reveal reveal-delay-3" onclick="goToSlide(7)">EXPLORE IMPACT</button>
+    <button class="testi-explore" id="testi-explore" onclick="goToSlide(7)">EXPLORE IMPACT</button>
   </div>
 
   
@@ -1262,12 +1281,12 @@
   </div>
 
   <div class="comp-body">
-    <h2 class="comp-heading reveal">Why Choose <em>Restro</em></h2>
-    <div class="comp-underline reveal reveal-delay-1"></div>
+    <h2 class="comp-heading" id="comp-heading">Why Choose <em>Restro</em></h2>
+    <div class="comp-underline" id="comp-underline"></div>
 
-    <table class="comp-table reveal reveal-delay-2">
+    <table class="comp-table" id="comp-table">
       <thead>
-        <tr>
+        <tr id="comp-thead-row">
           <th class="feature-col">FEATURE</th>
           <th>MANUAL</th>
           <th>RES. APPS</th>
@@ -1275,28 +1294,28 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr id="comp-tr-1">
           <td class="feature-col">Walk-in Optimization</td>
           <td>✗</td>
           <td>✗</td>
           <td class="restro-col">✓</td>
         </tr>
-        <tr>
+        <tr id="comp-tr-2">
           <td class="feature-col">Kitchen Coordination</td>
           <td>✗</td>
           <td>✗</td>
           <td class="restro-col">✓</td>
         </tr>
-        <tr>
+        <tr id="comp-tr-3">
           <td class="feature-col">Revenue Retention</td>
           <td>✗</td>
           <td>✗</td>
           <td class="restro-col">✓</td>
         </tr>
-        <tr>
+        <tr id="comp-tr-4">
           <td class="feature-col">Smart Queuing</td>
           <td>✗</td>
-          <td style="color:rgba(28,49,99,0.3);">✓</td>
+          <td style="color:rgba(44,54,57,0.3);">✓</td>
           <td class="restro-col">✓</td>
         </tr>
       </tbody>
@@ -1327,6 +1346,7 @@
 
 <!-- ══ SLIDE 9: SCALABILITY ══ -->
 <section class="slide" id="slide9">
+  <div class="orb orb-5" id="orb-s9-1" style="opacity:0.12;"></div>
   <div class="scale-nav">
     <button class="scale-back" onclick="goToSlide(7)">←</button>
     
@@ -1334,10 +1354,10 @@
 
   <div class="scale-body">
     
-    <h2 class="scale-title reveal">Scalability</h2>
-    <p class="scale-desc reveal reveal-delay-1">A pure SaaS model designed for exponential growth with zero friction.</p>
+    <h2 class="scale-title" id="scale-title">Scalability</h2>
+    <p class="scale-desc" id="scale-desc">A pure SaaS model designed for exponential growth with zero friction.</p>
 
-    <div class="growth-card reveal reveal-delay-2">
+    <div class="growth-card" id="growth-card">
       <div class="growth-card-header">
         <span class="growth-label">GROWTH CURVE</span>
         <span class="growth-roi">12mo ROI</span>
@@ -1356,22 +1376,22 @@
       </div>
     </div>
 
-    <div class="scale-features reveal reveal-delay-3">
-      <div class="scale-feature">
+    <div class="scale-features" id="scale-features">
+      <div class="scale-feature" id="sf-1">
         <div class="scale-feature-icon">📱</div>
         <div>
           <div class="scale-feature-title">ZERO HARDWARE</div>
           <div class="scale-feature-desc">Compatible with any modern smartphone or tablet.</div>
         </div>
       </div>
-      <div class="scale-feature">
+      <div class="scale-feature" id="sf-2">
         <div class="scale-feature-icon">🔗</div>
         <div>
           <div class="scale-feature-title">MULTI-LOCATION</div>
           <div class="scale-feature-desc">Sync infinite branches under one digital roof.</div>
         </div>
       </div>
-      <div class="scale-feature">
+      <div class="scale-feature" id="sf-3">
         <div class="scale-feature-icon">☁️</div>
         <div>
           <div class="scale-feature-title">SAAS MODEL</div>
@@ -1392,41 +1412,388 @@
 
 <!-- ══ SLIDE 10: FINAL CTA ══ -->
 <section class="slide" id="slide10">
+  <div class="orb orb-1" id="orb-s10-1" style="opacity:0.15;top:-80px;right:-80px;width:300px;height:300px;"></div>
+  <div class="orb orb-2" id="orb-s10-2" style="opacity:0.10;bottom:-60px;left:-60px;width:200px;height:200px;"></div>
   <div class="cta-top">
-    <div class="cta-logo reveal">Restro</div>
-    <button class="cta-btn reveal reveal-delay-2">Book a Demo</button>
+    <div class="cta-logo" id="cta-logo">Restro</div>
+    <button class="cta-btn" id="cta-btn">Book a Demo</button>
   </div>
-  <div class="cta-bottom reveal reveal-delay-3">
+  <div class="cta-bottom" id="cta-bottom">
     <div class="cta-tagline">SIMPLE. SMART. SEAMLESS.</div>
     <div class="cta-counter">10 / 10</div>
   </div>
 </section>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
-  // Map old goToSlide(index) calls to smooth scroll to each section
+  /* ══════════════════════════════════════════════
+     NAVIGATION HELPER
+  ══════════════════════════════════════════════ */
   const sectionIds = [
     'slide1','slide2','slide3','slide4','slide5',
     'slide6','slide7','slide8','slide9','slide10'
   ];
-
   function goToSlide(index) {
     const el = document.getElementById(sectionIds[index]);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // Scroll Reveal via IntersectionObserver
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  /* ══════════════════════════════════════════════
+     GSAP INIT
+  ══════════════════════════════════════════════ */
+  gsap.registerPlugin(ScrollTrigger);
 
-  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
-    revealObserver.observe(el);
+  // Disable default scroll-behavior for GSAP-controlled sections
+  document.documentElement.style.scrollBehavior = 'auto';
+
+  /* ── SCROLL PROGRESS BAR ── */
+  gsap.to('#scroll-progress', {
+    scaleX: 1,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: 'body',
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.3
+    }
   });
+
+  /* ══════════════════════════════════════════════
+     SLIDE 1: HERO  — staggered entry + parallax
+  ══════════════════════════════════════════════ */
+  const heroTL = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  heroTL
+    .from('#hero-title', { opacity: 0, y: 60, duration: 1.1 })
+    .from('#hero-btn',   { opacity: 0, y: 30, duration: 0.7 }, '-=0.5')
+    .from('#hero-card',  { opacity: 0, y: 50, scale: 0.97, duration: 0.9 }, '-=0.4')
+    .from('#hero-caption', { opacity: 0, duration: 0.6 }, '-=0.3')
+    .from('#hero-tagline', { opacity: 0, y: 20, duration: 0.7 }, '-=0.4');
+
+  // Hero card parallax as user scrolls past slide1
+  gsap.to('#hero-card', {
+    yPercent: -18,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#slide1',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 1.2
+    }
+  });
+
+  // Orbs parallax in hero
+  gsap.to('#orb-hero-1', {
+    y: -80, x: 30,
+    ease: 'none',
+    scrollTrigger: { trigger: '#slide1', start: 'top top', end: 'bottom top', scrub: 2 }
+  });
+  gsap.to('#orb-hero-2', {
+    y: 60, x: -20,
+    ease: 'none',
+    scrollTrigger: { trigger: '#slide1', start: 'top top', end: 'bottom top', scrub: 1.5 }
+  });
+
+  /* ══════════════════════════════════════════════
+     SLIDE 2: THE PROBLEM — SVG line draw + cards
+  ══════════════════════════════════════════════ */
+
+  // Title slides in from left
+  gsap.from('#prob-title', {
+    opacity: 0, x: -60, duration: 0.9, ease: 'power3.out',
+    scrollTrigger: { trigger: '#slide2', start: 'top 80%', toggleActions: 'play none none none' }
+  });
+
+  // Chaos card flies in from right, SVG lines draw
+  const chaosTL = gsap.timeline({
+    scrollTrigger: { trigger: '#chaos-card', start: 'top 85%', toggleActions: 'play none none none' }
+  });
+  chaosTL
+    .from('#chaos-card', { opacity: 0, x: 60, duration: 0.8, ease: 'power2.out' })
+    .to('#chaos-card .chaos-svg line', {
+      strokeDashoffset: 0, duration: 1.2, ease: 'power1.inOut', stagger: 0.08
+    }, '-=0.3')
+    .from('#chaos-stat', { opacity: 0, y: 12, duration: 0.5 }, '-=0.4');
+
+  // Precision card from left, line draws
+  const precTL = gsap.timeline({
+    scrollTrigger: { trigger: '#precision-card', start: 'top 88%', toggleActions: 'play none none none' }
+  });
+  precTL
+    .from('#precision-card', { opacity: 0, x: -60, duration: 0.8, ease: 'power2.out' })
+    .to('#precision-card .precision-svg line', {
+      strokeDashoffset: 0, duration: 1, ease: 'power2.out'
+    }, '-=0.3')
+    .from('#precision-stat', { opacity: 0, y: 10, duration: 0.5 }, '-=0.3');
+
+  // Problem text fades up
+  gsap.from('#prob-text', {
+    opacity: 0, y: 40, duration: 0.9, ease: 'power2.out',
+    scrollTrigger: { trigger: '#prob-text', start: 'top 90%', toggleActions: 'play none none none' }
+  });
+
+  // Orb parallax
+  gsap.to('#orb-s2-1', { y: -60, ease: 'none', scrollTrigger: { trigger: '#slide2', scrub: 1.5, start: 'top bottom', end: 'bottom top' } });
+  gsap.to('#orb-s2-2', { y: 50, ease: 'none', scrollTrigger: { trigger: '#slide2', scrub: 2, start: 'top bottom', end: 'bottom top' } });
+
+  /* ══════════════════════════════════════════════
+     SLIDE 3: THE SHIFT — PINNED flow circle assembly
+  ══════════════════════════════════════════════ */
+
+  gsap.from('#shift-title', {
+    opacity: 0, y: 50, duration: 0.9,
+    scrollTrigger: { trigger: '#slide3', start: 'top 80%', toggleActions: 'play none none none' }
+  });
+  gsap.from('#shift-line', {
+    scaleX: 0, transformOrigin: 'left center', duration: 0.7, ease: 'power2.out',
+    scrollTrigger: { trigger: '#slide3', start: 'top 78%', toggleActions: 'play none none none' }
+  });
+  gsap.from('#shift-subtitle', {
+    opacity: 0, letterSpacing: '10px', duration: 0.7,
+    scrollTrigger: { trigger: '#slide3', start: 'top 76%', toggleActions: 'play none none none' }
+  });
+
+  // Flow circles assemble: start scattered, converge into place
+  const flowAssemble = gsap.timeline({
+    scrollTrigger: { trigger: '#flow-diagram', start: 'top 82%', toggleActions: 'play none none none' }
+  });
+  flowAssemble
+    .from('#flow-c1', { opacity: 0, x: -80, scale: 0.6, duration: 0.8, ease: 'back.out(1.4)' })
+    .from('#flow-d1', { opacity: 0, scaleY: 0, transformOrigin: 'top center', duration: 0.4 }, '-=0.2')
+    .from('#flow-c2', { opacity: 0, x: 80, scale: 0.6, duration: 0.8, ease: 'back.out(1.4)' }, '-=0.3')
+    .from('#flow-d2', { opacity: 0, scaleY: 0, transformOrigin: 'top center', duration: 0.4 }, '-=0.2')
+    .from('#flow-c3', { opacity: 0, y: 60, scale: 0.6, duration: 0.8, ease: 'back.out(1.4)' }, '-=0.3');
+
+  gsap.from('#shift-desc', {
+    opacity: 0, y: 30, duration: 0.9,
+    scrollTrigger: { trigger: '#shift-desc', start: 'top 88%', toggleActions: 'play none none none' }
+  });
+
+  // Scrub-based parallax on the orb
+  gsap.to('#orb-s3-1', { y: -70, ease: 'none', scrollTrigger: { trigger: '#slide3', scrub: 1.8, start: 'top bottom', end: 'bottom top' } });
+
+  /* ══════════════════════════════════════════════
+     SLIDE 4: HOW IT WORKS — PINNED step-by-step reveal
+  ══════════════════════════════════════════════ */
+
+  gsap.from('#hiw-title', {
+    opacity: 0, y: 50, duration: 0.9,
+    scrollTrigger: { trigger: '#slide4', start: 'top 80%', toggleActions: 'play none none none' }
+  });
+  gsap.from('#hiw-line', {
+    scaleX: 0, transformOrigin: 'left center', duration: 0.7, ease: 'power2.inOut',
+    scrollTrigger: { trigger: '#slide4', start: 'top 78%', toggleActions: 'play none none none' }
+  });
+
+  // Phone slides in from right
+  gsap.from('#hiw-phone', {
+    opacity: 0, x: 80, rotation: 8, duration: 1.1, ease: 'power3.out',
+    scrollTrigger: { trigger: '#slide4', start: 'top 75%', toggleActions: 'play none none none' }
+  });
+
+  // Steps assemble one by one from the left
+  ['#step-1','#step-2','#step-3','#step-4'].forEach((id, i) => {
+    gsap.from(id, {
+      opacity: 0, x: -50, duration: 0.7, ease: 'power2.out',
+      scrollTrigger: { trigger: id, start: 'top 88%', toggleActions: 'play none none none' },
+      delay: i * 0.1
+    });
+  });
+
+  gsap.from('#hiw-btn-wrap', {
+    opacity: 0, y: 30, duration: 0.7,
+    scrollTrigger: { trigger: '#hiw-btn-wrap', start: 'top 92%', toggleActions: 'play none none none' }
+  });
+
+  /* ══════════════════════════════════════════════
+     SLIDE 5: PILLARS — cards fly in from scattered positions
+  ══════════════════════════════════════════════ */
+
+  gsap.from('#pillars-title', {
+    opacity: 0, y: 50, duration: 0.9,
+    scrollTrigger: { trigger: '#slide5', start: 'top 80%', toggleActions: 'play none none none' }
+  });
+  gsap.from('#pillars-divider', {
+    scaleX: 0, transformOrigin: 'left', duration: 0.8, ease: 'power2.inOut',
+    scrollTrigger: { trigger: '#slide5', start: 'top 78%', toggleActions: 'play none none none' }
+  });
+
+  // Three cards assemble: left one from left, middle from below, right from right
+  const pillarsTL = gsap.timeline({
+    scrollTrigger: { trigger: '#pillar-cards', start: 'top 82%', toggleActions: 'play none none none' }
+  });
+  pillarsTL
+    .from('#pillar-1', { opacity: 0, x: -70, y: 30, rotation: -4, scale: 0.9, duration: 0.85, ease: 'power3.out' })
+    .from('#pillar-2', { opacity: 0, y: 70, scale: 0.9, duration: 0.85, ease: 'power3.out' }, '-=0.5')
+    .from('#pillar-3', { opacity: 0, x: 70, y: 30, rotation: 4, scale: 0.9, duration: 0.85, ease: 'power3.out' }, '-=0.5');
+
+  // Subtle float animation on pillar cards after entry
+  gsap.to('#pillar-1', { y: -6, duration: 2.5, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 1.5 });
+  gsap.to('#pillar-2', { y: -8, duration: 3, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 2 });
+  gsap.to('#pillar-3', { y: -5, duration: 2.2, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 1.8 });
+
+  /* ══════════════════════════════════════════════
+     SLIDE 6: DIGITAL CONNOISSEUR — phone + features
+  ══════════════════════════════════════════════ */
+
+  gsap.from('#dc-title', {
+    opacity: 0, y: 40, duration: 0.9,
+    scrollTrigger: { trigger: '#slide6', start: 'top 80%', toggleActions: 'play none none none' }
+  });
+
+  // Phone mockup scales up from center
+  gsap.from('#dc-phone-wrapper .dc-phone-mockup', {
+    opacity: 0, scale: 0.7, y: 50, duration: 1.1, ease: 'back.out(1.3)',
+    scrollTrigger: { trigger: '#slide6', start: 'top 75%', toggleActions: 'play none none none' }
+  });
+
+  // Feature labels slide in from the left one by one
+  const dcFeatTL = gsap.timeline({
+    scrollTrigger: { trigger: '#dc-features-left', start: 'top 85%', toggleActions: 'play none none none' }
+  });
+  dcFeatTL
+    .from('#dc-feat-1', { opacity: 0, x: -40, duration: 0.6, ease: 'power2.out' })
+    .from('#dc-feat-2', { opacity: 0, x: -40, duration: 0.6, ease: 'power2.out' }, '-=0.2')
+    .from('#dc-feat-3', { opacity: 0, x: -40, duration: 0.6, ease: 'power2.out' }, '-=0.2');
+
+  // Phone subtle tilt on scroll (scrub)
+  gsap.to('#dc-phone-wrapper .dc-phone-mockup', {
+    rotationY: 8, ease: 'none',
+    scrollTrigger: { trigger: '#slide6', start: 'top bottom', end: 'bottom top', scrub: 2 }
+  });
+
+  /* ══════════════════════════════════════════════
+     SLIDE 7: TESTIMONIAL — receipt assembles from pieces
+  ══════════════════════════════════════════════ */
+
+  const testiTL = gsap.timeline({
+    scrollTrigger: { trigger: '#slide7', start: 'top 75%', toggleActions: 'play none none none' }
+  });
+  testiTL
+    .from('#receipt-card', { opacity: 0, scale: 0.85, y: 60, duration: 1.0, ease: 'back.out(1.2)' })
+    .from('#quote-text',   { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
+    .from('#quote-divider',{ scaleX: 0, transformOrigin: 'center', duration: 0.4 }, '-=0.1')
+    .from('#quote-author', { opacity: 0, letterSpacing: '8px', duration: 0.5 }, '-=0.1')
+    .from('#quote-place',  { opacity: 0, duration: 0.4 }, '-=0.1')
+    .from(['#av-1','#av-2','#av-3'], { opacity: 0, scale: 0, stagger: 0.12, duration: 0.4, ease: 'back.out(2)' }, '-=0.1')
+    .from('#testi-proof',  { opacity: 0, letterSpacing: '12px', duration: 0.6 }, '-=0.1')
+    .from('#testi-explore',{ opacity: 0, y: 20, duration: 0.5 }, '-=0.2');
+
+  // Gentle rotation on scroll for receipt
+  gsap.to('#receipt-card', {
+    rotation: 1.5, ease: 'none',
+    scrollTrigger: { trigger: '#slide7', start: 'top bottom', end: 'bottom top', scrub: 2 }
+  });
+
+  /* ══════════════════════════════════════════════
+     SLIDE 8: COMPARISON — table rows slide in one by one
+  ══════════════════════════════════════════════ */
+
+  gsap.from('#comp-heading', {
+    opacity: 0, x: -50, duration: 0.9,
+    scrollTrigger: { trigger: '#slide8', start: 'top 80%', toggleActions: 'play none none none' }
+  });
+  gsap.from('#comp-underline', {
+    scaleX: 0, transformOrigin: 'left', duration: 0.7, ease: 'power2.out',
+    scrollTrigger: { trigger: '#slide8', start: 'top 78%', toggleActions: 'play none none none' }
+  });
+
+  const tableTL = gsap.timeline({
+    scrollTrigger: { trigger: '#comp-table', start: 'top 82%', toggleActions: 'play none none none' }
+  });
+  tableTL
+    .from('#comp-thead-row', { opacity: 0, y: -20, duration: 0.5 })
+    .from('#comp-tr-1', { opacity: 0, x: -40, duration: 0.5, ease: 'power2.out' }, '-=0.1')
+    .from('#comp-tr-2', { opacity: 0, x: -40, duration: 0.5, ease: 'power2.out' }, '-=0.2')
+    .from('#comp-tr-3', { opacity: 0, x: -40, duration: 0.5, ease: 'power2.out' }, '-=0.2')
+    .from('#comp-tr-4', { opacity: 0, x: -40, duration: 0.5, ease: 'power2.out' }, '-=0.2');
+
+  /* ══════════════════════════════════════════════
+     SLIDE 9: SCALABILITY — chart path draws, features stagger in
+  ══════════════════════════════════════════════ */
+
+  gsap.from('#scale-title', {
+    opacity: 0, y: 50, duration: 0.9,
+    scrollTrigger: { trigger: '#slide9', start: 'top 80%', toggleActions: 'play none none none' }
+  });
+  gsap.from('#scale-desc', {
+    opacity: 0, y: 30, duration: 0.7,
+    scrollTrigger: { trigger: '#slide9', start: 'top 78%', toggleActions: 'play none none none' }
+  });
+
+  const growthTL = gsap.timeline({
+    scrollTrigger: { trigger: '#growth-card', start: 'top 84%', toggleActions: 'play none none none' }
+  });
+  growthTL
+    .from('#growth-card', { opacity: 0, y: 40, scale: 0.96, duration: 0.7, ease: 'power2.out' })
+    .to('#growth-card path', { strokeDashoffset: 0, duration: 1.4, ease: 'power2.inOut' }, '-=0.2')
+    .from('#growth-card circle', { opacity: 0, scale: 0, transformOrigin: '265px 10px', duration: 0.4, ease: 'back.out(2)' }, '-=0.2');
+
+  // Scale features stagger in from the right
+  const sfTL = gsap.timeline({
+    scrollTrigger: { trigger: '#scale-features', start: 'top 86%', toggleActions: 'play none none none' }
+  });
+  sfTL
+    .from('#sf-1', { opacity: 0, x: 50, duration: 0.6, ease: 'power2.out' })
+    .from('#sf-2', { opacity: 0, x: 50, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+    .from('#sf-3', { opacity: 0, x: 50, duration: 0.6, ease: 'power2.out' }, '-=0.3');
+
+  /* ══════════════════════════════════════════════
+     SLIDE 10: FINAL CTA — dramatic entry
+  ══════════════════════════════════════════════ */
+
+  const ctaTL = gsap.timeline({
+    scrollTrigger: { trigger: '#slide10', start: 'top 75%', toggleActions: 'play none none none' }
+  });
+  ctaTL
+    .from('#cta-logo', { opacity: 0, scale: 0.5, duration: 1.2, ease: 'elastic.out(1, 0.6)' })
+    .from('#cta-btn',  { opacity: 0, y: 30, scale: 0.9, duration: 0.7, ease: 'power3.out' }, '-=0.4')
+    .from('#cta-bottom', { opacity: 0, y: 20, duration: 0.6 }, '-=0.2');
+
+  // CTA logo subtle pulse
+  gsap.to('#cta-logo', {
+    scale: 1.03, duration: 2, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 2
+  });
+
+  // CTA orbs spin slowly
+  gsap.to('#orb-s10-1', { rotation: 360, duration: 20, ease: 'none', repeat: -1, transformOrigin: '50% 50%' });
+  gsap.to('#orb-s10-2', { rotation: -360, duration: 25, ease: 'none', repeat: -1, transformOrigin: '50% 50%' });
+
+  /* ══════════════════════════════════════════════
+     GLOBAL SECTION PARALLAX (background layer shift)
+  ══════════════════════════════════════════════ */
+  document.querySelectorAll('.slide').forEach(slide => {
+    gsap.fromTo(slide, 
+      { backgroundPositionY: '0%' },
+      {
+        backgroundPositionY: '20%',
+        ease: 'none',
+        scrollTrigger: { trigger: slide, start: 'top bottom', end: 'bottom top', scrub: 1 }
+      }
+    );
+  });
+
+  /* ══════════════════════════════════════════════
+     SECTION TITLE CLIP-PATH REVEALS
+  ══════════════════════════════════════════════ */
+  const clipTargets = ['#shift-title', '#hiw-title', '#pillars-title', '#scale-title', '#dc-title'];
+  clipTargets.forEach(sel => {
+    const el = document.querySelector(sel);
+    if (!el) return;
+    gsap.from(el, {
+      clipPath: 'inset(0 100% 0 0)',
+      duration: 0.9, ease: 'power3.inOut',
+      scrollTrigger: { trigger: el, start: 'top 82%', toggleActions: 'play none none none' }
+    });
+  });
+
+  /* ══════════════════════════════════════════════
+     SMOOTH SCROLL RESTORE
+  ══════════════════════════════════════════════ */
+  setTimeout(() => {
+    document.documentElement.style.scrollBehavior = 'smooth';
+  }, 500);
+
 </script>
 </body>
 </html>

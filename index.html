@@ -6,6 +6,9 @@
 <title>Restro</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+  @font-face { font-family: 'Ratcheron'; src: local('Ratcheron'); }
+</style>
+<style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -71,8 +74,8 @@
   }
 
   .hero-title {
-    font-family: 'Helvetica', serif;
-    font-size: clamp(31.5px, 7.5vw, 42px);
+    font-family: 'Ratcheron', serif;
+    font-size: clamp(22px, 5.25vw, 29.4px);
     font-weight: 400; line-height: 1.1;
     color: var(--navy); margin-bottom: 32px;
   }
@@ -1014,7 +1017,7 @@
   /* ── MOBILE RESPONSIVE ── */
   /* All px font sizes scale with viewport width on small screens */
   @media (max-width: 480px) {
-    .hero-title { font-size: clamp(32px, 9vw, 48px); }
+    .hero-title { font-size: clamp(22.4px, 6.3vw, 33.6px); }
     .btn-primary { font-size: 11px; padding: 16px 36px; letter-spacing: 2px; }
     .hero-content { padding: 36px 20px 28px; }
     .hero-tagline { font-size: clamp(16px, 4.5vw, 20px); padding: 32px 20px; }
@@ -1079,7 +1082,7 @@
   }
 
   @media (max-width: 360px) {
-    .hero-title { font-size: 28px; }
+    .hero-title { font-size: 19.6px; }
     .pillar-cards { flex-direction: column; }
     .pillar-card { flex-direction: row; align-items: flex-start; gap: 12px; }
     .dc-phone-mockup { width: 130px; height: 250px; }
@@ -1088,6 +1091,41 @@
 
   /* Separator line in step area */
   .step-separator { width: 1px; background: rgba(0,7,27,0.15); position: absolute; right: 0; top: 0; bottom: 0; }
+
+  /* ── SECTION TRANSITION STRIPS ── */
+  /* Standalone divs inserted between every pair of sections.
+     They contain ONLY a color gradient from the outgoing section's
+     background to the incoming section's background.
+     Height is kept small (60px) so they are thin and unobtrusive.
+     No blur filter — blur distorts colors and can cause edge artifacts.
+     pointer-events:none ensures they never block scroll or click. */
+  .section-blend {
+    display: block;
+    width: 100%;
+    height: 60px;
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+  /* slide1 cream #DCD7C9 → slide-why inkwell #2C3639 */
+  .blend-1-why  { background: linear-gradient(to bottom, #DCD7C9, #2C3639); }
+  /* slide-why inkwell #2C3639 → slide2 starts cream #DCD7C9 */
+  .blend-why-2  { background: linear-gradient(to bottom, #2C3639, #DCD7C9); }
+  /* slide2 ends cream #DCD7C9 → slide3 cream #DCD7C9 — still worth a warm-orange mid-tint */
+  .blend-2-3    { background: linear-gradient(to bottom, #DCD7C9, #d4cfc2); }
+  /* slide3 cream → slide4 starts cream leaning into orange */
+  .blend-3-4    { background: linear-gradient(to bottom, #DCD7C9, #c9b99a); }
+  /* slide4 ends cream → slide5 off-white #DCD7C9 */
+  .blend-4-5    { background: linear-gradient(to bottom, #d4cfc2, #DCD7C9); }
+  /* slide5 off-white → slide6 off-white #DCD7C9 */
+  .blend-5-6    { background: linear-gradient(to bottom, #DCD7C9, #F5F3EE); }
+  /* slide6 off-white → slide7 cream #DCD7C9 */
+  .blend-6-7    { background: linear-gradient(to bottom, #F5F3EE, #DCD7C9); }
+  /* slide7 cream → slide8 starts cream leaning warm */
+  .blend-7-8    { background: linear-gradient(to bottom, #DCD7C9, #c9b99a); }
+  /* slide8 ends cream → slide9 similar warm cream */
+  .blend-8-9    { background: linear-gradient(to bottom, #d4cfc2, #DCD7C9); }
+  /* slide9 → slide10 both warm cream */
+  .blend-9-10   { background: linear-gradient(to bottom, #d4cfc2, #DCD7C9); }
 </style>
 </head>
 <body>
@@ -1135,6 +1173,8 @@
   
 </section>
 
+<div class="section-blend blend-1-why" aria-hidden="true"></div>
+
 <!-- ══ SLIDE 1B: WHY WE EXIST ══ -->
 <section id="slide-why">
   <div class="why-stage" id="why-stage">
@@ -1163,6 +1203,8 @@
 
   </div>
 </section>
+
+<div class="section-blend blend-why-2" aria-hidden="true"></div>
 
 <!-- ══ SLIDE 2: THE PROBLEM ══ -->
 <section class="slide" id="slide2">
@@ -1212,6 +1254,8 @@
  
 </section>
 
+<div class="section-blend blend-2-3" aria-hidden="true"></div>
+
 <!-- ══ SLIDE 3: THE SHIFT ══ -->
 <section class="slide" id="slide3">
   <div class="orb orb-5" id="orb-s3-1"></div>
@@ -1233,6 +1277,8 @@
   </div>
 
 </section>
+
+<div class="section-blend blend-3-4" aria-hidden="true"></div>
 
 <!-- ══ SLIDE 4: HOW IT WORKS ══ -->
 <section class="slide" id="slide4">
@@ -1284,6 +1330,8 @@
   </div>
 </section>
 
+<div class="section-blend blend-4-5" aria-hidden="true"></div>
+
 <!-- ══ SLIDE 5: PILLARS ══ -->
 <section class="slide" id="slide5">
   <div class="orb orb-2" id="orb-s5-1" style="opacity:0.12;bottom:unset;top:-40px;"></div>
@@ -1329,6 +1377,8 @@
 
   
 </section>
+
+<div class="section-blend blend-5-6" aria-hidden="true"></div>
 
 <!-- ══ SLIDE 6: DIGITAL CONNOISSEUR ══ -->
 <section class="slide" id="slide6">
@@ -1408,6 +1458,8 @@
   
 </section>
 
+<div class="section-blend blend-6-7" aria-hidden="true"></div>
+
 <!-- ══ SLIDE 7: TESTIMONIAL ══ -->
 <section class="slide" id="slide7">
   <div class="orb orb-1" id="orb-s7-1" style="opacity:0.12;"></div>
@@ -1434,6 +1486,8 @@
 
   
 </section>
+
+<div class="section-blend blend-7-8" aria-hidden="true"></div>
 
 <!-- ══ SLIDE 8: COMPARISON ══ -->
 <section class="slide" id="slide8">
@@ -1507,6 +1561,8 @@
   </div>
 </section>
 
+<div class="section-blend blend-8-9" aria-hidden="true"></div>
+
 <!-- ══ SLIDE 9: SCALABILITY ══ -->
 <section class="slide" id="slide9">
   <div class="orb orb-5" id="orb-s9-1" style="opacity:0.12;"></div>
@@ -1572,6 +1628,8 @@
     <button class="continue-btn" onclick="goToSlide(9)">Continue</button>
   </div>
 </section>
+
+<div class="section-blend blend-9-10" aria-hidden="true"></div>
 
 <!-- ══ SLIDE 10: FINAL CTA ══ -->
 <section class="slide" id="slide10">

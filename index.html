@@ -22,7 +22,7 @@
     --au-lait: #DCD7C9;
   }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
 
   body {
     font-family: 'Jost', sans-serif;
@@ -901,17 +901,20 @@
   ══════════════════════════════════════════════ */
   #slide-why {
     background: var(--inkwell);
+    height: 100vh;
+    /* overflow:visible — GSAP injects a pin spacer div immediately after
+       this element in the DOM. If overflow is hidden/auto, the browser
+       creates a new block formatting context which causes the spacer to be
+       mispositioned, producing the scroll-jump glitch at section entry/exit.
+       Visual clipping is handled by .why-stage (the child div) instead. */
+    overflow: visible;
     position: relative;
-    /* Do NOT set height/min-height here — GSAP pin will set the height
-       via the spacer it injects. A fixed height fights with pinSpacing. */
-    overflow: hidden;
-    isolation: isolate;
   }
 
   .why-stage {
     position: relative;
     width: 100%;
-    height: 100svh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1726,55 +1729,37 @@
     const card3   = document.getElementById('why-card-3');
     const section = document.getElementById('slide-why');
 
-    // ── Card dimensions ──
-    // Each card has a fixed base size. We animate their actual width/height
-    // values (not scaleX/Y) so cards never visually overlap — each occupies
-    // its true layout footprint at all times.
-    const CARD_BASE_W  = 90;   // px — resting width
-    const CARD_BASE_H  = 120;  // px — resting height
-    const CARD_FULL_W  = 260;  // px — expanded width
-    const CARD_FULL_H  = 340;  // px — expanded height
+    // Card dimensions
+    const CARD_BASE_W  = 90;
+    const CARD_BASE_H  = 120;
+    const CARD_FULL_W  = 260;
+    const CARD_FULL_H  = 340;
 
-    // ── Set initial states ──
-    // Cards: hidden, base size, sitting in their grid positions
+    // Set initial states
     gsap.set([card1, card2, card3], {
       width:  CARD_BASE_W,
       height: CARD_BASE_H,
       opacity: 0,
+      x: 0,
+      y: 0,
       transformOrigin: 'center center',
       force3D: true,
     });
 
-    // Title: starts ABOVE the viewport (flies in from top), fully opaque at start
-    // We position it via translateY so it enters from outside.
     gsap.set(title, {
-      y: () => -(window.innerHeight * 0.7),  // start above viewport
+      y: () => -(window.innerHeight * 0.7),
+      x: 0,
+      scale: 1,
       opacity: 0,
       transformOrigin: 'center center',
       force3D: true,
     });
 
-    // ── Timeline — scrubbed, pinned to section ──
-    // Total scroll = 550vh (5.5 viewport heights of scroll travel)
-    // Time positions below map proportionally to that scroll distance.
-    // Each phase is clearly separated — nothing overlaps with anything else.
-    //
-    // PHASE PLAN (timeline progress 0.0 → 1.0):
-    //   0.00 → 0.15  Title flies in from top, lands centre, fades in
-    //   0.15 → 0.22  Title rests at centre (pause / hold)
-    //   0.22 → 0.36  Title shrinks & moves to top-left, locks there
-    //   0.36 → 0.38  Brief pause — title is locked, screen is clear
-    //   0.38 → 0.46  Card 1 appears and expands to full size
-    //   0.46 → 0.52  Card 1 shrinks back to base size
-    //   0.52 → 0.60  Card 2 appears and expands to full size
-    //   0.60 → 0.66  Card 2 shrinks back to base size
-    //   0.66 → 0.74  Card 3 appears and expands to full size
-    //   0.74 → 0.80  Card 3 shrinks back to base size
-    //   0.80 → 0.82  Brief hold — all three at base size
-    //   0.82 → 0.94  Cards fly out in 3 different directions simultaneously
-    //   0.88 → 0.96  Title fades out
-    //   0.96 → 1.00  Screen fully clear — ready for next section
-    //
+    // ── Build the scrubbed timeline ──
+    // We pin the why-stage DIV (not the section), so GSAP's spacer is
+    // injected correctly relative to the section's natural flow position.
+    // pinnedContainer: the section element ensures scroll measurements
+    // are taken from the correct offset.
     const whyTL = gsap.timeline({
       scrollTrigger: {
         trigger: section,
@@ -1782,31 +1767,35 @@
         end: '+=550%',
         pin: true,
         pinSpacing: true,
-        scrub: 3,
+        scrub: 1.5,          // tighter scrub = less lag at boundaries
         anticipatePin: 1,
         invalidateOnRefresh: true,
         onLeave: () => {
-          gsap.set([card1, card2, card3], { opacity: 0 });
+          // Hard-set end state so section exits cleanly
+          gsap.set([card1, card2, card3], { opacity: 0, clearProps: 'x,y' });
           gsap.set(title, { opacity: 0 });
         },
-        onEnterBack: () => {
-          // Let the scrub timeline control opacity — don't force-show here
-          // to avoid elements popping in at the wrong animation state.
+        onLeaveBack: () => {
+          // Hard-set start state so section re-enters cleanly from above
+          gsap.set([card1, card2, card3], { opacity: 0, clearProps: 'x,y' });
+          gsap.set(title, {
+            opacity: 0,
+            y: () => -(window.innerHeight * 0.7),
+            x: 0,
+            scale: 1,
+          });
         },
       }
     });
 
-    // ── PHASE 1: Title enters from above, lands at centre ──
+    // PHASE 1 — Title flies in from above and lands at centre
     whyTL.to(title, {
-      y: 0,
-      opacity: 1,
+      y: 0, opacity: 1,
       ease: 'power2.out',
       duration: 0.18,
     }, 0.00);
 
-    // ── PHASE 2: Title rests at centre — implicit hold, no tween needed ──
-
-    // ── PHASE 3: Title shrinks + moves to top-left corner ──
+    // PHASE 3 — Title shrinks + moves to top-left
     whyTL.to(title, {
       scale: 0.38,
       x: () => -(window.innerWidth  / 2) + 84,
@@ -1815,101 +1804,35 @@
       duration: 0.18,
     }, 0.22);
 
-    // ── PHASE 4: Card 1 fades in at base size ──
-    whyTL.to(card1, {
-      opacity: 1,
-      ease: 'power2.out',
-      duration: 0.06,
-    }, 0.37);
+    // PHASE 4 — Card 1 fades in
+    whyTL.to(card1, { opacity: 1, ease: 'power2.out', duration: 0.06 }, 0.37);
+    // PHASE 4b — Card 1 expands
+    whyTL.to(card1, { width: CARD_FULL_W, height: CARD_FULL_H, ease: 'power1.inOut', duration: 0.14 }, 0.41);
+    // PHASE 5 — Card 1 shrinks back
+    whyTL.to(card1, { width: CARD_BASE_W, height: CARD_BASE_H, ease: 'power1.inOut', duration: 0.10 }, 0.46);
 
-    // ── PHASE 4b: Card 1 expands to full ──
-    whyTL.to(card1, {
-      width:  CARD_FULL_W,
-      height: CARD_FULL_H,
-      ease: 'power1.inOut',
-      duration: 0.14,
-    }, 0.41);
+    // PHASE 6 — Card 2 fades in + expands
+    whyTL.to(card2, { opacity: 1, ease: 'power2.out', duration: 0.06 }, 0.51);
+    whyTL.to(card2, { width: CARD_FULL_W, height: CARD_FULL_H, ease: 'power1.inOut', duration: 0.14 }, 0.55);
+    // PHASE 7 — Card 2 shrinks back
+    whyTL.to(card2, { width: CARD_BASE_W, height: CARD_BASE_H, ease: 'power1.inOut', duration: 0.10 }, 0.60);
 
-    // ── PHASE 5: Card 1 shrinks back to base ──
-    whyTL.to(card1, {
-      width:  CARD_BASE_W,
-      height: CARD_BASE_H,
-      ease: 'power1.inOut',
-      duration: 0.10,
-    }, 0.46);
+    // PHASE 8 — Card 3 fades in + expands
+    whyTL.to(card3, { opacity: 1, ease: 'power2.out', duration: 0.06 }, 0.65);
+    whyTL.to(card3, { width: CARD_FULL_W, height: CARD_FULL_H, ease: 'power1.inOut', duration: 0.14 }, 0.69);
+    // PHASE 9 — Card 3 shrinks back
+    whyTL.to(card3, { width: CARD_BASE_W, height: CARD_BASE_H, ease: 'power1.inOut', duration: 0.10 }, 0.74);
 
-    // ── PHASE 6: Card 2 fades in, expands ──
-    whyTL.to(card2, {
-      opacity: 1,
-      ease: 'power2.out',
-      duration: 0.06,
-    }, 0.51);
+    // PHASE 10 — Cards exit in three directions
+    whyTL.to(card1, { x: '-110vw', y: '-40vh', opacity: 0, ease: 'power3.in', duration: 0.12 }, 0.82);
+    whyTL.to(card2, { y: '100vh',              opacity: 0, ease: 'power3.in', duration: 0.12 }, 0.82);
+    whyTL.to(card3, { x:  '110vw', y: '-40vh', opacity: 0, ease: 'power3.in', duration: 0.12 }, 0.82);
 
-    whyTL.to(card2, {
-      width:  CARD_FULL_W,
-      height: CARD_FULL_H,
-      ease: 'power1.inOut',
-      duration: 0.14,
-    }, 0.55);
+    // PHASE 11 — Title fades out
+    whyTL.to(title, { opacity: 0, ease: 'power2.in', duration: 0.08 }, 0.88);
 
-    // ── PHASE 7: Card 2 shrinks back ──
-    whyTL.to(card2, {
-      width:  CARD_BASE_W,
-      height: CARD_BASE_H,
-      ease: 'power1.inOut',
-      duration: 0.10,
-    }, 0.60);
-
-    // ── PHASE 8: Card 3 fades in, expands ──
-    whyTL.to(card3, {
-      opacity: 1,
-      ease: 'power2.out',
-      duration: 0.06,
-    }, 0.65);
-
-    whyTL.to(card3, {
-      width:  CARD_FULL_W,
-      height: CARD_FULL_H,
-      ease: 'power1.inOut',
-      duration: 0.14,
-    }, 0.69);
-
-    // ── PHASE 9: Card 3 shrinks back ──
-    whyTL.to(card3, {
-      width:  CARD_BASE_W,
-      height: CARD_BASE_H,
-      ease: 'power1.inOut',
-      duration: 0.10,
-    }, 0.74);
-
-    // ── PHASE 10: Cards exit simultaneously in three directions ──
-    whyTL.to(card1, {
-      x: '-110vw',
-      y: '-40vh',
-      opacity: 0,
-      ease: 'power3.in',
-      duration: 0.12,
-    }, 0.82);
-    whyTL.to(card2, {
-      y: '100vh',
-      opacity: 0,
-      ease: 'power3.in',
-      duration: 0.12,
-    }, 0.82);
-    whyTL.to(card3, {
-      x: '110vw',
-      y: '-40vh',
-      opacity: 0,
-      ease: 'power3.in',
-      duration: 0.12,
-    }, 0.82);
-
-    // ── PHASE 11: Title fades out ──
-    whyTL.to(title, {
-      opacity: 0,
-      ease: 'power2.in',
-      duration: 0.08,
-    }, 0.88);
+    // Add an explicit empty tween at t=1.0 so the timeline has clean end state
+    whyTL.set({}, {}, 1.0);
 
   })();
 
@@ -2246,11 +2169,29 @@
     document.documentElement.style.scrollBehavior = 'smooth';
   }, 500);
 
-  // Force ScrollTrigger to recalculate all positions after fonts/images load.
-  // This is critical for pinned sections — without it the spacer height can be
-  // miscalculated if the page height changed after initial paint.
-  window.addEventListener('load', () => {
+  // ScrollTrigger needs to recalculate ALL positions after the full page
+  // renders (fonts, images, video placeholders shift layout).
+  // We do two refreshes: one after DOMContentLoaded settling, one after load.
+  // The 'true' argument forces a full reflow pass including pinned spacers.
+  function doRefresh() {
     ScrollTrigger.refresh(true);
+  }
+
+  // Immediate refresh (catches synchronous layout shifts)
+  setTimeout(doRefresh, 100);
+
+  // Post-load refresh (catches async shifts: fonts, images, video)
+  if (document.readyState === 'complete') {
+    setTimeout(doRefresh, 200);
+  } else {
+    window.addEventListener('load', () => setTimeout(doRefresh, 200));
+  }
+
+  // Extra safety: refresh once more after any resize (handles mobile address bar)
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(doRefresh, 300);
   });
 
 </script>

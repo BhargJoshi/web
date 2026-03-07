@@ -34,6 +34,17 @@
     overflow-x: hidden;
   }
 
+  /* ── UNIVERSAL BACKGROUND LAYER ── */
+  #universal-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: var(--cream);
+    transition: background 0.0s;
+    will-change: background;
+  }
+
   /* ── SECTION SYSTEM — normal scroll ── */
   .slide {
     display: flex;
@@ -46,7 +57,7 @@
 
   /* ── SLIDE 1: HERO ── */
   #slide1 {
-    background: var(--cream);
+    background: transparent;
     padding: 0;
   }
 
@@ -54,7 +65,7 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 20px 24px;
     position: sticky; top: 0; z-index: 10;
-    background: var(--cream);
+    background: transparent;
   }
 
   .nav-logo {
@@ -88,6 +99,9 @@
     letter-spacing: 3px; padding: 18px 48px;
     text-transform: uppercase;
     transition: all 0.3s ease;
+    opacity: 1;
+    position: relative;
+    z-index: 5;
   }
   .btn-primary:hover { background: #3F4E4F; transform: translateY(-2px); }
 
@@ -146,7 +160,7 @@
     display: flex; align-items: center; justify-content: space-around;
     padding: 16px 24px 24px;
     border-top: 1px solid rgba(44,54,57,0.1);
-    background: var(--cream);
+    background: transparent;
   }
 
   .bottom-nav-item {
@@ -161,7 +175,7 @@
 
   /* ── SLIDE 2: THE PROBLEM ── */
   #slide2 {
-    background: linear-gradient(160deg, #DCD7C9 0%, #A27B5B 35%, #d4cfc2 65%, #DCD7C9 100%);
+    background: transparent;
     color: #2C3639;
   }
 
@@ -250,7 +264,7 @@
   .shape-nav { width: 20px; height: 20px; opacity: 0.5; cursor: pointer; }
 
   /* ── SLIDE 3: THE SHIFT ── */
-  #slide3 { background: var(--cream); }
+  #slide3 { background: transparent; }
 
   .shift-nav {
     display: flex; align-items: center; justify-content: space-between;
@@ -317,7 +331,7 @@
 
   /* ── SLIDE 4: HOW IT WORKS ── */
   #slide4 {
-    background: linear-gradient(140deg, #DCD7C9 0%, #A27B5B 40%, #d4cfc2 70%, #DCD7C9 100%);
+    background: transparent;
   }
 
   .hiw-nav {
@@ -387,7 +401,7 @@
   }
 
   /* ── SLIDE 5: PILLARS ── */
-  #slide5 { background: var(--off-white); }
+  #slide5 { background: transparent; }
 
   .pillars-nav {
     display: flex; align-items: center; justify-content: space-between;
@@ -438,7 +452,7 @@
   .tab-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--navy); }
 
   /* ── SLIDE 6: DIGITAL CONNOISSEUR ── */
-  #slide6 { background: var(--off-white); }
+  #slide6 { background: transparent; }
 
   .dc-nav {
     display: flex; align-items: center; justify-content: space-between;
@@ -548,7 +562,7 @@
   .dc-tab svg { width: 18px; height: 18px; }
 
   /* ── SLIDE 7: TESTIMONIAL ── */
-  #slide7 { background: var(--cream); }
+  #slide7 { background: transparent; }
 
   .testi-nav {
     display: flex; align-items: center;
@@ -648,7 +662,7 @@
 
   /* ── SLIDE 8: COMPARISON ── */
   #slide8 {
-    background: linear-gradient(160deg, #DCD7C9 0%, #A27B5B 40%, #d4cfc2 70%, #DCD7C9 100%);
+    background: transparent;
   }
 
   .comp-nav {
@@ -719,7 +733,7 @@
 
   /* ── SLIDE 9: SCALABILITY ── */
   #slide9 {
-    background: linear-gradient(170deg, #DCD7C9 0%, #A27B5B 30%, #d4cfc2 65%, #DCD7C9 100%);
+    background: transparent;
   }
 
   .scale-nav {
@@ -796,7 +810,7 @@
 
   /* ── SLIDE 10: CTA ── */
   #slide10 {
-    background: linear-gradient(170deg, #DCD7C9 0%, #A27B5B 35%, #d4cfc2 65%, #DCD7C9 100%);
+    background: transparent;
     display: flex; flex-direction: column; align-items: center; justify-content: space-between;
   }
 
@@ -903,7 +917,7 @@
      SLIDE 1B: WHY WE EXIST
   ══════════════════════════════════════════════ */
   #slide-why {
-    background: var(--inkwell);
+    background: transparent;
     height: 100vh;
     /* overflow:visible — GSAP injects a pin spacer div immediately after
        this element in the DOM. If overflow is hidden/auto, the browser
@@ -1093,42 +1107,23 @@
   .step-separator { width: 1px; background: rgba(0,7,27,0.15); position: absolute; right: 0; top: 0; bottom: 0; }
 
   /* ── SECTION TRANSITION STRIPS ── */
-  /* Standalone divs inserted between every pair of sections.
-     They contain ONLY a color gradient from the outgoing section's
-     background to the incoming section's background.
-     Height is kept small (60px) so they are thin and unobtrusive.
-     No blur filter — blur distorts colors and can cause edge artifacts.
-     pointer-events:none ensures they never block scroll or click. */
+  /* Now handled by the universal background GSAP transitions.
+     Strips remain in DOM but are transparent/invisible. */
   .section-blend {
     display: block;
     width: 100%;
     height: 60px;
     pointer-events: none;
     flex-shrink: 0;
+    background: transparent !important;
   }
-  /* slide1 cream #DCD7C9 → slide-why inkwell #2C3639 */
-  .blend-1-why  { background: linear-gradient(to bottom, #DCD7C9, #2C3639); }
-  /* slide-why inkwell #2C3639 → slide2 starts cream #DCD7C9 */
-  .blend-why-2  { background: linear-gradient(to bottom, #2C3639, #DCD7C9); }
-  /* slide2 ends cream #DCD7C9 → slide3 cream #DCD7C9 — still worth a warm-orange mid-tint */
-  .blend-2-3    { background: linear-gradient(to bottom, #DCD7C9, #d4cfc2); }
-  /* slide3 cream → slide4 starts cream leaning into orange */
-  .blend-3-4    { background: linear-gradient(to bottom, #DCD7C9, #c9b99a); }
-  /* slide4 ends cream → slide5 off-white #DCD7C9 */
-  .blend-4-5    { background: linear-gradient(to bottom, #d4cfc2, #DCD7C9); }
-  /* slide5 off-white → slide6 off-white #DCD7C9 */
-  .blend-5-6    { background: linear-gradient(to bottom, #DCD7C9, #F5F3EE); }
-  /* slide6 off-white → slide7 cream #DCD7C9 */
-  .blend-6-7    { background: linear-gradient(to bottom, #F5F3EE, #DCD7C9); }
-  /* slide7 cream → slide8 starts cream leaning warm */
-  .blend-7-8    { background: linear-gradient(to bottom, #DCD7C9, #c9b99a); }
-  /* slide8 ends cream → slide9 similar warm cream */
-  .blend-8-9    { background: linear-gradient(to bottom, #d4cfc2, #DCD7C9); }
-  /* slide9 → slide10 both warm cream */
-  .blend-9-10   { background: linear-gradient(to bottom, #d4cfc2, #DCD7C9); }
+  .blend-1-why, .blend-why-2, .blend-2-3, .blend-3-4,
+  .blend-4-5, .blend-5-6, .blend-6-7, .blend-7-8,
+  .blend-8-9, .blend-9-10 { background: transparent !important; }
 </style>
 </head>
 <body>
+<div id="universal-bg"></div>
 <div id="scroll-progress"></div>
 
 <!-- ══ SLIDE 1: HERO ══ -->
@@ -1669,7 +1664,7 @@
       </div>
       <div id="cta-success" style="display:none;text-align:center;padding:48px 0;">
         <div style="font-size:32px;margin-bottom:20px;">✓</div>
-        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:400;color:#2C3639;line-height:1.4;margin-bottom:12px;">Your Response is Recorded,<br>Our Team Will Contact You Soon</div>
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:400;color:#2C3639;line-height:1.4;margin-bottom:12px;">Your Response Is Recorded,<br>Our Team Will Contact You Soon.</div>
         <div style="font-size:10px;letter-spacing:3px;color:rgba(44,54,57,0.5);margin-top:16px;">RESTRO · THE NEW STANDARD OF SERVICE</div>
       </div>
     </div>
@@ -1730,6 +1725,45 @@
   // Disable default scroll-behavior for GSAP-controlled sections
   document.documentElement.style.scrollBehavior = 'auto';
 
+  /* ══════════════════════════════════════════════
+     UNIVERSAL BACKGROUND — smooth color transitions
+     Each section triggers a color change on the
+     fixed #universal-bg element via GSAP + CSS var interpolation.
+  ══════════════════════════════════════════════ */
+  (function() {
+    // Section id → target background color (matches original per-section colors)
+    const sectionBgs = [
+      { id: 'slide1',    color: '#DCD7C9' },
+      { id: 'slide2',    color: '#c9b49a' },
+      { id: 'slide3',    color: '#DCD7C9' },
+      { id: 'slide4',    color: '#c9b49a' },
+      { id: 'slide5',    color: '#DCD7C9' },
+      { id: 'slide6',    color: '#F5F3EE' },
+      { id: 'slide7',    color: '#DCD7C9' },
+      { id: 'slide8',    color: '#c9b49a' },
+      { id: 'slide9',    color: '#c9b49a' },
+      { id: 'slide10',   color: '#DCD7C9' },
+    ];
+
+    const bg = document.getElementById('universal-bg');
+
+    sectionBgs.forEach(function(item) {
+      const el = document.getElementById(item.id);
+      if (!el) return;
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 60%',
+        end: 'bottom 40%',
+        onEnter: function() {
+          gsap.to(bg, { backgroundColor: item.color, duration: 0.8, ease: 'power2.inOut', overwrite: 'auto' });
+        },
+        onEnterBack: function() {
+          gsap.to(bg, { backgroundColor: item.color, duration: 0.8, ease: 'power2.inOut', overwrite: 'auto' });
+        },
+      });
+    });
+  })();
+
   /* ── SCROLL PROGRESS BAR ── */
   gsap.to('#scroll-progress', {
     scaleX: 1,
@@ -1748,7 +1782,7 @@
   const heroTL = gsap.timeline({ defaults: { ease: 'power3.out' } });
   heroTL
     .from('#hero-title', { opacity: 0, y: 60, duration: 1.1 })
-    .from('#hero-btn',   { opacity: 0, y: 30, duration: 0.7 }, '-=0.5')
+    .fromTo('#hero-btn', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, clearProps: 'opacity,y,transform' }, '-=0.5')
     .from('#hero-card',  { opacity: 0, y: 50, scale: 0.97, duration: 0.9 }, '-=0.4')
     .from('#hero-caption', { opacity: 0, duration: 0.6 }, '-=0.3')
     .from('#hero-tagline', { opacity: 0, y: 20, duration: 0.7 }, '-=0.4');
@@ -2146,9 +2180,9 @@
     scrollTrigger: { trigger: '#slide10', start: 'top 75%', toggleActions: 'play none none none' }
   });
   ctaTL
-    .from('#cta-form-wrap', { opacity: 0, scale: 0.95, y: 40, duration: 1.0, ease: 'power3.out' })
-    .from('#cta-btn',  { opacity: 0, y: 30, scale: 0.9, duration: 0.7, ease: 'power3.out' }, '-=0.4')
-    .from('#cta-bottom', { opacity: 0, y: 20, duration: 0.6 }, '-=0.2');
+    .from('#cta-form-wrap', { opacity: 0, scale: 0.95, y: 40, duration: 1.0, ease: 'power3.out', clearProps: 'opacity,scale,y,transform' })
+    .fromTo('#cta-btn', { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: 'power3.out', clearProps: 'opacity,y,scale,transform' }, '-=0.4')
+    .from('#cta-bottom', { opacity: 0, y: 20, duration: 0.6, clearProps: 'opacity,y,transform' }, '-=0.2');
 
   // CTA orbs spin slowly
   gsap.to('#orb-s10-1', { rotation: 360, duration: 20, ease: 'none', repeat: -1, transformOrigin: '50% 50%' });
@@ -2226,6 +2260,36 @@
   setTimeout(() => {
     document.documentElement.style.scrollBehavior = 'smooth';
   }, 500);
+
+  /* ── BUTTON VISIBILITY SAFETY NET ──
+     GSAP .from() sets opacity:0 as an inline style immediately.
+     If the animation completes but clearProps doesn't strip it
+     (e.g. due to a ScrollTrigger timing edge case), these guards
+     ensure both buttons are always visible after 2 seconds. */
+  setTimeout(() => {
+    const heroBtn = document.getElementById('hero-btn');
+    if (heroBtn) {
+      heroBtn.style.removeProperty('opacity');
+      heroBtn.style.removeProperty('transform');
+      heroBtn.style.removeProperty('visibility');
+    }
+  }, 2000);
+
+  // For the CTA form/button: force visible once the user scrolls near slide10
+  ScrollTrigger.create({
+    trigger: '#slide10',
+    start: 'top 110%',
+    once: true,
+    onEnter: () => {
+      // Already handled by ctaTL, but if it misfires, ensure visibility
+      setTimeout(() => {
+        const wrap = document.getElementById('cta-form-wrap');
+        const btn  = document.getElementById('cta-btn');
+        if (wrap) { wrap.style.removeProperty('opacity'); wrap.style.removeProperty('transform'); }
+        if (btn)  { btn.style.removeProperty('opacity');  btn.style.removeProperty('transform'); }
+      }, 1500);
+    }
+  });
 
   // ScrollTrigger needs to recalculate ALL positions after the full page
   // renders (fonts, images, video placeholders shift layout).

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,217 +57,58 @@
 
   /* ── SLIDE 1: HERO ── */
   #slide1 {
-    background: #000;
+    background: transparent;
     padding: 0;
-    min-height: 100svh;
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Fallback animated gradient if video fails */
-  @keyframes heroBgPan {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  /* Full-screen video background */
-  .hero-video-bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    overflow: hidden;
-    transform-origin: center center;
-    /* CSS-only zoom: no dependency on GSAP */
-    transform: scale(1);
-    transition: transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    will-change: transform;
-  }
-
-  #hero-video-fullscreen {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transform-origin: center center;
-  }
-
-  /* Animated gradient overlay on video */
-  .hero-video-overlay {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(to bottom,
-        rgba(20, 15, 10, 0.35) 0%,
-        rgba(20, 15, 10, 0.1) 40%,
-        rgba(20, 15, 10, 0.5) 100%
-      );
-    z-index: 1;
-    transition: background 1.0s ease, opacity 1.0s ease;
-  }
-
-  /* Overlay darkens slightly on hover for dramatic zoom feel */
-  #slide1:hover .hero-video-overlay {
-    background:
-      linear-gradient(to bottom,
-        rgba(10, 8, 5, 0.45) 0%,
-        rgba(10, 8, 5, 0.08) 40%,
-        rgba(10, 8, 5, 0.65) 100%
-      );
-  }
-
-  /* Overlay transitions on scroll-down */
-  #slide1.scrolled-down .hero-video-overlay {
-    background:
-      linear-gradient(to bottom,
-        rgba(5, 4, 2, 0.55) 0%,
-        rgba(5, 4, 2, 0.15) 40%,
-        rgba(5, 4, 2, 0.75) 100%
-      );
-  }
-
-  /* ── CSS-ONLY zoom — works even if GSAP hasn't fired ── */
-  /* Hover zoom: purely CSS, no JS needed */
-  #slide1:hover .hero-video-bg {
-    transform: scale(1.06) !important;
-  }
-
-  /* Scroll-down zoom: applied via JS class on #slide1 */
-  #slide1.scrolled-down .hero-video-bg {
-    transform: scale(1.11) !important;
   }
 
   .nav1 {
     display: flex; align-items: center; justify-content: space-between;
     padding: 20px 24px;
-    position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+    position: sticky; top: 0; z-index: 10;
     background: transparent;
   }
 
   .nav-logo {
     display: flex; align-items: center; gap: 10px;
     font-family: 'Jost', sans-serif; font-weight: 600;
-    font-size: 14px; letter-spacing: 2px; color: #fff;
+    font-size: 14px; letter-spacing: 2px; color: var(--navy);
   }
 
   .fork-icon { font-size: 22px; }
-  .hamburger { font-size: 24px; cursor: pointer; color: #fff; background: none; border: none; }
+  .hamburger { font-size: 24px; cursor: pointer; color: var(--navy); background: none; border: none; }
 
   .hero-content {
-    position: absolute;
-    inset: 0;
-    z-index: 5;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 80px 32px 40px;
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-start;
+    padding: 48px 32px 40px;
     text-align: center;
-    gap: 0;
   }
 
   .hero-title {
     font-family: 'Ratcheron', serif;
     font-size: clamp(22px, 5.25vw, 29.4px);
-    font-weight: 400; line-height: 1.3;
-    color: #fff; margin-bottom: 48px; margin-top: 0;
-    text-shadow: 0 2px 20px rgba(0,0,0,0.4);
-  }
-
-  /* Glass prism button */
-  @keyframes prismShimmer {
-    0%   { background-position: 200% center; }
-    100% { background-position: -200% center; }
-  }
-  @keyframes prismPulse {
-    0%, 100% { box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset, 0 4px 24px rgba(162,123,91,0.18), 0 1.5px 0 rgba(255,255,255,0.35) inset, 0 -1px 0 rgba(0,0,0,0.15) inset; }
-    50%       { box-shadow: 0 0 0 1px rgba(255,255,255,0.22) inset, 0 6px 32px rgba(162,123,91,0.28), 0 1.5px 0 rgba(255,255,255,0.5) inset, 0 -1px 0 rgba(0,0,0,0.1) inset; }
+    font-weight: 400; line-height: 1.1;
+    color: var(--navy); margin-bottom: 32px;
   }
 
   .btn-primary {
-    background: rgba(255, 255, 255, 0.12);
-    color: #fff;
-    border: 1.5px solid rgba(255,255,255,0.55);
-    cursor: pointer;
+    background: var(--navy); color: #DCD7C9;
+    border: none; cursor: pointer;
     font-family: 'Jost', sans-serif;
     font-size: 12px; font-weight: 500;
     letter-spacing: 3px; padding: 18px 48px;
     text-transform: uppercase;
-    transition: all 0.35s ease;
+    transition: all 0.3s ease;
     opacity: 1;
     position: relative;
     z-index: 5;
-    border-radius: 4px;
-    backdrop-filter: blur(18px) saturate(200%) brightness(1.08);
-    -webkit-backdrop-filter: blur(18px) saturate(200%) brightness(1.08);
-    box-shadow:
-      0 0 0 1px rgba(255,255,255,0.12) inset,
-      0 4px 24px rgba(162,123,91,0.18),
-      0 1.5px 0 rgba(255,255,255,0.35) inset,
-      0 -1px 0 rgba(0,0,0,0.15) inset;
-    background-image:
-      linear-gradient(135deg,
-        rgba(255,255,255,0.22) 0%,
-        rgba(255,220,180,0.08) 40%,
-        rgba(162,123,91,0.12) 70%,
-        rgba(255,255,255,0.18) 100%
-      );
-    overflow: hidden;
-    animation: prismPulse 3s ease-in-out infinite;
   }
-  /* Prism rainbow refraction inner layer */
-  .btn-primary::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(105deg,
-      transparent 20%,
-      rgba(255, 100, 100, 0.06) 30%,
-      rgba(255, 200, 100, 0.06) 40%,
-      rgba(100, 255, 180, 0.06) 50%,
-      rgba(100, 180, 255, 0.06) 60%,
-      rgba(200, 100, 255, 0.06) 70%,
-      transparent 80%
-    );
-    background-size: 300% 100%;
-    animation: prismShimmer 4s linear infinite;
-    pointer-events: none;
-    border-radius: 3px;
-  }
-  .btn-primary::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -60%;
-    width: 40%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transform: skewX(-20deg);
-    transition: left 0.55s ease;
-    pointer-events: none;
-    z-index: 1;
-  }
-  .btn-primary:hover::before { left: 140%; }
-  .btn-primary:hover {
-    background-image: linear-gradient(135deg,
-      rgba(255,255,255,0.32) 0%,
-      rgba(255,220,180,0.14) 40%,
-      rgba(162,123,91,0.2) 70%,
-      rgba(255,255,255,0.28) 100%
-    );
-    border-color: rgba(255,255,255,0.85);
-    transform: translateY(-2px);
-    box-shadow:
-      0 0 0 1px rgba(255,255,255,0.25) inset,
-      0 8px 40px rgba(162,123,91,0.35),
-      0 1.5px 0 rgba(255,255,255,0.6) inset,
-      0 0 20px rgba(255,255,255,0.08);
-    animation: none;
-    backdrop-filter: blur(22px) saturate(220%) brightness(1.12);
-    -webkit-backdrop-filter: blur(22px) saturate(220%) brightness(1.12);
-  }
+  .btn-primary:hover { background: #3F4E4F; transform: translateY(-2px); }
 
-  /* Hide old hero card elements — kept in DOM but invisible */
   .hero-card {
-    display: none;
+    background: #F5F3EE; margin: 32px 20px 0;
+    border-radius: 4px; overflow: hidden;
+    box-shadow: 0 8px 32px rgba(28,49,99,0.08);
   }
 
   .restaurant-img {
@@ -306,61 +146,14 @@
     font-size: 10px; letter-spacing: 4px;
     color: rgba(44,54,57,0.5); text-align: center;
     font-family: 'Jost', sans-serif; font-weight: 400;
-    display: none;
   }
 
   .hero-tagline {
-    display: none;
-  }
-
-  /* Scroll indicator */
-  .hero-scroll-indicator {
-    position: absolute;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 6;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    opacity: 0.7;
-    animation: scrollBounce 2s ease-in-out infinite;
-  }
-  .hero-scroll-indicator span {
-    font-family: 'Jost', sans-serif;
-    font-size: 8px; letter-spacing: 4px;
-    color: #fff; text-transform: uppercase;
-  }
-  .scroll-arrow {
-    width: 18px; height: 18px;
-    border-right: 1.5px solid #fff;
-    border-bottom: 1.5px solid #fff;
-    transform: rotate(45deg);
-  }
-  @keyframes scrollBounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(6px); }
-  }
-
-  /* RESTRO title overlay — part of the stacked hero content flow */
-  .hero-brand-overlay {
-    position: relative;
-    z-index: 4;
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(72px, 22vw, 160px);
-    font-weight: 700;
-    letter-spacing: 8px;
-    color: rgba(255,255,255,0.92);
-    text-shadow:
-      0 4px 40px rgba(0,0,0,0.3),
-      0 0 80px rgba(162,123,91,0.2);
-    pointer-events: none;
-    white-space: nowrap;
-    line-height: 1;
-    display: block;
-    text-align: center;
-    margin-bottom: 48px;
+    padding: 48px 32px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 20px;
+    line-height: 1.6; color: var(--navy);
+    text-align: center; opacity: 0.85;
   }
 
   .bottom-nav {
@@ -492,182 +285,24 @@
   .shift-line { width: 48px; height: 1px; background: var(--navy); opacity: 0.3; margin: 12px 0; }
   .shift-subtitle { font-size: 10px; letter-spacing: 4px; color: var(--navy); opacity: 0.6; margin-bottom: 48px; }
 
-  /* ── MASK EXPAND — replaces old flow-diagram / flow-circle ── */
   .flow-diagram {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    padding: 0;
-    margin-bottom: 48px;
-    width: 100%;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0; padding: 0 32px; margin-bottom: 48px;
   }
 
-  /* Keep legacy selectors harmless (GSAP still refs them) */
-  .flow-circle { display: none; }
-  .flow-dash   { display: none; }
-
-  /* ── Mask item wrapper ── */
-  .mask-item {
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    border-top: 1px solid rgba(44,54,57,0.15);
-    /* collapsed height — just the header bar */
-    height: 64px;
-    transition: height 0.62s cubic-bezier(0.77, 0, 0.175, 1);
-    will-change: height;
-    background: rgba(255,255,255,0.55);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border-radius: 4px;
-    margin-bottom: 4px;
-  }
-
-  .mask-item:last-child {
-    border-bottom: 1px solid rgba(44,54,57,0.15);
-  }
-
-  /* Expanded state */
-  .mask-item.mask-open {
-    height: 220px;
-  }
-
-  /* Clip-path mask — starts clipped to top strip, expands to reveal all */
-  .mask-item-inner {
-    position: absolute;
-    inset: 0;
-    clip-path: inset(0 0 100% 0);
-    transition: clip-path 0.62s cubic-bezier(0.77, 0, 0.175, 1);
-    will-change: clip-path;
-    pointer-events: none;
-  }
-
-  .mask-item.mask-open .mask-item-inner {
-    clip-path: inset(0 0 0% 0);
-  }
-
-  /* ── Header row (always visible) ── */
-  .mask-header {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    z-index: 2;
-    pointer-events: none;
-    user-select: none;
-  }
-
-  .mask-header-left {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .mask-number {
-    font-size: 9px;
-    letter-spacing: 3px;
-    color: var(--creme-brulee);
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    min-width: 24px;
-  }
-
-  .mask-label {
-    font-size: 13px;
-    letter-spacing: 3px;
-    color: var(--navy);
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    text-transform: uppercase;
-  }
-
-  .mask-arrow {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    border: 1px solid rgba(44,54,57,0.2);
+  .flow-circle {
+    width: 130px; height: 130px; border-radius: 50%;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(28,49,99,0.12);
     display: flex; align-items: center; justify-content: center;
-    color: var(--navy);
-    font-size: 14px;
-    transition: transform 0.45s cubic-bezier(0.77, 0, 0.175, 1),
-                background 0.3s ease,
-                border-color 0.3s ease;
-    flex-shrink: 0;
+    font-size: 10px; letter-spacing: 3px; color: var(--navy);
+    font-weight: 500;
   }
 
-  .mask-item.mask-open .mask-arrow {
-    transform: rotate(45deg);
-    background: var(--navy);
-    border-color: var(--navy);
-    color: var(--cream);
+  .flow-dash {
+    width: 1px; height: 60px;
+    border-left: 1px dashed rgba(28,49,99,0.3);
   }
-
-  /* ── Expanded reveal content (lives inside .mask-item-inner) ── */
-  .mask-content {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: flex-end;
-    padding: 0 20px 20px;
-    gap: 20px;
-  }
-
-  /* Left: big step icon / badge */
-  .mask-badge {
-    width: 72px; height: 72px;
-    border-radius: 50%;
-    background: var(--navy);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    font-size: 24px;
-  }
-
-  /* Right: text block */
-  .mask-text-block {
-    flex: 1;
-  }
-
-  .mask-step-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px; font-weight: 400; font-style: italic;
-    color: var(--navy);
-    margin-bottom: 8px;
-    line-height: 1.2;
-  }
-
-  .mask-step-desc {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px; line-height: 1.55;
-    color: rgba(44,54,57,0.75);
-  }
-
-  /* Coloured fill that reveals with the clip-path */
-  .mask-fill {
-    position: absolute;
-    inset: 0;
-    opacity: 0.07;
-    transition: opacity 0.4s ease;
-  }
-  .mask-item.mask-open .mask-fill { opacity: 0.13; }
-
-  .mask-fill-1 { background: var(--creme-brulee); }
-  .mask-fill-2 { background: var(--sage); }
-  .mask-fill-3 { background: var(--navy); }
-
-  /* Progress line beneath header — animates width on open */
-  .mask-progress {
-    position: absolute;
-    bottom: 0; left: 0;
-    height: 2px;
-    width: 0%;
-    background: var(--creme-brulee);
-    transition: width 0.62s cubic-bezier(0.77, 0, 0.175, 1);
-    z-index: 3;
-  }
-  .mask-item.mask-open .mask-progress { width: 100%; }
 
   .shift-desc {
     font-family: 'Cormorant Garamond', serif;
@@ -694,18 +329,76 @@
   }
   .arrow-btn.filled { background: var(--navy); color: #DCD7C9; border-color: var(--navy); }
 
-  /* ── SLIDE 4: HOW IT WORKS — GSAP DRAG SLIDER ── */
+  /* ── SLIDE 4: HOW IT WORKS ── */
   #slide4 {
-    background: #0e0b09;
-    overflow: hidden;
-    height: 100svh;
-    min-height: 100svh;
-    position: relative;
-    cursor: grab;
-    user-select: none;
-    display: block;
+    background: transparent;
   }
-  #slide4:active { cursor: grabbing; }
+
+  .hiw-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+  }
+
+  .hiw-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-style: italic; color: #2C3639;
+  }
+
+  .hiw-body { flex: 1; padding: 24px 24px 0; }
+
+  .hiw-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px; font-weight: 400;
+    color: #2C3639; margin-bottom: 6px;
+  }
+
+  .hiw-line { width: 48px; height: 2px; background: #2C3639; margin-bottom: 40px; }
+
+  .steps-layout { display: flex; gap: 16px; }
+  .steps-left { flex: 1; }
+
+  .step {
+    margin-bottom: 32px; position: relative;
+  }
+
+  .step-num {
+    position: absolute; left: -4px; top: -16px;
+    font-family: 'Playfair Display', serif;
+    font-size: 80px; font-weight: 700;
+    color: rgba(44,54,57,0.08); line-height: 1;
+    pointer-events: none;
+  }
+
+  .step-title {
+    font-size: 11px; letter-spacing: 3px; font-weight: 600;
+    color: #2C3639; margin-bottom: 6px; position: relative; z-index: 1;
+  }
+
+  .step-desc {
+    font-size: 15px; line-height: 1.5; color: #2C3639;
+    position: relative; z-index: 1;
+  }
+
+  .steps-right {
+    width: 120px; display: flex; align-items: center; justify-content: center;
+  }
+
+  .phone-sketch {
+    width: 90px; opacity: 0.7;
+  }
+
+  .hiw-btn-wrap { padding: 0; }
+
+  .hiw-btn {
+    display: block; width: 100%;
+    background: #2C3639; color: #DCD7C9;
+    border: none; cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: 4px;
+    font-weight: 500; padding: 22px;
+    text-transform: uppercase; text-align: center;
+    transition: background 0.3s;
+  }
 
   /* ── SLIDE 5: PILLARS ── */
   #slide5 { background: transparent; }
@@ -785,8 +478,6 @@
   .dc-phone-wrapper {
     position: relative; display: flex; justify-content: center;
     margin-top: 24px;
-    flex-wrap: wrap;
-    gap: 16px;
   }
 
   .dc-features-left {
@@ -1223,725 +914,193 @@
   .scale-feature { will-change: transform, opacity; }
 
   /* ══════════════════════════════════════════════
-     SLIDE 1B: WHY WE EXIST — Insomnia Ultra Smooth
+     SLIDE 1B: WHY WE EXIST
   ══════════════════════════════════════════════ */
-
-  /* Lenis essential resets */
-  html.lenis, html.lenis body { height: auto; }
-  .lenis.lenis-smooth { scroll-behavior: auto !important; }
-  .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-  .lenis.lenis-stopped { overflow: hidden; }
-
   #slide-why {
-    background: #0d0d0d;
+    background: transparent;
+    height: 100vh;
+    /* overflow:visible — GSAP injects a pin spacer div immediately after
+       this element in the DOM. If overflow is hidden/auto, the browser
+       creates a new block formatting context which causes the spacer to be
+       mispositioned, producing the scroll-jump glitch at section entry/exit.
+       Visual clipping is handled by .why-stage (the child div) instead. */
     overflow: visible;
     position: relative;
-    -webkit-font-smoothing: antialiased;
   }
 
-  /* Marquee header — sticky inside slide-why, stays in its lane */
-  .why-header-fixed {
-    position: sticky;
-    top: 0;
+  .why-stage {
+    position: relative;
     width: 100%;
-    height: 300px;
-    z-index: 100;
+    height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    pointer-events: none;
+    justify-content: center;
+    background: var(--inkwell);
+    /* Stage clips the flying cards so they don't visually bleed,
+       but the section itself stays overflow:visible for the spacer */
     overflow: hidden;
-    mix-blend-mode: exclusion;
-    /* no opacity/visibility toggle needed — sticky handles show/hide naturally */
   }
 
-  /* marquee inner — GPU-accelerated */
-  .why-marquee-inner {
-    display: flex;
-    white-space: nowrap;
-    will-change: transform;
-    flex-shrink: 0;
-  }
-  .why-marquee-inner h1 {
+  /* The big title */
+  .why-title {
     font-family: 'Playfair Display', serif;
-    font-size: 14vw;
-    font-weight: 400;
-    text-transform: uppercase;
-    line-height: 1;
-    padding-right: 0.2em;
-    letter-spacing: -2px;
-    color: #ffffff;
-    flex-shrink: 0;
-    user-select: none;
-  }
-
-  /* Sub-label — sticky below the marquee header */
-  .why-sub-header {
-    position: sticky;
-    top: 300px;
-    left: 5vw;
-    font-family: 'Jost', sans-serif;
-    font-size: 0.8rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    z-index: 101;
-    color: var(--creme-brulee);
-    pointer-events: none;
-    margin-top: -40px;
-    margin-left: 5vw;
-  }
-
-  /* Content rows — no extra padding; sticky header occupies its own flow space */
-  .why-content-wrap {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Project row — justify-content:space-between, min-height:100vh */
-  .why-project-row {
-    display: flex;
-    padding: 15vh 5vw;
-    min-height: 100vh;
-    border-top: 1px solid rgba(210, 180, 140, 0.2);
-    justify-content: space-between;
-    background: #0d0d0d;
-    position: relative;
-  }
-
-  /* Side text — 30%, padding-top:20px */
-  .why-side-text {
-    width: 30%;
-    padding-top: 20px;
-    opacity: 0.4;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(14px, 1.5vw, 17px);
-    line-height: 1.5;
-    color: rgba(255,255,255,0.9);
-    transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    will-change: opacity, transform;
-    flex-shrink: 0;
-  }
-  .why-project-row:hover .why-side-text { opacity: 1; }
-
-  .why-side-num {
-    font-family: 'Jost', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 3px;
-    color: var(--creme-brulee);
-    display: block;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-  }
-  .why-side-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(28px, 3rem, 48px);
-    font-weight: 400;
-    color: #fff;
-    line-height: 1.1;
-    margin: 0 0 20px 0;
-    letter-spacing: -1px;
-  }
-  .why-side-desc {
-    color: rgba(255,255,255,0.6);
-    line-height: 1.5;
-    max-width: 300px;
-    font-size: clamp(13px, 1.3vw, 15px);
-    font-weight: 300;
-  }
-
-  /* Image container — 60%, height:70vh, img:130% for parallax travel */
-  .why-img-box {
-    width: 60%;
-    height: 70vh;
-    overflow: hidden;
-    position: relative;
-    background: #111;
-    flex-shrink: 0;
-  }
-  .why-img-box img {
-    width: 100%;
-    height: 130%;
-    object-fit: cover;
+    font-size: clamp(28px, 9vw, 60px);
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--au-lait);
+    text-align: center;
     position: absolute;
-    top: 0; left: 0;
-    will-change: transform;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    white-space: nowrap;
+    pointer-events: none;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
   }
-  .why-img-box-overlay {
+
+  /* Three image cards */
+  .why-img-grid {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-end;       /* cards grow upward — anchored at base, clean expansion */
+    padding: 0 20px;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  .why-img-card {
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--lunar);
+    flex-shrink: 0;
+    will-change: transform, opacity;
+    position: relative;
+    backface-visibility: hidden;
+  }
+
+  .why-img-card::before {
+    content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(160deg, rgba(162,123,91,0.08) 0%, transparent 50%);
+    background: linear-gradient(160deg, rgba(162,123,91,0.3) 0%, transparent 60%);
     z-index: 1;
     pointer-events: none;
   }
 
-  /* Floating dot nav */
-  .why-dot-nav {
-    position: fixed;
-    bottom: 40px; left: 50%;
-    transform: translateX(-50%);
+  .why-img-card .why-card-inner {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
     display: flex;
-    gap: 10px;
-    z-index: 200;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-  }
-  .why-dot-nav.visible { opacity: 1; }
-  .why-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.8);
-    transition: background 0.3s, transform 0.3s;
-  }
-  .why-dot.active {
-    background: #fff;
-    transform: scale(1.3);
+    align-items: flex-end;
+    padding: 12px;
   }
 
-  .why-end-spacer { height: 20vh; background: #0d0d0d; }
-
-  /* Suppress all legacy why elements */
-  .why-stage, .why-title, .why-img-grid,
-  .why-img-card, .why-card-inner, .why-card-label,
-  .why-marquee-wrap, .why-editorial-section,
-  .why-spacer-end { display: none !important; }
-
-
-  /* ══════════════════════════════════════════════
-     COMPREHENSIVE RESPONSIVE SYSTEM
-     Mobile-first: 320px → Tablet: 768px → Desktop: 1024px+
-  ══════════════════════════════════════════════ */
-
-  /* ── TABLET & BELOW (≤ 1024px) ── */
-  @media (max-width: 1024px) {
-    /* WHY section: stack rows on tablet */
-    .why-project-row {
-      flex-direction: column;
-      padding: 10vh 5vw;
-      gap: 40px;
-    }
-    .why-side-text {
-      width: 100%;
-    }
-    .why-img-box {
-      width: 100%;
-      height: 50vh;
-    }
-    .why-marquee-inner h1 {
-      font-size: 10vw;
-    }
-
-    /* HIW slide: adapt card widths */
-    #hiw-drag-area {
-      padding: 0 10vw !important;
-    }
-    .hiw-card > div {
-      width: 75vw !important;
-    }
-
-    /* Comparison table: slightly smaller cells */
-    .comp-table th, .comp-table td {
-      padding: 14px 10px;
-      font-size: 12px;
-    }
-    .comp-table td.feature-col {
-      font-size: 12px;
-    }
-
-    /* CTA form: limit width on larger tablets */
-    #cta-form-wrap {
-      max-width: 500px;
-      margin: 0 auto;
-      width: 100%;
-    }
+  .why-card-1 .why-card-inner {
+    background-image: linear-gradient(135deg, #3F4E4F 0%, #2C3639 40%, #A27B5B 100%);
+  }
+  .why-card-2 .why-card-inner {
+    background-image: linear-gradient(160deg, #2C3639 0%, #A27B5B 50%, #3F4E4F 100%);
+  }
+  .why-card-3 .why-card-inner {
+    background-image: linear-gradient(110deg, #A27B5B 0%, #3F4E4F 40%, #2C3639 100%);
   }
 
-  /* ── MOBILE (≤ 768px) ── */
-  @media (max-width: 768px) {
-
-    /* ─ GLOBAL ─ */
-    .slide {
-      min-height: 100svh;
-      overflow-x: hidden;
-    }
-
-    /* ─ HERO (slide1) ─ */
-    .nav1 {
-      padding: 14px 16px;
-    }
-    .nav-logo {
-      font-size: 12px;
-      letter-spacing: 1.5px;
-    }
-    .hero-brand-overlay {
-      font-size: clamp(56px, 18vw, 110px);
-      letter-spacing: 4px;
-      margin-bottom: 32px;
-    }
-    .hero-content {
-      padding: 70px 20px 36px;
-      gap: 0;
-    }
-    .hero-title {
-      font-size: clamp(18px, 5.5vw, 26px);
-      margin-bottom: 36px;
-    }
-    .btn-primary {
-      font-size: 11px;
-      padding: 15px 32px;
-      letter-spacing: 2px;
-    }
-    .hero-scroll-indicator {
-      bottom: 20px;
-    }
-
-    /* ─ WHY WE EXIST (slide-why) ─ */
-    .why-header-fixed {
-      height: 200px;
-    }
-    .why-marquee-inner h1 {
-      font-size: 13vw;
-    }
-    .why-sub-header {
-      top: 200px;
-      font-size: 0.7rem;
-    }
-    .why-project-row {
-      flex-direction: column;
-      padding: 8vh 5vw;
-      gap: 28px;
-      min-height: auto;
-    }
-    .why-side-text {
-      width: 100%;
-      opacity: 1;
-    }
-    .why-side-title {
-      font-size: clamp(24px, 7vw, 40px);
-    }
-    .why-side-desc {
-      font-size: clamp(13px, 3.5vw, 15px);
-      max-width: 100%;
-    }
-    .why-img-box {
-      width: 100%;
-      height: 40vw;
-      min-height: 200px;
-    }
-    .why-end-spacer {
-      height: 10vh;
-    }
-
-    /* ─ SLIDE 2: PROBLEM ─ */
-    .slide-body {
-      padding: 24px 16px;
-    }
-    .problem-title {
-      font-size: clamp(28px, 8.5vw, 42px);
-    }
-    .problem-subtitle {
-      font-size: 9px;
-      letter-spacing: 3px;
-      margin-bottom: 24px;
-    }
-    .problem-text {
-      font-size: clamp(15px, 4.5vw, 20px);
-      padding: 16px 0;
-    }
-    .diagram-card {
-      padding: 16px;
-    }
-    .chaos-svg {
-      height: 110px;
-    }
-    .precision-svg {
-      height: 80px;
-    }
-    .compare-label {
-      font-size: clamp(15px, 4.5vw, 22px);
-    }
-    .compare-row {
-      padding: 12px 0;
-    }
-
-    /* ─ SLIDE 3: THE SHIFT ─ */
-    .shift-body {
-      padding: 24px 16px;
-    }
-    .shift-title {
-      font-size: clamp(28px, 8.5vw, 40px);
-    }
-    .shift-desc {
-      font-size: clamp(14px, 4vw, 17px);
-      margin-bottom: 32px;
-    }
-    .flow-diagram {
-      padding: 0 16px;
-      margin-bottom: 32px;
-    }
-    .flow-circle {
-      width: clamp(88px, 26vw, 120px);
-      height: clamp(88px, 26vw, 120px);
-      font-size: 9px;
-      letter-spacing: 2px;
-    }
-    .flow-dash {
-      height: 40px;
-    }
-    .shift-bottom {
-      padding: 16px 16px 24px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    /* ─ SLIDE 4: HOW IT WORKS ─ */
-    #slide4 {
-      height: 100svh !important;
-    }
-    #hiw-drag-area {
-      padding: 0 5vw !important;
-    }
-    .hiw-card > div {
-      width: 88vw !important;
-    }
-    /* Slide title font on narrow screens */
-    #hiw-titles [style*="font-size:6vw"] {
-      font-size: clamp(28px, 8vw, 44px) !important;
-    }
-    #hiw-titles [style*="clamp(14px,2.2vw,19px)"] {
-      font-size: clamp(13px, 3.8vw, 16px) !important;
-    }
-
-    /* ─ SLIDE 5: PILLARS ─ */
-    .pillars-body {
-      padding: 16px 16px;
-    }
-    .pillars-title {
-      font-size: clamp(24px, 7vw, 36px);
-    }
-    .pillar-cards {
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-    .pillar-card {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      gap: 14px;
-      padding: 14px 12px;
-    }
-    .pillar-icon {
-      font-size: 20px;
-      margin-bottom: 0;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .pillar-name {
-      font-size: clamp(15px, 4.5vw, 20px);
-      margin-bottom: 6px;
-    }
-    .pillar-text {
-      font-size: 11px;
-    }
-    .pillar-metric {
-      margin-top: 12px;
-      padding-top: 8px;
-    }
-    .pillar-number {
-      font-size: clamp(16px, 5vw, 22px);
-    }
-    .pillars-tabs {
-      padding: 12px 16px;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    /* ─ SLIDE 6: DIGITAL CONNOISSEUR ─ */
-    .dc-body {
-      padding: 16px 16px 0;
-    }
-    .dc-title {
-      font-size: clamp(22px, 7vw, 32px);
-      margin-bottom: 8px;
-    }
-    .dc-phone-wrapper {
-      margin-top: 20px;
-      justify-content: center;
-      position: relative;
-    }
-    /* Reposition features to below phone on small screens */
-    .dc-features-left {
-      position: static;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      gap: 0;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-    .dc-feature {
-      font-size: 8px;
-      text-align: center;
-      flex: 0 0 30%;
-    }
-    .dc-phone-mockup {
-      width: clamp(140px, 42vw, 200px);
-      height: clamp(260px, 80vw, 380px);
-      border-radius: 24px;
-    }
-    .dc-bottom {
-      padding: 12px 16px 20px;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .dc-tabs {
-      gap: 16px;
-    }
-    /* Restructure dc-body to stack nicely */
-    #dc-phone-wrapper {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    /* ─ SLIDE 7: TESTIMONIAL ─ */
-    .testi-body {
-      padding: 24px 16px 0;
-    }
-    .receipt-card {
-      padding: 32px 20px 40px;
-    }
-    .quote-text {
-      font-size: clamp(18px, 5.5vw, 24px);
-    }
-    .testi-explore {
-      padding: 14px 32px;
-      font-size: 10px;
-    }
-    .testi-bottom-nav {
-      padding: 12px 16px 20px;
-    }
-    .quote-avatars {
-      margin-top: 16px;
-    }
-
-    /* ─ SLIDE 8: COMPARISON ─ */
-    .comp-body {
-      padding: 20px 14px;
-    }
-    .comp-heading {
-      font-size: clamp(24px, 7.5vw, 36px);
-    }
-    .comp-table {
-      width: 100%;
-      table-layout: fixed;
-    }
-    .comp-table th {
-      font-size: 8px;
-      letter-spacing: 1px;
-      padding: 10px 5px;
-    }
-    .comp-table td {
-      padding: 14px 5px;
-      font-size: 13px;
-    }
-    .comp-table td.feature-col {
-      font-size: 11px;
-      word-break: break-word;
-    }
-    .comp-table th.feature-col,
-    .comp-table td.feature-col {
-      width: 38%;
-    }
-    .comp-bottom-tabs {
-      padding: 12px 12px 20px;
-      gap: 4px;
-    }
-    .comp-tab {
-      font-size: 8px;
-      letter-spacing: 1px;
-    }
-
-    /* ─ SLIDE 9: SCALABILITY ─ */
-    .scale-body {
-      padding: 16px 16px;
-    }
-    .scale-title {
-      font-size: clamp(30px, 8.5vw, 44px);
-    }
-    .scale-desc {
-      font-size: clamp(14px, 4vw, 17px);
-      margin-bottom: 18px;
-    }
-    .growth-card {
-      padding: 16px;
-      margin-bottom: 20px;
-    }
-    .growth-roi {
-      font-size: clamp(20px, 6vw, 26px);
-    }
-    .scale-features {
-      gap: 16px;
-    }
-    .scale-feature-desc {
-      font-size: 13px;
-    }
-    .scale-bottom {
-      padding: 16px 16px 24px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .continue-btn {
-      font-size: 13px;
-      padding: 12px 22px;
-    }
-
-    /* ─ SLIDE 10: CTA ─ */
-    #slide10 > .cta-top {
-      padding: 32px 16px 0 !important;
-    }
-    #cta-form-wrap {
-      width: 100%;
-      max-width: 100%;
-      padding: 0 4px;
-    }
-    .cta-bottom {
-      padding: 24px 16px;
-    }
-    .cta-tagline {
-      font-size: 9px;
-      letter-spacing: 4px;
-    }
-
-    /* ─ NAV BARS (all sections) ─ */
-    .slide-nav, .shift-nav, .hiw-nav, .pillars-nav,
-    .dc-nav, .testi-nav, .comp-nav, .scale-nav {
-      padding: 14px 16px;
-    }
-    .bottom-nav {
-      padding: 12px 16px 20px;
-    }
-    .bottom-nav-item {
-      font-size: 8px;
-      letter-spacing: 1px;
-    }
-
-    /* ─ ORBs: reduce on mobile to prevent overflow ─ */
-    .orb-1 { width: 160px; height: 160px; right: -40px; top: -40px; }
-    .orb-2 { width: 100px; height: 100px; left: -30px; }
-    .orb-3 { width: 70px; height: 70px; }
-    .orb-4 { width: 120px; height: 120px; left: -40px; }
-    .orb-5 { width: 80px; height: 80px; }
+  .why-card-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--au-lait);
+    opacity: 0.7;
+    font-family: 'Jost', sans-serif;
+    font-weight: 500;
+    position: relative;
+    z-index: 2;
+    text-transform: uppercase;
   }
 
-  /* ── SMALL MOBILE (≤ 480px) ── */
+  /* ── MOBILE RESPONSIVE ── */
+  /* All px font sizes scale with viewport width on small screens */
   @media (max-width: 480px) {
-    .hero-title { font-size: clamp(16px, 5.2vw, 22px); }
-    .btn-primary { font-size: 10px; padding: 14px 28px; letter-spacing: 2px; }
-    .hero-content { padding: 60px 16px 28px; }
-    .hero-brand-overlay { font-size: clamp(48px, 16vw, 85px); letter-spacing: 2px; margin-bottom: 24px; }
+    .hero-title { font-size: clamp(22.4px, 6.3vw, 33.6px); }
+    .btn-primary { font-size: 11px; padding: 16px 36px; letter-spacing: 2px; }
+    .hero-content { padding: 36px 20px 28px; }
+    .hero-tagline { font-size: clamp(16px, 4.5vw, 20px); padding: 32px 20px; }
+    .hero-card { margin: 24px 16px 0; }
+    .restaurant-img { height: clamp(180px, 50vw, 260px); }
 
-    .problem-title { font-size: clamp(26px, 8.5vw, 36px); }
-    .problem-text { font-size: clamp(14px, 4.2vw, 18px); }
-    .compare-label { font-size: clamp(14px, 4.2vw, 18px); }
-    .slide-body { padding: 20px 14px; }
+    .problem-title { font-size: clamp(30px, 9vw, 42px); }
+    .problem-text { font-size: clamp(16px, 5vw, 22px); }
+    .compare-label { font-size: clamp(16px, 5vw, 22px); }
+    .slide-body { padding: 24px 16px; }
 
-    .shift-title { font-size: clamp(26px, 8.5vw, 36px); }
-    .flow-circle { width: clamp(78px, 24vw, 100px); height: clamp(78px, 24vw, 100px); font-size: 8px; letter-spacing: 1.5px; }
-    .shift-desc { font-size: clamp(13px, 3.8vw, 16px); }
-    .shift-body { padding: 20px 14px; }
+    .shift-title { font-size: clamp(30px, 9vw, 40px); }
+    .flow-circle { width: clamp(90px, 28vw, 130px); height: clamp(90px, 28vw, 130px); font-size: 9px; }
+    .shift-desc { font-size: clamp(14px, 4vw, 17px); }
+    .shift-body { padding: 24px 16px; }
 
-    .hiw-card > div { width: 92vw !important; }
+    .hiw-title { font-size: clamp(32px, 9vw, 44px); }
+    .step-num { font-size: clamp(52px, 18vw, 80px); }
+    .step-desc { font-size: clamp(13px, 3.8vw, 15px); }
+    .hiw-body { padding: 20px 16px 0; }
 
-    .pillars-title { font-size: clamp(22px, 7vw, 30px); }
-    .pillar-name { font-size: clamp(14px, 4.5vw, 18px); }
+    .pillars-title { font-size: clamp(26px, 7.5vw, 36px); }
+    .pillar-name { font-size: clamp(16px, 5vw, 20px); }
     .pillar-text { font-size: 10px; }
-    .pillar-number { font-size: clamp(14px, 5vw, 20px); }
-    .pillars-body { padding: 12px 14px; }
+    .pillar-number { font-size: clamp(20px, 6vw, 26px); }
+    .pillar-cards { gap: 6px; }
+    .pillar-card { padding: 12px 8px; }
+    .pillars-body { padding: 12px 16px; }
 
-    .dc-title { font-size: clamp(20px, 6.5vw, 28px); }
-    .dc-phone-mockup { width: clamp(130px, 38vw, 170px); height: clamp(240px, 72vw, 320px); }
-    .dc-features-left { gap: 0; }
-    .dc-feature { font-size: 7px; flex: 0 0 33%; }
-    .dc-body { padding: 12px 14px 0; }
+    .dc-title { font-size: clamp(24px, 7.5vw, 34px); }
+    .dc-phone-mockup { width: clamp(150px, 45vw, 200px); height: clamp(280px, 85vw, 380px); }
+    .dc-features-left { left: -4px; gap: 60px; }
+    .dc-feature { font-size: 8px; }
+    .dc-body { padding: 16px 16px 0; }
 
-    .quote-text { font-size: clamp(16px, 5vw, 21px); }
-    .receipt-card { padding: 28px 16px 36px; }
-    .testi-body { padding: 20px 14px 0; }
+    .quote-text { font-size: clamp(18px, 5.5vw, 24px); }
+    .receipt-card { padding: 32px 20px 40px; }
 
-    .comp-heading { font-size: clamp(22px, 7.5vw, 30px); }
-    .comp-table th { font-size: 7px; letter-spacing: 0.5px; padding: 8px 4px; }
-    .comp-table td { padding: 12px 4px; font-size: 12px; }
-    .comp-table td.feature-col { font-size: 10px; }
-    .comp-body { padding: 16px 12px; }
+    .comp-heading { font-size: clamp(26px, 8vw, 36px); }
+    .comp-table th, .comp-table td { padding: 14px 6px; font-size: clamp(10px, 3vw, 13px); }
+    .comp-body { padding: 24px 16px; }
 
-    .scale-title { font-size: clamp(28px, 8.5vw, 38px); }
-    .scale-desc { font-size: clamp(13px, 3.8vw, 15px); }
-    .scale-body { padding: 14px 14px; }
-    .growth-roi { font-size: clamp(18px, 5.5vw, 24px); }
+    .scale-title { font-size: clamp(32px, 9vw, 44px); }
+    .scale-desc { font-size: clamp(14px, 4vw, 17px); }
+    .scale-body { padding: 16px; }
+    .growth-roi { font-size: clamp(20px, 6vw, 26px); }
 
-    .cta-logo { font-size: clamp(36px, 12vw, 52px); }
-    #slide10 > .cta-top { padding: 24px 12px 0 !important; }
+    .cta-logo { font-size: clamp(40px, 13vw, 60px); }
+    .cta-btn { font-size: clamp(14px, 4vw, 17px); padding: 18px clamp(40px, 15vw, 80px); }
 
-    .nav1 { padding: 12px 14px; }
+    .nav1 { padding: 16px 16px; }
     .slide-nav, .shift-nav, .hiw-nav, .pillars-nav, .dc-nav,
-    .testi-nav, .comp-nav, .scale-nav { padding: 12px 14px; }
-    .bottom-nav { padding: 10px 14px 18px; }
-    .bottom-nav-item { font-size: 7px; letter-spacing: 0.8px; }
-    .pillars-tabs { padding: 10px 14px; }
-    .dc-bottom { padding: 10px 14px 18px; }
-    .testi-bottom-nav { padding: 10px 14px 18px; }
-    .comp-bottom-tabs { padding: 10px 10px 18px; }
-    .scale-bottom { padding: 14px 14px 22px; }
-    .shift-bottom { padding: 14px 14px 22px; }
-
-    /* Why section smaller */
-    .why-marquee-inner h1 { font-size: 14vw; }
-    .why-side-title { font-size: clamp(22px, 6.5vw, 34px); }
-    .why-img-box { height: 52vw; min-height: 180px; }
-    .why-header-fixed { height: 160px; }
-    .why-sub-header { top: 160px; }
+    .testi-nav, .comp-nav, .scale-nav { padding: 14px 16px; }
+    .bottom-nav { padding: 14px 16px 20px; }
+    .bottom-nav-item { font-size: 8px; letter-spacing: 1px; }
+    .pillars-tabs { padding: 12px 16px; }
+    .dc-bottom { padding: 12px 16px 20px; }
+    .testi-bottom-nav { padding: 12px 16px 20px; }
+    .comp-bottom-tabs { padding: 12px 16px 20px; }
+    .scale-bottom { padding: 16px 16px 24px; }
+    .shift-bottom { padding: 16px 16px 24px; }
   }
 
-  /* ── EXTRA SMALL (≤ 360px) ── */
   @media (max-width: 360px) {
-    .hero-title { font-size: 15px; }
-    .hero-brand-overlay { font-size: 46px; letter-spacing: 1px; }
-    .btn-primary { padding: 12px 22px; font-size: 10px; }
-
+    .hero-title { font-size: 19.6px; }
     .pillar-cards { flex-direction: column; }
-    .pillar-card { flex-direction: row; align-items: flex-start; gap: 10px; }
-
-    .dc-phone-mockup { width: 120px; height: 225px; }
-    .dc-features-left { display: none !important; }
-    #dc-phone-wrapper { margin-top: 10px; }
-
-    .comp-table th { font-size: 6px; padding: 6px 3px; }
-    .comp-table td { padding: 10px 3px; font-size: 11px; }
-    .comp-table td.feature-col { font-size: 9px; }
-
-    .why-marquee-inner h1 { font-size: 15vw; }
-    .flow-circle { width: 72px; height: 72px; font-size: 7px; }
-    .scale-title { font-size: 26px; }
-  }
-
-  /* ── LARGE DESKTOP (≥ 1440px) ── */
-  @media (min-width: 1440px) {
-    .slide-body { padding: 48px 40px; }
-    .shift-body { padding: 48px 40px; }
-    .pillars-body { padding: 24px 36px; }
-    .scale-body { padding: 36px 40px; }
-    .comp-body { padding: 48px 40px; }
-    .dc-body { padding: 36px 40px 0; }
-    .testi-body { padding: 48px 40px 0; }
-    .hero-content { padding: 100px 48px 48px; }
-    .problem-title { font-size: 52px; }
-    .shift-title { font-size: 52px; }
-    .comp-heading { font-size: 48px; }
-    .scale-title { font-size: 56px; }
-    .dc-title { font-size: 44px; }
-    .why-project-row { padding: 12vh 8vw; }
-    .why-side-text { width: 28%; }
-    .why-img-box { width: 62%; height: 72vh; }
+    .pillar-card { flex-direction: row; align-items: flex-start; gap: 12px; }
+    .dc-phone-mockup { width: 130px; height: 250px; }
+    .dc-features-left { display: none; }
   }
 
   /* Separator line in step area */
@@ -1961,448 +1120,84 @@
   .blend-1-why, .blend-why-2, .blend-2-3, .blend-3-4,
   .blend-4-5, .blend-5-6, .blend-6-7, .blend-7-8,
   .blend-8-9, .blend-9-10 { background: transparent !important; }
-
-  /* ══════════════════════════════════════════════
-     STAGGERED SIDE MENU — ported from React component
-  ══════════════════════════════════════════════ */
-
-  /* Overlay backdrop */
-  #sm-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 39;
-    background: transparent;
-    pointer-events: none;
-    transition: background 0.3s ease;
-  }
-  #sm-backdrop.sm-open {
-    pointer-events: auto;
-  }
-
-  /* Pre-layer sliding strips */
-  #sm-prelayers {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: clamp(260px, 38vw, 420px);
-    pointer-events: none;
-    z-index: 45;
-    overflow: hidden;
-  }
-
-  .sm-prelayer {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    width: 100%;
-    will-change: transform;
-  }
-
-  /* Main panel */
-  #sm-panel {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: clamp(260px, 38vw, 420px);
-    height: 100%;
-    background: var(--cream);
-    display: flex;
-    flex-direction: column;
-    padding: 6em 2em 2em 2em;
-    overflow-y: auto;
-    z-index: 50;
-    pointer-events: auto;
-    will-change: transform;
-  }
-
-  /* Panel inner layout */
-  .sm-panel-inner {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  /* Nav list */
-  .sm-panel-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    counter-reset: smItem;
-  }
-
-  .sm-panel-itemWrap {
-    position: relative;
-    overflow: hidden;
-    line-height: 1;
-  }
-
-  .sm-panel-item {
-    position: relative;
-    color: var(--navy);
-    font-weight: 600;
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    cursor: pointer;
-    line-height: 1;
-    letter-spacing: -2px;
-    text-transform: uppercase;
-    display: inline-block;
-    text-decoration: none;
-    padding-right: 1.4em;
-    font-family: 'Jost', sans-serif;
-    transition: color 0.25s;
-  }
-
-  .sm-panel-item::after {
-    counter-increment: smItem;
-    content: counter(smItem, decimal-leading-zero);
-    position: absolute;
-    top: 0.1em;
-    right: 0;
-    font-size: 16px;
-    font-weight: 400;
-    color: #A27B5B;
-    letter-spacing: 0;
-    pointer-events: none;
-    user-select: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .sm-panel-list.nums-visible .sm-panel-item::after {
-    opacity: 1;
-  }
-
-  .sm-panel-item:hover {
-    color: #A27B5B;
-  }
-
-  .sm-panel-itemLabel {
-    display: inline-block;
-    will-change: transform;
-    transform-origin: 50% 100%;
-  }
-
-  /* Socials */
-  .sm-socials {
-    margin-top: auto;
-    padding-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .sm-socials-title {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #A27B5B;
-    font-family: 'Jost', sans-serif;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .sm-socials-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .sm-socials-link {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--navy);
-    text-decoration: none;
-    font-family: 'Jost', sans-serif;
-    transition: color 0.25s, opacity 0.25s;
-  }
-
-  .sm-socials-link:hover {
-    color: #A27B5B;
-  }
-
-  .sm-socials-list:hover .sm-socials-link:not(:hover) {
-    opacity: 0.35;
-  }
-
-  /* Hamburger — update to icon-style for open/close */
-  .hamburger {
-    position: relative;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    gap: 0.4em;
-    font-size: 13px;
-    letter-spacing: 2px;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-  }
-
-  .hamburger-icon {
-    position: relative;
-    width: 18px;
-    height: 18px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    will-change: transform;
-    flex-shrink: 0;
-  }
-
-  .hamburger-line {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 100%;
-    height: 2px;
-    background: currentColor;
-    border-radius: 2px;
-    transform: translate(-50%, -50%);
-    will-change: transform;
-  }
-
-  /* Text toggle wrap */
-  .hamburger-text {
-    position: relative;
-    display: inline-block;
-    height: 1em;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  .hamburger-text-inner {
-    display: flex;
-    flex-direction: column;
-    line-height: 1;
-    will-change: transform;
-  }
-  .hamburger-text-line {
-    display: block;
-    height: 1em;
-    line-height: 1;
-  }
-
-  /* On mobile, panel goes full width */
-  @media (max-width: 768px) {
-    #sm-panel,
-    #sm-prelayers {
-      width: 100%;
-    }
-  }
 </style>
 </head>
 <body>
-<!-- ══ STAGGERED SIDE MENU ══ -->
-<div id="sm-backdrop" aria-hidden="true"></div>
-
-<!-- Pre-layer colour strips (slide in before the panel) -->
-<div id="sm-prelayers" aria-hidden="true">
-  <div class="sm-prelayer" id="sm-prelayer-0" style="background:#3F4E4F;"></div>
-  <div class="sm-prelayer" id="sm-prelayer-1" style="background:#2C3639;"></div>
-</div>
-
-<!-- Main navigation panel -->
-<aside id="sm-panel" aria-label="Site navigation" aria-hidden="true">
-  <div class="sm-panel-inner">
-    <ul class="sm-panel-list" id="sm-panel-list" role="list">
-      <li class="sm-panel-itemWrap">
-        <a class="sm-panel-item" href="#slide1" aria-label="Go to home">
-          <span class="sm-panel-itemLabel">Home</span>
-        </a>
-      </li>
-      <li class="sm-panel-itemWrap">
-        <a class="sm-panel-item" href="#slide2" aria-label="Learn about the problem we solve">
-          <span class="sm-panel-itemLabel">Problem</span>
-        </a>
-      </li>
-      <li class="sm-panel-itemWrap">
-        <a class="sm-panel-item" href="#slide5" aria-label="See our pillars of value">
-          <span class="sm-panel-itemLabel">Pillars</span>
-        </a>
-      </li>
-      <li class="sm-panel-itemWrap">
-        <a class="sm-panel-item" href="#slide9" aria-label="View scalability">
-          <span class="sm-panel-itemLabel">Scale</span>
-        </a>
-      </li>
-      <li class="sm-panel-itemWrap">
-        <a class="sm-panel-item" href="#slide10" aria-label="Book a demo">
-          <span class="sm-panel-itemLabel">Demo</span>
-        </a>
-      </li>
-    </ul>
-
-    <div class="sm-socials" aria-label="Social links">
-      <h3 class="sm-socials-title" id="sm-socials-title">Socials</h3>
-      <ul class="sm-socials-list" role="list">
-        <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="sm-socials-link">Twitter</a></li>
-        <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="sm-socials-link">Instagram</a></li>
-        <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="sm-socials-link">LinkedIn</a></li>
-      </ul>
-    </div>
-  </div>
-</aside>
-<!-- ══ END STAGGERED SIDE MENU ══ -->
 <div id="universal-bg"></div>
 <div id="scroll-progress"></div>
 
 <!-- ══ SLIDE 1: HERO ══ -->
 <section class="slide active" id="slide1">
-  <!-- Full-screen video background -->
-  <div class="hero-video-bg" id="hero-video-bg">
-    <video
-      id="hero-video-fullscreen"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="auto"
-    >
-      <!-- Your local video (loads first if in same folder) -->
-      <source src="Food Reel - Darío Idoate.mp4" type="video/mp4">
-      <!-- Cinematic chef cooking close-up — Pexels #2773498 -->
-      <source src="https://videos.pexels.com/video-files/2773498/2773498-hd_1920_1080_30fps.mp4" type="video/mp4">
-      <!-- Restaurant kitchen with fire — Pexels #3255353 -->
-      <source src="https://videos.pexels.com/video-files/3255353/3255353-hd_1920_1080_25fps.mp4" type="video/mp4">
-      <!-- Fine dining food plating — Pexels #4253925 -->
-      <source src="https://videos.pexels.com/video-files/4253925/4253925-hd_1920_1080_25fps.mp4" type="video/mp4">
-      <!-- Chef at stove cinematic — Pexels #3209828 -->
-      <source src="https://videos.pexels.com/video-files/3209828/3209828-hd_1920_1080_25fps.mp4" type="video/mp4">
-      <!-- Restaurant ambiance — Pexels #3295827 -->
-      <source src="https://videos.pexels.com/video-files/3295827/3295827-hd_1920_1080_25fps.mp4" type="video/mp4">
-    </video>
-    <div class="hero-video-overlay"></div>
-  </div>
-
-  <!-- Big RESTRO brand title -->
-
-  <!-- Nav -->
+  <!-- parallax orbs -->
+  <div class="orb orb-1" id="orb-hero-1"></div>
+  <div class="orb orb-2" id="orb-hero-2"></div>
   <nav class="nav1">
     <div class="nav-logo">
       <span class="fork-icon">🍴</span>
       <span>RESTRO</span>
     </div>
-    <button class="hamburger" id="sm-toggle-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sm-panel" type="button">
-      <span class="hamburger-text" aria-hidden="true">
-        <span class="hamburger-text-inner" id="sm-text-inner">
-          <span class="hamburger-text-line">Menu</span>
-          <span class="hamburger-text-line">Close</span>
-        </span>
-      </span>
-      <span class="hamburger-icon" id="sm-icon" aria-hidden="true">
-        <span class="hamburger-line" id="sm-line-h"></span>
-        <span class="hamburger-line" id="sm-line-v"></span>
-      </span>
-    </button>
+    <button class="hamburger">☰</button>
   </nav>
 
-  <!-- Centered content: RESTRO title + tagline + glass button stacked -->
   <div class="hero-content">
-    <div class="hero-brand-overlay" id="hero-brand-overlay">RESTRO</div>
     <h1 class="hero-title" id="hero-title">Peak Hours Should Be Your <br> <b>Most Profitable</b> <br> Not Most Chaotic</h1>
     <button class="btn-primary" id="hero-btn" onclick="goToSlide(9)">BOOK A DEMO</button>
   </div>
 
-  <!-- Scroll indicator -->
-  <div class="hero-scroll-indicator">
-    <span>Scroll</span>
-    <div class="scroll-arrow"></div>
-  </div>
-
-  <!-- Hidden legacy elements (kept for GSAP refs) -->
-  <div class="hero-card" id="hero-card" style="display:none;">
+  <div class="hero-card" id="hero-card">
     <div class="restaurant-img">
-      <video id="hero-video" autoplay muted loop playsinline preload="auto"
+      <video
+        id="hero-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
         style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;"
-        src="Food Reel - Darío Idoate.mp4">
+        src="Food Reel - Darío Idoate.mp4"
+      >
+        <!-- Fallback if video cannot load -->
         <div class="restaurant-img-inner" id="hero-img-inner"></div>
       </video>
     </div>
     <div class="img-caption" id="hero-caption">THE NEW STANDARD OF SERVICE</div>
   </div>
-  <p class="hero-tagline" id="hero-tagline" style="display:none;"><b>Elevate your customer's experience from the moment they arrive.</b></p>
+
+  <p class="hero-tagline" id="hero-tagline"><b>Elevate your customer's experience from the moment they arrive.</b></p>
+
+  
 </section>
 
 <div class="section-blend blend-1-why" aria-hidden="true"></div>
 
-<!-- ══ SLIDE 1B: WHY WE EXIST — Insomnia Ultra Smooth ══ -->
+<!-- ══ SLIDE 1B: WHY WE EXIST ══ -->
 <section id="slide-why">
+  <div class="why-stage" id="why-stage">
 
-  <!-- Sticky marquee — lives inside section, stays in its lane -->
-  <div class="why-header-fixed" id="why-header-fixed">
-    <div class="why-marquee-inner" id="why-marquee-inner">
-      <h1>WHY WE EXIST * RESTRO * </h1>
-      <h1>WHY WE EXIST * RESTRO * </h1>
-      <h1>WHY WE EXIST * RESTRO * </h1>
+    <!-- The title — starts huge (zoomed in), user scrolls → normal size, then shrinks to top-left -->
+    <div class="why-title" id="why-title">WHY WE EXIST?</div>
+
+    <!-- Three image cards — start tiny, each expands as user scrolls, then shrinks again, then exit -->
+    <div class="why-img-grid" id="why-img-grid">
+      <div class="why-img-card why-card-1" id="why-card-1">
+        <div class="why-card-inner">
+          <span class="why-card-label">The Wait</span>
+        </div>
+      </div>
+      <div class="why-img-card why-card-2" id="why-card-2">
+        <div class="why-card-inner">
+          <span class="why-card-label">The Moment</span>
+        </div>
+      </div>
+      <div class="why-img-card why-card-3" id="why-card-3">
+        <div class="why-card-inner">
+          <span class="why-card-label">The Experience</span>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <!-- Sticky sub-label -->
-  <div class="why-sub-header" id="why-sub-header">RESTRO — 2026</div>
-
-  <!-- Content rows -->
-  <div class="why-content-wrap">
-
-    <!-- Row 1: The Wait -->
-    <section class="why-project-row" id="why-row-1">
-      <div class="why-side-text" id="why-side-1">
-        <span class="why-side-num">01 / The Wait</span>
-        <h3 class="why-side-title">The Wait</h3>
-        <p class="why-side-desc">Customers leave not because they refuse to wait — but because they're left in the dark. Uncertainty is the real friction of the dining experience.</p>
-      </div>
-      <div class="why-img-box">
-        <div class="why-img-box-overlay"></div>
-        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=1200" class="why-reveal-img" alt="The Wait" crossorigin="anonymous">
-      </div>
-    </section>
-
-    <!-- Row 2: The Moment -->
-    <section class="why-project-row" id="why-row-2">
-      <div class="why-side-text" id="why-side-2">
-        <span class="why-side-num">02 / The Moment</span>
-        <h3 class="why-side-title">The Moment</h3>
-        <p class="why-side-desc">Every second a guest stands idle is a missed connection. Transform the pre-table moment into the beginning of an extraordinary meal.</p>
-      </div>
-      <div class="why-img-box">
-        <div class="why-img-box-overlay"></div>
-        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1200" class="why-reveal-img" alt="The Moment" crossorigin="anonymous">
-      </div>
-    </section>
-
-    <!-- Row 3: The Experience -->
-    <section class="why-project-row" id="why-row-3">
-      <div class="why-side-text" id="why-side-3">
-        <span class="why-side-num">03 / The Experience</span>
-        <h3 class="why-side-title">The Experience</h3>
-        <p class="why-side-desc">From the first scan to the final bite — Restro orchestrates a seamless flow so your team can focus on the magic, not the friction.</p>
-      </div>
-      <div class="why-img-box">
-        <div class="why-img-box-overlay"></div>
-        <img src="https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1600" class="why-reveal-img" alt="The Experience" crossorigin="anonymous">
-      </div>
-    </section>
 
   </div>
-
-  <div class="why-end-spacer"></div>
-
 </section>
-
-<!-- Floating dot nav -->
-<div class="why-dot-nav" id="why-dot-nav">
-  <div class="why-dot active" id="why-dot-1"></div>
-  <div class="why-dot" id="why-dot-2"></div>
-  <div class="why-dot" id="why-dot-3"></div>
-</div>
 
 <div class="section-blend blend-why-2" aria-hidden="true"></div>
 
@@ -2465,84 +1260,13 @@
     <div class="shift-line" id="shift-line"></div>
     <p class="shift-subtitle" id="shift-subtitle">INNOVATIVE STRATEGY</p>
 
-    <!-- ── MASK EXPAND DIAGRAM ── -->
     <div class="flow-diagram" id="flow-diagram">
-
-      <!-- MASK 1: CAPTURE -->
-      <div class="mask-item" id="flow-c1" role="button" tabindex="0" aria-expanded="false" aria-label="Capture — click to expand">
-        <div class="mask-fill mask-fill-1"></div>
-        <div class="mask-progress"></div>
-
-        <!-- Always-visible header -->
-        <div class="mask-header">
-          <div class="mask-header-left">
-            <span class="mask-number">01</span>
-            <span class="mask-label">Capture</span>
-          </div>
-          <div class="mask-arrow">+</div>
-        </div>
-
-        <!-- Clip-path revealed content -->
-        <div class="mask-item-inner">
-          <div class="mask-content">
-            <div class="mask-badge">🎯</div>
-            <div class="mask-text-block">
-              <div class="mask-step-title">Capture Every Guest</div>
-              <div class="mask-step-desc">The moment a guest arrives, Restro captures their intent — walk-in, pre-order, or reservation — turning every arrival into a data point that optimises your floor in real time.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- MASK 2: SCHEDULE -->
-      <div class="mask-item" id="flow-c2" role="button" tabindex="0" aria-expanded="false" aria-label="Schedule — click to expand">
-        <div class="mask-fill mask-fill-2"></div>
-        <div class="mask-progress"></div>
-
-        <div class="mask-header">
-          <div class="mask-header-left">
-            <span class="mask-number">02</span>
-            <span class="mask-label">Schedule</span>
-          </div>
-          <div class="mask-arrow">+</div>
-        </div>
-
-        <div class="mask-item-inner">
-          <div class="mask-content">
-            <div class="mask-badge">📅</div>
-            <div class="mask-text-block">
-              <div class="mask-step-title">Intelligent Sequencing</div>
-              <div class="mask-step-desc">AI sequences each table turn with surgical precision — predicting wait times, communicating them to guests, and keeping your kitchen perfectly in sync with demand.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- MASK 3: BALANCE -->
-      <div class="mask-item" id="flow-c3" role="button" tabindex="0" aria-expanded="false" aria-label="Balance — click to expand">
-        <div class="mask-fill mask-fill-3"></div>
-        <div class="mask-progress"></div>
-
-        <div class="mask-header">
-          <div class="mask-header-left">
-            <span class="mask-number">03</span>
-            <span class="mask-label">Balance</span>
-          </div>
-          <div class="mask-arrow">+</div>
-        </div>
-
-        <div class="mask-item-inner">
-          <div class="mask-content">
-            <div class="mask-badge">⚖️</div>
-            <div class="mask-text-block">
-              <div class="mask-step-title">Perfect Equilibrium</div>
-              <div class="mask-step-desc">Revenue, satisfaction and staff energy stay in balance. Restro absorbs peak-hour chaos so your team can deliver the unhurried, attentive service your brand deserves.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /.flow-diagram -->
+      <div class="flow-circle" id="flow-c1">CAPTURE</div>
+      <div class="flow-dash" id="flow-d1"></div>
+      <div class="flow-circle" id="flow-c2">SCHEDULE</div>
+      <div class="flow-dash" id="flow-d2"></div>
+      <div class="flow-circle" id="flow-c3">BALANCE</div>
+    </div>
 
     <p class="shift-desc" id="shift-desc"><b>THE BETTER THE CUSTOMER FEELS, THE BETTER YOUR OUTLET BECOMES.</b></p>
   </div>
@@ -2552,104 +1276,57 @@
 <div class="section-blend blend-3-4" aria-hidden="true"></div>
 
 <!-- ══ SLIDE 4: HOW IT WORKS ══ -->
-<section id="slide4" style="position:relative;height:100vh;min-height:100vh;overflow:hidden;background:#111;cursor:grab;user-select:none;display:block;">
+<section class="slide" id="slide4">
+  <div class="orb orb-1" id="orb-s4-1" style="opacity:0.10;"></div>
 
-  <!-- WebGL canvas injected here by JS -->
+  <div class="hiw-body">
+    <h2 class="hiw-title" id="hiw-title">How It Works</h2>
+    <div class="hiw-line" id="hiw-line"></div>
 
-  <!-- header -->
-  <div style="position:absolute;top:0;left:0;width:100%;display:flex;justify-content:space-between;padding:2vw 2.5vw;pointer-events:none;z-index:10;">
-    <div style="color:rgba(255,255,255,0.3);font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:4px;text-transform:uppercase;">How It Works</div>
-    <div id="hiw-counter" style="color:rgba(255,255,255,0.3);font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:3px;">01 / 04</div>
-  </div>
-
-  <!-- drag area — matches reference .slider padding:0 22.5vw -->
-  <div id="hiw-drag-area" style="position:relative;padding:0 22.5vw;display:flex;align-items:center;height:100%;user-select:none;z-index:2;">
-    <div id="hiw-slider-inner" style="display:flex;position:relative;">
-
-      <!-- CARD 1 -->
-      <div class="hiw-card" id="hiw-card-0" style="overflow:hidden;position:relative;flex-shrink:0;">
-        <div style="position:relative;overflow:hidden;width:55vw;padding-top:56.5%;">
-          <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1600"
-               class="hiw-img" crossorigin="anonymous" draggable="false"
-               style="display:none;">
+    <div class="steps-layout">
+      <div class="steps-left">
+        <div class="step" id="step-1">
+          <div class="step-num">01</div>
+          <div class="step-title">ENTRY</div>
+          <div class="step-desc">Scan the QR code at the entrance for instant menu access.</div>
+        </div>
+        <div class="step" id="step-2">
+          <div class="step-num">02</div>
+          <div class="step-title">EXPLORE</div>
+          <div class="step-desc">Browse the live menu with real-time availability updates.</div>
+        </div>
+        <div class="step" id="step-3">
+          <div class="step-num">03</div>
+          <div class="step-title">PRE-ORDER</div>
+          <div class="step-desc">Place your order while waiting for your table to be ready.</div>
+        </div>
+        <div class="step" id="step-4">
+          <div class="step-num">04</div>
+          <div class="step-title">ARRIVAL</div>
+          <div class="step-desc">Your food begins preparation as you pay and arrives ready exactly when you get seated.</div>
         </div>
       </div>
 
-      <!-- CARD 2 -->
-      <div class="hiw-card" id="hiw-card-1" style="overflow:hidden;position:absolute;top:0;height:100%;left:120%;flex-shrink:0;">
-        <div style="position:relative;overflow:hidden;width:55vw;padding-top:56.5%;">
-          <img src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1600"
-               class="hiw-img" crossorigin="anonymous" draggable="false"
-               style="display:none;">
-        </div>
-      </div>
-
-      <!-- CARD 3 -->
-      <div class="hiw-card" id="hiw-card-2" style="overflow:hidden;position:absolute;top:0;height:100%;left:240%;flex-shrink:0;">
-        <div style="position:relative;overflow:hidden;width:55vw;padding-top:56.5%;">
-          <img src="https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1600"
-               class="hiw-img" crossorigin="anonymous" draggable="false"
-               style="display:none;">
-        </div>
-      </div>
-
-      <!-- CARD 4 -->
-      <div class="hiw-card" id="hiw-card-3" style="overflow:hidden;position:absolute;top:0;height:100%;left:360%;flex-shrink:0;">
-        <div style="position:relative;overflow:hidden;width:55vw;padding-top:56.5%;">
-          <img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1600"
-               class="hiw-img" crossorigin="anonymous" draggable="false"
-               style="display:none;">
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- titles overlay — centred, overflow hidden, titles scroll vertically -->
-  <div id="hiw-titles" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);overflow:hidden;pointer-events:none;z-index:3;text-align:center;">
-    <!-- proxy: sets clip height -->
-    <div style="visibility:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;">
-      <div style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:5px;color:#A27B5B;text-transform:uppercase;margin-bottom:4px;">00 · PROXY</div>
-      <div style="font-family:'Playfair Display',serif;font-size:6vw;font-weight:bold;letter-spacing:-0.1vw;color:#fff;line-height:1.1;">Lorem Ipsum</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.2vw,19px);color:rgba(220,215,201,0.6);line-height:1.6;font-weight:300;max-width:420px;">Lorem ipsum dolor sit amet consectetur adipiscing.</div>
-    </div>
-    <!-- animated list -->
-    <div id="hiw-titles-list" style="position:absolute;top:0;left:0;width:100%;will-change:transform;">
-      <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;">
-        <div style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:5px;color:#A27B5B;text-transform:uppercase;margin-bottom:4px;">01 · ENTRY</div>
-        <div style="font-family:'Playfair Display',serif;font-size:6vw;font-weight:bold;letter-spacing:-0.1vw;color:#fff;line-height:1.1;">Scan &amp; Step In</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.2vw,19px);color:rgba(220,215,201,0.6);line-height:1.6;font-weight:300;max-width:420px;">Scan the QR code at the entrance for instant menu access.</div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;">
-        <div style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:5px;color:#A27B5B;text-transform:uppercase;margin-bottom:4px;">02 · EXPLORE</div>
-        <div style="font-family:'Playfair Display',serif;font-size:6vw;font-weight:bold;letter-spacing:-0.1vw;color:#fff;line-height:1.1;">Browse Live Menu</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.2vw,19px);color:rgba(220,215,201,0.6);line-height:1.6;font-weight:300;max-width:420px;">Browse the live menu with real-time availability updates.</div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;">
-        <div style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:5px;color:#A27B5B;text-transform:uppercase;margin-bottom:4px;">03 · PRE-ORDER</div>
-        <div style="font-family:'Playfair Display',serif;font-size:6vw;font-weight:bold;letter-spacing:-0.1vw;color:#fff;line-height:1.1;">Order While Waiting</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.2vw,19px);color:rgba(220,215,201,0.6);line-height:1.6;font-weight:300;max-width:420px;">Place your order while waiting for your table to be ready.</div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;">
-        <div style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:5px;color:#A27B5B;text-transform:uppercase;margin-bottom:4px;">04 · ARRIVAL</div>
-        <div style="font-family:'Playfair Display',serif;font-size:6vw;font-weight:bold;letter-spacing:-0.1vw;color:#fff;line-height:1.1;">Seated &amp; Served</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.2vw,19px);color:rgba(220,215,201,0.6);line-height:1.6;font-weight:300;max-width:420px;">Your food begins preparation as you pay and arrives ready exactly when you get seated.</div>
+      <div class="steps-right" id="hiw-phone">
+        <svg class="phone-sketch" viewBox="0 0 90 160" fill="none" stroke="#2C3639" stroke-width="1.5">
+          <rect x="10" y="5" width="70" height="120" rx="10"/>
+          <line x1="35" y1="135" x2="55" y2="135" stroke-width="2"/>
+          <circle cx="88" cy="60" r="2" fill="#2C3639"/>
+          <circle cx="88" cy="75" r="2" fill="#2C3639"/>
+          <circle cx="88" cy="90" r="2" fill="#2C3639"/>
+          <path d="M50 125 Q70 140 80 155" stroke-dasharray="4 3"/>
+        </svg>
       </div>
     </div>
   </div>
 
-  <!-- progress bar -->
-  <div style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;overflow:hidden;pointer-events:none;z-index:100;">
-    <div id="hiw-pline1" style="position:absolute;top:0;left:0;width:100%;height:100%;transform:scaleX(0);transform-origin:left;background:#fff;"></div>
-    <div id="hiw-pline2" style="position:absolute;top:0;left:0;width:100%;height:100%;transform:scaleX(1);transform-origin:right;background:rgba(255,255,255,0.2);"></div>
+  <div class="hiw-btn-wrap" id="hiw-btn-wrap">
+    <button class="hiw-btn" onclick="goToSlide(9)"> CUSTOMER'S EXPERIENCE SAYS MORE ABOUT YOUR RESTAURANT THEN YOUR MARKETING.</button>
   </div>
-
-  <!-- drag hint -->
-  <div style="position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);font-family:'Jost',sans-serif;font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.2);pointer-events:none;z-index:10;text-transform:uppercase;">← drag →</div>
-
 </section>
 
 <div class="section-blend blend-4-5" aria-hidden="true"></div>
+
 <!-- ══ SLIDE 5: PILLARS ══ -->
 <section class="slide" id="slide5">
   <div class="orb orb-2" id="orb-s5-1" style="opacity:0.12;bottom:unset;top:-40px;"></div>
@@ -2998,70 +1675,34 @@
   </div>
 </section>
 
-<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
   /* ══════════════════════════════════════════════
-     VIDEO AUTOPLAY — Chrome compliance + fallback source cycling
+     VIDEO AUTOPLAY — Chrome compliance
+     muted + playsinline satisfies Chrome's autoplay policy.
+     We also attempt .play() after a short delay as extra insurance.
   ══════════════════════════════════════════════ */
   (function() {
-    const fsVid = document.getElementById('hero-video-fullscreen');
-    if (!fsVid) return;
-
-    fsVid.muted = true;
-    fsVid.playsInline = true;
-
-    // Ordered list of cinematic restaurant/cooking video fallbacks
-    const videoSources = [
-      'Food Reel - Darío Idoate.mp4',
-      'https://videos.pexels.com/video-files/2773498/2773498-hd_1920_1080_30fps.mp4',
-      'https://videos.pexels.com/video-files/3255353/3255353-hd_1920_1080_25fps.mp4',
-      'https://videos.pexels.com/video-files/4253925/4253925-hd_1920_1080_25fps.mp4',
-      'https://videos.pexels.com/video-files/3209828/3209828-hd_1920_1080_25fps.mp4',
-      'https://videos.pexels.com/video-files/3295827/3295827-hd_1920_1080_25fps.mp4',
-    ];
-    let srcIndex = 0;
-
-    function tryNextSource() {
-      if (srcIndex >= videoSources.length) {
-        // All sources exhausted — show animated gradient fallback
-        const bg = document.getElementById('hero-video-bg');
-        if (bg) {
-          bg.style.background = 'linear-gradient(135deg, #0a0704 0%, #1a0e08 20%, #2C1810 40%, #1a0e08 60%, #0a0704 80%, #1a0e08 100%)';
-          bg.style.backgroundSize = '400% 400%';
-          bg.style.animation = 'heroBgPan 10s ease infinite';
-        }
-        return;
-      }
-      fsVid.src = videoSources[srcIndex++];
-      fsVid.load();
-      fsVid.play().catch(() => {
-        // Autoplay blocked — try on first interaction
-      });
-    }
-
-    fsVid.addEventListener('error', tryNextSource);
-
+    const vid = document.getElementById('hero-video');
+    if (!vid) return;
+    vid.muted = true;
+    vid.playsInline = true;
     const tryPlay = () => {
-      fsVid.play().catch(() => {
-        fsVid.muted = true;
-        fsVid.play().catch(() => {});
+      vid.play().catch(() => {
+        // If autoplay blocked (unmuted), force muted and retry once
+        vid.muted = true;
+        vid.play().catch(() => {});
       });
     };
-
     if (document.readyState === 'complete') {
       tryPlay();
     } else {
       window.addEventListener('load', tryPlay);
     }
+    // Also retry on first user interaction as extra safety net
     document.addEventListener('click', tryPlay, { once: true });
     document.addEventListener('touchstart', tryPlay, { once: true });
-
-    // Legacy hidden video
-    const vid = document.getElementById('hero-video');
-    if (vid) { vid.muted = true; vid.playsInline = true; }
   })();
 
   /* ══════════════════════════════════════════════
@@ -3083,18 +1724,6 @@
 
   // Disable default scroll-behavior for GSAP-controlled sections
   document.documentElement.style.scrollBehavior = 'auto';
-
-  /* ── Lenis smooth scroll — wired to GSAP ticker + ScrollTrigger
-        Exact reference: lerp:0.1, wheelMultiplier:1 ── */
-  const lenis = new Lenis({
-    lerp: 0.1,
-    wheelMultiplier: 1,
-    infinite: false,
-    smoothWheel: true,
-  });
-  lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-  gsap.ticker.lagSmoothing(0);
 
   /* ══════════════════════════════════════════════
      UNIVERSAL BACKGROUND — smooth color transitions
@@ -3152,127 +1781,150 @@
   ══════════════════════════════════════════════ */
   const heroTL = gsap.timeline({ defaults: { ease: 'power3.out' } });
   heroTL
-    .from('#hero-brand-overlay', { opacity: 0, scale: 1.12, duration: 1.4, ease: 'power2.out' })
-    .from('#hero-title', { opacity: 0, y: 40, duration: 0.9 }, '-=0.7')
-    .fromTo('#hero-btn', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, clearProps: 'opacity,y,transform' }, '-=0.5');
+    .from('#hero-title', { opacity: 0, y: 60, duration: 1.1 })
+    .fromTo('#hero-btn', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, clearProps: 'opacity,y,transform' }, '-=0.5')
+    .from('#hero-card',  { opacity: 0, y: 50, scale: 0.97, duration: 0.9 }, '-=0.4')
+    .from('#hero-caption', { opacity: 0, duration: 0.6 }, '-=0.3')
+    .from('#hero-tagline', { opacity: 0, y: 20, duration: 0.7 }, '-=0.4');
 
-  // Scroll-down class for CSS zoom — added when user scrolls away from hero
-  // CSS handles the actual transform so hover and scroll-down don't conflict
-  ScrollTrigger.create({
-    trigger: '#slide1',
-    start: 'top top',
-    end: 'bottom top',
-    onUpdate: (self) => {
-      const slide1 = document.getElementById('slide1');
-      if (!slide1) return;
-      if (self.progress > 0.04) {
-        slide1.classList.add('scrolled-down');
-      } else {
-        slide1.classList.remove('scrolled-down');
-      }
+  // Hero card parallax as user scrolls past slide1
+  gsap.to('#hero-card', {
+    yPercent: -18,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#slide1',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 1.2
     }
   });
 
+  // Orbs parallax in hero
+  gsap.to('#orb-hero-1', {
+    y: -80, x: 30,
+    ease: 'none',
+    scrollTrigger: { trigger: '#slide1', start: 'top top', end: 'bottom top', scrub: 2 }
+  });
+  gsap.to('#orb-hero-2', {
+    y: 60, x: -20,
+    ease: 'none',
+    scrollTrigger: { trigger: '#slide1', start: 'top top', end: 'bottom top', scrub: 1.5 }
+  });
+
   /* ══════════════════════════════════════════════
-     SLIDE 1B: WHY WE EXIST — Insomnia Ultra Smooth
+     SLIDE 1B: WHY WE EXIST — pinned scroll-driven
   ══════════════════════════════════════════════ */
   (function() {
+    const title   = document.getElementById('why-title');
+    const card1   = document.getElementById('why-card-1');
+    const card2   = document.getElementById('why-card-2');
+    const card3   = document.getElementById('why-card-3');
+    const section = document.getElementById('slide-why');
 
-    const whySection   = document.getElementById('slide-why');
-    const headerFixed  = document.getElementById('why-header-fixed');
-    const subHeader    = document.getElementById('why-sub-header');
-    const dotNav       = document.getElementById('why-dot-nav');
-    const marqueeInner = document.getElementById('why-marquee-inner');
-    const dots = ['why-dot-1','why-dot-2','why-dot-3'].map(id => document.getElementById(id));
-    const rows = ['why-row-1','why-row-2','why-row-3'].map(id => document.getElementById(id));
+    // Card dimensions
+    const CARD_BASE_W  = 90;
+    const CARD_BASE_H  = 120;
+    const CARD_FULL_W  = 260;
+    const CARD_FULL_H  = 340;
 
-    if (!whySection || !marqueeInner) return;
-
-    /* ── 1. Lenis smooth scroll — exact reference API ──
-       duration:1.2, exponential easing, smoothWheel:true, wheelMultiplier:1
-       Single GSAP ticker drives Lenis — NO double requestAnimationFrame    */
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      wheelMultiplier: 1,
+    // Set initial states
+    gsap.set([card1, card2, card3], {
+      width:  CARD_BASE_W,
+      height: CARD_BASE_H,
+      opacity: 0,
+      x: 0,
+      y: 0,
+      transformOrigin: 'center center',
+      force3D: true,
     });
 
-    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-    gsap.ticker.lagSmoothing(0);
-    lenis.on('scroll', ScrollTrigger.update);
-
-    /* ── 2. Show dot nav when section enters view (header/sub handled by sticky) ── */
-    ScrollTrigger.create({
-      trigger: whySection,
-      start: 'top 60%',
-      end: 'bottom 40%',
-      onEnter:     () => { dotNav.classList.add('visible'); },
-      onLeave:     () => { dotNav.classList.remove('visible'); },
-      onEnterBack: () => { dotNav.classList.add('visible'); },
-      onLeaveBack: () => { dotNav.classList.remove('visible'); },
+    gsap.set(title, {
+      y: () => -(window.innerHeight * 0.7),
+      x: 0,
+      scale: 1,
+      opacity: 0,
+      transformOrigin: 'center center',
+      force3D: true,
     });
 
-    /* ── 3. Marquee — xPercent:-50, scrub:0.5, tied to full page scroll ──
-       Reference uses xPercent:-50 for 3 copies with padding-right gap      */
-    gsap.to(marqueeInner, {
-      xPercent: -50,
-      ease: 'none',
+    // ── Build the scrubbed timeline ──
+    // We pin the why-stage DIV (not the section), so GSAP's spacer is
+    // injected correctly relative to the section's natural flow position.
+    // pinnedContainer: the section element ensures scroll measurements
+    // are taken from the correct offset.
+    const whyTL = gsap.timeline({
       scrollTrigger: {
-        trigger: whySection,
+        trigger: section,
         start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.5,
+        end: '+=550%',
+        pin: true,
+        pinSpacing: true,
+        scrub: 1.5,          // tighter scrub = less lag at boundaries
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onLeave: () => {
+          // Hard-set end state so section exits cleanly
+          gsap.set([card1, card2, card3], { opacity: 0, clearProps: 'x,y' });
+          gsap.set(title, { opacity: 0 });
+        },
+        onLeaveBack: () => {
+          // Hard-set start state so section re-enters cleanly from above
+          gsap.set([card1, card2, card3], { opacity: 0, clearProps: 'x,y' });
+          gsap.set(title, {
+            opacity: 0,
+            y: () => -(window.innerHeight * 0.7),
+            x: 0,
+            scale: 1,
+          });
+        },
       }
     });
 
-    /* ── 4. Image parallax — y:"-15%" → y:"5%", scrub:true ──
-       Exact reference fromTo values for the reveal transition             */
-    whySection.querySelectorAll('.why-reveal-img').forEach(img => {
-      gsap.fromTo(img,
-        { y: '-15%' },
-        {
-          y: '5%',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: img.parentElement,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
-          }
-        }
-      );
-    });
+    // PHASE 1 — Title flies in from above and lands at centre
+    whyTL.to(title, {
+      y: 0, opacity: 1,
+      ease: 'power2.out',
+      duration: 0.18,
+    }, 0.00);
 
-    /* ── 5. Side text — opacity:0.2→1, y:30→0, play/reverse on scroll ── */
-    whySection.querySelectorAll('.why-side-text').forEach(text => {
-      gsap.from(text, {
-        opacity: 0.2,
-        y: 30,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: text,
-          start: 'top 80%',
-          end: 'top 20%',
-          toggleActions: 'play reverse play reverse',
-        }
-      });
-    });
+    // PHASE 3 — Title shrinks + moves to top-left
+    whyTL.to(title, {
+      scale: 0.38,
+      x: () => -(window.innerWidth  / 2) + 84,
+      y: () => -(window.innerHeight / 2) + 40,
+      ease: 'power1.inOut',
+      duration: 0.18,
+    }, 0.22);
 
-    /* ── 6. Active dot nav tracks current row ── */
-    rows.forEach((row, i) => {
-      if (!row) return;
-      ScrollTrigger.create({
-        trigger: row,
-        start: 'top 55%',
-        end: 'bottom 55%',
-        onEnter:     () => setDot(i),
-        onEnterBack: () => setDot(i),
-      });
-    });
-    function setDot(idx) {
-      dots.forEach((d, i) => d && d.classList.toggle('active', i === idx));
-    }
+    // PHASE 4 — Card 1 fades in
+    whyTL.to(card1, { opacity: 1, ease: 'power2.out', duration: 0.06 }, 0.37);
+    // PHASE 4b — Card 1 expands
+    whyTL.to(card1, { width: CARD_FULL_W, height: CARD_FULL_H, ease: 'power1.inOut', duration: 0.14 }, 0.41);
+    // PHASE 5 — Card 1 shrinks back
+    whyTL.to(card1, { width: CARD_BASE_W, height: CARD_BASE_H, ease: 'power1.inOut', duration: 0.10 }, 0.46);
+
+    // PHASE 6 — Card 2 fades in + expands
+    whyTL.to(card2, { opacity: 1, ease: 'power2.out', duration: 0.06 }, 0.51);
+    whyTL.to(card2, { width: CARD_FULL_W, height: CARD_FULL_H, ease: 'power1.inOut', duration: 0.14 }, 0.55);
+    // PHASE 7 — Card 2 shrinks back
+    whyTL.to(card2, { width: CARD_BASE_W, height: CARD_BASE_H, ease: 'power1.inOut', duration: 0.10 }, 0.60);
+
+    // PHASE 8 — Card 3 fades in + expands
+    whyTL.to(card3, { opacity: 1, ease: 'power2.out', duration: 0.06 }, 0.65);
+    whyTL.to(card3, { width: CARD_FULL_W, height: CARD_FULL_H, ease: 'power1.inOut', duration: 0.14 }, 0.69);
+    // PHASE 9 — Card 3 shrinks back
+    whyTL.to(card3, { width: CARD_BASE_W, height: CARD_BASE_H, ease: 'power1.inOut', duration: 0.10 }, 0.74);
+
+    // PHASE 10 — Cards exit in three directions
+    whyTL.to(card1, { x: '-110vw', y: '-40vh', opacity: 0, ease: 'power3.in', duration: 0.12 }, 0.82);
+    whyTL.to(card2, { y: '100vh',              opacity: 0, ease: 'power3.in', duration: 0.12 }, 0.82);
+    whyTL.to(card3, { x:  '110vw', y: '-40vh', opacity: 0, ease: 'power3.in', duration: 0.12 }, 0.82);
+
+    // PHASE 11 — Title fades out
+    whyTL.to(title, { opacity: 0, ease: 'power2.in', duration: 0.08 }, 0.88);
+
+    // Add an explicit empty tween at t=1.0 so the timeline has clean end state
+    whyTL.set({}, {}, 1.0);
 
   })();
 
@@ -3319,9 +1971,7 @@
   gsap.to('#orb-s2-2', { y: 50, ease: 'none', scrollTrigger: { trigger: '#slide2', scrub: 2, start: 'top bottom', end: 'bottom top' } });
 
   /* ══════════════════════════════════════════════
-     SLIDE 3: THE SHIFT — MASK EXPAND INTERACTION
-     Replaces the old flow-circle assembly animation.
-     Title / line / subtitle entry + orb parallax kept identical.
+     SLIDE 3: THE SHIFT — PINNED flow circle assembly
   ══════════════════════════════════════════════ */
 
   gsap.from('#shift-title', {
@@ -3337,347 +1987,61 @@
     scrollTrigger: { trigger: '#slide3', start: 'top 76%', toggleActions: 'play none none none' }
   });
 
-  /* Mask items stagger-fade in on scroll entry */
-  gsap.from('.mask-item', {
-    opacity: 0, y: 32, duration: 0.7, ease: 'power3.out',
-    stagger: { each: 0.14, from: 'start' },
+  // Flow circles assemble: start scattered, converge into place
+  const flowAssemble = gsap.timeline({
     scrollTrigger: { trigger: '#flow-diagram', start: 'top 82%', toggleActions: 'play none none none' }
   });
+  flowAssemble
+    .from('#flow-c1', { opacity: 0, x: -80, scale: 0.6, duration: 0.8, ease: 'back.out(1.4)' })
+    .from('#flow-d1', { opacity: 0, scaleY: 0, transformOrigin: 'top center', duration: 0.4 }, '-=0.2')
+    .from('#flow-c2', { opacity: 0, x: 80, scale: 0.6, duration: 0.8, ease: 'back.out(1.4)' }, '-=0.3')
+    .from('#flow-d2', { opacity: 0, scaleY: 0, transformOrigin: 'top center', duration: 0.4 }, '-=0.2')
+    .from('#flow-c3', { opacity: 0, y: 60, scale: 0.6, duration: 0.8, ease: 'back.out(1.4)' }, '-=0.3');
 
   gsap.from('#shift-desc', {
     opacity: 0, y: 30, duration: 0.9,
     scrollTrigger: { trigger: '#shift-desc', start: 'top 88%', toggleActions: 'play none none none' }
   });
 
-  /* Orb parallax — unchanged */
+  // Scrub-based parallax on the orb
   gsap.to('#orb-s3-1', { y: -70, ease: 'none', scrollTrigger: { trigger: '#slide3', scrub: 1.8, start: 'top bottom', end: 'bottom top' } });
 
-  /* ── MASK EXPAND CLICK LOGIC ── */
-  (function() {
-    const items = Array.from(document.querySelectorAll('.mask-item'));
-    let activeItem = null;
+  /* ══════════════════════════════════════════════
+     SLIDE 4: HOW IT WORKS — PINNED step-by-step reveal
+  ══════════════════════════════════════════════ */
 
-    function openItem(item) {
-      item.classList.add('mask-open');
-      item.setAttribute('aria-expanded', 'true');
-    }
+  gsap.from('#hiw-title', {
+    opacity: 0, y: 50, duration: 0.9,
+    scrollTrigger: { trigger: '#slide4', start: 'top 80%', toggleActions: 'play none none none' }
+  });
+  gsap.from('#hiw-line', {
+    scaleX: 0, transformOrigin: 'left center', duration: 0.7, ease: 'power2.inOut',
+    scrollTrigger: { trigger: '#slide4', start: 'top 78%', toggleActions: 'play none none none' }
+  });
 
-    function closeItem(item) {
-      item.classList.remove('mask-open');
-      item.setAttribute('aria-expanded', 'false');
-    }
+  // Phone slides in from right
+  gsap.from('#hiw-phone', {
+    opacity: 0, x: 80, rotation: 8, duration: 1.1, ease: 'power3.out',
+    scrollTrigger: { trigger: '#slide4', start: 'top 75%', toggleActions: 'play none none none' }
+  });
 
-    function toggleItem(item) {
-      const isOpen = item.classList.contains('mask-open');
-
-      /* Always collapse the currently open one */
-      if (activeItem && activeItem !== item) {
-        closeItem(activeItem);
-        activeItem = null;
-      }
-
-      if (isOpen) {
-        /* Clicking the open one collapses it */
-        closeItem(item);
-        activeItem = null;
-      } else {
-        openItem(item);
-        activeItem = item;
-      }
-    }
-
-    items.forEach(item => {
-      /* Mouse click */
-      item.addEventListener('click', () => toggleItem(item));
-
-      /* Keyboard: Enter / Space */
-      item.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          toggleItem(item);
-        }
-      });
+  // Steps assemble one by one from the left
+  ['#step-1','#step-2','#step-3','#step-4'].forEach((id, i) => {
+    gsap.from(id, {
+      opacity: 0, x: -50, duration: 0.7, ease: 'power2.out',
+      scrollTrigger: { trigger: id, start: 'top 88%', toggleActions: 'play none none none' },
+      delay: i * 0.1
     });
-  })();
+  });
+
+  gsap.from('#hiw-btn-wrap', {
+    opacity: 0, y: 30, duration: 0.7,
+    scrollTrigger: { trigger: '#hiw-btn-wrap', start: 'top 92%', toggleActions: 'play none none none' }
+  });
 
   /* ══════════════════════════════════════════════
-     SLIDE 4: HOW IT WORKS
-     Exact port of Jesper Landberg horizontal drag slider
-     with Three.js WebGL RGB-split shader + GSAP ticker
+     SLIDE 5: PILLARS — cards fly in from scattered positions
   ══════════════════════════════════════════════ */
-  (function() {
-    const s4 = document.getElementById('slide4');
-    if (!s4 || typeof THREE === 'undefined') return;
-
-    /* ── dimensions (section-local) ── */
-    const ww = s4.offsetWidth;
-    const wh = s4.offsetHeight;
-    const isDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent);
-
-    /* ── GLSL shaders (exact from reference) ── */
-    const bgCoverUv = `
-vec2 backgroundCoverUv(vec2 screenSize, vec2 imageSize, vec2 uv) {
-  float screenRatio = screenSize.x / screenSize.y;
-  float imageRatio  = imageSize.x  / imageSize.y;
-  vec2 newSize = screenRatio < imageRatio
-    ? vec2(imageSize.x * screenSize.y / imageSize.y, screenSize.y)
-    : vec2(screenSize.x, imageSize.y * screenSize.x / imageSize.x);
-  vec2 newOffset = (screenRatio < imageRatio
-    ? vec2((newSize.x - screenSize.x) / 2.0, 0.0)
-    : vec2(0.0, (newSize.y - screenSize.y) / 2.0)) / newSize;
-  return uv * screenSize / newSize + newOffset;
-}`;
-
-    const vertexShader = `
-precision mediump float;
-uniform float uVelo;
-varying vec2 vUv;
-#define M_PI 3.1415926535897932384626433832795
-void main(){
-  vec3 pos = position;
-  pos.x = pos.x + ((sin(uv.y * M_PI) * uVelo) * 0.125);
-  vUv = uv;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos,1.);
-}`;
-
-    const fragmentShader = `
-precision mediump float;
-${bgCoverUv}
-uniform sampler2D uTexture;
-uniform vec2 uMeshSize;
-uniform vec2 uImageSize;
-uniform float uVelo;
-uniform float uScale;
-varying vec2 vUv;
-void main() {
-  vec2 uv = vUv;
-  vec2 texCenter = vec2(0.5);
-  vec2 texUv = backgroundCoverUv(uMeshSize, uImageSize, uv);
-  vec2 texScale = (texUv - texCenter) * uScale + texCenter;
-  vec4 texture = texture2D(uTexture, texScale);
-  texScale.x += 0.15 * uVelo;
-  if(uv.x < 1.) texture.g = texture2D(uTexture, texScale).g;
-  texScale.x += 0.10 * uVelo;
-  if(uv.x < 1.) texture.b = texture2D(uTexture, texScale).b;
-  gl_FragColor = texture;
-}`;
-
-    /* ── Three.js GL — orthographic camera sized to section ── */
-    const scene  = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(ww/-2, ww/2, wh/2, wh/-2, 1, 10);
-    camera.lookAt(scene.position);
-    camera.position.z = 1;
-
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-    renderer.setSize(ww, wh);
-    renderer.setClearColor(0x111111, 1); /* opaque dark bg */
-
-    /* canvas: absolute, fills section, behind DOM (z-index 1) */
-    const canvas = renderer.domElement;
-    canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;';
-    s4.insertBefore(canvas, s4.firstChild);
-
-    /* ── Geometry + material shared base ── */
-    const planeGeo = new THREE.PlaneBufferGeometry(1, 1, 32, 32);
-    const planeMat = new THREE.ShaderMaterial({ transparent: true, vertexShader, fragmentShader });
-    const loader   = new THREE.TextureLoader();
-    loader.crossOrigin = 'anonymous';
-
-    /* ── GlObject: positions mesh in local section coords ── */
-    class GlObject extends THREE.Object3D {
-      init(el) {
-        this.el = el;
-        /* getBoundingClientRect is relative to viewport;
-           subtract section's top-left to get section-local coords */
-        const s4rect = s4.getBoundingClientRect();
-        const r = el.getBoundingClientRect();
-        const localLeft = r.left - s4rect.left;
-        const localTop  = r.top  - s4rect.top;
-        const w = r.width, h = r.height;
-        this.rect = { left: localLeft, top: localTop, width: w, height: h, right: localLeft + w };
-        /* Three.js orthographic: origin at centre, y-up */
-        this.pos = {
-          x:  (localLeft + w/2) - ww/2,
-          y: -((localTop  + h/2) - wh/2)
-        };
-        this.position.set(this.pos.x, this.pos.y, 0);
-      }
-      updateX(t) {
-        if (t !== undefined) this.position.x = this.pos.x + t;
-      }
-    }
-
-    /* ── Plane ── */
-    class Plane extends GlObject {
-      init(el) {
-        super.init(el);
-        const { width: w, height: h } = this.rect;
-        this.mat = planeMat.clone();
-        this.mat.uniforms = {
-          uTime:     { value: 0 },
-          uTexture:  { value: null },
-          uMeshSize: { value: new THREE.Vector2(w, h) },
-          uImageSize:{ value: new THREE.Vector2(0, 0) },
-          uScale:    { value: 0.75 },
-          uVelo:     { value: 0 }
-        };
-        const img = el.querySelector('img');
-        loader.load(img.src, (tex) => {
-          tex.minFilter = THREE.LinearFilter;
-          tex.generateMipmaps = false;
-          this.mat.uniforms.uTexture.value = tex;
-          this.mat.uniforms.uImageSize.value.set(img.naturalWidth || 1600, img.naturalHeight || 1066);
-        });
-        const mesh = new THREE.Mesh(planeGeo, this.mat);
-        mesh.scale.set(w, h, 1);
-        this.add(mesh);
-        scene.add(this);
-      }
-    }
-
-    /* ── DOM refs ── */
-    const sliderEl   = document.getElementById('hiw-slider-inner');
-    const items      = Array.from(s4.querySelectorAll('.hiw-card'));
-    const titlesList = document.getElementById('hiw-titles-list');
-    const titleItems = Array.from(titlesList.children);
-    const pLine1     = document.getElementById('hiw-pline1');
-    const pLine2     = document.getElementById('hiw-pline2');
-    const counter    = document.getElementById('hiw-counter');
-
-    /* ── State (exact reference) ── */
-    const opts  = { speed: 2, threshold: 50, ease: 0.075 };
-    const state = {
-      target: 0, current: 0, currentRounded: 0,
-      on: { x:0, y:0 }, off: 0,
-      progress: 0, diff: 0, max: 0,
-      flags: { dragging: false }
-    };
-
-    /* ── Bounding (exact reference) ── */
-    const { width: wrapWidth, left: wrapDiff } = sliderEl.getBoundingClientRect();
-    state.max = -(items[items.length - 1].getBoundingClientRect().right - wrapWidth - wrapDiff);
-
-    /* ── Build WebGL planes + per-item scale timeline ── */
-    const cached = items.map((el) => {
-      /* Use section-local left/right for visibility checks */
-      const s4rect = s4.getBoundingClientRect();
-      const r = el.getBoundingClientRect();
-      const localLeft  = r.left  - s4rect.left;
-      const localRight = r.right - s4rect.left;
-      const width      = r.width;
-
-      const plane = new Plane();
-      plane.init(el);
-
-      const tl = gsap.timeline({ paused: true })
-        .fromTo(plane.mat.uniforms.uScale, { value: 0.65 }, { value: 1, duration: 1, ease: 'linear' });
-
-      return {
-        el, plane,
-        left:  localLeft,
-        right: localRight,
-        width,
-        min: localLeft < ww ? (ww * 0.775) : -(ww * 0.225 - wrapWidth * 0.2),
-        max: localLeft > ww ? state.max - (ww * 0.775) : state.max + (ww * 0.225 - wrapWidth * 0.2),
-        tl, out: false
-      };
-    });
-
-    /* ── Master GSAP timeline (exact reference) ── */
-    const masterTL = gsap.timeline({
-      paused: true,
-      defaults: { duration: 1, ease: 'linear' }
-    })
-    .fromTo(pLine2,     { scaleX: 1 }, { scaleX: 0, duration: 0.5, ease: 'power3', transformOrigin: 'right' }, 0)
-    .fromTo(titlesList, { yPercent: 0 }, { yPercent: -(100 - 100 / titleItems.length) }, 0)
-    .fromTo(pLine1,     { scaleX: 0, transformOrigin: 'left' }, { scaleX: 1, transformOrigin: 'left' }, 0);
-
-    gsap.set(pLine1, { scaleX: 0, transformOrigin: 'left' });
-    gsap.set(pLine2, { scaleX: 1, transformOrigin: 'right' });
-
-    /* ── isVisible (exact reference) ── */
-    function isVisible(item) {
-      const translate = gsap.utils.wrap(item.min, item.max, state.currentRounded);
-      const start = item.left + translate;
-      const end   = item.right + translate;
-      const vis   = start < (opts.threshold + ww) && end > -opts.threshold;
-      const prog  = gsap.utils.clamp(0, 1, 1 - (translate + item.left + item.width) / (ww + item.width));
-      return { translate, isVisible: vis, progress: prog };
-    }
-
-    /* ── calc (exact reference) ── */
-    function calc() {
-      state.current      += (state.target - state.current) * opts.ease;
-      state.currentRounded = Math.round(state.current * 100) / 100;
-      state.diff           = (state.target - state.current) * 0.0005;
-      state.target         = gsap.utils.clamp(state.max, 0, state.target);
-      state.progress       = gsap.utils.wrap(0, 1, state.currentRounded / state.max);
-      masterTL.progress(state.progress);
-    }
-
-    /* ── transformItems (exact reference) ── */
-    function transformItems() {
-      for (let i = 0; i < cached.length; i++) {
-        const item = cached[i];
-        const { translate, isVisible: vis, progress: prog } = isVisible(item);
-        item.plane.updateX(translate);
-        item.plane.mat.uniforms.uVelo.value = state.diff;
-        if (!item.out && item.tl) item.tl.progress(prog);
-        item.out = !vis;
-      }
-    }
-
-    /* ── counter ── */
-    function updateCounter() {
-      const n    = cached.length;
-      const step = Math.min(n - 1, Math.floor(state.progress * n));
-      if (counter) counter.textContent = '0' + (step + 1) + ' / 0' + n;
-    }
-
-    /* ── Drag events ── */
-    const evDown = isDevice ? 'touchstart' : 'mousedown';
-    const evMove = isDevice ? 'touchmove'  : 'mousemove';
-    const evUp   = isDevice ? 'touchend'   : 'mouseup';
-
-    function getPos(e) {
-      const t = e.changedTouches;
-      return { x: t ? t[0].clientX : e.clientX, y: t ? t[0].clientY : e.clientY };
-    }
-
-    s4.addEventListener(evDown, (e) => {
-      const { x, y } = getPos(e);
-      state.flags.dragging = true;
-      state.on.x = x; state.on.y = y;
-      s4.style.cursor = 'grabbing';
-    });
-
-    window.addEventListener(evMove, (e) => {
-      if (!state.flags.dragging) return;
-      const { x, y } = getPos(e);
-      const moveX = x - state.on.x;
-      const moveY = y - state.on.y;
-      if (Math.abs(moveX) > Math.abs(moveY) && e.cancelable) {
-        e.preventDefault(); e.stopPropagation();
-      }
-      state.target = state.off + (moveX * opts.speed);
-    }, { passive: false });
-
-    window.addEventListener(evUp, () => {
-      state.flags.dragging = false;
-      state.off = state.target;
-      s4.style.cursor = 'grab';
-    });
-
-    /* ── render loop added to GSAP ticker ── */
-    gsap.ticker.add(() => {
-      calc();
-      transformItems();
-      updateCounter();
-      renderer.render(scene, camera);
-    });
-
-  })();
 
   gsap.from('#pillars-title', {
     opacity: 0, y: 50, duration: 0.9,
@@ -3897,34 +2261,6 @@ void main() {
     document.documentElement.style.scrollBehavior = 'smooth';
   }, 500);
 
-  /* ── MOBILE: DC features repositioning ──
-     On screens ≤ 768px the .dc-features-left shifts to static flow
-     via CSS, but we also need to clear the absolute positioning
-     that JS might have set inline. */
-  function applyMobileDCLayout() {
-    const dcFeatures = document.getElementById('dc-features-left');
-    if (!dcFeatures) return;
-    const isMobile = window.innerWidth <= 768;
-    if (isMobile) {
-      dcFeatures.style.position = 'static';
-      dcFeatures.style.top = 'auto';
-      dcFeatures.style.left = 'auto';
-      dcFeatures.style.flexDirection = 'row';
-      dcFeatures.style.justifyContent = 'space-around';
-      dcFeatures.style.gap = '0';
-      dcFeatures.style.width = '100%';
-      dcFeatures.style.flexWrap = 'wrap';
-      // Move it after the phone wrapper
-      const phoneWrapper = document.getElementById('dc-phone-wrapper');
-      const dcBody = document.querySelector('.dc-body');
-      if (phoneWrapper && dcBody && dcFeatures.parentNode === phoneWrapper) {
-        dcBody.appendChild(dcFeatures);
-      }
-    }
-  }
-  applyMobileDCLayout();
-  window.addEventListener('resize', applyMobileDCLayout);
-
   /* ── BUTTON VISIBILITY SAFETY NET ──
      GSAP .from() sets opacity:0 as an inline style immediately.
      If the animation completes but clearProps doesn't strip it
@@ -3936,10 +2272,6 @@ void main() {
       heroBtn.style.removeProperty('opacity');
       heroBtn.style.removeProperty('transform');
       heroBtn.style.removeProperty('visibility');
-    }
-    const heroBrand = document.getElementById('hero-brand-overlay');
-    if (heroBrand) {
-      heroBrand.style.removeProperty('visibility');
     }
   }, 2000);
 
@@ -3983,226 +2315,6 @@ void main() {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(doRefresh, 300);
   });
-
-  /* ══════════════════════════════════════════════
-     STAGGERED SIDE MENU — vanilla JS port
-  ══════════════════════════════════════════════ */
-  (function() {
-
-    /* ── DOM refs ── */
-    const toggleBtn   = document.getElementById('sm-toggle-btn');
-    const panel       = document.getElementById('sm-panel');
-    const backdrop    = document.getElementById('sm-backdrop');
-    const prelayers   = Array.from(document.querySelectorAll('.sm-prelayer'));
-    const icon        = document.getElementById('sm-icon');
-    const lineH       = document.getElementById('sm-line-h');
-    const lineV       = document.getElementById('sm-line-v');
-    const textInner   = document.getElementById('sm-text-inner');
-    const panelList   = document.getElementById('sm-panel-list');
-    const socialsTitle = document.getElementById('sm-socials-title');
-    const socialLinks = Array.from(document.querySelectorAll('#sm-panel .sm-socials-link'));
-    const itemLabels  = Array.from(document.querySelectorAll('#sm-panel .sm-panel-itemLabel'));
-
-    if (!toggleBtn || !panel) return;
-
-    /* ── State ── */
-    let isOpen   = false;
-    let isBusy   = false;
-    let openTl   = null;
-    let closeTl  = null;
-    let spinTl   = null;
-    let textTl   = null;
-
-    /* ── Initial off-screen setup ── */
-    gsap.set([panel, ...prelayers], { xPercent: 100 });
-    gsap.set(lineH, { transformOrigin: '50% 50%', rotate: 0 });
-    gsap.set(lineV, { transformOrigin: '50% 50%', rotate: 90 });
-    gsap.set(icon,  { rotate: 0, transformOrigin: '50% 50%' });
-    gsap.set(textInner, { yPercent: 0 });
-
-    if (itemLabels.length) {
-      gsap.set(itemLabels, { yPercent: 140, rotate: 10 });
-    }
-    if (socialsTitle) gsap.set(socialsTitle, { opacity: 0 });
-    if (socialLinks.length) gsap.set(socialLinks, { y: 25, opacity: 0 });
-
-    /* ── Build open timeline ── */
-    function buildOpenTimeline() {
-      openTl?.kill();
-      closeTl?.kill();
-
-      if (itemLabels.length) gsap.set(itemLabels, { yPercent: 140, rotate: 10 });
-      if (socialsTitle)      gsap.set(socialsTitle, { opacity: 0 });
-      if (socialLinks.length) gsap.set(socialLinks, { y: 25, opacity: 0 });
-
-      const tl = gsap.timeline({
-        paused: true,
-        onComplete: () => { isBusy = false; }
-      });
-
-      /* Pre-layers stagger in */
-      prelayers.forEach((layer, i) => {
-        const start = Number(gsap.getProperty(layer, 'xPercent'));
-        tl.fromTo(layer, { xPercent: start }, { xPercent: 0, duration: 0.5, ease: 'power4.out' }, i * 0.07);
-      });
-
-      /* Panel slides in after last pre-layer */
-      const panelStart = prelayers.length ? (prelayers.length - 1) * 0.07 + 0.08 : 0;
-      const panelDuration = 0.65;
-      const panelCurrentX = Number(gsap.getProperty(panel, 'xPercent'));
-      tl.fromTo(panel,
-        { xPercent: panelCurrentX },
-        { xPercent: 0, duration: panelDuration, ease: 'power4.out' },
-        panelStart
-      );
-
-      /* Menu item labels cascade in */
-      if (itemLabels.length) {
-        const itemsStart = panelStart + panelDuration * 0.15;
-        tl.to(itemLabels, {
-          yPercent: 0,
-          rotate: 0,
-          duration: 1,
-          ease: 'power4.out',
-          stagger: { each: 0.1, from: 'start' }
-        }, itemsStart);
-      }
-
-      /* Numbering counter fade in */
-      const itemEls = Array.from(panel.querySelectorAll('.sm-panel-item'));
-      if (itemEls.length) {
-        tl.to({}, { duration: 0.01,
-          onStart: () => { panelList && panelList.classList.add('nums-visible'); }
-        }, panelStart + panelDuration * 0.25);
-      }
-
-      /* Socials animate in */
-      const socialsStart = panelStart + panelDuration * 0.4;
-      if (socialsTitle) {
-        tl.to(socialsTitle, { opacity: 1, duration: 0.5, ease: 'power2.out' }, socialsStart);
-      }
-      if (socialLinks.length) {
-        tl.to(socialLinks, {
-          y: 0,
-          opacity: 1,
-          duration: 0.55,
-          ease: 'power3.out',
-          stagger: { each: 0.08 },
-          onComplete: () => { gsap.set(socialLinks, { clearProps: 'opacity' }); }
-        }, socialsStart + 0.04);
-      }
-
-      return tl;
-    }
-
-    /* ── Play open ── */
-    function playOpen() {
-      if (isBusy) return;
-      isBusy = true;
-      openTl = buildOpenTimeline();
-      openTl.play(0);
-    }
-
-    /* ── Play close ── */
-    function playClose() {
-      openTl?.kill();
-      openTl = null;
-      closeTl?.kill();
-
-      /* Reset numbering immediately */
-      panelList && panelList.classList.remove('nums-visible');
-
-      const all = [...prelayers, panel];
-      closeTl = gsap.to(all, {
-        xPercent: 100,
-        duration: 0.32,
-        ease: 'power3.in',
-        overwrite: 'auto',
-        onComplete: () => {
-          if (itemLabels.length) gsap.set(itemLabels, { yPercent: 140, rotate: 10 });
-          if (socialsTitle)      gsap.set(socialsTitle, { opacity: 0 });
-          if (socialLinks.length) gsap.set(socialLinks, { y: 25, opacity: 0 });
-          isBusy = false;
-        }
-      });
-    }
-
-    /* ── Animate icon (plus → × on open) ── */
-    function animateIcon(opening) {
-      spinTl?.kill();
-      if (opening) {
-        spinTl = gsap.to(icon, { rotate: 225, duration: 0.8, ease: 'power4.out', overwrite: 'auto' });
-      } else {
-        spinTl = gsap.to(icon, { rotate: 0, duration: 0.35, ease: 'power3.inOut', overwrite: 'auto' });
-      }
-    }
-
-    /* ── Animate text (Menu ↔ Close cycling) ── */
-    function animateText(opening) {
-      textTl?.kill();
-      /* Build a small cycle sequence and animate yPercent */
-      const lines = textInner.querySelectorAll('.hamburger-text-line');
-      const lineCount = lines.length;
-      /* With 2 lines (Menu / Close): toggle between yPercent 0 and -50 */
-      const targetYPercent = opening ? -50 : 0;
-      textTl = gsap.to(textInner, {
-        yPercent: targetYPercent,
-        duration: 0.4,
-        ease: 'power4.out'
-      });
-    }
-
-    /* ── Toggle ── */
-    function toggleMenu() {
-      isOpen = !isOpen;
-
-      /* Update ARIA + label */
-      toggleBtn.setAttribute('aria-expanded', isOpen);
-      toggleBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
-      panel.setAttribute('aria-hidden', !isOpen);
-      backdrop.classList.toggle('sm-open', isOpen);
-
-      if (isOpen) {
-        playOpen();
-      } else {
-        playClose();
-      }
-      animateIcon(isOpen);
-      animateText(isOpen);
-    }
-
-    /* ── Close menu ── */
-    function closeMenu() {
-      if (!isOpen) return;
-      isOpen = false;
-      toggleBtn.setAttribute('aria-expanded', false);
-      toggleBtn.setAttribute('aria-label', 'Open menu');
-      panel.setAttribute('aria-hidden', true);
-      backdrop.classList.remove('sm-open');
-      playClose();
-      animateIcon(false);
-      animateText(false);
-    }
-
-    /* ── Wire up events ── */
-    toggleBtn.addEventListener('click', toggleMenu);
-
-    /* Close on backdrop click */
-    backdrop.addEventListener('click', closeMenu);
-
-    /* Close when a nav link is clicked */
-    panel.querySelectorAll('.sm-panel-item').forEach(link => {
-      link.addEventListener('click', () => {
-        setTimeout(closeMenu, 120); /* short delay for smooth feel */
-      });
-    });
-
-    /* Escape key closes */
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) closeMenu();
-    });
-
-  })();
 
 </script>
 </body>

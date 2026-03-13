@@ -2318,7 +2318,7 @@
   <div class="hero-content">
     <div class="hero-brand-overlay" id="hero-brand-overlay">RESTRO</div>
     <h1 class="hero-title" id="hero-title">Peak Hours Should Be Your <br> <b>Most Profitable</b> <br> Not Most Chaotic</h1>
-    <button class="btn-primary" id="hero-btn" onclick="goToSlide(10)">BOOK A DEMO</button>
+    <button class="btn-primary" id="hero-btn" onclick="goToSlide(9)">BOOK A DEMO</button>
   </div>
 
   <!-- Scroll indicator -->
@@ -3007,7 +3007,19 @@
   </div>
 </section>
 
-<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+  /* Lenis safety shim — if CDN fails, create a no-op stub so the rest of the
+     JS does not crash. Smooth scroll simply won't be active in that case.   */
+  if (typeof Lenis === 'undefined') {
+    window.Lenis = function(opts) {
+      this.on  = function() {};
+      this.raf = function() {};
+      this.destroy = function() {};
+    };
+    console.warn('Lenis failed to load from CDN — using no-op fallback. Smooth scroll disabled.');
+  }
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -3463,12 +3475,12 @@ void main() {
   vec2 texCenter = vec2(0.5);
   vec2 texUv = backgroundCoverUv(uMeshSize, uImageSize, uv);
   vec2 texScale = (texUv - texCenter) * uScale + texCenter;
-  vec4 texture = texture2D(uTexture, texScale);
+  vec4 texColor = texture2D(uTexture, texScale);
   texScale.x += 0.15 * uVelo;
-  if(uv.x < 1.) texture.g = texture2D(uTexture, texScale).g;
+  if(uv.x < 1.) texColor.g = texture2D(uTexture, texScale).g;
   texScale.x += 0.10 * uVelo;
-  if(uv.x < 1.) texture.b = texture2D(uTexture, texScale).b;
-  gl_FragColor = texture;
+  if(uv.x < 1.) texColor.b = texture2D(uTexture, texScale).b;
+  gl_FragColor = texColor;
 }`;
 
     /* ── Three.js GL — orthographic camera sized to section ── */

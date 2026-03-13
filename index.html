@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +6,16 @@
 <title>Restro</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  @font-face { font-family: 'Ratcheron'; src: local('Ratcheron'); }
+  /* NOTE: Ratcheron font uses local() only — place 'Ratcheron.woff2' (or .ttf/.otf)
+     in the same folder as this HTML file and uncomment the url() line below.
+     Without the font file, hero text will render in the serif fallback. */
+  @font-face {
+    font-family: 'Ratcheron';
+    src: url('Ratcheron.woff2') format('woff2'),
+         url('Ratcheron.ttf') format('truetype'),
+         local('Ratcheron');
+    font-display: swap;
+  }
 </style>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -15,15 +23,16 @@
   :root {
     --navy: #2C3639;
     --cream: #DCD7C9;
+    --sage: #3F4E4F;
+    /* Aliases unified — all point to their canonical name */
     --warm-orange: #A27B5B;
     --rose-gold: #A27B5B;
-    --sage: #3F4E4F;
-    --off-white: #DCD7C9;
     --light-sage: #A27B5B;
+    --creme-brulee: #A27B5B;
+    --off-white: #DCD7C9;
+    --au-lait: #DCD7C9;
     --inkwell: #2C3639;
     --lunar: #3F4E4F;
-    --creme-brulee: #A27B5B;
-    --au-lait: #DCD7C9;
   }
 
   html { scroll-behavior: smooth; overflow-x: hidden; }
@@ -393,8 +402,8 @@
 
   .back-btn {
     background: none; border: none; cursor: pointer;
-    color: #2C3639; font-size: 18px; display: flex; align-items: center; gap: 6px;
-    font-family: 'Jost', sans-serif; font-size: 13px; letter-spacing: 1px;
+    color: #2C3639; font-size: 13px; display: flex; align-items: center; gap: 6px;
+    font-family: 'Jost', sans-serif; letter-spacing: 1px;
   }
 
   .slide-counter {
@@ -927,7 +936,7 @@
   .quote-place { font-size: 9px; letter-spacing: 3px; color: rgba(220,215,201,0.7); margin-top: 4px; }
 
   .quote-avatars {
-    display: flex; justify-content: center; gap: -8px; margin-top: 20px;
+    display: flex; justify-content: center; margin-top: 20px;
   }
 
   .avatar {
@@ -2324,8 +2333,8 @@
       <video id="hero-video" autoplay muted loop playsinline preload="auto"
         style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;"
         src="Food Reel - Darío Idoate.mp4">
-        <div class="restaurant-img-inner" id="hero-img-inner"></div>
       </video>
+      <div class="restaurant-img-inner" id="hero-img-inner"></div>
     </div>
     <div class="img-caption" id="hero-caption">THE NEW STANDARD OF SERVICE</div>
   </div>
@@ -2799,7 +2808,7 @@
 
     <div class="testi-proof" id="testi-proof">SOCIAL PROOF</div>
 
-    <button class="testi-explore" id="testi-explore" onclick="goToSlide(7)">EXPLORE IMPACT</button>
+    <button class="testi-explore" id="testi-explore" onclick="goToSlide(8)">EXPLORE IMPACT</button>
   </div>
 
   
@@ -2943,7 +2952,7 @@
       <div class="next-step-label">NEXT STEP</div>
       <div class="next-step-name">Global Network</div>
     </div>
-    <button class="continue-btn" onclick="goToSlide(9)">Continue</button>
+    <button class="continue-btn" onclick="goToSlide(10)">Continue</button>
   </div>
 </section>
 
@@ -3479,7 +3488,7 @@ void main() {
     s4.insertBefore(canvas, s4.firstChild);
 
     /* ── Geometry + material shared base ── */
-    const planeGeo = new THREE.PlaneBufferGeometry(1, 1, 32, 32);
+    const planeGeo = new THREE.PlaneGeometry(1, 1, 32, 32);
     const planeMat = new THREE.ShaderMaterial({ transparent: true, vertexShader, fragmentShader });
     const loader   = new THREE.TextureLoader();
     loader.crossOrigin = 'anonymous';

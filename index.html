@@ -6,6 +6,15 @@
 <title>Restro</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+  @font-face {
+    font-family: 'The Seasons';
+    src: url('https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/cormorantgaramond/CormorantGaramond-Light.woff2') format('woff2'),
+         local('The Seasons'),
+         local('TheSeasons');
+    font-display: swap;
+  }
+</style>
+<style>
   /* NOTE: Ratcheron font uses local() only — place 'Ratcheron.woff2' (or .ttf/.otf)
      in the same folder as this HTML file and uncomment the url() line below.
      Without the font file, hero text will render in the serif fallback. */
@@ -356,20 +365,21 @@
   .hero-brand-overlay {
     position: relative;
     z-index: 4;
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(72px, 22vw, 160px);
-    font-weight: 700;
-    letter-spacing: 8px;
-    color: rgba(255,255,255,0.92);
+    font-family: 'The Seasons', 'Cormorant Garamond', serif;
+    font-size: clamp(80px, 26vw, 200px);
+    font-weight: 300;
+    letter-spacing: clamp(4px, 2vw, 20px);
+    color: #ffffff;
     text-shadow:
-      0 4px 40px rgba(0,0,0,0.3),
-      0 0 80px rgba(162,123,91,0.2);
+      0 4px 60px rgba(0,0,0,0.35),
+      0 0 120px rgba(162,123,91,0.15);
     pointer-events: none;
     white-space: nowrap;
     line-height: 1;
     display: block;
     text-align: center;
     margin-bottom: 48px;
+    padding: 0 5vw;
   }
 
   .bottom-nav {
@@ -1847,7 +1857,7 @@
     .hero-title { font-size: clamp(16px, 5.2vw, 22px); }
     .btn-primary { font-size: 10px; padding: 14px 28px; letter-spacing: 2px; }
     .hero-content { padding: 60px 16px 28px; }
-    .hero-brand-overlay { font-size: clamp(48px, 16vw, 85px); letter-spacing: 2px; margin-bottom: 24px; }
+    .hero-brand-overlay { font-size: clamp(56px, 18vw, 100px); letter-spacing: 2px; margin-bottom: 24px; }
 
     .problem-title { font-size: clamp(26px, 8.5vw, 36px); }
     .problem-text { font-size: clamp(14px, 4.2vw, 18px); }
@@ -1955,6 +1965,125 @@
 
   /* Separator line in step area */
   .step-separator { width: 1px; background: rgba(0,7,27,0.15); position: absolute; right: 0; top: 0; bottom: 0; }
+
+  /* ══════════════════════════════════════════════
+     SLIDE-PREORDER: LOGICALLY CRAFTED SECTION
+  ══════════════════════════════════════════════ */
+  #slide-preorder {
+    background: #f8f6f2;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 80px 6vw;
+  }
+
+  .preorder-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    gap: 40px;
+  }
+
+  .preorder-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 4vw;
+  }
+
+  .preorder-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5.5vw, 72px);
+    font-weight: 400;
+    color: #1a1a1a;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    margin-bottom: 40px;
+  }
+
+  .preorder-tagline {
+    font-family: 'Jost', sans-serif;
+    font-size: clamp(10px, 1.1vw, 13px);
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    line-height: 1.6;
+  }
+
+  .preorder-tagline .highlight-profit {
+    color: #c8a000;
+    font-weight: 600;
+  }
+
+  .preorder-tagline .highlight-chaotic {
+    color: #c0392b;
+    font-weight: 600;
+  }
+
+  .preorder-right {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(260px, 40vw, 500px);
+  }
+
+  /* The actual ss.png phone image */
+  .preorder-phone-img {
+    width: 100%;
+    max-width: 460px;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    /* Subtle perspective tilt matching the reference image */
+    transform: perspective(1000px) rotateY(-8deg) rotateX(2deg) rotate(2deg);
+    transition: transform 0.5s ease;
+    filter: drop-shadow(0 32px 64px rgba(0,0,0,0.22));
+  }
+
+  .preorder-phone-img:hover {
+    transform: perspective(1000px) rotateY(-3deg) rotateX(0deg) rotate(1deg);
+  }
+
+  /* Responsive preorder */
+  @media (max-width: 768px) {
+    .preorder-inner {
+      flex-direction: column;
+      text-align: center;
+      padding: 0;
+      gap: 48px;
+    }
+    .preorder-left {
+      padding-right: 0;
+      align-items: center;
+    }
+    .preorder-phone-img {
+      transform: none;
+      max-width: 280px;
+    }
+    .preorder-right {
+      width: 100%;
+    }
+    #slide-preorder {
+      padding: 60px 6vw;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .preorder-title {
+      font-size: clamp(28px, 8vw, 40px);
+    }
+    .preorder-phone-img {
+      max-width: 220px;
+    }
+  }
 
   /* ── SECTION TRANSITION STRIPS ── */
   /* Now handled by the universal background GSAP transitions.
@@ -2314,10 +2443,9 @@
     </button>
   </nav>
 
-  <!-- Centered content: RESTRO title + tagline + glass button stacked -->
+  <!-- Centered content: RESTRO title + glass button stacked -->
   <div class="hero-content">
     <div class="hero-brand-overlay" id="hero-brand-overlay">RESTRO</div>
-    <h1 class="hero-title" id="hero-title">Peak Hours Should Be Your <br> <b>Most Profitable</b> <br> Not Most Chaotic</h1>
     <button class="btn-primary" id="hero-btn" onclick="goToSlide(10)">BOOK A DEMO</button>
   </div>
 
@@ -2342,6 +2470,32 @@
 </section>
 
 <div class="section-blend blend-1-why" aria-hidden="true"></div>
+
+<!-- ══ SLIDE-PREORDER: LOGICALLY CRAFTED PRE-ORDERING ══ -->
+<section id="slide-preorder">
+  <div class="preorder-inner">
+
+    <!-- Left: text -->
+    <div class="preorder-left">
+      <h2 class="preorder-title">A Logically Crafted<br>Pre-Ordering System</h2>
+      <p class="preorder-tagline">
+        BECAUSE PEAK HOURS SHOULD BE <span class="highlight-profit">MOST PROFITABLE</span> NOT <span class="highlight-chaotic">CHAOTIC</span>
+      </p>
+    </div>
+
+    <!-- Right: phone mockup -->
+    <div class="preorder-right">
+      <img
+        src="ss.png"
+        alt="Restro pre-ordering app screenshot on phone"
+        class="preorder-phone-img"
+      >
+    </div><!-- /.preorder-right -->
+
+  </div><!-- /.preorder-inner -->
+</section>
+
+<div class="section-blend" aria-hidden="true"></div>
 
 <!-- ══ SLIDE 1B: WHY WE EXIST — Insomnia Ultra Smooth ══ -->
 <section id="slide-why">

@@ -3481,6 +3481,59 @@
   });
 
   /* ══════════════════════════════════════════════
+     SLIDE-PREORDER: phone slides from right, text from left, tagline fades in
+  ══════════════════════════════════════════════ */
+  (function() {
+    const preorderSection = document.getElementById('slide-preorder');
+    if (!preorderSection) return;
+
+    // Set initial hidden states immediately so there's no flash before animation
+    gsap.set('.preorder-right',   { opacity: 0, x: 80 });
+    gsap.set('.preorder-title',   { opacity: 0, x: -80 });
+    gsap.set('.preorder-tagline', { opacity: 0 });
+
+    // Phone wrapper: slides in from right + fades in
+    gsap.to('.preorder-right', {
+      opacity: 1,
+      x: 0,
+      duration: 1.0,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: preorderSection,
+        start: 'top 75%',
+        toggleActions: 'play none none none',
+      }
+    });
+
+    // Main title: slides in from left + fades in (starts slightly after phone)
+    gsap.to('.preorder-title', {
+      opacity: 1,
+      x: 0,
+      duration: 1.0,
+      ease: 'power3.out',
+      delay: 0.2,
+      scrollTrigger: {
+        trigger: preorderSection,
+        start: 'top 75%',
+        toggleActions: 'play none none none',
+      }
+    });
+
+    // Tagline: fades in last
+    gsap.to('.preorder-tagline', {
+      opacity: 1,
+      duration: 0.9,
+      ease: 'power2.out',
+      delay: 0.55,
+      scrollTrigger: {
+        trigger: preorderSection,
+        start: 'top 75%',
+        toggleActions: 'play none none none',
+      }
+    });
+  })();
+
+  /* ══════════════════════════════════════════════
      SLIDE 1B: WHY WE EXIST — Insomnia Ultra Smooth
   ══════════════════════════════════════════════ */
   (function() {
@@ -3550,7 +3603,7 @@
       );
     });
 
-    /* ── 5. Side text — opacity:0→1, y:30→0, play/reverse on scroll ── */
+    /* ── 5. Side text — opacity:0→1, y:30→0, stays visible until row scrolls fully off ── */
     whySection.querySelectorAll('.why-side-text').forEach(text => {
       gsap.fromTo(text,
         { opacity: 0, y: 30 },
@@ -3560,10 +3613,10 @@
           duration: 1,
           ease: 'power3.out',
           scrollTrigger: {
-            trigger: text,
+            trigger: text.closest('.why-project-row') || text,
             start: 'top 80%',
-            end: 'top 20%',
-            toggleActions: 'play reverse play reverse',
+            end: 'bottom top',
+            toggleActions: 'play none none reset',
           }
         }
       );

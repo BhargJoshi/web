@@ -2082,7 +2082,7 @@
   }
   .fc-circle:hover .fc-circle-word { opacity: 0; }
 
-  /* Hover image inside the circle */
+  /* Hover image inside the circle (small inner preview) */
   .fc-img-preview {
     position: absolute;
     inset: 0;
@@ -2094,6 +2094,46 @@
     z-index: 1;
   }
   .fc-circle:hover .fc-img-preview { opacity: 1; }
+
+  /* Large floating popup image — 30% of viewport */
+  #fc-popup-img {
+    position: fixed;
+    width: 30vw;
+    height: 38vw;
+    max-width: 420px;
+    max-height: 540px;
+    min-width: 200px;
+    min-height: 260px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 6px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.38);
+    pointer-events: none;
+    z-index: 9990;
+    opacity: 0;
+    transform: scale(0.88) translateY(12px);
+    transition: opacity 0.38s cubic-bezier(0.23,1,0.32,1),
+                transform 0.38s cubic-bezier(0.23,1,0.32,1);
+    will-change: transform, opacity;
+    overflow: hidden;
+  }
+  #fc-popup-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(162,123,91,0.18) 0%, transparent 60%);
+    border-radius: 6px;
+  }
+  #fc-popup-img.fc-popup-visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  @media (max-width: 768px) {
+    #fc-popup-img {
+      width: 55vw;
+      height: 70vw;
+    }
+  }
 
   /* Connector between steps */
   .fc-connector {
@@ -2578,6 +2618,8 @@
 </aside>
 <!-- ══ END STAGGERED SIDE MENU ══ -->
 <div id="universal-bg"></div>
+<!-- Floating popup image for THE SHIFT circles -->
+<div id="fc-popup-img" aria-hidden="true"></div>
 <div id="scroll-progress"></div>
 
 <!-- ══ SLIDE 1: HERO ══ -->
@@ -4635,18 +4677,76 @@ void main() {
       steps.forEach(s => io.observe(s));
     }
 
-    // Hover image injection for each circle
+    // Floating popup image element
+    const popup = document.getElementById('fc-popup-img');
+    if (!popup) return;
+
+    let activeImg = null;
+    let rafId = null;
+    let mouseX = 0, mouseY = 0;
+    let popupX = 0, popupY = 0;
+    const OFFSET_X = 24; // px offset from cursor
+    const OFFSET_Y = -20;
+
+    // Smooth follow via lerp
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function animatePopup() {
+      popupX = lerp(popupX, mouseX, 0.12);
+      popupY = lerp(popupY, mouseY, 0.12);
+
+      // Keep popup within viewport
+      const pw = popup.offsetWidth;
+      const ph = popup.offsetHeight;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      let tx = popupX + OFFSET_X;
+      let ty = popupY + OFFSET_Y;
+      if (tx + pw > vw - 10) tx = popupX - pw - OFFSET_X;
+      if (ty + ph > vh - 10) ty = vh - ph - 10;
+      if (ty < 10) ty = 10;
+
+      popup.style.left = tx + 'px';
+      popup.style.top  = ty + 'px';
+
+      if (activeImg) rafId = requestAnimationFrame(animatePopup);
+    }
+
+    // Track mouse globally when popup is active
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    // Hover image injection + popup show for each circle
     const circles = document.querySelectorAll('.fc-circle[data-img]');
     circles.forEach(circle => {
       const preview = circle.querySelector('.fc-img-preview');
-      if (!preview) return;
-      let loaded = false;
+      let imgLoaded = false;
 
       circle.addEventListener('mouseenter', function() {
-        if (!loaded) {
-          preview.style.backgroundImage = 'url(' + circle.dataset.img + ')';
-          loaded = true;
+        const imgUrl = circle.dataset.img;
+
+        // Load small inner preview
+        if (!imgLoaded && preview) {
+          preview.style.backgroundImage = 'url(' + imgUrl + ')';
+          imgLoaded = true;
         }
+
+        // Show large floating popup
+        popup.style.backgroundImage = 'url(' + imgUrl + ')';
+        activeImg = imgUrl;
+        popup.classList.add('fc-popup-visible');
+        popupX = mouseX;
+        popupY = mouseY;
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(animatePopup);
+      });
+
+      circle.addEventListener('mouseleave', function() {
+        activeImg = null;
+        popup.classList.remove('fc-popup-visible');
+        cancelAnimationFrame(rafId);
       });
     });
   })();

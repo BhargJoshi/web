@@ -3830,59 +3830,16 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
   })();
 
   /* ══════════════════════════════════════════════
-     SLIDE-PEAK-HOURS-MID: between Problem & Shift
-     Same scroll-driven colour transition as the original peak-hours slide.
+     SLIDE-PEAK-HOURS-MID: background stays fixed beige — no color transition
   ══════════════════════════════════════════════ */
   (function() {
     const section = document.getElementById('slide-peak-hours-mid');
     const bg      = document.getElementById('peak-hours-bg-mid');
     const text    = document.getElementById('peak-hours-statement-mid');
     if (!section || !bg || !text) return;
-
-    const stages = [
-      { bg: '#F0EDE6', color: '#2C3639' },
-      { bg: '#DCD7C9', color: '#2C3639' },
-      { bg: '#2C3639', color: '#DCD7C9' },
-    ];
-
-    function lerp(a, b, t) { return a + (b - a) * t; }
-    function hexToRgb(hex) {
-      return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
-    }
-    function rgbToHex(r,g,b) {
-      return '#' + [r,g,b].map(v => Math.round(v).toString(16).padStart(2,'0')).join('');
-    }
-    function interpolateColor(hex1, hex2, t) {
-      const [r1,g1,b1] = hexToRgb(hex1), [r2,g2,b2] = hexToRgb(hex2);
-      return rgbToHex(lerp(r1,r2,t), lerp(g1,g2,t), lerp(b1,b2,t));
-    }
-
-    function applyStage(progress) {
-      let bgColor, textColor;
-      if (progress < 0.4) {
-        const t = progress / 0.4;
-        bgColor   = interpolateColor(stages[0].bg,    stages[1].bg,    t);
-        textColor = interpolateColor(stages[0].color, stages[1].color, t);
-      } else {
-        const t = (progress - 0.4) / 0.6;
-        bgColor   = interpolateColor(stages[1].bg,    stages[2].bg,    t);
-        textColor = interpolateColor(stages[1].color, stages[2].color, t);
-      }
-      bg.style.background = bgColor;
-      text.style.color    = textColor;
-    }
-
-    gsap.to({ progress: 0 }, {
-      progress: 1,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: section,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1.2,
-        onUpdate: (self) => applyStage(self.progress),
-      }
-    });
+    /* Lock background and text color to the initial beige state permanently */
+    bg.style.background = '#F0EDE6';
+    text.style.color    = '#2C3639';
   })();
 
   /* ══════════════════════════════════════════════
@@ -4283,7 +4240,7 @@ void main() {
       };
     });
 
-    /* ── Master GSAP timeline (titles + progress bar) ── */
+    /* ── Master GSAP timeline (progress bar only — titles handled by step sync) ── */
     /* Equalise title item heights so yPercent math is exact */
     (function() {
       const containerH = document.getElementById('hiw-titles').offsetHeight;
@@ -4299,11 +4256,22 @@ void main() {
       defaults: { duration: 1, ease: 'linear' }
     })
     .fromTo(pLine2,     { scaleX: 1 }, { scaleX: 0, duration: 0.5, ease: 'power3', transformOrigin: 'right' }, 0)
-    .fromTo(titlesList, { yPercent: 0 }, { yPercent: -(100 - 100 / titleItems.length) }, 0)
     .fromTo(pLine1,     { scaleX: 0, transformOrigin: 'left' }, { scaleX: 1, transformOrigin: 'left' }, 0);
 
     gsap.set(pLine1, { scaleX: 0, transformOrigin: 'left' });
     gsap.set(pLine2, { scaleX: 1, transformOrigin: 'right' });
+
+    /* Initialise titles: each item absolutely stacked, only active one visible */
+    const n = titleItems.length;
+    gsap.set(titlesList, { yPercent: 0 });
+    titleItems.forEach((item, i) => {
+      item.style.position = 'absolute';
+      item.style.top = '0';
+      item.style.left = '0';
+      item.style.width = '100%';
+      gsap.set(item, { autoAlpha: i === 0 ? 1 : 0, y: i === 0 ? 0 : 30 });
+    });
+    let _lastStep = 0;
 
     /* ── Scroll progress proxy — driven by ScrollTrigger pin ── */
     const scrollProxy = { progress: 0 };
@@ -4335,10 +4303,26 @@ void main() {
         item.out = !vis;
       }
 
-      /* Counter */
-      const n    = cached.length;
-      const step = Math.min(n - 1, Math.floor(progress * n));
-      if (counter) counter.textContent = '0' + (step + 1) + ' / 0' + n;
+      /* Counter and synchronised title switch */
+      const nCards = cached.length;
+      const step   = Math.min(nCards - 1, Math.floor(progress * nCards));
+      if (counter) counter.textContent = '0' + (step + 1) + ' / 0' + nCards;
+
+      /* Switch title when step changes */
+      if (step !== _lastStep) {
+        const outItem = titleItems[_lastStep];
+        const inItem  = titleItems[step];
+        const dir     = step > _lastStep ? 1 : -1;
+
+        /* Slide old title out */
+        gsap.to(outItem, { autoAlpha: 0, y: -30 * dir, duration: 0.35, ease: 'power2.in', overwrite: true });
+        /* Slide new title in */
+        gsap.fromTo(inItem,
+          { autoAlpha: 0, y: 30 * dir },
+          { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power3.out', overwrite: true }
+        );
+        _lastStep = step;
+      }
     }
     applyProgress._lastProg = 0;
 

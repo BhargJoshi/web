@@ -1389,6 +1389,22 @@
     pointer-events: none;
   }
 
+  /* SOL.png contain fix — image fills frame without side-cropping */
+  .why-img-box--contain {
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .why-img-box--contain .why-reveal-img--contain {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    top: 0; left: 0;
+    /* no extra height needed — contain keeps full image visible */
+  }
+
   /* Floating dot nav */
   .why-dot-nav {
     position: fixed;
@@ -1962,6 +1978,180 @@
 
   /* Separator line in step area */
   .step-separator { width: 1px; background: rgba(0,7,27,0.15); position: absolute; right: 0; top: 0; bottom: 0; }
+
+  /* ══════════════════════════════════════════════
+     FLOWCHART CIRCLES — THE SHIFT (CHANGE 2)
+  ══════════════════════════════════════════════ */
+
+  .fc-flow-wrap {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 0 0 8px;
+    margin-bottom: 48px;
+    width: 100%;
+  }
+
+  /* Each step row: circle on left, text on right */
+  .fc-step {
+    display: flex;
+    align-items: center;
+    gap: clamp(20px, 4vw, 44px);
+    width: 100%;
+    max-width: 560px;
+    padding: 12px 0;
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1);
+    transition-delay: var(--fc-delay, 0s);
+  }
+
+  /* Visible state triggered by JS IntersectionObserver */
+  .fc-step.fc-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Outer wrapper holds both the spinning ring svg and the circle */
+  .fc-circle-outer {
+    position: relative;
+    width: clamp(100px, 22vw, 130px);
+    height: clamp(100px, 22vw, 130px);
+    flex-shrink: 0;
+  }
+
+  /* Spinning ring SVG — positioned to overlay exactly */
+  .fc-ring-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    animation: fcRingSpin 5s linear infinite;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .fc-ring-rev {
+    animation: fcRingSpinRev 7s linear infinite;
+  }
+
+  @keyframes fcRingSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes fcRingSpinRev {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(-360deg); }
+  }
+
+  /* The main circle */
+  .fc-circle {
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+    z-index: 3;
+    transition: transform 0.35s cubic-bezier(0.23,1,0.32,1), box-shadow 0.35s ease;
+    box-shadow: 0 4px 24px rgba(44,54,57,0.22);
+  }
+  .fc-circle:hover {
+    transform: scale(1.07);
+    box-shadow: 0 8px 36px rgba(44,54,57,0.38);
+  }
+  .fc-circle-2 { background: #3F4E4F; }
+  .fc-circle-3 { background: #2C3639; }
+
+  /* Single word label inside the circle */
+  .fc-circle-word {
+    font-family: 'Jost', sans-serif;
+    font-size: clamp(9px, 2vw, 12px);
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    color: var(--cream);
+    text-transform: uppercase;
+    text-align: center;
+    pointer-events: none;
+    position: relative;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+  }
+  .fc-circle:hover .fc-circle-word { opacity: 0; }
+
+  /* Hover image inside the circle */
+  .fc-img-preview {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+  }
+  .fc-circle:hover .fc-img-preview { opacity: 1; }
+
+  /* Connector between steps */
+  .fc-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* align with the circle centre column */
+    align-self: flex-start;
+    margin-left: calc(clamp(100px, 22vw, 130px) / 2 - 6px);
+    gap: 2px;
+    opacity: 0.6;
+  }
+  .fc-conn-svg {
+    width: 2px;
+    height: 40px;
+  }
+  .fc-conn-arrow {
+    font-size: 10px;
+    color: #A27B5B;
+    line-height: 1;
+  }
+
+  /* Right: step text block */
+  .fc-step-text {
+    flex: 1;
+    min-width: 0;
+  }
+  .fc-step-num {
+    font-family: 'Jost', sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--creme-brulee);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .fc-step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(14px, 3.5vw, 18px);
+    font-weight: 400;
+    color: var(--navy);
+    margin: 0 0 8px;
+    line-height: 1.25;
+  }
+  .fc-step-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(13px, 2.8vw, 15px);
+    color: rgba(44,54,57,0.7);
+    line-height: 1.5;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    .fc-circle-outer { width: 86px; height: 86px; }
+    .fc-connector { margin-left: 37px; }
+    .fc-step { gap: 16px; }
+    .fc-circle-word { font-size: 8px; letter-spacing: 1.5px; }
+    .fc-conn-svg { height: 28px; }
+  }
 
   /* ══════════════════════════════════════════════
      SLIDE-PREORDER: LOGICALLY CRAFTED SECTION
@@ -2540,9 +2730,9 @@
         <h3 class="why-side-title">How We Solve It</h3>
         <p class="why-side-desc">From the first scan to the final bite — Restro orchestrates a seamless flow so your team can focus on the magic, not the friction.</p>
       </div>
-      <div class="why-img-box">
+      <div class="why-img-box why-img-box--contain">
         <div class="why-img-box-overlay"></div>
-        <img src="SOL.png" class="why-reveal-img" alt="The Experience" crossorigin="anonymous">
+        <img src="SOL.png" class="why-reveal-img why-reveal-img--contain" alt="The Experience" crossorigin="anonymous">
       </div>
     </section>
 
@@ -2813,80 +3003,88 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
     <div class="shift-line" id="shift-line"></div>
     <p class="shift-subtitle" id="shift-subtitle">INNOVATIVE STRATEGY</p>
 
-    <!-- ── MASK EXPAND DIAGRAM ── -->
-    <div class="flow-diagram" id="flow-diagram">
+    <!-- ── FLOWCHART CIRCLES DIAGRAM ── -->
+    <div class="flow-diagram fc-flow-wrap" id="flow-diagram">
 
-      <!-- MASK 1: CAPTURE -->
-      <div class="mask-item" id="flow-c1" role="button" tabindex="0" aria-expanded="false" aria-label="Capture — click to expand">
-        <div class="mask-fill mask-fill-1"></div>
-        <div class="mask-progress"></div>
-
-        <!-- Always-visible header -->
-        <div class="mask-header">
-          <div class="mask-header-left">
-            <span class="mask-number">01</span>
-            <span class="mask-label">SCAN THE QR TO GET THE MENU</span>
+      <!-- Step 1 -->
+      <div class="fc-step fc-step-slide" id="fc-step-1" style="--fc-delay:0s;">
+        <div class="fc-circle-outer">
+          <svg class="fc-ring-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <circle class="fc-ring-track" cx="60" cy="60" r="54" fill="none" stroke="rgba(162,123,91,0.18)" stroke-width="2"/>
+            <circle class="fc-ring-spin" cx="60" cy="60" r="54" fill="none" stroke="#A27B5B" stroke-width="2"
+              stroke-dasharray="60 280" stroke-linecap="round"/>
+          </svg>
+          <div class="fc-circle" tabindex="0"
+               data-img="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600"
+               id="fc-c1">
+            <span class="fc-circle-word">SCAN</span>
+            <div class="fc-img-preview"></div>
           </div>
-          <div class="mask-arrow">+</div>
         </div>
-
-        <!-- Clip-path revealed content -->
-        <div class="mask-item-inner">
-          <div class="mask-content">
-            <div class="mask-badge">🎯</div>
-            <div class="mask-text-block">
-              <div class="mask-step-title">PLACE ORDERS EARLIER WHEN YOU ARE WAITING</div>
-              <div class="mask-step-desc">The moment a guest arrives, Restro captures their intent — walk-in, pre-order, and provides a estimated time and ready food as soon as their seat empties.</div>
-            </div>
-          </div>
+        <div class="fc-step-text">
+          <span class="fc-step-num">01</span>
+          <h4 class="fc-step-title">Scan The QR To Get The Menu</h4>
+          <p class="fc-step-desc">The moment a guest arrives, Restro captures their intent — walk-in, pre-order, and provides an estimated time and ready food as soon as their seat empties.</p>
         </div>
       </div>
 
-      <!-- MASK 2: SCHEDULE -->
-      <div class="mask-item" id="flow-c2" role="button" tabindex="0" aria-expanded="false" aria-label="Schedule — click to expand">
-        <div class="mask-fill mask-fill-2"></div>
-        <div class="mask-progress"></div>
+      <!-- Connector arrow 1→2 -->
+      <div class="fc-connector" id="fc-conn-1">
+        <svg class="fc-conn-svg" viewBox="0 0 2 60" xmlns="http://www.w3.org/2000/svg">
+          <line x1="1" y1="0" x2="1" y2="60" stroke="#A27B5B" stroke-width="1.5" stroke-dasharray="5 4"/>
+        </svg>
+        <div class="fc-conn-arrow">▼</div>
+      </div>
 
-        <div class="mask-header">
-          <div class="mask-header-left">
-            <span class="mask-number">02</span>
-            <span class="mask-label">We Get Your Order and Seat Reserved</span>
+      <!-- Step 2 -->
+      <div class="fc-step fc-step-slide" id="fc-step-2" style="--fc-delay:0.18s;">
+        <div class="fc-circle-outer">
+          <svg class="fc-ring-svg fc-ring-rev" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <circle class="fc-ring-track" cx="60" cy="60" r="54" fill="none" stroke="rgba(63,78,79,0.18)" stroke-width="2"/>
+            <circle class="fc-ring-spin" cx="60" cy="60" r="54" fill="none" stroke="#3F4E4F" stroke-width="2"
+              stroke-dasharray="40 300" stroke-linecap="round"/>
+          </svg>
+          <div class="fc-circle fc-circle-2" tabindex="0"
+               data-img="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=600"
+               id="fc-c2">
+            <span class="fc-circle-word">RESERVE</span>
+            <div class="fc-img-preview"></div>
           </div>
-          <div class="mask-arrow">+</div>
         </div>
-
-        <div class="mask-item-inner">
-          <div class="mask-content">
-            <div class="mask-badge">📅</div>
-            <div class="mask-text-block">
-              <div class="mask-step-title">We Take Care Of Your Food And Seating, BEFORE You Enter</div>
-              <div class="mask-step-desc">AI sequences each table turn with surgical precision — predicting wait times, making sure your food and table are ready as you step in.</div>
-            </div>
-          </div>
+        <div class="fc-step-text">
+          <span class="fc-step-num">02</span>
+          <h4 class="fc-step-title">We Get Your Order &amp; Seat Reserved</h4>
+          <p class="fc-step-desc">AI sequences each table turn with surgical precision — predicting wait times, making sure your food and table are ready as you step in.</p>
         </div>
       </div>
 
-      <!-- MASK 3: BALANCE -->
-      <div class="mask-item" id="flow-c3" role="button" tabindex="0" aria-expanded="false" aria-label="Balance — click to expand">
-        <div class="mask-fill mask-fill-3"></div>
-        <div class="mask-progress"></div>
+      <!-- Connector arrow 2→3 -->
+      <div class="fc-connector" id="fc-conn-2">
+        <svg class="fc-conn-svg" viewBox="0 0 2 60" xmlns="http://www.w3.org/2000/svg">
+          <line x1="1" y1="0" x2="1" y2="60" stroke="#2C3639" stroke-width="1.5" stroke-dasharray="5 4"/>
+        </svg>
+        <div class="fc-conn-arrow" style="color:#2C3639;">▼</div>
+      </div>
 
-        <div class="mask-header">
-          <div class="mask-header-left">
-            <span class="mask-number">03</span>
-            <span class="mask-label">Enjoy Your Feast</span>
+      <!-- Step 3 -->
+      <div class="fc-step fc-step-slide" id="fc-step-3" style="--fc-delay:0.36s;">
+        <div class="fc-circle-outer">
+          <svg class="fc-ring-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <circle class="fc-ring-track" cx="60" cy="60" r="54" fill="none" stroke="rgba(44,54,57,0.18)" stroke-width="2"/>
+            <circle class="fc-ring-spin" cx="60" cy="60" r="54" fill="none" stroke="#2C3639" stroke-width="2"
+              stroke-dasharray="80 260" stroke-linecap="round"/>
+          </svg>
+          <div class="fc-circle fc-circle-3" tabindex="0"
+               data-img="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=600"
+               id="fc-c3">
+            <span class="fc-circle-word">FEAST</span>
+            <div class="fc-img-preview"></div>
           </div>
-          <div class="mask-arrow">+</div>
         </div>
-
-        <div class="mask-item-inner">
-          <div class="mask-content">
-            <div class="mask-badge">⚖️</div>
-            <div class="mask-text-block">
-              <div class="mask-step-title">Perfect Timing & Reduuced Chaos</div>
-              <div class="mask-step-desc"> Restro absorbs peak-hour chaos so you can get the unhurried, attentive service you desire.</div>
-            </div>
-          </div>
+        <div class="fc-step-text">
+          <span class="fc-step-num">03</span>
+          <h4 class="fc-step-title">Enjoy Your Feast</h4>
+          <p class="fc-step-desc">Restro absorbs peak-hour chaos so you can get the unhurried, attentive service you desire. Perfect timing, reduced friction.</p>
         </div>
       </div>
 
@@ -4420,8 +4618,40 @@ void main() {
   });
 
   /* ══════════════════════════════════════════════
-     STAGGERED SIDE MENU — vanilla JS port
+     FLOWCHART CIRCLES — THE SHIFT (CHANGE 2)
   ══════════════════════════════════════════════ */
+  (function() {
+    // Slide-in animation via IntersectionObserver
+    const steps = document.querySelectorAll('.fc-step');
+    if (steps.length) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('fc-visible');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.2 });
+      steps.forEach(s => io.observe(s));
+    }
+
+    // Hover image injection for each circle
+    const circles = document.querySelectorAll('.fc-circle[data-img]');
+    circles.forEach(circle => {
+      const preview = circle.querySelector('.fc-img-preview');
+      if (!preview) return;
+      let loaded = false;
+
+      circle.addEventListener('mouseenter', function() {
+        if (!loaded) {
+          preview.style.backgroundImage = 'url(' + circle.dataset.img + ')';
+          loaded = true;
+        }
+      });
+    });
+  })();
+
+
   (function() {
 
     /* ── DOM refs ── */

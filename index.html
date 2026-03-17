@@ -3146,7 +3146,7 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
 
   <!-- header -->
   <div style="position:absolute;top:0;left:0;width:100%;display:flex;justify-content:space-between;padding:2vw 2.5vw;pointer-events:none;z-index:10;">
-    <div style="color:rgba(255,255,255,0.3);font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:4px;text-transform:uppercase;">How It Works</div>
+    <div style="color:rgba(255,255,255,1);font-family:'Jost',sans-serif;font-size:1.6rem;letter-spacing:4px;text-transform:uppercase;">How It Works</div>
     <div id="hiw-counter" style="color:rgba(255,255,255,0.3);font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:3px;">01 / 04</div>
   </div>
 
@@ -3203,28 +3203,31 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
     </div>
     <!-- animated list -->
     <div id="hiw-titles-list" style="position:absolute;top:0;left:0;width:100%;will-change:transform;">
-      <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;">
+      <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;height:100%;">
         <div style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:5px;color:#A27B5B;text-transform:uppercase;margin-bottom:4px;">01 · ENTRY</div>
         <div style="font-family:'Playfair Display',serif;font-size:6vw;font-weight:bold;letter-spacing:-0.1vw;color:#fff;line-height:1.1;">Scan &amp; Step In</div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.2vw,19px);color:rgba(220,215,201,0.6);line-height:1.6;font-weight:300;max-width:420px;">Scan the QR code at the entrance for instant menu access.</div>
       </div>
-      <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;">
+      <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;height:100%;">
         <div style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:5px;color:#A27B5B;text-transform:uppercase;margin-bottom:4px;">02 · EXPLORE</div>
         <div style="font-family:'Playfair Display',serif;font-size:6vw;font-weight:bold;letter-spacing:-0.1vw;color:#fff;line-height:1.1;">Browse Live Menu</div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.2vw,19px);color:rgba(220,215,201,0.6);line-height:1.6;font-weight:300;max-width:420px;">Browse the live menu with real-time availability updates.</div>
       </div>
-      <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;">
+      <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;height:100%;">
         <div style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:5px;color:#A27B5B;text-transform:uppercase;margin-bottom:4px;">03 · PRE-ORDER</div>
         <div style="font-family:'Playfair Display',serif;font-size:6vw;font-weight:bold;letter-spacing:-0.1vw;color:#fff;line-height:1.1;">Order While Waiting</div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.2vw,19px);color:rgba(220,215,201,0.6);line-height:1.6;font-weight:300;max-width:420px;">Place your order while waiting for your table to be ready.</div>
       </div>
-      <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;">
+      <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;height:100%;">
         <div style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:5px;color:#A27B5B;text-transform:uppercase;margin-bottom:4px;">04 · ARRIVAL</div>
         <div style="font-family:'Playfair Display',serif;font-size:6vw;font-weight:bold;letter-spacing:-0.1vw;color:#fff;line-height:1.1;">Seated &amp; Served</div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.2vw,19px);color:rgba(220,215,201,0.6);line-height:1.6;font-weight:300;max-width:420px;">Your food begins preparation as you pay and arrives ready exactly when you get seated.</div>
       </div>
     </div>
   </div>
+
+  <!-- image brightness overlay — reduces brightness for text readability -->
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.42);pointer-events:none;z-index:2;"></div>
 
   <!-- progress bar -->
   <div style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;overflow:hidden;pointer-events:none;z-index:100;">
@@ -4281,6 +4284,16 @@ void main() {
     });
 
     /* ── Master GSAP timeline (titles + progress bar) ── */
+    /* Equalise title item heights so yPercent math is exact */
+    (function() {
+      const containerH = document.getElementById('hiw-titles').offsetHeight;
+      titleItems.forEach(item => {
+        item.style.height = containerH + 'px';
+        item.style.minHeight = containerH + 'px';
+        item.style.boxSizing = 'border-box';
+      });
+    })();
+
     const masterTL = gsap.timeline({
       paused: true,
       defaults: { duration: 1, ease: 'linear' }

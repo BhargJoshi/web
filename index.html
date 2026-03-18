@@ -1570,6 +1570,10 @@
     .problem-title {
       font-size: clamp(28px, 8.5vw, 42px);
     }
+    #prob-text {
+      white-space: normal !important;
+      font-size: clamp(11px, 3.5vw, 16px) !important;
+    }
     .problem-subtitle {
       font-size: 9px;
       letter-spacing: 3px;
@@ -1874,6 +1878,7 @@
 
     .problem-title { font-size: clamp(26px, 8.5vw, 36px); }
     .problem-text { font-size: clamp(14px, 4.2vw, 18px); }
+    #prob-text { white-space: normal !important; font-size: clamp(10px, 3.2vw, 14px) !important; }
     .compare-label { font-size: clamp(14px, 4.2vw, 18px); }
     .slide-body { padding: 20px 14px; }
 
@@ -3020,10 +3025,27 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
     background: #F0EDE6;
   }
   /* Responsive font on very small screens */
+  @media (max-width: 768px) {
+    #peak-hours-statement {
+      font-size: clamp(14px, 2.75vw, 40px) !important;
+      padding: 10vw 8vw !important;
+      height: auto !important;
+      white-space: normal !important;
+      display: block !important;
+      text-align: center !important;
+    }
+    #peak-hours-text {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-height: 100vh !important;
+      padding: 10vw 8vw !important;
+    }
+  }
   @media (max-width: 480px) {
     #peak-hours-statement {
-      font-size: clamp(22px, 8vw, 36px) !important;
-      padding: 14vw 6vw !important;
+      font-size: clamp(14px, 2.75vw, 40px) !important;
+      padding: 0 !important;
     }
   }
 </style>
@@ -3245,7 +3267,7 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
 
     </div>
 
-    <p class="problem-text" id="prob-text" style="text-align:center; white-space:nowrap; font-size:clamp(11px,3.2vw,18px); padding-top:28px;"><b>They Leave Not Because They Refuse To Wait, But Because They Are Unsure About Their Turn</b></p>
+    <p class="problem-text" id="prob-text" style="text-align:center; white-space:nowrap; font-size:clamp(11px,3.2vw,18px); padding-top:28px;" class="prob-text-main"><b>They Leave Not Because They Refuse To Wait, But Because They Are Unsure About Their Turn</b></p>
 
   </div>
  
@@ -3460,7 +3482,7 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
   </div>
 
   <!-- titles overlay — centred, titles fade in/out in place (no vertical scroll) -->
-  <div id="hiw-titles" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:3;text-align:center;width:min(90vw,600px);">
+  <div id="hiw-titles" style="position:absolute;top:calc(50% + 30px);left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:3;text-align:center;width:min(90vw,600px);">
     <!-- proxy: sets container height — use the tallest card content so nothing crops -->
     <div style="visibility:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;">
       <div style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:5px;color:#A27B5B;text-transform:uppercase;margin-bottom:4px;">00 · PROXY</div>

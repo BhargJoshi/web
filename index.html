@@ -2945,41 +2945,319 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
   <div class="slide-body">
     <h2 class="problem-title" id="prob-title">The Problem We Solve</h2>
 
-    <!-- Chaos diagram -->
-    <div class="diagram-card" id="chaos-card">
-      <div class="diagram-label">01. Friction</div>
-      <svg class="chaos-svg" viewBox="0 0 300 140">
-        <g stroke="#7a8a8b" stroke-width="1" opacity="0.6">
-          <line x1="20" y1="70" x2="280" y2="30"/>
-          <line x1="50" y1="10" x2="200" y2="130"/>
-          <line x1="10" y1="90" x2="270" y2="50"/>
-          <line x1="100" y1="5" x2="180" y2="135"/>
-          <line x1="30" y1="120" x2="290" y2="20"/>
-          <line x1="150" y1="0" x2="80" y2="140"/>
-          <line x1="5" y1="40" x2="250" y2="100"/>
-          <line x1="200" y1="5" x2="60" y2="130"/>
-          <line x1="120" y1="140" x2="240" y2="10"/>
-        </g>
-      </svg>
-      <div class="diagram-stat" id="chaos-stat">
-        <strong>30% LOSS</strong>
-        <span>Revenue leakage via walk-aways</span>
+    <!-- Animated argument scene -->
+    <div id="argument-scene">
+      <style>
+        #argument-scene {
+          width: 100%;
+          padding: 16px 0 8px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0;
+        }
+
+        .arg-stage {
+          width: 100%;
+          max-width: 420px;
+          position: relative;
+          height: 260px;
+        }
+
+        /* ── CUSTOMER (left) ── */
+        .arg-customer {
+          position: absolute;
+          left: 10px;
+          bottom: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0;
+        }
+
+        /* ── MANAGER (right) ── */
+        .arg-manager {
+          position: absolute;
+          right: 10px;
+          bottom: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0;
+        }
+
+        /* ── Speech bubbles ── */
+        .speech-bubble {
+          position: absolute;
+          background: #fff;
+          border: 1.5px solid #2C3639;
+          border-radius: 10px;
+          padding: 8px 11px;
+          font-family: 'Jost', sans-serif;
+          font-size: 10px;
+          line-height: 1.45;
+          color: #2C3639;
+          max-width: 130px;
+          text-align: center;
+          box-shadow: 0 3px 12px rgba(44,54,57,0.13);
+        }
+
+        .speech-bubble::after {
+          content: '';
+          position: absolute;
+          bottom: -9px;
+          border-left: 8px solid transparent;
+          border-right: 8px solid transparent;
+          border-top: 9px solid #fff;
+        }
+        .speech-bubble::before {
+          content: '';
+          position: absolute;
+          bottom: -11px;
+          border-left: 9px solid transparent;
+          border-right: 9px solid transparent;
+          border-top: 10px solid #2C3639;
+        }
+
+        /* Customer bubble — tail on right side pointing right */
+        .bubble-customer {
+          left: 0px;
+          bottom: 205px;
+        }
+        .bubble-customer::after { left: 22px; }
+        .bubble-customer::before { left: 21px; }
+
+        /* Manager bubble — tail on left side pointing left */
+        .bubble-manager {
+          right: 0px;
+          bottom: 205px;
+        }
+        .bubble-manager::after { right: 22px; }
+        .bubble-manager::before { right: 21px; }
+
+        /* ── Bubble text cycling animation ── */
+        @keyframes bubbleFadeA {
+          0%,5%    { opacity: 1; }
+          40%,55%  { opacity: 0; }
+          90%,100% { opacity: 1; }
+        }
+        @keyframes bubbleFadeB {
+          0%,5%    { opacity: 0; }
+          40%,55%  { opacity: 1; }
+          90%,100% { opacity: 0; }
+        }
+
+        .bubble-text-a { animation: bubbleFadeA 4s ease-in-out infinite; }
+        .bubble-text-b { animation: bubbleFadeB 4s ease-in-out infinite; }
+
+        /* Manager bubble mirror */
+        .bubble-text-c { animation: bubbleFadeB 4s ease-in-out infinite; }
+        .bubble-text-d { animation: bubbleFadeA 4s ease-in-out infinite; }
+
+        /* ── Character body wobble ── */
+        @keyframes wobbleLeft {
+          0%,100% { transform: rotate(-2deg); }
+          50%      { transform: rotate(3deg); }
+        }
+        @keyframes wobbleRight {
+          0%,100% { transform: rotate(2deg); }
+          50%      { transform: rotate(-3deg); }
+        }
+        @keyframes armWaveL {
+          0%,100% { transform: rotate(-10deg); }
+          50%      { transform: rotate(25deg); }
+        }
+        @keyframes armWaveR {
+          0%,100% { transform: rotate(10deg); }
+          50%      { transform: rotate(-25deg); }
+        }
+        @keyframes headNod {
+          0%,100% { transform: translateY(0); }
+          50%      { transform: translateY(-3px); }
+        }
+
+        .human-body-l { transform-origin: bottom center; animation: wobbleLeft 1.8s ease-in-out infinite; }
+        .human-body-r { transform-origin: bottom center; animation: wobbleRight 1.8s ease-in-out infinite; }
+
+        /* ── Ground line ── */
+        .arg-ground {
+          position: absolute;
+          bottom: 0; left: 0; right: 0;
+          height: 1px;
+          background: rgba(44,54,57,0.18);
+        }
+
+        /* ── Role label ── */
+        .arg-role {
+          position: absolute;
+          bottom: -18px;
+          font-family: 'Jost', sans-serif;
+          font-size: 8px;
+          letter-spacing: 2px;
+          color: rgba(44,54,57,0.5);
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        /* ── Emotion sparks between them ── */
+        .arg-sparks {
+          position: absolute;
+          left: 50%;
+          bottom: 80px;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 4px;
+          align-items: center;
+        }
+        @keyframes sparkPop {
+          0%,100% { transform: scale(0.6); opacity: 0.3; }
+          50%      { transform: scale(1.3); opacity: 1; }
+        }
+        .spark {
+          font-size: 13px;
+          animation: sparkPop 0.9s ease-in-out infinite;
+        }
+        .spark:nth-child(2) { animation-delay: 0.3s; }
+        .spark:nth-child(3) { animation-delay: 0.6s; }
+      </style>
+
+      <div class="arg-stage">
+        <!-- Ground -->
+        <div class="arg-ground"></div>
+
+        <!-- ── CUSTOMER (left) ── -->
+        <div class="arg-customer">
+          <!-- Speech bubble -->
+          <div class="speech-bubble bubble-customer">
+            <span class="bubble-text-a">"How long do I have<br>to wait?!"</span>
+            <span class="bubble-text-b" style="position:absolute;inset:8px 11px;display:flex;align-items:center;justify-content:center;">"Nobody tells me<br>anything here!"</span>
+          </div>
+
+          <!-- Human SVG -->
+          <svg width="72" height="190" viewBox="0 0 72 190" fill="none" xmlns="http://www.w3.org/2000/svg" class="human-body-l">
+            <!-- Head -->
+            <g animation="headNod 1.8s ease-in-out infinite">
+              <circle cx="36" cy="22" r="16" fill="#DCD7C9" stroke="#2C3639" stroke-width="1.5"/>
+              <!-- Face: angry brows -->
+              <line x1="27" y1="16" x2="33" y2="19" stroke="#2C3639" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="39" y1="19" x2="45" y2="16" stroke="#2C3639" stroke-width="1.5" stroke-linecap="round"/>
+              <!-- Eyes -->
+              <circle cx="30" cy="22" r="2" fill="#2C3639"/>
+              <circle cx="42" cy="22" r="2" fill="#2C3639"/>
+              <!-- Frown -->
+              <path d="M29 30 Q36 26 43 30" stroke="#2C3639" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            </g>
+
+            <!-- Neck -->
+            <rect x="32" y="37" width="8" height="8" rx="2" fill="#DCD7C9" stroke="#2C3639" stroke-width="1"/>
+
+            <!-- Torso — casual shirt -->
+            <rect x="18" y="44" width="36" height="52" rx="6" fill="#A27B5B" stroke="#2C3639" stroke-width="1.2"/>
+            <!-- Shirt collar -->
+            <path d="M32 44 L36 52 L40 44" stroke="#2C3639" stroke-width="1" fill="#DCD7C9"/>
+
+            <!-- Left arm raised (gesturing) -->
+            <g style="transform-origin:18px 50px; animation: armWaveL 1.8s ease-in-out infinite;">
+              <line x1="18" y1="50" x2="2" y2="30" stroke="#A27B5B" stroke-width="9" stroke-linecap="round"/>
+              <line x1="18" y1="50" x2="2" y2="30" stroke="#2C3639" stroke-width="1.2" stroke-linecap="round"/>
+              <!-- Hand -->
+              <circle cx="2" cy="30" r="5" fill="#DCD7C9" stroke="#2C3639" stroke-width="1"/>
+            </g>
+
+            <!-- Right arm down -->
+            <line x1="54" y1="50" x2="62" y2="80" stroke="#A27B5B" stroke-width="9" stroke-linecap="round"/>
+            <line x1="54" y1="50" x2="62" y2="80" stroke="#2C3639" stroke-width="1.2" stroke-linecap="round"/>
+            <circle cx="62" cy="80" r="5" fill="#DCD7C9" stroke="#2C3639" stroke-width="1"/>
+
+            <!-- Trousers -->
+            <rect x="20" y="93" width="32" height="56" rx="4" fill="#3F4E4F" stroke="#2C3639" stroke-width="1.2"/>
+            <line x1="36" y1="93" x2="36" y2="149" stroke="#2C3639" stroke-width="1" opacity="0.4"/>
+
+            <!-- Left shoe -->
+            <ellipse cx="28" cy="153" rx="10" ry="5" fill="#2C3639"/>
+            <!-- Right shoe -->
+            <ellipse cx="44" cy="153" rx="10" ry="5" fill="#2C3639"/>
+
+            <!-- Legs below trousers -->
+            <rect x="20" y="145" width="13" height="12" rx="2" fill="#3F4E4F"/>
+            <rect x="39" y="145" width="13" height="12" rx="2" fill="#3F4E4F"/>
+          </svg>
+
+          <div class="arg-role" style="left:50%;transform:translateX(-50%);">Customer</div>
+        </div>
+
+        <!-- ── Sparks in the middle ── -->
+        <div class="arg-sparks">
+          <span class="spark">💢</span>
+          <span class="spark">❗</span>
+          <span class="spark">💢</span>
+        </div>
+
+        <!-- ── MANAGER (right) ── -->
+        <div class="arg-manager">
+          <!-- Speech bubble -->
+          <div class="speech-bubble bubble-manager">
+            <span class="bubble-text-c">"Please be patient,<br>sir!"</span>
+            <span class="bubble-text-d" style="position:absolute;inset:8px 11px;display:flex;align-items:center;justify-content:center;">"We're doing our<br>best, I promise!"</span>
+          </div>
+
+          <!-- Human SVG — manager in dark suit -->
+          <svg width="72" height="190" viewBox="0 0 72 190" fill="none" xmlns="http://www.w3.org/2000/svg" class="human-body-r">
+            <!-- Head -->
+            <circle cx="36" cy="22" r="16" fill="#DCD7C9" stroke="#2C3639" stroke-width="1.5"/>
+            <!-- Face: stressed brows -->
+            <line x1="27" y1="18" x2="33" y2="16" stroke="#2C3639" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="39" y1="16" x2="45" y2="18" stroke="#2C3639" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- Eyes wide -->
+            <circle cx="30" cy="23" r="2.2" fill="#2C3639"/>
+            <circle cx="42" cy="23" r="2.2" fill="#2C3639"/>
+            <!-- Sweat drop -->
+            <ellipse cx="47" cy="15" rx="2" ry="3" fill="#A27B5B" opacity="0.7"/>
+            <!-- Nervous mouth -->
+            <path d="M30 30 Q36 34 42 30" stroke="#2C3639" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+            <!-- Neck -->
+            <rect x="32" y="37" width="8" height="8" rx="2" fill="#DCD7C9" stroke="#2C3639" stroke-width="1"/>
+
+            <!-- Suit jacket -->
+            <rect x="17" y="44" width="38" height="53" rx="6" fill="#2C3639" stroke="#2C3639" stroke-width="1.2"/>
+            <!-- Shirt + tie -->
+            <polygon points="31,44 36,48 41,44" fill="#fff"/>
+            <polygon points="34,48 36,70 38,48" fill="#A27B5B"/>
+            <!-- Lapels -->
+            <path d="M17 44 L28 62 L36 44" fill="#3F4E4F" stroke="#2C3639" stroke-width="0.5"/>
+            <path d="M55 44 L44 62 L36 44" fill="#3F4E4F" stroke="#2C3639" stroke-width="0.5"/>
+
+            <!-- Left arm (raised, palms-out gesture) -->
+            <g style="transform-origin:54px 50px; animation: armWaveR 1.8s ease-in-out infinite;">
+              <line x1="54" y1="50" x2="68" y2="28" stroke="#2C3639" stroke-width="9" stroke-linecap="round"/>
+              <circle cx="68" cy="28" r="5" fill="#DCD7C9" stroke="#2C3639" stroke-width="1"/>
+            </g>
+
+            <!-- Right arm down -->
+            <line x1="17" y1="50" x2="9" y2="78" stroke="#2C3639" stroke-width="9" stroke-linecap="round"/>
+            <circle cx="9" cy="78" r="5" fill="#DCD7C9" stroke="#2C3639" stroke-width="1"/>
+
+            <!-- Trousers (suit pants) -->
+            <rect x="20" y="94" width="32" height="55" rx="4" fill="#2C3639" stroke="#1a2224" stroke-width="1"/>
+            <line x1="36" y1="94" x2="36" y2="149" stroke="#1a2224" stroke-width="0.8" opacity="0.5"/>
+
+            <!-- Legs -->
+            <rect x="20" y="145" width="13" height="12" rx="2" fill="#2C3639"/>
+            <rect x="39" y="145" width="13" height="12" rx="2" fill="#2C3639"/>
+
+            <!-- Shoes -->
+            <ellipse cx="28" cy="153" rx="10" ry="5" fill="#1a2224"/>
+            <ellipse cx="44" cy="153" rx="10" ry="5" fill="#1a2224"/>
+          </svg>
+
+          <div class="arg-role" style="left:50%;transform:translateX(-50%);">Manager</div>
+        </div>
       </div>
+
     </div>
 
-    <!-- Precision diagram -->
-    <div class="diagram-card" id="precision-card" style="margin-top:16px;">
-      <div class="diagram-label" style="text-align:right;">02. Precision</div>
-      <svg class="precision-svg" viewBox="0 0 300 80">
-        <line x1="30" y1="40" x2="270" y2="40" stroke="#2C3639" stroke-width="1.5"/>
-      </svg>
-      <div class="diagram-stat-left" id="precision-stat">
-        <strong>100% VISIBILITY</strong>
-        <span>Real-time floor optimization</span>
-      </div>
-    </div>
-
-    <p class="problem-text" id="prob-text"><b>They Leave Not Because <br> They Refuse To Wait, <br> But Because They Are Unsure About Their Turn</b></p>
+    <p class="problem-text" id="prob-text" style="text-align:center; white-space:nowrap; font-size:clamp(11px,3.2vw,18px); padding-top:28px;"><b>They Leave Not Because They Refuse To Wait, But Because They Are Unsure About Their Turn</b></p>
 
   </div>
  
@@ -3958,27 +4236,11 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
     scrollTrigger: { trigger: '#slide2', start: 'top 30%', toggleActions: 'play none none none' }
   });
 
-  // Chaos card flies in from right, SVG lines draw
-  const chaosTL = gsap.timeline({
-    scrollTrigger: { trigger: '#chaos-card', start: 'top 55%', toggleActions: 'play none none none' }
+  // Argument scene fades in
+  gsap.from('#argument-scene', {
+    opacity: 0, y: 40, duration: 1.0, ease: 'power2.out',
+    scrollTrigger: { trigger: '#argument-scene', start: 'top 65%', toggleActions: 'play none none none' }
   });
-  chaosTL
-    .from('#chaos-card', { opacity: 0, x: 60, duration: 0.8, ease: 'power2.out' })
-    .to('#chaos-card .chaos-svg line', {
-      strokeDashoffset: 0, duration: 1.2, ease: 'power1.inOut', stagger: 0.08
-    }, '-=0.3')
-    .from('#chaos-stat', { opacity: 0, y: 12, duration: 0.5 }, '-=0.4');
-
-  // Precision card from left, line draws
-  const precTL = gsap.timeline({
-    scrollTrigger: { trigger: '#precision-card', start: 'top 60%', toggleActions: 'play none none none' }
-  });
-  precTL
-    .from('#precision-card', { opacity: 0, x: -60, duration: 0.8, ease: 'power2.out' })
-    .to('#precision-card .precision-svg line', {
-      strokeDashoffset: 0, duration: 1, ease: 'power2.out'
-    }, '-=0.3')
-    .from('#precision-stat', { opacity: 0, y: 10, duration: 0.5 }, '-=0.3');
 
   // Problem text fades up
   gsap.from('#prob-text', {

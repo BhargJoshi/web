@@ -2140,16 +2140,17 @@
     }
   }
 
-  /* Connector between steps — styled as nav arrow buttons */
+  /* Connector between steps — dotted line + arrow, aligned under circle centre */
   .fc-connector {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    /* align with the circle centre column */
-    align-self: flex-start;
-    margin-left: calc(clamp(100px, 22vw, 130px) / 2 - 22px);
-    gap: 0;
-    opacity: 1;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 560px;
+    /* push content to sit under the horizontal centre of .fc-circle-outer */
+    padding-left: calc(clamp(100px, 22vw, 130px) / 2 - 1px);
+    gap: 2px;
+    opacity: 0.7;
   }
   .fc-conn-line-svg {
     width: 2px;
@@ -2158,28 +2159,18 @@
   }
   .fc-conn-svg {
     width: 2px;
-    height: 20px;
+    height: 40px;
+    display: block;
   }
   .fc-conn-arrow-btn {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--navy);
-    color: #DCD7C9;
-    border: 1px solid var(--navy);
-    font-size: 20px;
-    line-height: 1;
-    box-shadow: 0 4px 16px rgba(44,54,57,0.22);
-    flex-shrink: 0;
+    display: none;
   }
   .fc-conn-arrow {
-    font-size: 10px;
+    font-size: 12px;
     color: #A27B5B;
     line-height: 1;
-    display: none;
+    display: block;
+    margin-left: -5px;
   }
 
   /* Right: step text block */
@@ -2213,12 +2204,10 @@
   /* Responsive adjustments */
   @media (max-width: 480px) {
     .fc-circle-outer { width: 86px; height: 86px; }
-    .fc-connector { margin-left: calc(86px / 2 - 22px); }
+    .fc-connector { padding-left: calc(86px / 2 - 1px); }
     .fc-step { gap: 16px; }
     .fc-circle-word { font-size: 8px; letter-spacing: 1.5px; }
-    .fc-conn-line-svg { height: 12px; }
-    .fc-conn-svg { height: 12px; }
-    .fc-conn-arrow-btn { width: 36px; height: 36px; font-size: 16px; }
+    .fc-conn-svg { height: 28px; }
   }
 
   /* ══════════════════════════════════════════════
@@ -3383,13 +3372,10 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
 
       <!-- Connector arrow 1→2 -->
       <div class="fc-connector" id="fc-conn-1">
-        <svg class="fc-conn-line-svg" viewBox="0 0 2 20" xmlns="http://www.w3.org/2000/svg">
-          <line x1="1" y1="0" x2="1" y2="20" stroke="#A27B5B" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <svg class="fc-conn-svg" viewBox="0 0 2 40" xmlns="http://www.w3.org/2000/svg">
+          <line x1="1" y1="0" x2="1" y2="40" stroke="#A27B5B" stroke-width="1.5" stroke-dasharray="5 4"/>
         </svg>
-        <div class="fc-conn-arrow-btn" aria-hidden="true">↓</div>
-        <svg class="fc-conn-line-svg" viewBox="0 0 2 20" xmlns="http://www.w3.org/2000/svg">
-          <line x1="1" y1="0" x2="1" y2="20" stroke="#A27B5B" stroke-width="1.5" stroke-dasharray="4 3"/>
-        </svg>
+        <div class="fc-conn-arrow">▼</div>
       </div>
 
       <!-- Step 2 -->
@@ -3416,13 +3402,10 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
 
       <!-- Connector arrow 2→3 -->
       <div class="fc-connector" id="fc-conn-2">
-        <svg class="fc-conn-line-svg" viewBox="0 0 2 20" xmlns="http://www.w3.org/2000/svg">
-          <line x1="1" y1="0" x2="1" y2="20" stroke="#2C3639" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <svg class="fc-conn-svg" viewBox="0 0 2 40" xmlns="http://www.w3.org/2000/svg">
+          <line x1="1" y1="0" x2="1" y2="40" stroke="#2C3639" stroke-width="1.5" stroke-dasharray="5 4"/>
         </svg>
-        <div class="fc-conn-arrow-btn" aria-hidden="true" style="background:#2C3639;border-color:#2C3639;">↓</div>
-        <svg class="fc-conn-line-svg" viewBox="0 0 2 20" xmlns="http://www.w3.org/2000/svg">
-          <line x1="1" y1="0" x2="1" y2="20" stroke="#2C3639" stroke-width="1.5" stroke-dasharray="4 3"/>
-        </svg>
+        <div class="fc-conn-arrow" style="color:#2C3639;">▼</div>
       </div>
 
       <!-- Step 3 -->

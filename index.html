@@ -2563,6 +2563,167 @@
       width: 100%;
     }
   }
+
+  /* ── ARGUMENT SCENE: THE PROBLEM WE SOLVE ── */
+  #argument-scene {
+    width: 100%;
+    padding: 16px 0 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .arg-stage {
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    height: 260px;
+  }
+
+  .arg-customer {
+    position: absolute;
+    left: 10px;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .arg-manager {
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .speech-bubble {
+    position: absolute;
+    background: #fff;
+    border: 1.5px solid #2C3639;
+    border-radius: 10px;
+    padding: 8px 11px;
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    line-height: 1.45;
+    color: #2C3639;
+    max-width: 130px;
+    text-align: center;
+    box-shadow: 0 3px 12px rgba(44,54,57,0.13);
+  }
+
+  .speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -9px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 9px solid #fff;
+  }
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -11px;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 10px solid #2C3639;
+  }
+
+  .bubble-customer {
+    left: 0px;
+    bottom: 205px;
+  }
+  .bubble-customer::after { left: 22px; }
+  .bubble-customer::before { left: 21px; }
+
+  .bubble-manager {
+    right: 0px;
+    bottom: 205px;
+  }
+  .bubble-manager::after { right: 22px; }
+  .bubble-manager::before { right: 21px; }
+
+  @keyframes bubbleFadeA {
+    0%,5%    { opacity: 1; }
+    40%,55%  { opacity: 0; }
+    90%,100% { opacity: 1; }
+  }
+  @keyframes bubbleFadeB {
+    0%,5%    { opacity: 0; }
+    40%,55%  { opacity: 1; }
+    90%,100% { opacity: 0; }
+  }
+
+  .bubble-text-a { animation: bubbleFadeA 4s ease-in-out infinite; }
+  .bubble-text-b { animation: bubbleFadeB 4s ease-in-out infinite; }
+  .bubble-text-c { animation: bubbleFadeB 4s ease-in-out infinite; }
+  .bubble-text-d { animation: bubbleFadeA 4s ease-in-out infinite; }
+
+  @keyframes wobbleLeft {
+    0%,100% { transform: rotate(-2deg); }
+    50%      { transform: rotate(3deg); }
+  }
+  @keyframes wobbleRight {
+    0%,100% { transform: rotate(2deg); }
+    50%      { transform: rotate(-3deg); }
+  }
+  @keyframes armWaveL {
+    0%,100% { transform: rotate(-10deg); }
+    50%      { transform: rotate(25deg); }
+  }
+  @keyframes armWaveR {
+    0%,100% { transform: rotate(10deg); }
+    50%      { transform: rotate(-25deg); }
+  }
+  @keyframes headNod {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-3px); }
+  }
+
+  .human-body-l { transform-origin: bottom center; animation: wobbleLeft 1.8s ease-in-out infinite; }
+  .human-body-r { transform-origin: bottom center; animation: wobbleRight 1.8s ease-in-out infinite; }
+
+  .arg-ground {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: rgba(44,54,57,0.18);
+  }
+
+  .arg-role {
+    position: absolute;
+    bottom: -18px;
+    font-family: 'Jost', sans-serif;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: rgba(44,54,57,0.5);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .arg-sparks {
+    position: absolute;
+    left: 50%;
+    bottom: 80px;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  @keyframes sparkPop {
+    0%,100% { transform: scale(0.6); opacity: 0.3; }
+    50%      { transform: scale(1.3); opacity: 1; }
+  }
+  .spark {
+    font-size: 13px;
+    animation: sparkPop 0.9s ease-in-out infinite;
+  }
+  .spark:nth-child(2) { animation-delay: 0.3s; }
+  .spark:nth-child(3) { animation-delay: 0.6s; }
 </style>
 </head>
 <body>
@@ -2947,179 +3108,6 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
 
     <!-- Animated argument scene -->
     <div id="argument-scene">
-      <style>
-        #argument-scene {
-          width: 100%;
-          padding: 16px 0 8px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0;
-        }
-
-        .arg-stage {
-          width: 100%;
-          max-width: 420px;
-          position: relative;
-          height: 260px;
-        }
-
-        /* ── CUSTOMER (left) ── */
-        .arg-customer {
-          position: absolute;
-          left: 10px;
-          bottom: 0;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0;
-        }
-
-        /* ── MANAGER (right) ── */
-        .arg-manager {
-          position: absolute;
-          right: 10px;
-          bottom: 0;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0;
-        }
-
-        /* ── Speech bubbles ── */
-        .speech-bubble {
-          position: absolute;
-          background: #fff;
-          border: 1.5px solid #2C3639;
-          border-radius: 10px;
-          padding: 8px 11px;
-          font-family: 'Jost', sans-serif;
-          font-size: 10px;
-          line-height: 1.45;
-          color: #2C3639;
-          max-width: 130px;
-          text-align: center;
-          box-shadow: 0 3px 12px rgba(44,54,57,0.13);
-        }
-
-        .speech-bubble::after {
-          content: '';
-          position: absolute;
-          bottom: -9px;
-          border-left: 8px solid transparent;
-          border-right: 8px solid transparent;
-          border-top: 9px solid #fff;
-        }
-        .speech-bubble::before {
-          content: '';
-          position: absolute;
-          bottom: -11px;
-          border-left: 9px solid transparent;
-          border-right: 9px solid transparent;
-          border-top: 10px solid #2C3639;
-        }
-
-        /* Customer bubble — tail on right side pointing right */
-        .bubble-customer {
-          left: 0px;
-          bottom: 205px;
-        }
-        .bubble-customer::after { left: 22px; }
-        .bubble-customer::before { left: 21px; }
-
-        /* Manager bubble — tail on left side pointing left */
-        .bubble-manager {
-          right: 0px;
-          bottom: 205px;
-        }
-        .bubble-manager::after { right: 22px; }
-        .bubble-manager::before { right: 21px; }
-
-        /* ── Bubble text cycling animation ── */
-        @keyframes bubbleFadeA {
-          0%,5%    { opacity: 1; }
-          40%,55%  { opacity: 0; }
-          90%,100% { opacity: 1; }
-        }
-        @keyframes bubbleFadeB {
-          0%,5%    { opacity: 0; }
-          40%,55%  { opacity: 1; }
-          90%,100% { opacity: 0; }
-        }
-
-        .bubble-text-a { animation: bubbleFadeA 4s ease-in-out infinite; }
-        .bubble-text-b { animation: bubbleFadeB 4s ease-in-out infinite; }
-
-        /* Manager bubble mirror */
-        .bubble-text-c { animation: bubbleFadeB 4s ease-in-out infinite; }
-        .bubble-text-d { animation: bubbleFadeA 4s ease-in-out infinite; }
-
-        /* ── Character body wobble ── */
-        @keyframes wobbleLeft {
-          0%,100% { transform: rotate(-2deg); }
-          50%      { transform: rotate(3deg); }
-        }
-        @keyframes wobbleRight {
-          0%,100% { transform: rotate(2deg); }
-          50%      { transform: rotate(-3deg); }
-        }
-        @keyframes armWaveL {
-          0%,100% { transform: rotate(-10deg); }
-          50%      { transform: rotate(25deg); }
-        }
-        @keyframes armWaveR {
-          0%,100% { transform: rotate(10deg); }
-          50%      { transform: rotate(-25deg); }
-        }
-        @keyframes headNod {
-          0%,100% { transform: translateY(0); }
-          50%      { transform: translateY(-3px); }
-        }
-
-        .human-body-l { transform-origin: bottom center; animation: wobbleLeft 1.8s ease-in-out infinite; }
-        .human-body-r { transform-origin: bottom center; animation: wobbleRight 1.8s ease-in-out infinite; }
-
-        /* ── Ground line ── */
-        .arg-ground {
-          position: absolute;
-          bottom: 0; left: 0; right: 0;
-          height: 1px;
-          background: rgba(44,54,57,0.18);
-        }
-
-        /* ── Role label ── */
-        .arg-role {
-          position: absolute;
-          bottom: -18px;
-          font-family: 'Jost', sans-serif;
-          font-size: 8px;
-          letter-spacing: 2px;
-          color: rgba(44,54,57,0.5);
-          text-transform: uppercase;
-          white-space: nowrap;
-        }
-
-        /* ── Emotion sparks between them ── */
-        .arg-sparks {
-          position: absolute;
-          left: 50%;
-          bottom: 80px;
-          transform: translateX(-50%);
-          display: flex;
-          gap: 4px;
-          align-items: center;
-        }
-        @keyframes sparkPop {
-          0%,100% { transform: scale(0.6); opacity: 0.3; }
-          50%      { transform: scale(1.3); opacity: 1; }
-        }
-        .spark {
-          font-size: 13px;
-          animation: sparkPop 0.9s ease-in-out infinite;
-        }
-        .spark:nth-child(2) { animation-delay: 0.3s; }
-        .spark:nth-child(3) { animation-delay: 0.6s; }
-      </style>
 
       <div class="arg-stage">
         <!-- Ground -->

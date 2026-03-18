@@ -3193,16 +3193,16 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
     </div>
   </div>
 
-  <!-- titles overlay — centred, overflow hidden, titles scroll vertically -->
-  <div id="hiw-titles" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);overflow:hidden;pointer-events:none;z-index:3;text-align:center;">
-    <!-- proxy: sets clip height -->
+  <!-- titles overlay — centred, titles fade in/out in place (no vertical scroll) -->
+  <div id="hiw-titles" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:3;text-align:center;width:min(90vw,600px);">
+    <!-- proxy: sets container height — use the tallest card content so nothing crops -->
     <div style="visibility:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;">
       <div style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:5px;color:#A27B5B;text-transform:uppercase;margin-bottom:4px;">00 · PROXY</div>
-      <div style="font-family:'Playfair Display',serif;font-size:6vw;font-weight:bold;letter-spacing:-0.1vw;color:#fff;line-height:1.1;">Lorem Ipsum</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.2vw,19px);color:rgba(220,215,201,0.6);line-height:1.6;font-weight:300;max-width:420px;">Lorem ipsum dolor sit amet consectetur adipiscing.</div>
+      <div style="font-family:'Playfair Display',serif;font-size:6vw;font-weight:bold;letter-spacing:-0.1vw;color:#fff;line-height:1.1;">Order While Waiting</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.2vw,19px);color:rgba(220,215,201,0.6);line-height:1.6;font-weight:300;max-width:420px;">Your food begins preparation as you pay and arrives ready exactly when you get seated.</div>
     </div>
-    <!-- animated list -->
-    <div id="hiw-titles-list" style="position:absolute;top:0;left:0;width:100%;will-change:transform;">
+    <!-- animated list — items fade/slide in-place; no vertical scroll of this wrapper -->
+    <div id="hiw-titles-list" style="position:absolute;top:0;left:0;width:100%;">
       <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 20px;height:100%;">
         <div style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:5px;color:#A27B5B;text-transform:uppercase;margin-bottom:4px;">01 · ENTRY</div>
         <div style="font-family:'Playfair Display',serif;font-size:6vw;font-weight:bold;letter-spacing:-0.1vw;color:#fff;line-height:1.1;">Scan &amp; Step In</div>
@@ -4241,15 +4241,6 @@ void main() {
     });
 
     /* ── Master GSAP timeline (progress bar only — titles handled by step sync) ── */
-    /* Equalise title item heights so yPercent math is exact */
-    (function() {
-      const containerH = document.getElementById('hiw-titles').offsetHeight;
-      titleItems.forEach(item => {
-        item.style.height = containerH + 'px';
-        item.style.minHeight = containerH + 'px';
-        item.style.boxSizing = 'border-box';
-      });
-    })();
 
     const masterTL = gsap.timeline({
       paused: true,
@@ -4261,17 +4252,19 @@ void main() {
     gsap.set(pLine1, { scaleX: 0, transformOrigin: 'left' });
     gsap.set(pLine2, { scaleX: 1, transformOrigin: 'right' });
 
-    /* Initialise titles: each item absolutely stacked, only active one visible */
-    const n = titleItems.length;
-    gsap.set(titlesList, { yPercent: 0 });
+    /* Initialise titles: all absolutely stacked at same position, opacity controls visibility.
+       No yPercent / vertical scrolling of the list — each item fades in/out independently.
+       This avoids any clipping from a shared overflow:hidden container. */
     titleItems.forEach((item, i) => {
       item.style.position = 'absolute';
       item.style.top = '0';
       item.style.left = '0';
       item.style.width = '100%';
-      gsap.set(item, { autoAlpha: i === 0 ? 1 : 0, y: i === 0 ? 0 : 30 });
+      item.style.boxSizing = 'border-box';
+      gsap.set(item, { autoAlpha: i === 0 ? 1 : 0, y: 0 });
     });
     let _lastStep = 0;
+    let _switching = false;  /* guard: prevent rapid double-fires mid-animation */
 
     /* ── Scroll progress proxy — driven by ScrollTrigger pin ── */
     const scrollProxy = { progress: 0 };
@@ -4285,10 +4278,30 @@ void main() {
       return { translate, isVisible: vis, progress: prog };
     }
 
+    /* Per-card scroll range is 1/nCards of total progress.
+       A card is "centred" when it sits at the midpoint of its own range.
+       We detect step by finding which card's centre point we are closest to,
+       using a dead-band of ±15% around each midpoint so rapid oscillation
+       near a boundary never causes flicker. */
+    const nCards = cached.length; /* 4 */
+    /* Midpoints: card i is centred at progress = (i + 0.5) / nCards */
+
+    function getStep(progress) {
+      /* Find the card whose midpoint is closest to current progress */
+      let best = 0;
+      let bestDist = Infinity;
+      for (let i = 0; i < nCards; i++) {
+        const mid = (i + 0.5) / nCards;
+        const dist = Math.abs(progress - mid);
+        if (dist < bestDist) { bestDist = dist; best = i; }
+      }
+      return best;
+    }
+
     function applyProgress(progress) {
       /* Map 0→1 scroll progress to 0→maxScroll range (negative) */
       const currentRounded = Math.round(progress * maxScroll * 100) / 100;
-      /* Velocity estimation: store last position */
+      /* Velocity estimation */
       const diff = (progress - (applyProgress._lastProg || 0)) * maxScroll * 0.0005;
       applyProgress._lastProg = progress;
 
@@ -4303,53 +4316,57 @@ void main() {
         item.out = !vis;
       }
 
-      /* Counter and synchronised title switch */
-      const nCards = cached.length;
-
-      /* Determine which card is currently most centred in the viewport.
-         Each card occupies 1/nCards of the total scroll range.
-         We use the midpoint of each card's range (0.5/nCards offset) so the
-         text switches only once the new image is well centred, not the instant
-         the previous segment ends. */
-      const segSize   = 1 / nCards;
-      /* Offset by half a segment so the switch happens at the image centre */
-      const stepRaw   = (progress + segSize * 0.5) * nCards;
-      const step      = Math.min(nCards - 1, Math.max(0, Math.floor(stepRaw)));
+      /* Counter */
+      const step = getStep(progress);
       if (counter) counter.textContent = '0' + (step + 1) + ' / 0' + nCards;
 
-      /* Switch title when step changes — sequence out THEN in so they never overlap */
-      if (step !== _lastStep) {
+      /* Switch title only when step genuinely changes and no switch is mid-flight */
+      if (step !== _lastStep && !_switching) {
         const outItem = titleItems[_lastStep];
         const inItem  = titleItems[step];
         const dir     = step > _lastStep ? 1 : -1;
+        const prevStep = _lastStep;
+        _lastStep = step;
+        _switching = true;
 
-        /* Kill any running tweens on both items first */
+        /* Kill any lingering tweens on these two items */
         gsap.killTweensOf(outItem);
         gsap.killTweensOf(inItem);
 
-        /* 1. Slide old title out quickly */
+        /* Step 1 — slide old text out upward/downward */
         gsap.to(outItem, {
           autoAlpha: 0,
-          y: -28 * dir,
-          duration: 0.28,
+          y: -22 * dir,
+          duration: 0.30,
           ease: 'power2.in',
-          overwrite: true
+          overwrite: true,
+          onComplete: function() {
+            /* Reset outgoing item so it's ready for a future switch back */
+            gsap.set(outItem, { y: 22 * dir });
+          }
         });
 
-        /* 2. Slide new title in AFTER the old one has exited (delay = out duration) */
+        /* Step 2 — slide new text in from opposite side, starts after out finishes */
         gsap.fromTo(inItem,
-          { autoAlpha: 0, y: 28 * dir },
-          { autoAlpha: 1, y: 0, duration: 0.42, ease: 'power3.out', overwrite: true, delay: 0.28 }
+          { autoAlpha: 0, y: 22 * dir },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.40,
+            ease: 'power3.out',
+            overwrite: true,
+            delay: 0.30,
+            onComplete: function() { _switching = false; }
+          }
         );
-
-        _lastStep = step;
       }
     }
     applyProgress._lastProg = 0;
 
     /* ── PIN + SCRUB via ScrollTrigger ──
-       The section stays pinned for 4× its own height (one panel-length per card).
-       As the user scrolls, progress 0→1 drives the whole slider. ── */
+       anticipatePin disabled — it is what causes the section to glitch
+       in early while scrolling through "The Shift" above it.
+       pinnedContainer handles layout shift cleanly without anticipation. ── */
     const totalCards = items.length; /* 4 */
     gsap.to(scrollProxy, {
       progress: 1,
@@ -4359,8 +4376,9 @@ void main() {
         start: 'top top',
         end: () => '+=' + (s4.offsetHeight * (totalCards - 1)),
         pin: true,
+        pinSpacing: true,
         scrub: 0.9,
-        anticipatePin: 1,
+        anticipatePin: 0,
         onUpdate: (self) => { applyProgress(self.progress); }
       }
     });

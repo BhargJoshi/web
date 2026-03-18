@@ -4305,22 +4305,43 @@ void main() {
 
       /* Counter and synchronised title switch */
       const nCards = cached.length;
-      const step   = Math.min(nCards - 1, Math.floor(progress * nCards));
+
+      /* Determine which card is currently most centred in the viewport.
+         Each card occupies 1/nCards of the total scroll range.
+         We use the midpoint of each card's range (0.5/nCards offset) so the
+         text switches only once the new image is well centred, not the instant
+         the previous segment ends. */
+      const segSize   = 1 / nCards;
+      /* Offset by half a segment so the switch happens at the image centre */
+      const stepRaw   = (progress + segSize * 0.5) * nCards;
+      const step      = Math.min(nCards - 1, Math.max(0, Math.floor(stepRaw)));
       if (counter) counter.textContent = '0' + (step + 1) + ' / 0' + nCards;
 
-      /* Switch title when step changes */
+      /* Switch title when step changes — sequence out THEN in so they never overlap */
       if (step !== _lastStep) {
         const outItem = titleItems[_lastStep];
         const inItem  = titleItems[step];
         const dir     = step > _lastStep ? 1 : -1;
 
-        /* Slide old title out */
-        gsap.to(outItem, { autoAlpha: 0, y: -30 * dir, duration: 0.35, ease: 'power2.in', overwrite: true });
-        /* Slide new title in */
+        /* Kill any running tweens on both items first */
+        gsap.killTweensOf(outItem);
+        gsap.killTweensOf(inItem);
+
+        /* 1. Slide old title out quickly */
+        gsap.to(outItem, {
+          autoAlpha: 0,
+          y: -28 * dir,
+          duration: 0.28,
+          ease: 'power2.in',
+          overwrite: true
+        });
+
+        /* 2. Slide new title in AFTER the old one has exited (delay = out duration) */
         gsap.fromTo(inItem,
-          { autoAlpha: 0, y: 30 * dir },
-          { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power3.out', overwrite: true }
+          { autoAlpha: 0, y: 28 * dir },
+          { autoAlpha: 1, y: 0, duration: 0.42, ease: 'power3.out', overwrite: true, delay: 0.28 }
         );
+
         _lastStep = step;
       }
     }

@@ -30,18 +30,18 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --navy: #2C3639;
-    --cream: #DCD7C9;
-    --sage: #3F4E4F;
+    --navy: #1F1F1F;
+    --cream: #F7F4EE;
+    --sage: #66785F;
     /* Aliases unified — all point to their canonical name */
-    --warm-orange: #A27B5B;
-    --rose-gold: #A27B5B;
-    --light-sage: #A27B5B;
-    --creme-brulee: #A27B5B;
-    --off-white: #DCD7C9;
-    --au-lait: #DCD7C9;
-    --inkwell: #2C3639;
-    --lunar: #3F4E4F;
+    --warm-orange: #C8A96B;
+    --rose-gold: #C8A96B;
+    --light-sage: #66785F;
+    --creme-brulee: #C8A96B;
+    --off-white: #F7F4EE;
+    --au-lait: #F7F4EE;
+    --inkwell: #1F1F1F;
+    --lunar: #66785F;
   }
 
   html { scroll-behavior: smooth; overflow-x: hidden; }
@@ -119,9 +119,9 @@
     inset: 0;
     background:
       linear-gradient(to bottom,
-        rgba(20, 15, 10, 0.35) 0%,
-        rgba(20, 15, 10, 0.1) 40%,
-        rgba(20, 15, 10, 0.5) 100%
+        rgba(31, 31, 31, 0.38) 0%,
+        rgba(31, 31, 31, 0.12) 40%,
+        rgba(31, 31, 31, 0.55) 100%
       );
     z-index: 1;
     transition: background 1.0s ease, opacity 1.0s ease;
@@ -131,9 +131,9 @@
   #slide1:hover .hero-video-overlay {
     background:
       linear-gradient(to bottom,
-        rgba(10, 8, 5, 0.45) 0%,
-        rgba(10, 8, 5, 0.08) 40%,
-        rgba(10, 8, 5, 0.65) 100%
+        rgba(15, 15, 15, 0.50) 0%,
+        rgba(15, 15, 15, 0.10) 40%,
+        rgba(15, 15, 15, 0.70) 100%
       );
   }
 
@@ -141,9 +141,9 @@
   #slide1.scrolled-down .hero-video-overlay {
     background:
       linear-gradient(to bottom,
-        rgba(5, 4, 2, 0.55) 0%,
-        rgba(5, 4, 2, 0.15) 40%,
-        rgba(5, 4, 2, 0.75) 100%
+        rgba(10, 10, 10, 0.58) 0%,
+        rgba(10, 10, 10, 0.18) 40%,
+        rgba(10, 10, 10, 0.78) 100%
       );
   }
 
@@ -199,8 +199,8 @@
     100% { background-position: -200% center; }
   }
   @keyframes prismPulse {
-    0%, 100% { box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset, 0 4px 24px rgba(162,123,91,0.18), 0 1.5px 0 rgba(255,255,255,0.35) inset, 0 -1px 0 rgba(0,0,0,0.15) inset; }
-    50%       { box-shadow: 0 0 0 1px rgba(255,255,255,0.22) inset, 0 6px 32px rgba(162,123,91,0.28), 0 1.5px 0 rgba(255,255,255,0.5) inset, 0 -1px 0 rgba(0,0,0,0.1) inset; }
+    0%, 100% { box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset, 0 4px 24px rgba(200,169,107,0.22), 0 1.5px 0 rgba(255,255,255,0.35) inset, 0 -1px 0 rgba(0,0,0,0.15) inset; }
+    50%       { box-shadow: 0 0 0 1px rgba(255,255,255,0.22) inset, 0 6px 32px rgba(200,169,107,0.36), 0 1.5px 0 rgba(255,255,255,0.5) inset, 0 -1px 0 rgba(0,0,0,0.1) inset; }
   }
 
   .btn-primary {
@@ -221,14 +221,14 @@
     -webkit-backdrop-filter: blur(18px) saturate(200%) brightness(1.08);
     box-shadow:
       0 0 0 1px rgba(255,255,255,0.12) inset,
-      0 4px 24px rgba(162,123,91,0.18),
+      0 4px 24px rgba(200,169,107,0.22),
       0 1.5px 0 rgba(255,255,255,0.35) inset,
       0 -1px 0 rgba(0,0,0,0.15) inset;
     background-image:
       linear-gradient(135deg,
         rgba(255,255,255,0.22) 0%,
-        rgba(255,220,180,0.08) 40%,
-        rgba(162,123,91,0.12) 70%,
+        rgba(255,230,170,0.10) 40%,
+        rgba(200,169,107,0.14) 70%,
         rgba(255,255,255,0.18) 100%
       );
     overflow: hidden;

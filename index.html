@@ -331,6 +331,34 @@
     display: none;
   }
 
+  /* Hero main tagline — below RESTRO title */
+  .hero-tagline-main {
+    position: relative;
+    z-index: 4;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(13px, 1.6vw, 22px);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: clamp(3px, 0.5vw, 6px);
+    color: rgba(247, 244, 238, 0.82);
+    text-align: center;
+    margin-top: -28px;
+    margin-bottom: 44px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  @media (max-width: 600px) {
+    .hero-tagline-main {
+      white-space: normal;
+      font-size: clamp(11px, 3.2vw, 16px);
+      letter-spacing: 2px;
+      margin-top: -16px;
+      margin-bottom: 32px;
+      padding: 0 8vw;
+    }
+  }
+
   /* Scroll indicator */
   .hero-scroll-indicator {
     position: absolute;
@@ -711,7 +739,7 @@
     background: none; color: var(--navy); font-size: 18px;
     transition: all 0.2s;
   }
-  .arrow-btn.filled { background: var(--navy); color: #DCD7C9; border-color: var(--navy); }
+  .arrow-btn.filled { background: var(--navy); color: var(--cream); border-color: var(--navy); }
 
   /* ── SLIDE 4: HOW IT WORKS — GSAP SCROLL DRIVEN ── */
   #slide4 {
@@ -851,7 +879,7 @@
 
   .receipt-card {
     position: relative; width: 100%;
-    background: linear-gradient(150deg, #A27B5B 0%, #8a6a4a 40%, #7a5c3e 70%, #A27B5B 100%);
+    background: linear-gradient(150deg, #C8A96B 0%, #b8944e 40%, #a07c3a 70%, #C8A96B 100%);
     border-radius: 4px;
     padding: 40px 32px 48px;
     text-align: center;
@@ -1075,7 +1103,7 @@
   .next-step-name { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; color: #2C3639; }
 
   .continue-btn {
-    background: var(--navy); color: #DCD7C9;
+    background: var(--navy); color: var(--cream);
     border: none; cursor: pointer;
     font-family: 'Jost', sans-serif;
     font-size: 15px; padding: 14px 28px;
@@ -1099,14 +1127,14 @@
   }
 
   .cta-btn {
-    background: var(--navy); color: #DCD7C9;
+    background: var(--navy); color: var(--cream);
     border: none; cursor: pointer;
     font-family: 'Jost', sans-serif;
     font-size: 17px; padding: 20px 80px;
     border-radius: 50px; font-weight: 400;
     letter-spacing: 1px;
     transition: all 0.3s;
-    box-shadow: 0 8px 32px rgba(44,54,57,0.3);
+    box-shadow: 0 8px 32px rgba(31,31,31,0.25);
   }
 
   .cta-bottom { padding: 32px; text-align: center; width: 100%; }
@@ -2211,7 +2239,7 @@
   }
 
   .preorder-tagline .highlight-profit {
-    color: #c8a000;
+    color: #C8A96B;
     font-weight: 600;
   }
 
@@ -2680,6 +2708,332 @@
     gap: 8px;
     align-items: center;
   }
+  /* ══════════════════════════════════════════════
+     GLASSMORPHISM — SCALABILITY SECTION (slide9)
+  ══════════════════════════════════════════════ */
+
+  .scale-glass-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .scale-glass-card {
+    flex: 1;
+    min-width: 140px;
+    background: rgba(255,255,255,0.38);
+    border: 1px solid rgba(255,255,255,0.62);
+    border-radius: 16px;
+    padding: 22px 18px 20px;
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    box-shadow:
+      0 4px 24px rgba(31,31,31,0.07),
+      0 1px 0 rgba(255,255,255,0.9) inset;
+    transition: transform 0.32s ease, box-shadow 0.32s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scale-glass-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(200,169,107,0.06) 0%, rgba(102,120,95,0.04) 100%);
+    border-radius: 16px;
+    pointer-events: none;
+  }
+
+  .scale-glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 12px 40px rgba(31,31,31,0.11),
+      0 1px 0 rgba(255,255,255,0.9) inset;
+  }
+
+  .sgc-icon {
+    font-size: 22px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .sgc-stat {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .sgc-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 8px;
+    letter-spacing: 3px;
+    color: var(--warm-orange);
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .sgc-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(31,31,31,0.7);
+  }
+
+  /* Scale timeline */
+  .scale-timeline {
+    background: rgba(255,255,255,0.3);
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 14px;
+    padding: 24px 20px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 2px 16px rgba(31,31,31,0.06);
+    margin-bottom: 8px;
+  }
+
+  .stl-track {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    position: relative;
+  }
+
+  .stl-line {
+    display: none; /* replaced by node spacing */
+  }
+
+  .stl-node {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+  }
+
+  .stl-node::after {
+    content: '';
+    position: absolute;
+    top: 9px;
+    left: 50%;
+    right: -50%;
+    height: 1px;
+    background: linear-gradient(to right, var(--warm-orange), rgba(200,169,107,0.25));
+    z-index: 0;
+  }
+
+  .stl-node:last-child::after { display: none; }
+
+  .stl-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(31,31,31,0.18);
+    border: 2px solid rgba(31,31,31,0.25);
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+
+  .stl-dot-gold {
+    background: var(--warm-orange) !important;
+    border-color: var(--warm-orange) !important;
+    box-shadow: 0 0 0 4px rgba(200,169,107,0.22);
+  }
+
+  .stl-content {
+    text-align: center;
+  }
+
+  .stl-phase {
+    font-family: 'Jost', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .stl-detail {
+    font-size: 10px;
+    color: rgba(31,31,31,0.55);
+    line-height: 1.4;
+    max-width: 90px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .scale-glass-row { flex-direction: column; gap: 12px; }
+    .scale-glass-card { min-width: unset; }
+    .stl-detail { font-size: 9px; max-width: 72px; }
+  }
+
+  /* ══════════════════════════════════════════════
+     GLASSMORPHISM — WHY CHOOSE RESTRO (slide8)
+  ══════════════════════════════════════════════ */
+
+  .comp-glass-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .comp-glass-card {
+    background: rgba(255,255,255,0.40);
+    border: 1px solid rgba(255,255,255,0.65);
+    border-radius: 16px;
+    padding: 20px 16px 18px;
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    box-shadow:
+      0 4px 20px rgba(31,31,31,0.06),
+      0 1px 0 rgba(255,255,255,0.85) inset;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .comp-glass-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(200,169,107,0.05) 0%, rgba(102,120,95,0.03) 100%);
+    border-radius: 16px;
+    pointer-events: none;
+  }
+
+  .comp-glass-card:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow:
+      0 10px 36px rgba(31,31,31,0.10),
+      0 1px 0 rgba(255,255,255,0.85) inset;
+  }
+
+  .cgc-icon-wrap {
+    margin-bottom: 10px;
+  }
+
+  .cgc-feature {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--navy);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .cgc-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(31,31,31,0.65);
+    margin-bottom: 12px;
+  }
+
+  .cgc-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(200,169,107,0.18), rgba(200,169,107,0.08));
+    border: 1px solid rgba(200,169,107,0.35);
+    border-radius: 40px;
+    padding: 3px 10px;
+    font-family: 'Jost', sans-serif;
+    font-size: 7px;
+    letter-spacing: 2px;
+    color: var(--warm-orange);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  /* Competitor strip */
+  .comp-vs-strip {
+    display: flex;
+    gap: 12px;
+    background: rgba(255,255,255,0.28);
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 14px;
+    padding: 16px 20px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0 2px 14px rgba(31,31,31,0.05);
+  }
+
+  .cvs-col {
+    flex: 1;
+    text-align: center;
+    padding: 4px 0;
+  }
+
+  .cvs-col-restro {
+    border-left: 1px solid rgba(200,169,107,0.3);
+    padding-left: 12px;
+  }
+
+  .cvs-icon {
+    font-size: 22px;
+    color: rgba(31,31,31,0.3);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .cvs-icon-gold {
+    font-size: 22px;
+    color: var(--warm-orange);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .cvs-name {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(31,31,31,0.45);
+    margin-bottom: 3px;
+  }
+
+  .cvs-name-bold {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 3px;
+  }
+
+  .cvs-note {
+    font-size: 9px;
+    color: rgba(31,31,31,0.35);
+    letter-spacing: 0.5px;
+  }
+
+  .cvs-note-gold {
+    font-size: 9px;
+    color: var(--warm-orange);
+    letter-spacing: 0.5px;
+    font-weight: 500;
+  }
+
+  @media (max-width: 480px) {
+    .comp-glass-grid { grid-template-columns: 1fr; }
+    .comp-vs-strip { flex-direction: column; gap: 16px; }
+    .cvs-col-restro { border-left: none; border-top: 1px solid rgba(200,169,107,0.3); padding-left: 0; padding-top: 12px; }
+  }
+
+  @keyframes prismShimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
   @keyframes sparkPop {
     0%,100% { transform: scale(0.6); opacity: 0.3; }
     50%      { transform: scale(1.3); opacity: 1; }
@@ -2698,12 +3052,38 @@
 
 <!-- Pre-layer colour strips (slide in before the panel) -->
 <div id="sm-prelayers" aria-hidden="true">
-  <div class="sm-prelayer" id="sm-prelayer-0" style="background:#3F4E4F;"></div>
-  <div class="sm-prelayer" id="sm-prelayer-1" style="background:#2C3639;"></div>
+  <div class="sm-prelayer" id="sm-prelayer-0" style="background:#66785F;"></div>
+  <div class="sm-prelayer" id="sm-prelayer-1" style="background:#1F1F1F;"></div>
 </div>
 
 <!-- Main navigation panel -->
 <aside id="sm-panel" aria-label="Site navigation" aria-hidden="true">
+  <!-- Close button inside the panel -->
+  <button id="sm-close-btn" aria-label="Close menu" type="button" style="
+    position:absolute;
+    top:1.5em;
+    right:1.8em;
+    background:none;
+    border:none;
+    cursor:pointer;
+    z-index:60;
+    display:flex;
+    align-items:center;
+    gap:0.45em;
+    font-family:'Jost',sans-serif;
+    font-size:12px;
+    letter-spacing:2px;
+    color:var(--navy);
+    font-weight:500;
+    opacity:0.7;
+    transition:opacity 0.2s;
+  ">
+    <span style="position:relative;width:16px;height:16px;display:inline-block;flex-shrink:0;">
+      <span style="position:absolute;left:50%;top:50%;width:100%;height:2px;background:currentColor;border-radius:2px;transform:translate(-50%,-50%) rotate(45deg);"></span>
+      <span style="position:absolute;left:50%;top:50%;width:100%;height:2px;background:currentColor;border-radius:2px;transform:translate(-50%,-50%) rotate(-45deg);"></span>
+    </span>
+    CLOSE
+  </button>
   <div class="sm-panel-inner">
     <ul class="sm-panel-list" id="sm-panel-list" role="list">
       <li class="sm-panel-itemWrap">
@@ -2714,6 +3094,11 @@
       <li class="sm-panel-itemWrap">
         <a class="sm-panel-item" href="#slide2" aria-label="Learn about the problem we solve">
           <span class="sm-panel-itemLabel">Problem</span>
+        </a>
+      </li>
+      <li class="sm-panel-itemWrap">
+        <a class="sm-panel-item" href="#slide3" aria-label="See our solution">
+          <span class="sm-panel-itemLabel">Solution</span>
         </a>
       </li>
       <li class="sm-panel-itemWrap">
@@ -2802,6 +3187,7 @@
   <!-- Centered content: RESTRO title + glass button stacked -->
   <div class="hero-content">
     <div class="hero-brand-overlay" id="hero-brand-overlay">RESTRO</div>
+    <div class="hero-tagline-main" id="hero-title">Turning Waiting Time Into Dining Time</div>
     <button class="btn-primary" id="hero-btn" onclick="goToSlide(10)">BOOK A DEMO</button>
   </div>
 
@@ -3606,11 +3992,11 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
 
 <div class="section-blend blend-7-8" aria-hidden="true"></div>
 
-<!-- ══ SLIDE 8: COMPARISON ══ -->
+<!-- ══ SLIDE 8: WHY CHOOSE RESTRO ══ -->
 <section class="slide" id="slide8">
   <div class="comp-nav">
     <button class="comp-back" onclick="goToSlide(6)">‹</button>
-    <span class="comp-title-nav">COMPARISON</span>
+    <span class="comp-title-nav">WHY RESTRO</span>
     <div style="width:24px;"></div>
   </div>
 
@@ -3618,45 +4004,65 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
     <h2 class="comp-heading" id="comp-heading">Why Choose <em>Restro</em></h2>
     <div class="comp-underline" id="comp-underline"></div>
 
-    <table class="comp-table" id="comp-table">
-      <thead>
-        <tr id="comp-thead-row">
-          <th class="feature-col">FEATURE</th>
-          <th>MANUAL</th>
-          <th>RES. APPS</th>
-          <th class="restro-col">RESTRO</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr id="comp-tr-1">
-          <td class="feature-col">Walk-in Optimization</td>
-          <td>✗</td>
-          <td>✗</td>
-          <td class="restro-col">✓</td>
-        </tr>
-        <tr id="comp-tr-2">
-          <td class="feature-col">Kitchen Coordination</td>
-          <td>✗</td>
-          <td>✗</td>
-          <td class="restro-col">✓</td>
-        </tr>
-        <tr id="comp-tr-3">
-          <td class="feature-col">Revenue Retention</td>
-          <td>✗</td>
-          <td>✗</td>
-          <td class="restro-col">✓</td>
-        </tr>
-        <tr id="comp-tr-4">
-          <td class="feature-col">Smart Queuing</td>
-          <td>✗</td>
-          <td style="color:rgba(44,54,57,0.3);">✓</td>
-          <td class="restro-col">✓</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <!-- Glassmorphism advantage cards -->
+    <div class="comp-glass-grid" id="comp-table">
+      <div class="comp-glass-card" id="comp-tr-1">
+        <div class="cgc-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="var(--warm-orange)" stroke-width="1.5"/><path d="M8 14.5l4 4 8-9" stroke="var(--warm-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="cgc-feature">Walk-in Optimization</div>
+        <div class="cgc-desc">AI-driven seat sequencing turns walk-ins into revenue, even at peak hours.</div>
+        <div class="cgc-badge">RESTRO ONLY</div>
+      </div>
 
-  
+      <div class="comp-glass-card" id="comp-tr-2">
+        <div class="cgc-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="var(--warm-orange)" stroke-width="1.5"/><path d="M8 14.5l4 4 8-9" stroke="var(--warm-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="cgc-feature">Kitchen Coordination</div>
+        <div class="cgc-desc">Pre-orders reach the kitchen before the guest sits — zero lag, perfect timing.</div>
+        <div class="cgc-badge">RESTRO ONLY</div>
+      </div>
+
+      <div class="comp-glass-card" id="comp-tr-3">
+        <div class="cgc-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="var(--warm-orange)" stroke-width="1.5"/><path d="M8 14.5l4 4 8-9" stroke="var(--warm-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="cgc-feature">Revenue Retention</div>
+        <div class="cgc-desc">Capture every walk-in order before impatient guests leave for a competitor.</div>
+        <div class="cgc-badge">RESTRO ONLY</div>
+      </div>
+
+      <div class="comp-glass-card" id="comp-tr-4">
+        <div class="cgc-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="var(--warm-orange)" stroke-width="1.5"/><path d="M8 14.5l4 4 8-9" stroke="var(--warm-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="cgc-feature">Smart Queuing</div>
+        <div class="cgc-desc">Live queue visibility keeps guests informed and staff pressure-free.</div>
+        <div class="cgc-badge">RESTRO ONLY</div>
+      </div>
+    </div>
+
+    <!-- Competitor comparison strip -->
+    <div class="comp-vs-strip" id="comp-thead-row">
+      <div class="cvs-col">
+        <div class="cvs-icon">✗</div>
+        <div class="cvs-name">Manual</div>
+        <div class="cvs-note">Error-prone, no data</div>
+      </div>
+      <div class="cvs-col">
+        <div class="cvs-icon" style="color:rgba(44,54,57,0.45);">~</div>
+        <div class="cvs-name">Res. Apps</div>
+        <div class="cvs-note">Booking only</div>
+      </div>
+      <div class="cvs-col cvs-col-restro">
+        <div class="cvs-icon-gold">✓</div>
+        <div class="cvs-name-bold">RESTRO</div>
+        <div class="cvs-note-gold">End-to-end flow</div>
+      </div>
+    </div>
+
+  </div>
 
   <div class="comp-bottom-tabs">
     <div class="comp-tab" onclick="goToSlide(4)">
@@ -3664,7 +4070,7 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
       STUDIO
     </div>
     <div class="comp-tab active">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="#2C3639"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M8 8h8M8 16h5" stroke="#DCD7C9" stroke-width="1.5" fill="none"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#2C3639"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M8 8h8M8 16h5" stroke="#F7F4EE" stroke-width="1.5" fill="none"/></svg>
       COMPARE
     </div>
     <div class="comp-tab" onclick="goToSlide(8)">
@@ -3683,66 +4089,70 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
 <!-- ══ SLIDE 9: SCALABILITY ══ -->
 <section class="slide" id="slide9">
   <div class="orb orb-5" id="orb-s9-1" style="opacity:0.12;"></div>
-  <div class="scale-nav">
-    <button class="scale-back" onclick="goToSlide(7)">←</button>
-    
-  </div>
 
   <div class="scale-body">
-    
-    <h2 class="scale-title" id="scale-title">Scalability</h2>
-    <p class="scale-desc" id="scale-desc">A pure SaaS model designed for exponential growth with zero friction.</p>
+    <p class="scale-variant" style="font-size:9px;letter-spacing:4px;color:var(--warm-orange);margin-bottom:12px;opacity:1;">INFRASTRUCTURE</p>
+    <h2 class="scale-title" id="scale-title">Built to Scale</h2>
+    <p class="scale-desc" id="scale-desc">From a single outlet to a nationwide chain — Restro grows with you, not against you.</p>
 
-    <div class="growth-card" id="growth-card">
-      <div class="growth-card-header">
-        <span class="growth-label">GROWTH CURVE</span>
-        <span class="growth-roi">12mo ROI</span>
+    <!-- Glassmorphism metric cards row -->
+    <div class="scale-glass-row" id="scale-glass-row">
+      <div class="scale-glass-card" id="sgc-1">
+        <div class="sgc-icon">📱</div>
+        <div class="sgc-stat">0</div>
+        <div class="sgc-label">HARDWARE NEEDED</div>
+        <div class="sgc-desc">Works on any smartphone or tablet. No POS terminals, no installation costs.</div>
       </div>
-      <div class="growth-chart">
-        <svg viewBox="0 0 280 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M 10 90 Q 80 88 120 75 Q 160 60 200 40 Q 230 25 265 10"
-                stroke="#2C3639" stroke-width="2" fill="none"/>
-          <circle cx="265" cy="10" r="4" fill="#2C3639"/>
-        </svg>
+      <div class="scale-glass-card" id="sgc-2">
+        <div class="sgc-icon">∞</div>
+        <div class="sgc-stat">∞</div>
+        <div class="sgc-label">LOCATIONS SUPPORTED</div>
+        <div class="sgc-desc">Sync every branch under one dashboard. Centralized control, local flexibility.</div>
       </div>
-      <div class="growth-x-labels">
-        <span>LAUNCH</span>
-        <span>EXPANSION</span>
-        <span>DOMINANCE</span>
+      <div class="scale-glass-card" id="sgc-3">
+        <div class="sgc-icon">☁️</div>
+        <div class="sgc-stat">99.9%</div>
+        <div class="sgc-label">UPTIME SLA</div>
+        <div class="sgc-desc">Cloud-native SaaS with zero-downtime deployments. Always on, always updated.</div>
       </div>
     </div>
 
-    <div class="scale-features" id="scale-features">
-      <div class="scale-feature" id="sf-1">
-        <div class="scale-feature-icon">📱</div>
-        <div>
-          <div class="scale-feature-title">ZERO HARDWARE</div>
-          <div class="scale-feature-desc">Compatible with any modern smartphone or tablet.</div>
+    <!-- Growth timeline visual -->
+    <div class="scale-timeline" id="scale-timeline">
+      <div class="stl-track">
+        <div class="stl-line"></div>
+        <div class="stl-node" id="stl-1">
+          <div class="stl-dot"></div>
+          <div class="stl-content">
+            <div class="stl-phase">LAUNCH</div>
+            <div class="stl-detail">1 outlet · QR menus · Digital queue</div>
+          </div>
         </div>
-      </div>
-      <div class="scale-feature" id="sf-2">
-        <div class="scale-feature-icon">🔗</div>
-        <div>
-          <div class="scale-feature-title">MULTI-LOCATION</div>
-          <div class="scale-feature-desc">Sync infinite branches under one digital roof.</div>
+        <div class="stl-node" id="stl-2">
+          <div class="stl-dot"></div>
+          <div class="stl-content">
+            <div class="stl-phase">EXPANSION</div>
+            <div class="stl-detail">Multi-branch · Analytics · Staff app</div>
+          </div>
         </div>
-      </div>
-      <div class="scale-feature" id="sf-3">
-        <div class="scale-feature-icon">☁️</div>
-        <div>
-          <div class="scale-feature-title">SAAS MODEL</div>
-          <div class="scale-feature-desc">Continuous updates with no deployment downtime.</div>
+        <div class="stl-node" id="stl-3">
+          <div class="stl-dot stl-dot-gold"></div>
+          <div class="stl-content">
+            <div class="stl-phase" style="color:var(--warm-orange);">DOMINANCE</div>
+            <div class="stl-detail">Chain-wide · API integrations · White-label</div>
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 
   <div class="scale-bottom">
     <div>
       <div class="next-step-label">NEXT STEP</div>
-      <div class="next-step-name">Global Network</div>
+      <div class="next-step-name">Book Your Demo</div>
     </div>
-    <button class="continue-btn" onclick="goToSlide(10)">Continue</button>
+    <button class="continue-btn" onclick="goToSlide(10)">Continue →</button>
   </div>
 </section>
 
@@ -3840,7 +4250,7 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
         // All sources exhausted — show animated gradient fallback
         const bg = document.getElementById('hero-video-bg');
         if (bg) {
-          bg.style.background = 'linear-gradient(135deg, #0a0704 0%, #1a0e08 20%, #2C1810 40%, #1a0e08 60%, #0a0704 80%, #1a0e08 100%)';
+          bg.style.background = 'linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 20%, #1F1F1F 40%, #1a1a1a 60%, #0d0d0d 80%, #1a1a1a 100%)';
           bg.style.backgroundSize = '400% 400%';
           bg.style.animation = 'heroBgPan 10s ease infinite';
         }
@@ -3915,16 +4325,16 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
   (function() {
     // Section id → target background color (matches original per-section colors)
     const sectionBgs = [
-      { id: 'slide1',    color: '#DCD7C9' },
-      { id: 'slide2',    color: '#c9b49a' },
-      { id: 'slide3',    color: '#DCD7C9' },
-      { id: 'slide4',    color: '#c9b49a' },
-      { id: 'slide5',    color: '#DCD7C9' },
-      { id: 'slide6',    color: '#F5F3EE' },
-      { id: 'slide7',    color: '#DCD7C9' },
-      { id: 'slide8',    color: '#c9b49a' },
-      { id: 'slide9',    color: '#c9b49a' },
-      { id: 'slide10',   color: '#DCD7C9' },
+      { id: 'slide1',    color: '#1F1F1F' },
+      { id: 'slide2',    color: '#EDE9E1' },
+      { id: 'slide3',    color: '#F7F4EE' },
+      { id: 'slide4',    color: '#111111' },
+      { id: 'slide5',    color: '#EDE9E1' },
+      { id: 'slide6',    color: '#F7F4EE' },
+      { id: 'slide7',    color: '#EDE9E1' },
+      { id: 'slide8',    color: '#E8E4DC' },
+      { id: 'slide9',    color: '#E8E4DC' },
+      { id: 'slide10',   color: '#F7F4EE' },
     ];
 
     const bg = document.getElementById('universal-bg');
@@ -3964,8 +4374,8 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
   const heroTL = gsap.timeline({ defaults: { ease: 'power3.out' } });
   heroTL
     .from('#hero-brand-overlay', { opacity: 0, scale: 1.12, duration: 1.4, ease: 'power2.out' })
-    .from('#hero-title', { opacity: 0, y: 40, duration: 0.9 }, '-=0.7')
-    .fromTo('#hero-btn', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, clearProps: 'opacity,y,transform' }, '-=0.5');
+    .from('#hero-title', { opacity: 0, y: 18, duration: 0.7 }, '-=0.5')
+    .fromTo('#hero-btn', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, clearProps: 'opacity,y,transform' }, '-=0.4');
 
   // Scroll-down class for CSS zoom — added when user scrolls away from hero
   // CSS handles the actual transform so hover and scroll-down don't conflict
@@ -4047,7 +4457,7 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
     if (!section || !bg || !text) return;
     /* Lock background and text color to the initial beige state permanently */
     bg.style.background = '#F0EDE6';
-    text.style.color    = '#2C3639';
+    text.style.color    = '#1F1F1F';
   })();
 
   /* ══════════════════════════════════════════════
@@ -4268,8 +4678,10 @@ WE UNDERSTAND HOW IT FEELS TO SEE CUSTOMERS WALK AWAY.
      SLIDE 4: HOW IT WORKS
      Scroll-driven: section is pinned while user scrolls
      through the 4 cards. At end, normal scroll resumes.
+     Init deferred to window load to avoid layout-glitch.
   ══════════════════════════════════════════════ */
-  (function() {
+  function initSlide4() {
+    (function() {
     const s4 = document.getElementById('slide4');
     if (!s4 || typeof THREE === 'undefined') return;
 
@@ -4571,6 +4983,7 @@ void main() {
         pinSpacing: true,
         scrub: 0.9,
         anticipatePin: 0,
+        invalidateOnRefresh: true,
         onUpdate: (self) => { applyProgress(self.progress); }
       }
     });
@@ -4581,6 +4994,12 @@ void main() {
     });
 
   })();
+  } // end initSlide4
+  if (document.readyState === 'complete') {
+    initSlide4();
+  } else {
+    window.addEventListener('load', initSlide4, { once: true });
+  }
 
   gsap.from('#pillars-title', {
     opacity: 0, y: 50, duration: 0.9,
@@ -4659,7 +5078,7 @@ void main() {
   });
 
   /* ══════════════════════════════════════════════
-     SLIDE 8: COMPARISON — table rows slide in one by one
+     SLIDE 8: WHY CHOOSE RESTRO — glass cards stagger in
   ══════════════════════════════════════════════ */
 
   gsap.from('#comp-heading', {
@@ -4675,14 +5094,18 @@ void main() {
     scrollTrigger: { trigger: '#comp-table', start: 'top 55%', toggleActions: 'play none none none' }
   });
   tableTL
-    .from('#comp-thead-row', { opacity: 0, y: -20, duration: 0.5 })
-    .from('#comp-tr-1', { opacity: 0, x: -40, duration: 0.5, ease: 'power2.out' }, '-=0.1')
-    .from('#comp-tr-2', { opacity: 0, x: -40, duration: 0.5, ease: 'power2.out' }, '-=0.2')
-    .from('#comp-tr-3', { opacity: 0, x: -40, duration: 0.5, ease: 'power2.out' }, '-=0.2')
-    .from('#comp-tr-4', { opacity: 0, x: -40, duration: 0.5, ease: 'power2.out' }, '-=0.2');
+    .from('#comp-tr-1', { opacity: 0, y: 30, scale: 0.95, duration: 0.55, ease: 'power2.out' })
+    .from('#comp-tr-2', { opacity: 0, y: 30, scale: 0.95, duration: 0.55, ease: 'power2.out' }, '-=0.25')
+    .from('#comp-tr-3', { opacity: 0, y: 30, scale: 0.95, duration: 0.55, ease: 'power2.out' }, '-=0.25')
+    .from('#comp-tr-4', { opacity: 0, y: 30, scale: 0.95, duration: 0.55, ease: 'power2.out' }, '-=0.25');
+
+  gsap.from('#comp-thead-row', {
+    opacity: 0, y: 20, duration: 0.6, ease: 'power2.out',
+    scrollTrigger: { trigger: '#comp-thead-row', start: 'top 75%', toggleActions: 'play none none none' }
+  });
 
   /* ══════════════════════════════════════════════
-     SLIDE 9: SCALABILITY — chart path draws, features stagger in
+     SLIDE 9: SCALABILITY — glassmorphism card reveals
   ══════════════════════════════════════════════ */
 
   gsap.from('#scale-title', {
@@ -4694,22 +5117,30 @@ void main() {
     scrollTrigger: { trigger: '#slide9', start: 'top 28%', toggleActions: 'play none none none' }
   });
 
-  const growthTL = gsap.timeline({
-    scrollTrigger: { trigger: '#growth-card', start: 'top 55%', toggleActions: 'play none none none' }
+  gsap.from('#sgc-1', {
+    opacity: 0, y: 40, scale: 0.95, duration: 0.7, ease: 'power2.out',
+    scrollTrigger: { trigger: '#scale-glass-row', start: 'top 60%', toggleActions: 'play none none none' }
   });
-  growthTL
-    .from('#growth-card', { opacity: 0, y: 40, scale: 0.96, duration: 0.7, ease: 'power2.out' })
-    .to('#growth-card path', { strokeDashoffset: 0, duration: 1.4, ease: 'power2.inOut' }, '-=0.2')
-    .from('#growth-card circle', { opacity: 0, scale: 0, transformOrigin: '265px 10px', duration: 0.4, ease: 'back.out(2)' }, '-=0.2');
+  gsap.from('#sgc-2', {
+    opacity: 0, y: 40, scale: 0.95, duration: 0.7, ease: 'power2.out', delay: 0.12,
+    scrollTrigger: { trigger: '#scale-glass-row', start: 'top 60%', toggleActions: 'play none none none' }
+  });
+  gsap.from('#sgc-3', {
+    opacity: 0, y: 40, scale: 0.95, duration: 0.7, ease: 'power2.out', delay: 0.24,
+    scrollTrigger: { trigger: '#scale-glass-row', start: 'top 60%', toggleActions: 'play none none none' }
+  });
 
-  // Scale features stagger in from the right
-  const sfTL = gsap.timeline({
-    scrollTrigger: { trigger: '#scale-features', start: 'top 60%', toggleActions: 'play none none none' }
+  gsap.from('#scale-timeline', {
+    opacity: 0, y: 30, duration: 0.8, ease: 'power2.out',
+    scrollTrigger: { trigger: '#scale-timeline', start: 'top 70%', toggleActions: 'play none none none' }
   });
-  sfTL
-    .from('#sf-1', { opacity: 0, x: 50, duration: 0.6, ease: 'power2.out' })
-    .from('#sf-2', { opacity: 0, x: 50, duration: 0.6, ease: 'power2.out' }, '-=0.3')
-    .from('#sf-3', { opacity: 0, x: 50, duration: 0.6, ease: 'power2.out' }, '-=0.3');
+
+  // Animate the timeline nodes staggered
+  gsap.from(['#stl-1', '#stl-2', '#stl-3'], {
+    opacity: 0, y: 20, duration: 0.6, ease: 'power2.out',
+    stagger: 0.18,
+    scrollTrigger: { trigger: '#scale-timeline', start: 'top 65%', toggleActions: 'play none none none' }
+  });
 
   /* ══════════════════════════════════════════════
      SLIDE 10: FINAL CTA — dramatic entry
@@ -4774,9 +5205,9 @@ void main() {
       fields.forEach(f => {
         const el = document.getElementById(f.id);
         if (!f.val) {
-          el.style.borderColor = '#A27B5B';
-          el.addEventListener('input', () => { el.style.borderColor = '#2C3639'; }, { once: true });
-          el.addEventListener('change', () => { el.style.borderColor = '#2C3639'; }, { once: true });
+          el.style.borderColor = '#C8A96B';
+          el.addEventListener('input', () => { el.style.borderColor = '#1F1F1F'; }, { once: true });
+          el.addEventListener('change', () => { el.style.borderColor = '#1F1F1F'; }, { once: true });
         }
       });
       return;
@@ -5182,6 +5613,10 @@ void main() {
 
     /* Close on backdrop click */
     backdrop.addEventListener('click', closeMenu);
+
+    /* Close button inside panel */
+    const closeBtn = document.getElementById('sm-close-btn');
+    if (closeBtn) closeBtn.addEventListener('click', closeMenu);
 
     /* Close when a nav link is clicked */
     panel.querySelectorAll('.sm-panel-item').forEach(link => {
